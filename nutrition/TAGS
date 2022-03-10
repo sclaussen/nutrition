@@ -1,0 +1,97 @@
+
+nutrition.xcdatamodeld/.xccurrentversion,19
+<?xml version=1,0
+
+nutrition.xcdatamodeld/nutrition.xcdatamodel/contents,19
+<?xml version=1,0
+
+nutritionApp.swift,95
+struct nutritionApp:nutritionApp4,22
+    @StateObject var ingredientMgr: IngredientMgr 6,50
+
+Model/Profile.swift,83
+class ProfileMgr:ProfileMgr3,19
+    init(11,149
+struct Profile:Profile40,1158
+
+Model/Ingredient.swift,145
+class IngredientMgr:IngredientMgr3,19
+    @Published var ingredients:ingredients5,60
+struct Ingredient:Ingredient52,1467
+    init(67,1743
+
+View/IngredientEdit.swift,176
+struct IngredientEdit:IngredientEdit3,16
+    @Environment(5,47
+struct IngredientUpdate_Previews:IngredientUpdate_Previews60,1815
+    @State static var ingredient 61,1867
+
+View/ProfileView.swift,215
+struct ProfileView:ProfileView3,16
+    @Environment(5,44
+    var editLink: some View 32,1075
+struct ProfileView_Previews:ProfileView_Previews37,1190
+    @StateObject static var profileMgr: ProfileMgr 38,1237
+
+View/IngredientList.swift,174
+struct IngredientList:IngredientList3,16
+    var body: some View 7,104
+    var addLink: some View 21,539
+struct IngredientsView_Previews:IngredientsView_Previews30,737
+
+View/Home.swift,180
+struct Home:Home3,16
+    @State var tab: String 7,88
+struct ContentView_Previews:ContentView_Previews67,1547
+    @StateObject static var ingredientMgr: IngredientMgr 68,1594
+
+View/PrepView.swift,174
+struct PrepView:PrepView3,16
+    var body: some View 9,125
+struct PrepView_Previews:PrepView_Previews35,1063
+    @StateObject static var profileMgr: ProfileMgr 36,1107
+
+View/IngredientAdd.swift,132
+struct IngredientAdd:IngredientAdd3,16
+    @Environment(5,46
+struct IngredientCreate_Previews:IngredientCreate_Previews70,2134
+
+View/IngredientView.swift,260
+struct IngredientView:IngredientView3,16
+    @Environment(5,47
+    var cancelLink: some View 34,1253
+    var editLink: some View 40,1404
+struct IngredientDetailView_Previews:IngredientDetailView_Previews45,1528
+    @State static var ingredient 46,1584
+
+View/ProfileEdit.swift,178
+struct ProfileEdit:ProfileEdit3,16
+    @Environment(5,44
+struct ProfileEdit_Previews:ProfileEdit_Previews60,1891
+    @StateObject static var profileMgr: ProfileMgr 61,1938
+
+Utility/FloatingPointExtension.swift,26
+extension Formatter 3,19
+
+Utility/InputView.swift,203
+let formatter: NumberFormatter 4,17
+struct StringInput:StringInput10,153
+    init(15,252
+struct IntInput:IntInput38,1137
+    init(44,1251
+struct DoubleInput:DoubleInput69,2323
+    init(76,2466
+
+Utility/BindingExtension.swift,0
+
+README.md,0
+
+TAGS,0
+
+Preview Content/Preview Assets.xcassets/Contents.json,0
+
+Assets.xcassets/Contents.json,0
+
+Assets.xcassets/AccentColor.colorset/Contents.json,0
+
+Assets.xcassets/AppIcon.appiconset/Contents.json,0
