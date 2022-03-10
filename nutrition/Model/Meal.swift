@@ -5,7 +5,7 @@ class MealIngredient: Identifiable {
 
     var name: String
     var amount: Double
-    var consumptionUnit: String
+    var consumptionUnit: Unit
 
     var calories: Double = 0
     var fat: Double = 0
@@ -15,7 +15,7 @@ class MealIngredient: Identifiable {
 
     var adjustment: Bool = false
 
-    init(name: String, amount: Double, consumptionUnit: String, calories: Double, fat: Double, fiber: Double, netcarbs: Double, protein: Double, adjustment: Bool) {
+    init(name: String, amount: Double, consumptionUnit: Unit, calories: Double, fat: Double, fiber: Double, netcarbs: Double, protein: Double, adjustment: Bool) {
         self.name = name
         self.amount = amount
         self.consumptionUnit = consumptionUnit
@@ -66,18 +66,18 @@ class Meal: Identifiable {
         self.proteinGoal = proteinGoal
     }
 
-    func addOrUpdateMealIngredient(name: String, amount: Double, consumptionUnit: String, calories: Double, fat: Double, fiber: Double, netcarbs: Double, protein: Double, adjustment: Bool) {
+    func addOrUpdateMealIngredient(name: String, amount: Double, consumptionUnit: Unit, calories: Double, fat: Double, fiber: Double, netcarbs: Double, protein: Double, adjustment: Bool) {
         if let index = mealIngredients.firstIndex(where: { $0.name == name }) {
             let mealIngredient: MealIngredient = mealIngredients[index]
             mealIngredient.update(amount: amount, calories: calories, fat: fat, fiber: fiber, netcarbs: netcarbs, protein: protein, adjustment: adjustment)
-            print("Updating ingredient: " + name + " " + String(amount) + " " + mealIngredient.consumptionUnit)
+            print("Updating ingredient: " + name + " " + String(amount) + " " + mealIngredient.consumptionUnit.singular)
             if mealIngredient.amount <= 0 {
                 delete(mealIngredient)
             }
         } else {
             let mealIngredient: MealIngredient = MealIngredient(name: name, amount: amount, consumptionUnit: consumptionUnit, calories: calories, fat: fat, fiber: fiber, netcarbs: netcarbs, protein: protein, adjustment: adjustment)
             mealIngredients.append(mealIngredient)
-            print("Creating ingredient: " + name + " " + String(amount) + " " + mealIngredient.consumptionUnit)
+            print("Creating ingredient: " + name + " " + String(amount) + " " + mealIngredient.consumptionUnit.singular)
         }
 
         self.calories += calories
@@ -116,7 +116,7 @@ class Meal: Identifiable {
         print("protein: " + String(protein))
 
         for mealIngredient in mealIngredients {
-            print(mealIngredient.name + ": " + String(mealIngredient.amount) + " " + mealIngredient.consumptionUnit)
+            print(mealIngredient.name + ": " + String(mealIngredient.amount) + " " + mealIngredient.consumptionUnit.singular)
         }
     }
 }

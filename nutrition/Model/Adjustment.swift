@@ -9,20 +9,15 @@ class AdjustmentMgr: ObservableObject {
     }
 
     init() {
-        adjustments.append(Adjustment(name: "Eggs", amount: 1, consumptionUnit: "eggs", constraints: true, minimum: 4, maximum: 7))
-        adjustments.append(Adjustment(name: "Mackerel", amount: 1, consumptionUnit: "cans", constraints: true, maximum: 2))
-        adjustments.append(Adjustment(name: "Sardines", amount: 1, consumptionUnit: "cans", constraints: true, maximum: 2))
-        adjustments.append(Adjustment(name: "Smoked Sardines", amount: 1, consumptionUnit: "cans", constraints: true, maximum: 2))
-        adjustments.append(Adjustment(name: "Broccoli", amount: 25, consumptionUnit: "grams", maximum: 250))
-        adjustments.append(Adjustment(name: "String Cheese", amount: 1, consumptionUnit: "sticks"))
-        adjustments.append(Adjustment(name: "Extra Virgin Olive Oil", amount: 0.25, consumptionUnit: "tbsp", constraints: true, minimum: 2.5, maximum: 5))
-        adjustments.append(Adjustment(name: "Pumpkin Seeds", amount: 5, consumptionUnit: "grams"))
-        adjustments.append(Adjustment(name: "Macadamia Nuts", amount: 5, consumptionUnit: "grams", active: false))
-  // - type: randomize
-  //   select: 1
-  //   adjustments:
-  //     Cauliflower: 10
-  //     Broccoli: 20
+        adjustments.append(Adjustment(name: "Eggs", amount: 1, consumptionUnit: Unit.egg, constraints: true, minimum: 4, maximum: 7))
+        adjustments.append(Adjustment(name: "Mackerel", amount: 1, consumptionUnit: Unit.can, constraints: true, maximum: 2))
+        adjustments.append(Adjustment(name: "Sardines", amount: 1, consumptionUnit: Unit.can, constraints: true, maximum: 2))
+        adjustments.append(Adjustment(name: "Smoked Sardines", amount: 1, consumptionUnit: Unit.can, constraints: true, maximum: 2))
+        adjustments.append(Adjustment(name: "Broccoli", amount: 25, consumptionUnit: Unit.gram, maximum: 250))
+        adjustments.append(Adjustment(name: "String Cheese", amount: 1, consumptionUnit: Unit.stick))
+        adjustments.append(Adjustment(name: "Extra Virgin Olive Oil", amount: 0.25, consumptionUnit: Unit.tablespoon, constraints: true, minimum: 2.5, maximum: 5))
+        adjustments.append(Adjustment(name: "Pumpkin Seeds", amount: 5, consumptionUnit: Unit.gram))
+        adjustments.append(Adjustment(name: "Macadamia Nuts", amount: 5, consumptionUnit: Unit.gram, active: false))
     }
 
     func serialize() {
@@ -44,7 +39,7 @@ class AdjustmentMgr: ObservableObject {
         self.adjustments = savedItems
     }
 
-    func create(name: String, amount: Double, consumptionUnit: String, active: Bool) {
+    func create(name: String, amount: Double, consumptionUnit: Unit, active: Bool) {
         let adjustment = Adjustment(name: name, amount: amount, consumptionUnit: consumptionUnit, active: active)
         adjustments.append(adjustment)
     }
@@ -104,49 +99,18 @@ class AdjustmentMgr: ObservableObject {
     }
 }
 
-// enum AdjustmentType: String, Codable {
-//     case Normal:
-//     case Random:
-// }
-
-// struct AdjustmentIngredient: Codable {
-//     var name: String
-//     var amount: Double
-//     var consumptionUnit: String
-
-//     var constraints : Bool
-//     var minimum: Double
-//     var maximum: Double
-// }
-
 struct Adjustment: Codable, Identifiable {
     var id: String
     var name: String
     var amount: Double
-    var consumptionUnit: String
+    var consumptionUnit: Unit
 
     var constraints : Bool
     var minimum: Double
     var maximum: Double
     var active: Bool
-    // var type: AdjustmentType
-    // var adjustmentIngredients: [AdjustmentIngredient] = []
 
-    // init(id: String = UUID().uuidString, type: AdjustmentType, active: active) {
-    //     self.id = id
-    //     self.type = type
-    //     self.adjustmentIngredients = adjustmentIngredients
-    //     self.active = active
-    // }
-
-    // init(id: String = UUID().uuidString, type: AdjustmentType, active: active, adjustmentIngredients: [AdjustmentIngredient]) {
-    //     self.id = id
-    //     self.type = type
-    //     self.adjustmentIngredients = adjustmentIngredients
-    //     self.active = active
-    // }
-
-    init(id: String = UUID().uuidString, name: String, amount: Double, consumptionUnit: String, constraints: Bool = false, minimum: Double = 0, maximum: Double = 0, active: Bool = true) {
+    init(id: String = UUID().uuidString, name: String, amount: Double, consumptionUnit: Unit, constraints: Bool = false, minimum: Double = 0, maximum: Double = 0, active: Bool = true) {
         self.id = id
         self.name = name
         self.amount = amount

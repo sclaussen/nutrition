@@ -49,7 +49,7 @@ struct BaseEdit: View {
 }
 
 struct BaseUpdate_Previews: PreviewProvider {
-    @State static var base = Base(name: "Arugula", defaultAmount: 145.0, amount: 145.0, consumptionUnit: "grams", active: true)
+    @State static var base = Base(name: "Arugula", defaultAmount: 145.0, amount: 145.0, consumptionUnit: Unit.gram, active: true)
 
     static var previews: some View {
         NavigationView {

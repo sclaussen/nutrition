@@ -62,6 +62,7 @@ struct IngredientList: View {
         }
           .searchable(text: $searchingFor)
           .padding([.leading, .trailing], -20)
+          .navigationBarItems(trailing: add)
           .toolbar {
               ToolbarItem(placement: .navigation) {
                   EditButton()
@@ -70,9 +71,6 @@ struct IngredientList: View {
                   Button(action: toggleInactiveIngredientsFilter) {
                       Text(ingredientMgr.inactiveIngredientsExist() ? (inactiveIngredientsFilter ? "Hide Inactive" : "Show Inactive"): "").font(.caption)
                   }
-              }
-              ToolbarItem(placement: .primaryAction) {
-                  NavigationLink("Add", destination: IngredientAdd())
               }
           }
     }
@@ -87,6 +85,10 @@ struct IngredientList: View {
 
     func toggleInactiveIngredientsFilter() {
         inactiveIngredientsFilter = inactiveIngredientsFilter ? false : true
+    }
+
+    var add: some View {
+        NavigationLink("Add", destination: IngredientAdd())
     }
 
     func moveAction(from source: IndexSet, to destination: Int) {

@@ -17,17 +17,17 @@ struct MealConfigure: View {
             Form {
                 Section {
                     PickerEdit("Meat", $profile.meat, options: ingredientMgr.getMeatOptions())
-                    DoubleEdit("Meat Weight", $profile.meatAmount, "grams")
+                    DoubleEdit("Meat Weight", $profile.meatAmount, Unit.gram)
                 }
                 Section {
-                    DoubleEdit("Weight", $profile.weight, "lbs", precision: 1)
-                    DoubleEdit("Body Fat %", $profile.bodyFat, "%", precision: 1)
-                    IntEdit("Active Energy", $profile.activeEnergy, "kcals")
+                    DoubleEdit("Weight", $profile.weight, Unit.pound, precision: 1)
+                    DoubleEdit("Body Fat %", $profile.bodyFat, Unit.percentage, precision: 1)
+                    IntEdit("Active Energy", $profile.activeEnergy, Unit.calorie)
                 }
                 Section {
-                    DoubleEdit("Protein Ratio", $profile.proteinRatio, "g/lbm")
-                    IntEdit("Calorie Deficit", $profile.calorieDeficit, "%")
-                    DoubleView("Water", profile.waterLiters, "liters", precision: 1)
+                    DoubleEdit("Protein Ratio", $profile.proteinRatio, Unit.gramsPerLbm)
+                    IntEdit("Calorie Deficit", $profile.calorieDeficit, Unit.percentage)
+                    DoubleView("Water", profile.waterLiters, Unit.liter, precision: 1)
                 }
                 // Section {
                 //     ZStack {

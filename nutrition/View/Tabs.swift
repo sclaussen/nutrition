@@ -12,17 +12,6 @@ struct Tabs: View {
 
 
             NavigationView {
-                MealView()
-                  // .navigationTitle("Meal")
-            }
-              .tabItem {
-                  Image(systemName: "fork.knife.circle")
-                  Text("Meal")
-              }
-              .tag("Meal")
-
-
-            NavigationView {
                 BaseList()
                   .navigationTitle("Base Meal")
             }
@@ -42,6 +31,17 @@ struct Tabs: View {
                   Text("Adjustments")
               }
               .tag("Adds")
+
+
+            NavigationView {
+                MealView()
+                  // .navigationTitle("Meal")
+            }
+              .tabItem {
+                  Image(systemName: "fork.knife.circle")
+                  Text("Meal")
+              }
+              .tag("Meal")
 
 
             NavigationView {

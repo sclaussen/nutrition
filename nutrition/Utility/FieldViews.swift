@@ -46,9 +46,9 @@ struct StringEdit: View {
 struct IntView: View {
     var text: String
     var value: Int
-    var unit: String
+    var unit: Unit
 
-    init(_ text: String, _ value: Int, _ unit: String = "") {
+    init(_ text: String, _ value: Int, _ unit: Unit = Unit.none) {
         self.text = text
         self.value = value
         self.unit = unit
@@ -59,7 +59,7 @@ struct IntView: View {
             Text(text).myNameLabel()
             Spacer()
             Text("\(value)").myValueLabel()
-            Text(unit).myUnitLabel()
+            Text(value == 1 ? unit.singular : unit.plural).myUnitLabel()
         }
           .onTapGesture {
               self.hideKeyboard()
@@ -70,9 +70,9 @@ struct IntView: View {
 struct IntEdit: View {
     var text: String
     @Binding var value: Int
-    var unit: String
+    var unit: Unit
 
-    init(_ text: String, _ value: Binding<Int>, _ unit: String = "") {
+    init(_ text: String, _ value: Binding<Int>, _ unit: Unit = Unit.none) {
         self.text = text
         self._value = value
         self.unit = unit
@@ -87,7 +87,7 @@ struct IntEdit: View {
                       textEdit.selectedTextRange = textEdit.textRange(from: textEdit.beginningOfDocument, to: textEdit.endOfDocument)
                   }
               }
-            Text(unit).myUnitValue()
+            Text(value == 1 ? unit.singular : unit.plural).myUnitValue()
         }
           .onTapGesture {
               self.hideKeyboard()
@@ -98,10 +98,10 @@ struct IntEdit: View {
 struct DoubleView: View {
     var text: String
     var value: Double
-    var unit: String
+    var unit: Unit
     var precision: Int
 
-    init(_ text: String, _ value: Double, _ unit: String = "", precision: Int = 2) {
+    init(_ text: String, _ value: Double, _ unit: Unit = Unit.none, precision: Int = 2) {
         self.text = text
         self.value = value
         self.unit = unit
@@ -113,7 +113,7 @@ struct DoubleView: View {
             Text(text).myNameLabel()
             Spacer()
             Text("\(value.fractionDigits(max: self.precision))").myValueLabel()
-            Text(unit).myUnitLabel()
+            Text(value == 1 ? unit.singular : unit.plural).myUnitLabel()
         }
           .onTapGesture {
               self.hideKeyboard()
@@ -124,11 +124,11 @@ struct DoubleView: View {
 struct DoubleEdit: View {
     var text: String
     @Binding var value: Double
-    var unit: String
-    var precision: Int  
+    var unit: Unit
+    var precision: Int
     var negative: Bool
 
-    init(_ text: String, _ value: Binding<Double>, _ unit: String = "", precision: Int = 2, negative: Bool = false) {
+    init(_ text: String, _ value: Binding<Double>, _ unit: Unit = Unit.none, precision: Int = 2, negative: Bool = false) {
         self.text = text
         self._value = value
         self.unit = unit
@@ -147,7 +147,7 @@ struct DoubleEdit: View {
                       textEdit.selectedTextRange = textEdit.textRange(from: textEdit.beginningOfDocument, to: textEdit.endOfDocument)
                   }
               }
-            Text(unit).myUnitValue()
+            Text(value == 1 ? unit.singular : unit.plural).myUnitValue()
         }
           .onTapGesture {
               self.hideKeyboard()
@@ -173,6 +173,31 @@ struct PickerEdit: View {
             Picker("", selection: $value) {
                 ForEach(options, id: \.self) {
                     Text($0).myValue()
+                }
+            }.offset(x: 21)
+            Text("").myUnitValue()
+        }
+    }
+}
+
+struct PickerUnitEdit: View {
+    var text: String
+    @Binding var value: Unit
+    var options: [Unit]
+
+    init(_ text: String, _ value: Binding<Unit>, options: [Unit]) {
+        self.text = text
+        self._value = value
+        self.options = options
+    }
+
+    var body: some View {
+        HStack(alignment: .lastTextBaseline) {
+            Text(text).myNameLabel()
+            Spacer()
+            Picker("", selection: $value) {
+                ForEach(options, id: \.self) {
+                    Text($0.rawValue).myValue().tag($0)
                 }
             }.offset(x: 21)
             Text("").myUnitValue()

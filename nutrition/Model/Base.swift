@@ -9,23 +9,23 @@ class BaseMgr: ObservableObject {
     }
 
     init() {
-        bases.append(Base(name: "Coconut Oil", defaultAmount: 1, amount: 1, consumptionUnit: "tbsp"))
-        bases.append(Base(name: "Eggs", defaultAmount: 5, amount: 5, consumptionUnit: "eggs"))
-        bases.append(Base(name: "Serrano Pepper", defaultAmount: 70, amount: 70, consumptionUnit: "grams"))
-        bases.append(Base(name: "Broccoli", defaultAmount: 50, amount: 50, consumptionUnit: "grams"))
-        bases.append(Base(name: "Cauliflower", defaultAmount: 75, amount: 75, consumptionUnit: "grams"))
-        bases.append(Base(name: "Arugula", defaultAmount: 145, amount: 145, consumptionUnit: "grams"))
-        bases.append(Base(name: "Romaine", defaultAmount: 300, amount: 300, consumptionUnit: "grams"))
-        bases.append(Base(name: "Collared Greens", defaultAmount: 100, amount: 100, consumptionUnit: "grams"))
-        bases.append(Base(name: "Mushrooms", defaultAmount: 100, amount: 100, consumptionUnit: "grams"))
-        bases.append(Base(name: "Radish", defaultAmount: 100, amount: 100, consumptionUnit: "grams"))
-        bases.append(Base(name: "Avocado", defaultAmount: 140, amount: 140, consumptionUnit: "grams"))
-        bases.append(Base(name: "Mackerel", defaultAmount: 1, amount: 1, consumptionUnit: "cans", active: false))
-        bases.append(Base(name: "Sardines", defaultAmount: 1, amount: 1, consumptionUnit: "cans", active: false))
-        bases.append(Base(name: "Smoked Sardines", defaultAmount: 1, amount: 1, consumptionUnit: "cans", active: false))
-        bases.append(Base(name: "Mustard", defaultAmount: 4, amount: 4, consumptionUnit: "tbsp"))
-        bases.append(Base(name: "Fish Oil", defaultAmount: 1, amount: 1, consumptionUnit: "tbsp"))
-        bases.append(Base(name: "Extra Virgin Olive Oil", defaultAmount: 2.5, amount: 2.5, consumptionUnit: "tbsp"))
+        bases.append(Base(name: "Coconut Oil", defaultAmount: 1, amount: 1, consumptionUnit: Unit.tablespoon))
+        bases.append(Base(name: "Eggs", defaultAmount: 5, amount: 5, consumptionUnit: Unit.egg))
+        bases.append(Base(name: "Serrano Pepper", defaultAmount: 70, amount: 70, consumptionUnit: Unit.gram))
+        bases.append(Base(name: "Broccoli", defaultAmount: 50, amount: 50, consumptionUnit: Unit.gram))
+        bases.append(Base(name: "Cauliflower", defaultAmount: 75, amount: 75, consumptionUnit: Unit.gram))
+        bases.append(Base(name: "Arugula", defaultAmount: 145, amount: 145, consumptionUnit: Unit.gram))
+        bases.append(Base(name: "Romaine", defaultAmount: 300, amount: 300, consumptionUnit: Unit.gram))
+        bases.append(Base(name: "Collared Greens", defaultAmount: 100, amount: 100, consumptionUnit: Unit.gram))
+        bases.append(Base(name: "Mushrooms", defaultAmount: 100, amount: 100, consumptionUnit: Unit.gram))
+        bases.append(Base(name: "Radish", defaultAmount: 100, amount: 100, consumptionUnit: Unit.gram))
+        bases.append(Base(name: "Avocado", defaultAmount: 140, amount: 140, consumptionUnit: Unit.gram))
+        bases.append(Base(name: "Mackerel", defaultAmount: 1, amount: 1, consumptionUnit: Unit.can, active: false))
+        bases.append(Base(name: "Sardines", defaultAmount: 1, amount: 1, consumptionUnit: Unit.can, active: false))
+        bases.append(Base(name: "Smoked Sardines", defaultAmount: 1, amount: 1, consumptionUnit: Unit.can, active: false))
+        bases.append(Base(name: "Mustard", defaultAmount: 4, amount: 4, consumptionUnit: Unit.tablespoon))
+        bases.append(Base(name: "Fish Oil", defaultAmount: 1, amount: 1, consumptionUnit: Unit.tablespoon))
+        bases.append(Base(name: "Extra Virgin Olive Oil", defaultAmount: 2.5, amount: 2.5, consumptionUnit: Unit.tablespoon))
     }
 
     func serialize() {
@@ -47,7 +47,7 @@ class BaseMgr: ObservableObject {
         self.bases = savedItems
     }
 
-    func create(name: String, defaultAmount: Double, amount: Double, consumptionUnit: String, active: Bool) {
+    func create(name: String, defaultAmount: Double, amount: Double, consumptionUnit: Unit, active: Bool) {
         let base = Base(name: name, defaultAmount: defaultAmount, amount: amount, consumptionUnit: consumptionUnit, active: active)
         bases.append(base)
     }
@@ -121,11 +121,11 @@ struct Base: Codable, Identifiable {
     var name: String
     var defaultAmount: Double
     var amount: Double
-    var consumptionUnit: String
+    var consumptionUnit: Unit
 
     var active: Bool
 
-    init(id: String = UUID().uuidString, name: String, defaultAmount: Double, amount: Double, consumptionUnit: String, active: Bool = true) {
+    init(id: String = UUID().uuidString, name: String, defaultAmount: Double, amount: Double, consumptionUnit: Unit, active: Bool = true) {
         self.id = id
         self.name = name
         self.defaultAmount = defaultAmount

@@ -55,7 +55,7 @@ struct AdjustmentEdit: View {
 }
 
 struct AdjustmentUpdate_Previews: PreviewProvider {
-    @State static var adjustment = Adjustment(name: "Arugula", amount: 145, consumptionUnit: "grams", active: true)
+    @State static var adjustment = Adjustment(name: "Arugula", amount: 145, consumptionUnit: Unit.gram, active: true)
 
     static var previews: some View {
         NavigationView {
