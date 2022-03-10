@@ -1,97 +1,0 @@
-
-IngredientRow.swift,41
-struct IngredientRow:IngredientRow3,16
-
-StarterAdd.swift,120
-struct StarterAdd:StarterAdd3,16
-    @Environment(5,43
-struct StarterCreate_Previews:StarterCreate_Previews54,1678
-
-IngredientEdit.swift,237
-struct IngredientEdit:IngredientEdit3,16
-    @Environment(5,47
-    var cancelLink: some View 38,1373
-    var saveLink: some View 44,1524
-    func updateAction(50,1635
-struct IngredientEdit_Previews:IngredientEdit_Previews58,1813
-
-AdditionRow.swift,37
-struct AdditionRow:AdditionRow3,16
-
-PrepEdit.swift,174
-struct PrepEdit:PrepEdit3,16
-    var body: some View 9,125
-struct PrepView_Previews:PrepView_Previews36,1160
-    @StateObject static var profileMgr: ProfileMgr 37,1204
-
-IngredientList.swift,144
-struct IngredientList:IngredientList4,17
-    @State var filter: Bool 8,105
-struct IngredientsView_Previews:IngredientsView_Previews65,2252
-
-Home.swift,180
-struct Home:Home3,16
-    @State var tab: String 7,88
-struct ContentView_Previews:ContentView_Previews72,1766
-    @StateObject static var ingredientMgr: IngredientMgr 73,1813
-
-AdditionAdd.swift,124
-struct AdditionAdd:AdditionAdd3,16
-    @Environment(5,44
-struct AdditionCreate_Previews:AdditionCreate_Previews65,1971
-
-AdditionList.swift,133
-struct AdditionList:AdditionList3,16
-    @State var filter: Bool 7,98
-struct AdditionList_Previews:AdditionList_Previews64,2204
-
-StarterEdit.swift,240
-struct StarterEdit:StarterEdit3,16
-    enum Field:Field5,44
-        case 6,71
-        case currentAmount6,71
-    @Environment(9,105
-struct StarterUpdate_Previews:StarterUpdate_Previews60,1797
-    @State static var starter 61,1846
-
-IngredientAdd.swift,132
-struct IngredientAdd:IngredientAdd3,16
-    @Environment(5,46
-struct IngredientCreate_Previews:IngredientCreate_Previews78,2553
-
-StarterRow.swift,66
-struct StarterRow:StarterRow3,16
-    var body: some View 9,126
-
-IngredientView.swift,260
-struct IngredientView:IngredientView3,16
-    @Environment(5,47
-    var cancelLink: some View 34,1264
-    var editLink: some View 40,1415
-struct IngredientDetailView_Previews:IngredientDetailView_Previews45,1539
-    @State static var ingredient 46,1595
-
-AdditionEdit.swift,166
-struct AdditionEdit:AdditionEdit4,17
-    @Environment(6,46
-struct AdditionUpdate_Previews:AdditionUpdate_Previews56,1614
-    @State static var addition 57,1664
-
-StarterList.swift,130
-struct StarterList:StarterList3,16
-    @State var filter: Bool 8,151
-struct StarterList_Previews:StarterList_Previews70,2448
-
-MealView.swift,116
-struct MealView:MealView10,100
-    var body: some View 11,124
-struct MealView_Previews:MealView_Previews16,231
-
-ProfileEdit.swift,285
-struct ProfileEdit:ProfileEdit3,16
-    @Environment(5,44
-    var cancelLink: some View 50,2438
-    var saveLink: some View 56,2589
-    func updateAction(62,2700
-struct ProfileEdit_Previews:ProfileEdit_Previews70,2869
-    @StateObject static var profileMgr: ProfileMgr 71,2916
