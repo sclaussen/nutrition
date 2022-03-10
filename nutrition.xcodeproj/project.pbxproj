@@ -10,7 +10,7 @@
 		3402286C27D7C7C800741FBB /* HealthKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3402286B27D7C7C800741FBB /* HealthKit.framework */; };
 		3402286E27D8298E00741FBB /* MyGauge.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3402286D27D8298E00741FBB /* MyGauge.swift */; };
 		342F816927D42D1600B16B9E /* Meal.swift in Sources */ = {isa = PBXBuildFile; fileRef = 342F816827D42D1600B16B9E /* Meal.swift */; };
-		344D200227CDC53800343108 /* Today.swift in Sources */ = {isa = PBXBuildFile; fileRef = 344D200127CDC53700343108 /* Today.swift */; };
+		344D200227CDC53800343108 /* MealConfigure.swift in Sources */ = {isa = PBXBuildFile; fileRef = 344D200127CDC53700343108 /* MealConfigure.swift */; };
 		344D200427CE27B500343108 /* Base.swift in Sources */ = {isa = PBXBuildFile; fileRef = 344D200327CE27B500343108 /* Base.swift */; };
 		344D200627CE299D00343108 /* BaseList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 344D200527CE299D00343108 /* BaseList.swift */; };
 		344D200827CE2B4E00343108 /* BaseAdd.swift in Sources */ = {isa = PBXBuildFile; fileRef = 344D200727CE2B4E00343108 /* BaseAdd.swift */; };
@@ -43,7 +43,7 @@
 		3402286B27D7C7C800741FBB /* HealthKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = HealthKit.framework; path = System/Library/Frameworks/HealthKit.framework; sourceTree = SDKROOT; };
 		3402286D27D8298E00741FBB /* MyGauge.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyGauge.swift; sourceTree = "<group>"; };
 		342F816827D42D1600B16B9E /* Meal.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Meal.swift; sourceTree = "<group>"; };
-		344D200127CDC53700343108 /* Today.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Today.swift; sourceTree = "<group>"; };
+		344D200127CDC53700343108 /* MealConfigure.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MealConfigure.swift; sourceTree = "<group>"; };
 		344D200327CE27B500343108 /* Base.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Base.swift; sourceTree = "<group>"; };
 		344D200527CE299D00343108 /* BaseList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseList.swift; sourceTree = "<group>"; };
 		344D200727CE2B4E00343108 /* BaseAdd.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseAdd.swift; sourceTree = "<group>"; };
@@ -135,11 +135,11 @@
 			isa = PBXGroup;
 			children = (
 				349EE53227C99AC30072255A /* Tabs.swift */,
-				344D200127CDC53700343108 /* Today.swift */,
+				34B7171127D1858B00322B18 /* MealView.swift */,
+				344D200127CDC53700343108 /* MealConfigure.swift */,
 				344D200527CE299D00343108 /* BaseList.swift */,
 				344D200727CE2B4E00343108 /* BaseAdd.swift */,
 				344D200927CE2B6300343108 /* BaseEdit.swift */,
-				34B7171127D1858B00322B18 /* MealView.swift */,
 				344D200D27CE35F100343108 /* AdjustmentList.swift */,
 				344D200F27CE360C00343108 /* AdjustmentEdit.swift */,
 				344D201127CE361B00343108 /* AdjustmentAdd.swift */,
@@ -262,7 +262,7 @@
 				34B7171627D1B9EB00322B18 /* ViewModifiers.swift in Sources */,
 				347A335227D9A5E0005E3F33 /* MealGen.swift in Sources */,
 				34B7171227D1858B00322B18 /* MealView.swift in Sources */,
-				344D200227CDC53800343108 /* Today.swift in Sources */,
+				344D200227CDC53800343108 /* MealConfigure.swift in Sources */,
 				344D201227CE361B00343108 /* AdjustmentAdd.swift in Sources */,
 				349EE54B27C9A6B10072255A /* IngredientEdit.swift in Sources */,
 				344D201027CE360C00343108 /* AdjustmentEdit.swift in Sources */,

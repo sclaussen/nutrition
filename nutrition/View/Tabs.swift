@@ -4,7 +4,7 @@ struct Tabs: View {
 
     @EnvironmentObject var profileMgr: ProfileMgr
 
-    @State var tab: String = "Today"
+    @State var tab: String = "Meal"
 
     var body: some View {
 
@@ -12,14 +12,14 @@ struct Tabs: View {
 
 
             NavigationView {
-                Today()
-                  .navigationTitle("Today")
+                MealView()
+                  // .navigationTitle("Meal")
             }
               .tabItem {
-                  Image(systemName: "play.fill")
-                  Text("Today")
+                  Image(systemName: "fork.knife.circle")
+                  Text("Meal")
               }
-              .tag("Today")
+              .tag("Meal")
 
 
             NavigationView {

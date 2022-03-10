@@ -23,7 +23,7 @@ class ProfileMgr: ObservableObject {
         components.year = 1967
         components.month = 9
         components.day = 27
-        let profile: Profile = Profile(name: "", dateOfBirth: Calendar.current.date(from: components)!, gender: 0, height: 72, weight: 184, bodyFat: 20.0, activeEnergy: 200, proteinRatio: 0.85, calorieDeficit: 20, netcarbsGoalUnadjusted: 20)
+        let profile: Profile = Profile(name: "", dateOfBirth: Calendar.current.date(from: components)!, gender: 0, height: 72, weight: 184, bodyFat: 20.0, activeEnergy: 200, proteinRatio: 0.85, calorieDeficit: 20, netcarbsGoalUnadjusted: 20, meat: "Chicken", meatAmount: 200)
         if let json = try? JSONEncoder().encode(profile) {
             UserDefaults.standard.set(json, forKey: "profile")
             self.profile = profile
@@ -57,6 +57,8 @@ class Profile: Codable, ObservableObject {
     var proteinRatio: Double
     var calorieDeficit: Int
     var netcarbsGoalUnadjusted: Double
+    var meat: String
+    var meatAmount: Double
 
     var age: Double {
         let ageInMonths = Calendar.current.dateComponents([.month], from: self.dateOfBirth, to: Date()).month ?? 0
@@ -159,7 +161,7 @@ class Profile: Codable, ObservableObject {
         (self.weight / 2) * 0.029574
     }
 
-    init(id: String = UUID().uuidString, name: String, dateOfBirth: Date, gender: Int, height: Int, weight: Double, bodyFat: Double, activeEnergy: Int, proteinRatio: Double, calorieDeficit: Int, netcarbsGoalUnadjusted: Double) {
+    init(id: String = UUID().uuidString, name: String, dateOfBirth: Date, gender: Int, height: Int, weight: Double, bodyFat: Double, activeEnergy: Int, proteinRatio: Double, calorieDeficit: Int, netcarbsGoalUnadjusted: Double, meat: String, meatAmount: Double) {
         print("Creating profile: ")
 
         self.id = id
@@ -175,11 +177,14 @@ class Profile: Codable, ObservableObject {
 
         self.proteinRatio = proteinRatio
         self.calorieDeficit = calorieDeficit
-        
+
         self.netcarbsGoalUnadjusted = netcarbsGoalUnadjusted
+
+        self.meat = meat
+        self.meatAmount = meatAmount
     }
 
     func update(profile: Profile) -> Profile {
-        return Profile(id: profile.id, name: profile.name, dateOfBirth: profile.dateOfBirth, gender: profile.gender, height: profile.height, weight: profile.weight, bodyFat: profile.bodyFat, activeEnergy: profile.activeEnergy, proteinRatio: profile.proteinRatio, calorieDeficit: profile.calorieDeficit, netcarbsGoalUnadjusted: profile.netcarbsGoalUnadjusted)
+        return Profile(id: profile.id, name: profile.name, dateOfBirth: profile.dateOfBirth, gender: profile.gender, height: profile.height, weight: profile.weight, bodyFat: profile.bodyFat, activeEnergy: profile.activeEnergy, proteinRatio: profile.proteinRatio, calorieDeficit: profile.calorieDeficit, netcarbsGoalUnadjusted: profile.netcarbsGoalUnadjusted, meat: profile.meat, meatAmount: profile.meatAmount)
     }
 }
