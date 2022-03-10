@@ -42,8 +42,14 @@ struct MealConfigure: View {
         }
           .padding([.leading, .trailing], -20)
           .navigationBarBackButtonHidden(true)
-          .navigationBarItems(leading: cancel)
-          .navigationBarItems(trailing: save)
+          .toolbar {
+              ToolbarItem(placement: .navigation) {
+                  cancel
+              }
+              ToolbarItem(placement: .primaryAction) {
+                  save
+              }
+          }
     }
 
     var cancel: some View {
@@ -55,7 +61,6 @@ struct MealConfigure: View {
                action: {
                    withAnimation {
                        profileMgr.update(profile)
-                       self.hideKeyboard()
                        presentationMode.wrappedValue.dismiss()
                    }
                })

@@ -43,7 +43,11 @@ struct MealView: View {
             }
         }
           .padding([.leading, .trailing], -20)
-          .navigationBarItems(trailing: configure)
+          .toolbar {
+              ToolbarItem(placement: .primaryAction) {
+                  configure
+              }
+          }
           .onAppear {
               generateMeal()
           }

@@ -48,7 +48,11 @@ struct ProfileEdit: View {
         }
           .padding([.leading, .trailing], -20)
           .navigationBarBackButtonHidden(true)
-          .navigationBarItems(trailing: save)
+          .toolbar {
+              ToolbarItem(placement: .primaryAction) {
+                  save
+              }
+          }
     }
 
     var save: some View {
@@ -57,7 +61,6 @@ struct ProfileEdit: View {
                    withAnimation {
                        profileMgr.update(profile)
                        self.hideKeyboard()
-                       presentationMode.wrappedValue.dismiss()
                    }
                })
     }

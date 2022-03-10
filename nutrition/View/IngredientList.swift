@@ -20,9 +20,7 @@ struct IngredientList: View {
                                        Image(ingredient.name)
                                          .resizable()
                                          .aspectRatio(contentMode: .fit)
-//                                         .clipShape(Circle())
                                          .frame(maxWidth: 50)
-//                                         .overlay(Circle().stroke(Color.gray.opacity(0.2), lineWidth: 3))
                                        Text(ingredient.name).myNameLabel()
                                        Spacer()
                                        Text("\(ingredient.fat100.fractionDigits(max: 0))").font(.caption).frame(width: 30).background(Color.green.opacity(0.4)).opacity(0.8).foregroundColor(.black).cornerRadius(30)
@@ -62,17 +60,31 @@ struct IngredientList: View {
         }
           .searchable(text: $searchingFor)
           .padding([.leading, .trailing], -20)
-          .navigationBarItems(trailing: add)
           .toolbar {
               ToolbarItem(placement: .navigation) {
-                  EditButton()
+                  edit
               }
               ToolbarItem(placement: .principal) {
-                  Button(action: toggleInactiveIngredientsFilter) {
-                      Text(ingredientMgr.inactiveIngredientsExist() ? (inactiveIngredientsFilter ? "Hide Inactive" : "Show Inactive"): "").font(.caption)
-                  }
+                  toggle
+              }
+              ToolbarItem(placement: .primaryAction) {
+                  add
               }
           }
+    }
+
+    var edit: some View {
+        EditButton()
+    }
+
+    var toggle: some View {
+        Button(action: toggleInactiveIngredientsFilter) {
+            Text(ingredientMgr.inactiveIngredientsExist() ? (inactiveIngredientsFilter ? "Hide Inactive" : "Show Inactive"): "").font(.caption)
+        }
+    }
+
+    var add: some View {
+        NavigationLink("Add", destination: AdjustmentAdd())
     }
 
     func getIngredientList() -> [Ingredient] {
@@ -85,10 +97,6 @@ struct IngredientList: View {
 
     func toggleInactiveIngredientsFilter() {
         inactiveIngredientsFilter = inactiveIngredientsFilter ? false : true
-    }
-
-    var add: some View {
-        NavigationLink("Add", destination: IngredientAdd())
     }
 
     func moveAction(from source: IndexSet, to destination: Int) {

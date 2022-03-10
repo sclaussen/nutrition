@@ -48,17 +48,29 @@ struct AdjustmentList: View {
           .padding([.leading, .trailing], -20)
           .toolbar {
               ToolbarItem(placement: .navigation) {
-                  EditButton()
+                  edit
               }
               ToolbarItem(placement: .principal) {
-                  Button(action: toggleInactiveIngredientsFilter) {
-                      Text(adjustmentMgr.inactiveIngredientsExist() ? (inactiveIngredientsFilter ? "Hide Inactive" : "Show Inactive"): "").font(.caption)
-                  }
+                  toggle
               }
               ToolbarItem(placement: .primaryAction) {
-                  NavigationLink("Add", destination: AdjustmentAdd())
+                  add
               }
           }
+    }
+
+    var edit: some View {
+        EditButton()
+    }
+
+    var toggle: some View {
+        Button(action: toggleInactiveIngredientsFilter) {
+            Text(adjustmentMgr.inactiveIngredientsExist() ? (inactiveIngredientsFilter ? "Hide Inactive" : "Show Inactive"): "").font(.caption)
+        }
+    }
+
+    var add: some View {
+        NavigationLink("Add", destination: AdjustmentAdd())
     }
 
     func toggleInactiveIngredientsFilter() {

@@ -52,8 +52,14 @@ struct IngredientEdit: View {
         }
           .padding([.leading, .trailing], -20)
           .navigationBarBackButtonHidden(true)
-          .navigationBarItems(leading: cancel)
-          .navigationBarItems(trailing: save)
+          .toolbar {
+              ToolbarItem(placement: .navigation) {
+                  cancel
+              }
+              ToolbarItem(placement: .primaryAction) {
+                  save
+              }
+          }
     }
 
     var cancel: some View {
