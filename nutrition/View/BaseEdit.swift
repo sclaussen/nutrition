@@ -29,11 +29,24 @@ struct BaseEdit: View {
                   cancel
               }
               ToolbarItem(placement: .primaryAction) {
-                  save
+                  HStack {
+                      Button {
+                          self.hideKeyboard()
+                      } label: {
+                          Label("Keyboard Down", systemImage: "keyboard.chevron.compact.down")
+                      }
+                      Button("Save",
+                             action: {
+                                 withAnimation {
+                                     baseMgr.update(base)
+                                     presentationMode.wrappedValue.dismiss()
+                                 }
+                             })
+                  }
               }
           }
           .onAppear {
-              DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+              DispatchQueue.main.asyncAfter(deadline: .now() + 0.75) {
                   self.focusedField = .amount
               }
           }
@@ -41,16 +54,6 @@ struct BaseEdit: View {
 
     var cancel: some View {
         Button("Cancel", action: { self.presentationMode.wrappedValue.dismiss() })
-    }
-
-    var save: some View {
-        Button("Save",
-               action: {
-                   withAnimation {
-                       baseMgr.update(base)
-                       presentationMode.wrappedValue.dismiss()
-                   }
-               })
     }
 }
 

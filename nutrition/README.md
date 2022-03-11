@@ -1,28 +1,36 @@
 # Features
 
+## P1
+- Custom tab bar
+- Custom nav bar
 - Retrieve weight/fat percentage from healthkit/garmin/healthmate (HealthKit integration)
 - Regenerate Meal feature
-- Fix all previews
+- Modify ingredient amount from MealView
+- Reset all bases to defaults
+- Reset single bases to default right right hand menu
 
+
+## P2
 - Application icon
 - Splash screen
 - Application icon menu (gen meal)
+- Fix toggle bottom alignment view
 
 - NEW DESIGN Adjustment random (broccoli/cauliflower)
 - Remove 0s from int/double input fields
 - Post-meal snack additions
 - Filter ingredients based on fat, carbs, protein, alpha, ..
-- Singular/plural tweaking of consumptionUnit
-- Change Base::consumptionUnit to be of type Unit vs String
+- recursive deletes, primary/foreign key updates (eg ing.name)
 
 ## P3
 - Add form/field validation
-- Save/Cancel on profileEdit don't "seem" to do anything
 - Tuna freeze out dates
-- Add/Edit meat adjustments: Add delete capability
+- Meat adjustments: Add delete capability (to both add/edit)
+- Fix all previews
 
 ## P4
 - Combine input fields into single view w/generics
+- Use generics to combine Picker*Edit
 - Disallow duplicate ingredients/base/adjustments
 - Capitalize each word of ingredients
 
@@ -32,9 +40,6 @@
 
 ## Visual
 
-- Fix toggle bottom alignment view
 - HStack(alignment: .bottom)?
-- change background color of tabs
 - Use sheets for picks, date selection, et al
 - Add No Item views
-- Use Unit keys vs values

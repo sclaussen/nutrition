@@ -1,6 +1,6 @@
 import SwiftUI
 
-struct CustomTabBarContainerView<Content:View>: View {
+struct MyTabBarContainer<Content:View>: View {
     @Binding var selection: TabBarItem
     let content: Content
     @State private var tabs: [TabBarItem] = []
@@ -16,7 +16,7 @@ struct CustomTabBarContainerView<Content:View>: View {
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
                 .ignoresSafeArea()
 
-            CustomTabBarView(tabs: tabs, selection: $selection, localSelection: selection)
+            MyTabBar(tabs: tabs, selection: $selection, localSelection: selection)
 
         }
         .onPreferenceChange(TabBarItemsPreferenceKey.self, perform: { value in
@@ -25,13 +25,13 @@ struct CustomTabBarContainerView<Content:View>: View {
     }
 }
 
-struct CustomTabBarContainerView_Previews: PreviewProvider {
+struct MyTabBarContainer_Previews: PreviewProvider {
     static let tabs: [TabBarItem] = [
       .base, .adjustments, .meal, .ingredients, .profile
     ]
 
     static var previews: some View {
-        CustomTabBarContainerView(selection: .constant(tabs.first!)) {
+        MyTabBarContainer(selection: .constant(tabs.first!)) {
             Color.red
         }
     }

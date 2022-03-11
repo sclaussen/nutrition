@@ -1,14 +1,13 @@
 import Foundation
 
 enum Gender: String, Codable, CaseIterable {
-    case Male = "🙍‍♂️ Male"
-    case Female = "🙍‍♀️ Female"
-    case Other = "🤖 Other"
+    case male = "🙍‍♂️ Male"
+    case female = "🙍‍♀️ Female"
 
-    static func values() -> [String] {
-        var values: [String] = []
+    static func values() -> [Gender] {
+        var values: [Gender] = []
         for unit in Gender.allCases {
-            values.append(unit.rawValue)
+            values.append(unit)
         }
         return values
     }

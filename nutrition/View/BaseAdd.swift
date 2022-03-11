@@ -25,23 +25,26 @@ struct BaseAdd: View {
                   cancel
               }
               ToolbarItem(placement: .primaryAction) {
-                  save
+                  HStack {
+                      Button {
+                          self.hideKeyboard()
+                      } label: {
+                          Label("Keyboard Down", systemImage: "keyboard.chevron.compact.down")
+                      }
+                      Button("Save",
+                             action: {
+                                 withAnimation {
+                                     baseMgr.create(name: name, defaultAmount: defaultAmount, amount: defaultAmount, consumptionUnit: ingredientMgr.getIngredient(name: name)!.consumptionUnit, active: true)
+                                     presentationMode.wrappedValue.dismiss()
+                                 }
+                             })
+                  }
               }
           }
     }
 
     var cancel: some View {
         Button("Cancel", action: { self.presentationMode.wrappedValue.dismiss() })
-    }
-
-    var save: some View {
-        Button("Save",
-               action: {
-                   withAnimation {
-                       baseMgr.create(name: name, defaultAmount: defaultAmount, amount: defaultAmount, consumptionUnit: ingredientMgr.getIngredient(name: name)!.consumptionUnit, active: true)
-                       presentationMode.wrappedValue.dismiss()
-                   }
-               })
     }
 }
 

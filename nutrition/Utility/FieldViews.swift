@@ -61,9 +61,6 @@ struct IntView: View {
             Text("\(value)").myValueLabel()
             Text(value == 1 ? unit.singular : unit.plural).myUnitLabel()
         }
-          .onTapGesture {
-              self.hideKeyboard()
-          }
     }
 }
 
@@ -89,9 +86,6 @@ struct IntEdit: View {
               }
             Text(value == 1 ? unit.singular : unit.plural).myUnitValue()
         }
-          .onTapGesture {
-              self.hideKeyboard()
-          }
     }
 }
 
@@ -115,9 +109,6 @@ struct DoubleView: View {
             Text("\(value.fractionDigits(max: self.precision))").myValueLabel()
             Text(value == 1 ? unit.singular : unit.plural).myUnitLabel()
         }
-          .onTapGesture {
-              self.hideKeyboard()
-          }
     }
 }
 
@@ -149,9 +140,6 @@ struct DoubleEdit: View {
               }
             Text(value == 1 ? unit.singular : unit.plural).myUnitValue()
         }
-          .onTapGesture {
-              self.hideKeyboard()
-          }
     }
 }
 
@@ -186,6 +174,31 @@ struct PickerUnitEdit: View {
     var options: [Unit]
 
     init(_ text: String, _ value: Binding<Unit>, options: [Unit]) {
+        self.text = text
+        self._value = value
+        self.options = options
+    }
+
+    var body: some View {
+        HStack(alignment: .lastTextBaseline) {
+            Text(text).myNameLabel()
+            Spacer()
+            Picker("", selection: $value) {
+                ForEach(options, id: \.self) {
+                    Text($0.rawValue).myValue().tag($0)
+                }
+            }.offset(x: 21)
+            Text("").myUnitValue()
+        }
+    }
+}
+
+struct PickerGenderEdit: View {
+    var text: String
+    @Binding var value: Gender
+    var options: [Gender]
+
+    init(_ text: String, _ value: Binding<Gender>, options: [Gender]) {
         self.text = text
         self._value = value
         self.options = options

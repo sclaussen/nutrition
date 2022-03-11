@@ -13,7 +13,7 @@ struct ProfileEdit: View {
         Form {
             Section {
                 DateEdit("Date of Birth", $profile.dateOfBirth)
-                PickerIntEdit("Gender", $profile.gender, options: Gender.values())
+                PickerGenderEdit("Gender", $profile.gender, options: Gender.values())
                 IntEdit("Height", $profile.height, Unit.inch)
                 DoubleEdit("Net Carbs Daily Max", $profile.netcarbsGoalUnadjusted, Unit.gram)
             }
@@ -50,19 +50,22 @@ struct ProfileEdit: View {
           .navigationBarBackButtonHidden(true)
           .toolbar {
               ToolbarItem(placement: .primaryAction) {
-                  save
+                  HStack {
+                      Button {
+                          self.hideKeyboard()
+                      } label: {
+                          Label("Keyboard Down", systemImage: "keyboard.chevron.compact.down")
+                      }
+                      Button("Save",
+                             action: {
+                                 withAnimation {
+                                     profileMgr.update(profile)
+                                     presentationMode.wrappedValue.dismiss()
+                                 }
+                             })
+                  }
               }
           }
-    }
-
-    var save: some View {
-        Button("Save",
-               action: {
-                   withAnimation {
-                       profileMgr.update(profile)
-                       self.hideKeyboard()
-                   }
-               })
     }
 }
 

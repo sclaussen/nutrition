@@ -1,6 +1,6 @@
 import SwiftUI
 
-struct CustomTabBarView: View {
+struct MyTabBar: View {
     let tabs: [TabBarItem]
     @Binding var selection: TabBarItem
     @Namespace private var namespace
@@ -17,20 +17,18 @@ struct CustomTabBarView: View {
     }
 }
 
-struct CustomTabBarView_Previews: PreviewProvider {
-    static let tabs: [TabBarItem] = [
-      .base, .adjustments, .meal, .ingredients, .profile
-    ]
+struct MyTabBar_Previews: PreviewProvider {
+    static let tabs: [TabBarItem] = [ .base, .adjustments, .meal, .ingredients, .profile ]
 
     static var previews: some View {
         VStack {
             Spacer()
-            CustomTabBarView(tabs: tabs, selection: .constant(tabs.first!), localSelection: tabs.first!)
+            MyTabBar(tabs: tabs, selection: .constant(tabs.first!), localSelection: tabs.first!)
         }
     }
 }
 
-extension CustomTabBarView {
+extension MyTabBar {
     private var tabBar: some View {
         HStack {
             ForEach(tabs, id: \.self) { tab in
@@ -66,5 +64,9 @@ extension CustomTabBarView {
                 }
             }
           )
+    }
+
+    private func switchToTab(tab: TabBarItem) {
+        selection = tab
     }
 }

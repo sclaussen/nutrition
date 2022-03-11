@@ -29,7 +29,7 @@ struct MyGaugeDashboard: View {
                 Spacer()
                 MyGauge(title: "Fiber", value: fiber, goal: fiberGoal, gaugeType: GaugeType.Floor)
                 Spacer()
-                MyGauge(title: "NCarbs", value: netcarbs, goal: netcarbsGoal, gaugeType: GaugeType.Ceiling)
+                MyGauge(title: "NCarbs", value: netcarbs, goal: netcarbsGoal, precision: 1, gaugeType:  GaugeType.Ceiling)
                 Spacer()
                 MyGauge(title: "Protein", value: protein, goal: proteinGoal)
                 Spacer()
@@ -148,7 +148,7 @@ struct MyGauge: View {
                   .stroke(progressBarColor.opacity(0.9), lineWidth: lineWidth)
                   .frame(width: width, height: width)
 
-                Text(String(Int(value))).font(.system(size: valueFontSize)).bold().foregroundColor(.blue)
+                Text("\(value.fractionDigits(max: precision))").font(.system(size: valueFontSize)).bold().foregroundColor(.blue)
                 Text(String(Int(goal))).font(.system(size: goalFontSize)).offset(y: goalOffset)
             }.cornerRadius(50)
         }

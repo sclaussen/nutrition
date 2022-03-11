@@ -11,6 +11,7 @@ struct AdjustmentAdd: View {
     @State var constraints: Bool = false
     @State var minimum: Double = 0
     @State var maximum: Double = 0
+    @State var group: String = ""
 
     var body: some View {
         Form {
@@ -28,6 +29,9 @@ struct AdjustmentAdd: View {
                         DoubleEdit("Maximum", $maximum)
                     }
                 }
+                Section {
+                    StringEdit("Group", $group)
+                }
             }
         }
           .padding([.leading, .trailing], -20)
@@ -37,23 +41,26 @@ struct AdjustmentAdd: View {
                   cancel
               }
               ToolbarItem(placement: .primaryAction) {
-                  save
+                  HStack {
+                      Button {
+                          self.hideKeyboard()
+                      } label: {
+                          Label("Keyboard Down", systemImage: "keyboard.chevron.compact.down")
+                      }
+                      Button("Save",
+                             action: {
+                                 withAnimation {
+                                     adjustmentMgr.create(name: name, amount: amount, consumptionUnit: ingredientMgr.getIngredient(name: name)!.consumptionUnit, group: group, active: true)
+                                     presentationMode.wrappedValue.dismiss()
+                                 }
+                             })
+                  }
               }
           }
     }
 
     var cancel: some View {
         Button("Cancel", action: { self.presentationMode.wrappedValue.dismiss() })
-    }
-
-    var save: some View {
-        Button("Save",
-               action: {
-                   withAnimation {
-                       adjustmentMgr.create(name: name, amount: amount, consumptionUnit: ingredientMgr.getIngredient(name: name)!.consumptionUnit, active: true)
-                       presentationMode.wrappedValue.dismiss()
-                   }
-               })
     }
 }
 

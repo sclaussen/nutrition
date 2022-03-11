@@ -84,7 +84,7 @@ struct IngredientList: View {
     }
 
     var add: some View {
-        NavigationLink("Add", destination: AdjustmentAdd())
+        NavigationLink("Add", destination: IngredientAdd())
     }
 
     func getIngredientList() -> [Ingredient] {

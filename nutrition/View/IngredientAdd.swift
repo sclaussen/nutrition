@@ -32,6 +32,7 @@ struct IngredientAdd: View {
     @State var consumptionGrams: Double = 0
 
     @State var meat: Bool = false
+    @State var meatAmount: Double = 200
     @State var adjustmentCount = 0
     @State var meatAdjustments: [MeatAdjustment] = []
 
@@ -64,6 +65,9 @@ struct IngredientAdd: View {
             }
             Section {
                 ToggleEdit("Meat", $meat)
+                if meat {
+                    DoubleEdit("Meat Amount", $meatAmount, Unit.gram)
+                }
             }
             if meat {
                 ForEach(0..<adjustmentCount, id: \.self) { index in
@@ -90,7 +94,20 @@ struct IngredientAdd: View {
                   cancel
               }
               ToolbarItem(placement: .primaryAction) {
-                  save
+                  HStack {
+                      Button {
+                          self.hideKeyboard()
+                      } label: {
+                          Label("Keyboard Down", systemImage: "keyboard.chevron.compact.down")
+                      }
+                      Button("Save",
+                             action: {
+                                 withAnimation {
+                                     ingredientMgr.create(name: name, servingSize: servingSize, calories: calories, fat: fat, fiber: fiber, netcarbs: netcarbs, protein: protein, consumptionUnit: consumptionUnit, consumptionGrams: consumptionGrams, meat: meat, meatAmount: meatAmount, meatAdjustments: meatAdjustments, active: true)
+                                     presentationMode.wrappedValue.dismiss()
+                                 }
+                             })
+                  }
               }
           }
           .onAppear {
@@ -102,16 +119,6 @@ struct IngredientAdd: View {
 
     var cancel: some View {
         Button("Cancel", action: { self.presentationMode.wrappedValue.dismiss() })
-    }
-
-    var save: some View {
-        Button("Save",
-               action: {
-                   withAnimation {
-                       ingredientMgr.create(name: name, servingSize: servingSize, calories: calories, fat: fat, fiber: fiber, netcarbs: netcarbs, protein: protein, consumptionUnit: consumptionUnit, consumptionGrams: consumptionGrams, meat: meat, meatAdjustments: meatAdjustments, active: true)
-                       presentationMode.wrappedValue.dismiss()
-                   }
-               })
     }
 }
 

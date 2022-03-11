@@ -26,6 +26,9 @@ struct IngredientEdit: View {
             }
             Section {
                 ToggleEdit("Meat", $ingredient.meat)
+                if ingredient.meat {
+                    DoubleEdit("Meat Amount", $ingredient.meatAmount, Unit.gram)
+                }
             }
             if ingredient.meat {
                 ForEach(0..<ingredient.meatAdjustments.count, id: \.self) { index in
@@ -57,23 +60,26 @@ struct IngredientEdit: View {
                   cancel
               }
               ToolbarItem(placement: .primaryAction) {
-                  save
+                  HStack {
+                      Button {
+                          self.hideKeyboard()
+                      } label: {
+                          Label("Keyboard Down", systemImage: "keyboard.chevron.compact.down")
+                      }
+                      Button("Save",
+                             action: {
+                                 withAnimation {
+                                     ingredientMgr.update(ingredient)
+                                     presentationMode.wrappedValue.dismiss()
+                                 }
+                             })
+                  }
               }
           }
     }
 
     var cancel: some View {
         Button("Cancel", action: { self.presentationMode.wrappedValue.dismiss() })
-    }
-
-    var save: some View {
-        Button("Save",
-               action: {
-                   withAnimation {
-                       ingredientMgr.update(ingredient)
-                       presentationMode.wrappedValue.dismiss()
-                   }
-               })
     }
 }
 

@@ -12,13 +12,13 @@ class IngredientMgr: ObservableObject {
         ingredients.append(Ingredient(name: "Coconut Oil", servingSize: 14, calories: 130, fat: 14, fiber: 0, netcarbs: 0, protein: 0, consumptionUnit: Unit.tablespoon, consumptionGrams: 14, meat: false))
         ingredients.append(Ingredient(name: "Avocado Oil", servingSize: 14, calories: 130, fat: 14, fiber: 0, netcarbs: 0, protein: 0, consumptionUnit: Unit.tablespoon, consumptionGrams: 14, meat: false))
         ingredients.append(Ingredient(name: "Pumpkin Seeds", servingSize: 28, calories: 160, fat: 14, fiber: 2, netcarbs: 1, protein: 8, consumptionUnit: Unit.gram, consumptionGrams: 1, meat: false))
-        ingredients.append(Ingredient(name: "Chicken", servingSize: 100, calories: 115, fat: 2.7, fiber: 0, netcarbs: 0, protein: 22, consumptionUnit: Unit.gram, consumptionGrams: 1, meat: true))
-        ingredients.append(Ingredient(name: "Beef", servingSize: 100, calories: 214, fat: 15.2, fiber: 0, netcarbs: 0, protein: 19, consumptionUnit: Unit.gram, consumptionGrams: 1, meat: true, meatAdjustments: [ MeatAdjustment(name: "Eggs", amount: -1, consumptionUnit: Unit.egg), MeatAdjustment(name: "Extra Virgin Olive Oil", amount: -1, consumptionUnit: Unit.tablespoon) ]))
-        ingredients.append(Ingredient(name: "Lamb", servingSize: 85, calories: 253, fat: 22, fiber: 0, netcarbs: 0.19, protein: 13.09, consumptionUnit: Unit.gram, consumptionGrams: 1, meat: true))
-        ingredients.append(Ingredient(name: "Pork Chop", servingSize: 113, calories: 220, fat: 11, fiber: 0, netcarbs: 0, protein: 30, consumptionUnit: Unit.gram, consumptionGrams: 1, meat: true))
+        ingredients.append(Ingredient(name: "Chicken", servingSize: 100, calories: 115, fat: 2.7, fiber: 0, netcarbs: 0, protein: 22, consumptionUnit: Unit.gram, consumptionGrams: 1, meat: true, meatAmount: 250))
+        ingredients.append(Ingredient(name: "Beef", servingSize: 100, calories: 214, fat: 15.2, fiber: 0, netcarbs: 0, protein: 19, consumptionUnit: Unit.gram, consumptionGrams: 1, meat: true, meatAmount: 150, meatAdjustments: [ MeatAdjustment(name: "Eggs", amount: -1, consumptionUnit: Unit.egg), MeatAdjustment(name: "Extra Virgin Olive Oil", amount: -1, consumptionUnit: Unit.tablespoon) ]))
+        ingredients.append(Ingredient(name: "Lamb", servingSize: 85, calories: 253, fat: 22, fiber: 0, netcarbs: 0.19, protein: 13.09, consumptionUnit: Unit.gram, consumptionGrams: 1, meat: true, meatAmount: 150, meatAdjustments: [ MeatAdjustment(name: "Eggs", amount: -1, consumptionUnit: Unit.egg), MeatAdjustment(name: "Extra Virgin Olive Oil", amount: -1, consumptionUnit: Unit.tablespoon) ]))
+        ingredients.append(Ingredient(name: "Pork Chop", servingSize: 113, calories: 220, fat: 11, fiber: 0, netcarbs: 0, protein: 30, consumptionUnit: Unit.gram, consumptionGrams: 1, meat: true, meatAdjustments: [ MeatAdjustment(name: "Eggs", amount: -1, consumptionUnit: Unit.egg), MeatAdjustment(name: "Extra Virgin Olive Oil", amount: -1, consumptionUnit: Unit.tablespoon) ]))
         ingredients.append(Ingredient(name: "Salmon", servingSize: 112, calories: 150, fat: 5, fiber: 0, netcarbs: 0, protein: 25, consumptionUnit: Unit.gram, consumptionGrams: 1, meat: true, meatAdjustments: [ MeatAdjustment(name: "Fish Oil", amount: -1, consumptionUnit: Unit.tablespoon) ]))
         ingredients.append(Ingredient(name: "Top Sirloin Cap", servingSize: 238, calories: 125, fat: 14, fiber: 0, netcarbs: 0, protein: 51, consumptionUnit: Unit.gram, consumptionGrams: 1, meat: true))
-        ingredients.append(Ingredient(name: "Argentine Red Shrimp", servingSize: 110, calories: 100, fat: 1.5, fiber: 0, netcarbs: 0, protein: 21, consumptionUnit: Unit.gram, consumptionGrams: 1, meat: true))
+        ingredients.append(Ingredient(name: "Argentine Red Shrimp", servingSize: 110, calories: 100, fat: 1.5, fiber: 0, netcarbs: 0, protein: 21, consumptionUnit: Unit.gram, consumptionGrams: 1, meat: true, meatAmount: 250))
         ingredients.append(Ingredient(name: "Eggs", servingSize: 50, calories: 70, fat: 5, fiber: 0, netcarbs: 0, protein: 6, consumptionUnit: Unit.egg, consumptionGrams: 50, meat: false))
         ingredients.append(Ingredient(name: "Serrano Pepper", servingSize: 6, calories: 2, fat: 0.03, fiber: 0.23, netcarbs: 0.18, protein: 0.11, consumptionUnit: Unit.gram, consumptionGrams: 1, meat: false))
         ingredients.append(Ingredient(name: "Jalapeno Pepper", servingSize: 14, calories: 4, fat: 0.05, fiber: 0.39, netcarbs: 0.52, protein: 0.13, consumptionUnit: Unit.gram, consumptionGrams: 1, meat: false))
@@ -41,6 +41,7 @@ class IngredientMgr: ObservableObject {
         ingredients.append(Ingredient(name: "Fish Oil", servingSize: 5, calories: 40, fat: 4.5, fiber: 0, netcarbs: 0, protein: 0, consumptionUnit: Unit.tablespoon, consumptionGrams: 14, meat: false))
         ingredients.append(Ingredient(name: "String Cheese", servingSize: 28, calories: 80, fat: 6, fiber: 0, netcarbs: 0, protein: 7, consumptionUnit: Unit.stick, consumptionGrams: 28, meat: false))
         ingredients.append(Ingredient(name: "Macadamia Nuts", servingSize: 30, calories: 220, fat: 23, fiber: 3, netcarbs: 1, protein: 0, consumptionUnit: Unit.gram, consumptionGrams: 1, meat: false))
+        ingredients.append(Ingredient(name: "Dark Chocolate (Divine)", servingSize: 42.5, calories: 260, fat: 22, fiber: 6, netcarbs: 10, protein: 4, consumptionUnit: Unit.block, consumptionGrams: 3.54, meat: false))
         ingredients.append(Ingredient(name: "Magnesium", servingSize: 1, calories: 0, fat: 0, fiber: 0, netcarbs: 0, protein: 0, consumptionUnit: Unit.tablet, consumptionGrams: 1, meat: false))
         ingredients.append(Ingredient(name: "Vitamin D", servingSize: 1, calories: 0, fat: 0, fiber: 0, netcarbs: 0, protein: 0, consumptionUnit: Unit.tablet, consumptionGrams: 1, meat: false))
     }
@@ -64,8 +65,8 @@ class IngredientMgr: ObservableObject {
         self.ingredients = savedItems
     }
 
-    func create(name: String, servingSize: Double, calories: Double, fat: Double, fiber: Double, netcarbs: Double, protein: Double, consumptionUnit: Unit, consumptionGrams: Double, meat: Bool, meatAdjustments: [MeatAdjustment], active: Bool) {
-        let ingredient = Ingredient(name: name, servingSize: servingSize, calories: calories, fat: fat, fiber: fiber, netcarbs: netcarbs, protein: protein, consumptionUnit: consumptionUnit, consumptionGrams: consumptionGrams, meat: meat, meatAdjustments: meatAdjustments, active: active)
+    func create(name: String, servingSize: Double, calories: Double, fat: Double, fiber: Double, netcarbs: Double, protein: Double, consumptionUnit: Unit, consumptionGrams: Double, meat: Bool, meatAmount: Double, meatAdjustments: [MeatAdjustment], active: Bool) {
+        let ingredient = Ingredient(name: name, servingSize: servingSize, calories: calories, fat: fat, fiber: fiber, netcarbs: netcarbs, protein: protein, consumptionUnit: consumptionUnit, consumptionGrams: consumptionGrams, meat: meat, meatAmount: meatAmount, meatAdjustments: meatAdjustments, active: active)
         ingredients.append(ingredient)
     }
 
@@ -188,18 +189,34 @@ struct Ingredient: Codable, Identifiable {
     var consumptionGrams: Double
 
     var meat: Bool
+    var meatAmount: Double
     var meatAdjustments: [MeatAdjustment]
 
     var active: Bool
 
-    var calories100: Double = 0
-    var fat100: Double = 0
-    var fiber100: Double = 0
-    var netcarbs100: Double = 0
-    var protein100: Double = 0
+    var calories100: Double {
+        (calories * 100) / servingSize
+    }
+
+    var fat100: Double {
+        (fat * 100) / servingSize
+    }
+
+    var fiber100: Double {
+        (fiber * 100) / servingSize
+    }
+
+    var netcarbs100: Double {
+        (netcarbs * 100) / servingSize
+    }
+
+    var protein100: Double {
+        (protein * 100) / servingSize
+    }
 
 
-    init(id: String = UUID().uuidString, name: String, servingSize: Double, calories: Double, fat: Double, fiber: Double, netcarbs: Double, protein: Double, consumptionUnit: Unit, consumptionGrams: Double, meat: Bool = false, meatAdjustments: [MeatAdjustment] = [], active: Bool = true) {
+
+    init(id: String = UUID().uuidString, name: String, servingSize: Double, calories: Double, fat: Double, fiber: Double, netcarbs: Double, protein: Double, consumptionUnit: Unit, consumptionGrams: Double, meat: Bool = false, meatAmount: Double = 200, meatAdjustments: [MeatAdjustment] = [], active: Bool = true) {
         self.id = id
 
         self.name = name
@@ -215,11 +232,10 @@ struct Ingredient: Codable, Identifiable {
         self.consumptionGrams = consumptionGrams
 
         self.meat = meat
+        self.meatAmount = meatAmount
         self.meatAdjustments = meatAdjustments
 
         self.active = active
-
-        compute()
     }
 
     func toggleActive() -> Ingredient {
@@ -227,14 +243,6 @@ struct Ingredient: Codable, Identifiable {
     }
 
     func update(ingredient: Ingredient) -> Ingredient {
-        return Ingredient(id: ingredient.id, name: ingredient.name, servingSize: ingredient.servingSize, calories: ingredient.calories, fat: ingredient.fat, fiber: ingredient.fiber, netcarbs: ingredient.netcarbs, protein: ingredient.protein, consumptionUnit: ingredient.consumptionUnit, consumptionGrams: ingredient.consumptionGrams, meat: ingredient.meat, meatAdjustments: ingredient.meatAdjustments, active: ingredient.active)
-    }
-
-    mutating func compute() {
-        calories100 = (calories * 100) / servingSize
-        fat100 = (fat * 100) / servingSize
-        netcarbs100 = (netcarbs * 100) / servingSize
-        fiber100 = (fiber * 100) / servingSize
-        protein100 = (protein * 100) / servingSize
+        return Ingredient(id: ingredient.id, name: ingredient.name, servingSize: ingredient.servingSize, calories: ingredient.calories, fat: ingredient.fat, fiber: ingredient.fiber, netcarbs: ingredient.netcarbs, protein: ingredient.protein, consumptionUnit: ingredient.consumptionUnit, consumptionGrams: ingredient.consumptionGrams, meat: ingredient.meat, meatAmount: ingredient.meatAmount, meatAdjustments: ingredient.meatAdjustments, active: ingredient.active)
     }
 }

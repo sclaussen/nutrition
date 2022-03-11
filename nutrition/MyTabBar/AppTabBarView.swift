@@ -5,7 +5,7 @@ struct AppTabBarView: View {
     @State private var tabSelection: TabBarItem = .meal
 
     var body: some View {
-        CustomTabBarContainerView(selection: $tabSelection) {
+        MyTabBarContainer(selection: $tabSelection) {
             TestTabView(text: "1")
                 .tabBarItem(tab: .base, selection: $tabSelection)
 
