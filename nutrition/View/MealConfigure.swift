@@ -3,35 +3,35 @@ import SwiftUI
 struct MealConfigure: View {
 
     enum Field: Hashable {
+        case weight
         case meatAmount
     }
 
     @Environment(\.presentationMode) var presentationMode
     @EnvironmentObject var ingredientMgr: IngredientMgr
-    @EnvironmentObject var baseMgr: BaseMgr
-    @EnvironmentObject var adjustmentMgr: AdjustmentMgr
     @EnvironmentObject var profileMgr: ProfileMgr
-    @EnvironmentObject var profile: Profile
-    @FocusState private var focusedField: Field?
+
+    @FocusState var focusedField: Field?
+
 
     var body: some View {
         VStack(spacing: 0) {
 
             Form {
                 Section {
-                    PickerEdit("Meat", $profile.meat, options: ingredientMgr.getMeatOptions())
-                    DoubleEdit("Meat Weight", $profile.meatAmount, Unit.gram)
-                      .focused($focusedField, equals: .meatAmount)
+                    DoubleEdit("Weight", $profileMgr.profile.weight, Unit.pound, precision: 1)
+                      .focused($focusedField, equals: .weight)
+                    DoubleEdit("Body Fat %", $profileMgr.profile.bodyFat, Unit.percentage, precision: 1)
+                    IntEdit("Active Energy", $profileMgr.profile.activeEnergy, Unit.calorie)
                 }
                 Section {
-                    DoubleEdit("Weight", $profile.weight, Unit.pound, precision: 1)
-                    DoubleEdit("Body Fat %", $profile.bodyFat, Unit.percentage, precision: 1)
-                    IntEdit("Active Energy", $profile.activeEnergy, Unit.calorie)
+                    PickerEdit("Meat", $profileMgr.profile.meat, options: ingredientMgr.getMeatOptions())
+                    DoubleEdit("Meat Weight", $profileMgr.profile.meatAmount, Unit.gram)
                 }
                 Section {
-                    DoubleEdit("Protein Ratio", $profile.proteinRatio, Unit.gramsPerLbm)
-                    IntEdit("Calorie Deficit", $profile.calorieDeficit, Unit.percentage)
-                    DoubleView("Water", profile.waterLiters, Unit.liter, precision: 1)
+                    DoubleEdit("Protein Ratio", $profileMgr.profile.proteinRatio, Unit.gramsPerLbm)
+                    IntEdit("Calorie Deficit", $profileMgr.profile.calorieDeficit, Unit.percentage)
+                    DoubleView("Water", profileMgr.profile.waterLiters, Unit.liter, precision: 1)
                 }
             }
         }
@@ -39,7 +39,10 @@ struct MealConfigure: View {
           .navigationBarBackButtonHidden(true)
           .toolbar {
               ToolbarItem(placement: .navigation) {
-                  cancel
+                  Button("Cancel", action: {
+                                       profileMgr.cancel()
+                                       self.presentationMode.wrappedValue.dismiss()
+                                   })
               }
               ToolbarItem(placement: .primaryAction) {
                   HStack {
@@ -51,7 +54,7 @@ struct MealConfigure: View {
                       Button("Save",
                              action: {
                                  withAnimation {
-                                     profileMgr.update(profile)
+                                     profileMgr.save()
                                      presentationMode.wrappedValue.dismiss()
                                  }
                              })
@@ -63,10 +66,6 @@ struct MealConfigure: View {
                   self.focusedField = .meatAmount
               }
           }
-    }
-
-    var cancel: some View {
-        Button("Cancel", action: { self.presentationMode.wrappedValue.dismiss() })
     }
 }
 

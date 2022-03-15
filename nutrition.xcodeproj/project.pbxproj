@@ -9,25 +9,20 @@
 /* Begin PBXBuildFile section */
 		3402286C27D7C7C800741FBB /* HealthKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3402286B27D7C7C800741FBB /* HealthKit.framework */; };
 		3402286E27D8298E00741FBB /* MyGauge.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3402286D27D8298E00741FBB /* MyGauge.swift */; };
-		342F816927D42D1600B16B9E /* Meal.swift in Sources */ = {isa = PBXBuildFile; fileRef = 342F816827D42D1600B16B9E /* Meal.swift */; };
+		342F816927D42D1600B16B9E /* MealIngredient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 342F816827D42D1600B16B9E /* MealIngredient.swift */; };
 		344D200227CDC53800343108 /* MealConfigure.swift in Sources */ = {isa = PBXBuildFile; fileRef = 344D200127CDC53700343108 /* MealConfigure.swift */; };
-		344D200427CE27B500343108 /* Base.swift in Sources */ = {isa = PBXBuildFile; fileRef = 344D200327CE27B500343108 /* Base.swift */; };
-		344D200627CE299D00343108 /* BaseList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 344D200527CE299D00343108 /* BaseList.swift */; };
-		344D200827CE2B4E00343108 /* BaseAdd.swift in Sources */ = {isa = PBXBuildFile; fileRef = 344D200727CE2B4E00343108 /* BaseAdd.swift */; };
-		344D200A27CE2B6300343108 /* BaseEdit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 344D200927CE2B6300343108 /* BaseEdit.swift */; };
+		344D200627CE299D00343108 /* MealList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 344D200527CE299D00343108 /* MealList.swift */; };
+		344D200827CE2B4E00343108 /* MealAdd.swift in Sources */ = {isa = PBXBuildFile; fileRef = 344D200727CE2B4E00343108 /* MealAdd.swift */; };
+		344D200A27CE2B6300343108 /* MealEdit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 344D200927CE2B6300343108 /* MealEdit.swift */; };
 		344D200C27CE345B00343108 /* Adjustment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 344D200B27CE345B00343108 /* Adjustment.swift */; };
 		344D200E27CE35F100343108 /* AdjustmentList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 344D200D27CE35F100343108 /* AdjustmentList.swift */; };
 		344D201027CE360C00343108 /* AdjustmentEdit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 344D200F27CE360C00343108 /* AdjustmentEdit.swift */; };
 		344D201227CE361B00343108 /* AdjustmentAdd.swift in Sources */ = {isa = PBXBuildFile; fileRef = 344D201127CE361B00343108 /* AdjustmentAdd.swift */; };
 		344D201427CEB36700343108 /* Gender.swift in Sources */ = {isa = PBXBuildFile; fileRef = 344D201327CEB36700343108 /* Gender.swift */; };
+		345F5F0A27E0EF1400129BAC /* MealRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 345F5F0927E0EF1400129BAC /* MealRow.swift */; };
 		347A335227D9A5E0005E3F33 /* MealGen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 347A335127D9A5E0005E3F33 /* MealGen.swift */; };
 		347A335627DA925C005E3F33 /* Unit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 347A335527DA925C005E3F33 /* Unit.swift */; };
 		347A335827DAA1FE005E3F33 /* IngredientAdd.swift in Sources */ = {isa = PBXBuildFile; fileRef = 347A335727DAA1FE005E3F33 /* IngredientAdd.swift */; };
-		347A335E27DAAF7C005E3F33 /* AppTabBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 347A335A27DAAF7C005E3F33 /* AppTabBarView.swift */; };
-		347A335F27DAAF7C005E3F33 /* TabBarItemsPreferenceKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 347A335C27DAAF7C005E3F33 /* TabBarItemsPreferenceKey.swift */; };
-		347A336027DAAF7C005E3F33 /* MyTabBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 347A335927DAAF7C005E3F33 /* MyTabBar.swift */; };
-		347A336127DAAF7C005E3F33 /* MyTabBarContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 347A335D27DAAF7C005E3F33 /* MyTabBarContainer.swift */; };
-		347A336227DAAF7C005E3F33 /* TabBarItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 347A335B27DAAF7C005E3F33 /* TabBarItem.swift */; };
 		349EE53127C99AC30072255A /* app.swift in Sources */ = {isa = PBXBuildFile; fileRef = 349EE53027C99AC30072255A /* app.swift */; };
 		349EE53327C99AC30072255A /* Tabs.swift in Sources */ = {isa = PBXBuildFile; fileRef = 349EE53227C99AC30072255A /* Tabs.swift */; };
 		349EE53527C99AC40072255A /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 349EE53427C99AC40072255A /* Assets.xcassets */; };
@@ -39,33 +34,28 @@
 		349EE57627CBF3600072255A /* FieldViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = 349EE57527CBF3600072255A /* FieldViews.swift */; };
 		349EE57827CC10E60072255A /* Profile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 349EE57727CC10E60072255A /* Profile.swift */; };
 		349EE57C27CC823B0072255A /* ProfileEdit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 349EE57B27CC823B0072255A /* ProfileEdit.swift */; };
-		34B7171227D1858B00322B18 /* MealView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34B7171127D1858B00322B18 /* MealView.swift */; };
 		34B7171627D1B9EB00322B18 /* ViewModifiers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34B7171527D1B9EB00322B18 /* ViewModifiers.swift */; };
+		34F8003B27DBFAD1002F1380 /* Macros.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34F8003A27DBFAD1002F1380 /* Macros.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		3402286927D7C7C800741FBB /* nutrition.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = nutrition.entitlements; sourceTree = "<group>"; };
 		3402286B27D7C7C800741FBB /* HealthKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = HealthKit.framework; path = System/Library/Frameworks/HealthKit.framework; sourceTree = SDKROOT; };
 		3402286D27D8298E00741FBB /* MyGauge.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyGauge.swift; sourceTree = "<group>"; };
-		342F816827D42D1600B16B9E /* Meal.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Meal.swift; sourceTree = "<group>"; };
+		342F816827D42D1600B16B9E /* MealIngredient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MealIngredient.swift; sourceTree = "<group>"; };
 		344D200127CDC53700343108 /* MealConfigure.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MealConfigure.swift; sourceTree = "<group>"; };
-		344D200327CE27B500343108 /* Base.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Base.swift; sourceTree = "<group>"; };
-		344D200527CE299D00343108 /* BaseList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseList.swift; sourceTree = "<group>"; };
-		344D200727CE2B4E00343108 /* BaseAdd.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseAdd.swift; sourceTree = "<group>"; };
-		344D200927CE2B6300343108 /* BaseEdit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseEdit.swift; sourceTree = "<group>"; };
+		344D200527CE299D00343108 /* MealList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MealList.swift; sourceTree = "<group>"; };
+		344D200727CE2B4E00343108 /* MealAdd.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MealAdd.swift; sourceTree = "<group>"; };
+		344D200927CE2B6300343108 /* MealEdit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MealEdit.swift; sourceTree = "<group>"; };
 		344D200B27CE345B00343108 /* Adjustment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Adjustment.swift; sourceTree = "<group>"; };
 		344D200D27CE35F100343108 /* AdjustmentList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdjustmentList.swift; sourceTree = "<group>"; };
 		344D200F27CE360C00343108 /* AdjustmentEdit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdjustmentEdit.swift; sourceTree = "<group>"; };
 		344D201127CE361B00343108 /* AdjustmentAdd.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdjustmentAdd.swift; sourceTree = "<group>"; };
 		344D201327CEB36700343108 /* Gender.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Gender.swift; sourceTree = "<group>"; };
+		345F5F0927E0EF1400129BAC /* MealRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MealRow.swift; sourceTree = "<group>"; };
 		347A335127D9A5E0005E3F33 /* MealGen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MealGen.swift; sourceTree = "<group>"; };
 		347A335527DA925C005E3F33 /* Unit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Unit.swift; sourceTree = "<group>"; };
 		347A335727DAA1FE005E3F33 /* IngredientAdd.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IngredientAdd.swift; sourceTree = "<group>"; };
-		347A335927DAAF7C005E3F33 /* MyTabBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyTabBar.swift; sourceTree = "<group>"; };
-		347A335A27DAAF7C005E3F33 /* AppTabBarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppTabBarView.swift; sourceTree = "<group>"; };
-		347A335B27DAAF7C005E3F33 /* TabBarItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarItem.swift; sourceTree = "<group>"; };
-		347A335C27DAAF7C005E3F33 /* TabBarItemsPreferenceKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarItemsPreferenceKey.swift; sourceTree = "<group>"; };
-		347A335D27DAAF7C005E3F33 /* MyTabBarContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyTabBarContainer.swift; sourceTree = "<group>"; };
 		349EE52D27C99AC30072255A /* nutrition.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = nutrition.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		349EE53027C99AC30072255A /* app.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = app.swift; sourceTree = "<group>"; };
 		349EE53227C99AC30072255A /* Tabs.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tabs.swift; sourceTree = "<group>"; };
@@ -78,8 +68,8 @@
 		349EE57527CBF3600072255A /* FieldViews.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FieldViews.swift; sourceTree = "<group>"; };
 		349EE57727CC10E60072255A /* Profile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Profile.swift; sourceTree = "<group>"; };
 		349EE57B27CC823B0072255A /* ProfileEdit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileEdit.swift; sourceTree = "<group>"; };
-		34B7171127D1858B00322B18 /* MealView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MealView.swift; sourceTree = "<group>"; };
 		34B7171527D1B9EB00322B18 /* ViewModifiers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewModifiers.swift; sourceTree = "<group>"; };
+		34F8003A27DBFAD1002F1380 /* Macros.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Macros.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -100,18 +90,6 @@
 				3402286B27D7C7C800741FBB /* HealthKit.framework */,
 			);
 			name = Frameworks;
-			sourceTree = "<group>";
-		};
-		347A336327DAB060005E3F33 /* MyTabBar */ = {
-			isa = PBXGroup;
-			children = (
-				347A335A27DAAF7C005E3F33 /* AppTabBarView.swift */,
-				347A335927DAAF7C005E3F33 /* MyTabBar.swift */,
-				347A335D27DAAF7C005E3F33 /* MyTabBarContainer.swift */,
-				347A335B27DAAF7C005E3F33 /* TabBarItem.swift */,
-				347A335C27DAAF7C005E3F33 /* TabBarItemsPreferenceKey.swift */,
-			);
-			path = MyTabBar;
 			sourceTree = "<group>";
 		};
 		349EE52427C99AC30072255A = {
@@ -137,7 +115,6 @@
 				349EE53027C99AC30072255A /* app.swift */,
 				3402286927D7C7C800741FBB /* nutrition.entitlements */,
 				349EE53427C99AC40072255A /* Assets.xcassets */,
-				347A336327DAB060005E3F33 /* MyTabBar */,
 				349EE54527C9A3750072255A /* View */,
 				349EE54C27C9FC6C0072255A /* Model */,
 				349EE54F27CA8EE40072255A /* Utility */,
@@ -158,11 +135,10 @@
 			isa = PBXGroup;
 			children = (
 				349EE53227C99AC30072255A /* Tabs.swift */,
-				34B7171127D1858B00322B18 /* MealView.swift */,
 				344D200127CDC53700343108 /* MealConfigure.swift */,
-				344D200527CE299D00343108 /* BaseList.swift */,
-				344D200727CE2B4E00343108 /* BaseAdd.swift */,
-				344D200927CE2B6300343108 /* BaseEdit.swift */,
+				344D200527CE299D00343108 /* MealList.swift */,
+				344D200727CE2B4E00343108 /* MealAdd.swift */,
+				344D200927CE2B6300343108 /* MealEdit.swift */,
 				344D200D27CE35F100343108 /* AdjustmentList.swift */,
 				344D200F27CE360C00343108 /* AdjustmentEdit.swift */,
 				344D201127CE361B00343108 /* AdjustmentAdd.swift */,
@@ -170,6 +146,7 @@
 				347A335727DAA1FE005E3F33 /* IngredientAdd.swift */,
 				349EE54A27C9A6B10072255A /* IngredientEdit.swift */,
 				349EE57B27CC823B0072255A /* ProfileEdit.swift */,
+				345F5F0927E0EF1400129BAC /* MealRow.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -179,9 +156,9 @@
 			children = (
 				349EE57127CAB4760072255A /* Ingredient.swift */,
 				349EE57727CC10E60072255A /* Profile.swift */,
-				344D200327CE27B500343108 /* Base.swift */,
 				344D200B27CE345B00343108 /* Adjustment.swift */,
-				342F816827D42D1600B16B9E /* Meal.swift */,
+				342F816827D42D1600B16B9E /* MealIngredient.swift */,
+				34F8003A27DBFAD1002F1380 /* Macros.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -270,26 +247,22 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				344D200827CE2B4E00343108 /* BaseAdd.swift in Sources */,
-				347A336227DAAF7C005E3F33 /* TabBarItem.swift in Sources */,
-				347A336027DAAF7C005E3F33 /* MyTabBar.swift in Sources */,
+				344D200827CE2B4E00343108 /* MealAdd.swift in Sources */,
 				344D200E27CE35F100343108 /* AdjustmentList.swift in Sources */,
-				344D200A27CE2B6300343108 /* BaseEdit.swift in Sources */,
+				344D200A27CE2B6300343108 /* MealEdit.swift in Sources */,
 				347A335627DA925C005E3F33 /* Unit.swift in Sources */,
 				349EE54427C9A3690072255A /* IngredientList.swift in Sources */,
-				342F816927D42D1600B16B9E /* Meal.swift in Sources */,
+				342F816927D42D1600B16B9E /* MealIngredient.swift in Sources */,
 				344D201427CEB36700343108 /* Gender.swift in Sources */,
-				347A335F27DAAF7C005E3F33 /* TabBarItemsPreferenceKey.swift in Sources */,
 				349EE57C27CC823B0072255A /* ProfileEdit.swift in Sources */,
 				344D200C27CE345B00343108 /* Adjustment.swift in Sources */,
+				34F8003B27DBFAD1002F1380 /* Macros.swift in Sources */,
 				3402286E27D8298E00741FBB /* MyGauge.swift in Sources */,
 				349EE57227CAB4760072255A /* Ingredient.swift in Sources */,
-				347A336127DAAF7C005E3F33 /* MyTabBarContainer.swift in Sources */,
 				349EE53327C99AC30072255A /* Tabs.swift in Sources */,
+				345F5F0A27E0EF1400129BAC /* MealRow.swift in Sources */,
 				34B7171627D1B9EB00322B18 /* ViewModifiers.swift in Sources */,
 				347A335227D9A5E0005E3F33 /* MealGen.swift in Sources */,
-				347A335E27DAAF7C005E3F33 /* AppTabBarView.swift in Sources */,
-				34B7171227D1858B00322B18 /* MealView.swift in Sources */,
 				344D200227CDC53800343108 /* MealConfigure.swift in Sources */,
 				344D201227CE361B00343108 /* AdjustmentAdd.swift in Sources */,
 				349EE54B27C9A6B10072255A /* IngredientEdit.swift in Sources */,
@@ -297,8 +270,7 @@
 				349EE53127C99AC30072255A /* app.swift in Sources */,
 				349EE57627CBF3600072255A /* FieldViews.swift in Sources */,
 				349EE57827CC10E60072255A /* Profile.swift in Sources */,
-				344D200427CE27B500343108 /* Base.swift in Sources */,
-				344D200627CE299D00343108 /* BaseList.swift in Sources */,
+				344D200627CE299D00343108 /* MealList.swift in Sources */,
 				349EE57427CAE2DA0072255A /* Extensions.swift in Sources */,
 				347A335827DAA1FE005E3F33 /* IngredientAdd.swift in Sources */,
 			);

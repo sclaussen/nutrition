@@ -1,21 +1,25 @@
 import SwiftUI
 
-struct BaseAdd: View {
+struct MealEdit: View {
+
+    enum Field: Hashable {
+        case amount
+    }
 
     @Environment(\.presentationMode) var presentationMode
-    @EnvironmentObject var baseMgr: BaseMgr
+    @EnvironmentObject var mealIngredientMgr: MealIngredientMgr
     @EnvironmentObject var ingredientMgr: IngredientMgr
+    @FocusState private var focusedField: Field?
 
-    @State var name: String = ""
-    @State var defaultAmount: Double = 0
+    @State var mealIngredient: MealIngredient
 
     var body: some View {
         Form {
             Section {
-                PickerEdit("Ingredient", $name, options: ingredientMgr.getPickerOptions(existing: baseMgr.getNames()))
-                if name.count > 0 {
-                    DoubleEdit("Amount", $defaultAmount, ingredientMgr.getIngredient(name: name)!.consumptionUnit)
-                }
+                StringView("Ingredient", mealIngredient.name)
+                DoubleEdit("Current Amount", $mealIngredient.amount, mealIngredient.consumptionUnit)
+                  .focused($focusedField, equals: .amount)
+                DoubleEdit("Default Amount", $mealIngredient.defaultAmount, mealIngredient.consumptionUnit)
             }
         }
           .padding([.leading, .trailing], -20)
@@ -34,11 +38,16 @@ struct BaseAdd: View {
                       Button("Save",
                              action: {
                                  withAnimation {
-                                     baseMgr.create(name: name, defaultAmount: defaultAmount, amount: defaultAmount, consumptionUnit: ingredientMgr.getIngredient(name: name)!.consumptionUnit, active: true)
+                                     mealIngredientMgr.update(mealIngredient)
                                      presentationMode.wrappedValue.dismiss()
                                  }
                              })
                   }
+              }
+          }
+          .onAppear {
+              DispatchQueue.main.asyncAfter(deadline: .now() + 0.75) {
+                  self.focusedField = .amount
               }
           }
     }
@@ -48,11 +57,12 @@ struct BaseAdd: View {
     }
 }
 
-struct BaseCreate_Previews: PreviewProvider {
+struct BaseUpdate_Previews: PreviewProvider {
+    @State static var base = MealIngredient(name: "Arugula", defaultAmount: 145.0, amount: 145.0)
+
     static var previews: some View {
         NavigationView {
-            BaseAdd()
-              .environmentObject(BaseMgr())
+            MealEdit(mealIngredient: base)
         }
     }
 }

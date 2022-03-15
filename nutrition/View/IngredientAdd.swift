@@ -1,23 +1,14 @@
 import SwiftUI
 
 struct IngredientAdd: View {
-
-    enum Field: Hashable {
-        case name
-        case servingSize
-        case calories
-        case fat
-        case fiber
-        case netcarbs
-        case protein
-        case consumptionUnit
-        case consumptionGrams
-    }
+    //     var body: some View {
+    //         Text("Hello")
+    //     }
+    // }
 
     @Environment(\.presentationMode) var presentationMode
     @EnvironmentObject var ingredientMgr: IngredientMgr
-    @EnvironmentObject var baseMgr: BaseMgr
-    @FocusState private var focusedField: Field?
+    @EnvironmentObject var mealIngredientMgr: MealIngredientMgr
 
     @State var name: String = ""
 
@@ -40,28 +31,19 @@ struct IngredientAdd: View {
         Form {
             Section {
                 StringEdit("Name", $name)
-                  .focused($focusedField, equals: .name)
                   .autocapitalization(UITextAutocapitalizationType.words)
             }
             Section {
                 DoubleEdit("Serving Size", $servingSize, Unit.gram)
-                  .focused($focusedField, equals: .calories)
                 DoubleEdit("Calories", $calories, Unit.calorie)
-                  .focused($focusedField, equals: .calories)
                 DoubleEdit("Fat", $fat, Unit.gram)
-                  .focused($focusedField, equals: .fat)
                 DoubleEdit("Fiber", $fiber, Unit.gram)
-                  .focused($focusedField, equals: .fiber)
                 DoubleEdit("Net Carbs", $netcarbs, Unit.gram)
-                  .focused($focusedField, equals: .netcarbs)
                 DoubleEdit("Protein", $protein, Unit.gram)
-                  .focused($focusedField, equals: .protein)
             }
             Section(header: Text("Ingredient Consumption")) {
                 PickerUnitEdit("Consumption Unit", $consumptionUnit, options: Unit.ingredientOptions())
-                  .focused($focusedField, equals: .consumptionUnit)
                 DoubleEdit("Grams / Unit", $consumptionGrams, Unit.gram)
-                  .focused($focusedField, equals: .consumptionGrams)
             }
             Section {
                 ToggleEdit("Meat", $meat)
@@ -83,38 +65,33 @@ struct IngredientAdd: View {
                     let meadAdustment: MeatAdjustment = MeatAdjustment(name: "", amount: 0.0, consumptionUnit: Unit.none)
                     meatAdjustments.append(meadAdustment)
                 } label: {
-                    Label("Add a Base Meal Adjustment (Optional)", systemImage: "plus.circle")
+                    Label("New Meal Ingredient Adjustment", systemImage: "plus.circle")
                 }
             }
         }
-          .padding([.leading, .trailing], -20)
-          .navigationBarBackButtonHidden(true)
-          .toolbar {
-              ToolbarItem(placement: .navigation) {
-                  cancel
-              }
-              ToolbarItem(placement: .primaryAction) {
-                  HStack {
-                      Button {
-                          self.hideKeyboard()
-                      } label: {
-                          Label("Keyboard Down", systemImage: "keyboard.chevron.compact.down")
-                      }
-                      Button("Save",
-                             action: {
-                                 withAnimation {
-                                     ingredientMgr.create(name: name, servingSize: servingSize, calories: calories, fat: fat, fiber: fiber, netcarbs: netcarbs, protein: protein, consumptionUnit: consumptionUnit, consumptionGrams: consumptionGrams, meat: meat, meatAmount: meatAmount, meatAdjustments: meatAdjustments, active: true)
-                                     presentationMode.wrappedValue.dismiss()
-                                 }
-                             })
-                  }
-              }
-          }
-          .onAppear {
-              DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-                  self.focusedField = Field.servingSize
-              }
-          }
+        .padding([.leading, .trailing], -20)
+        .navigationBarBackButtonHidden(true)
+        .toolbar {
+            ToolbarItem(placement: .navigation) {
+                cancel
+            }
+            ToolbarItem(placement: .primaryAction) {
+                HStack {
+                    Button {
+                        self.hideKeyboard()
+                    } label: {
+                        Label("Keyboard Down", systemImage: "keyboard.chevron.compact.down")
+                    }
+                    Button("Save",
+                           action: {
+                               withAnimation {
+                                   ingredientMgr.create(name: name, servingSize: servingSize, calories: calories, fat: fat, fiber: fiber, netcarbs: netcarbs, protein: protein, consumptionUnit: consumptionUnit, consumptionGrams: consumptionGrams, meat: meat, meatAmount: meatAmount, meatAdjustments: meatAdjustments, active: true)
+                                   presentationMode.wrappedValue.dismiss()
+                               }
+                           })
+                }
+            }
+        }
     }
 
     var cancel: some View {

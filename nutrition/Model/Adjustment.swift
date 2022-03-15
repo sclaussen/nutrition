@@ -14,8 +14,8 @@ class AdjustmentMgr: ObservableObject {
         adjustments.append(Adjustment(name: "Sardines", amount: 1, consumptionUnit: Unit.can, group: "fish", constraints: true, maximum: 2))
         adjustments.append(Adjustment(name: "Smoked Sardines", amount: 1, consumptionUnit: Unit.can, group: "fish", constraints: true, maximum: 2))
         adjustments.append(Adjustment(name: "Extra Virgin Olive Oil", amount: 0.25, consumptionUnit: Unit.tablespoon, constraints: true, minimum: 2, maximum: 6))
-        adjustments.append(Adjustment(name: "Broccoli", amount: 20, consumptionUnit: Unit.gram, group: "vege", constraints: true, maximum: 240))
-        adjustments.append(Adjustment(name: "Cauliflower", amount: 20, consumptionUnit: Unit.gram, group: "vege", constraints: true, maximum: 240))
+        adjustments.append(Adjustment(name: "Broccoli", amount: 20, consumptionUnit: Unit.gram, group: "vege", constraints: true, maximum: 300))
+        adjustments.append(Adjustment(name: "Cauliflower", amount: 20, consumptionUnit: Unit.gram, group: "vege", constraints: true, maximum: 300))
         adjustments.append(Adjustment(name: "String Cheese", amount: 1, consumptionUnit: Unit.stick))
         adjustments.append(Adjustment(name: "Pumpkin Seeds", amount: 5, consumptionUnit: Unit.gram))
         adjustments.append(Adjustment(name: "Macadamia Nuts", amount: 5, consumptionUnit: Unit.gram, active: false))
@@ -46,7 +46,7 @@ class AdjustmentMgr: ObservableObject {
         adjustments.append(adjustment)
     }
 
-    func get(includeInactive: Bool) -> [Adjustment] {
+    func get(includeInactive: Bool = false) -> [Adjustment] {
         if includeInactive {
             return adjustments
         }

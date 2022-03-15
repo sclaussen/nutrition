@@ -43,7 +43,7 @@ extension View {
     }
 }
 
-// something.toUnwarpped<String>("")
+// something.toUnwrapped<String>("")
 extension Binding {
     func toUnwrapped<T>(defaultValue: T) -> Binding<T> where Value == Optional<T>  {
         Binding<T>(
@@ -65,6 +65,7 @@ extension Optional where Wrapped == String {
             self = newValue
         }
     }
+
     public var boundString: String {
         get {
             return _boundString ?? ""

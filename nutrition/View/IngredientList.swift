@@ -4,10 +4,10 @@ import SwiftUI
 struct IngredientList: View {
 
     @EnvironmentObject var ingredientMgr: IngredientMgr
-    @EnvironmentObject var baseMgr: BaseMgr
+    @EnvironmentObject var mealIngredientMgr: MealIngredientMgr
     @EnvironmentObject var adjustmentMgr: AdjustmentMgr
 
-    @State var searchingFor = ""
+    // @State var searchingFor = ""
 
     @State var inactiveIngredientsFilter: Bool = false
 
@@ -35,7 +35,7 @@ struct IngredientList: View {
                           let newIngredient = ingredientMgr.toggleActive(ingredient)
                           print("Ingredient active (post): " + String(newIngredient!.active))
                           if !newIngredient!.active {
-                              baseMgr.deactivate(ingredient.name)
+                              mealIngredientMgr.deactivate(ingredient.name)
                               adjustmentMgr.deactivate(ingredient.name)
                           }
                       } label: {
@@ -58,7 +58,7 @@ struct IngredientList: View {
               .onMove(perform: moveAction)
               .onDelete(perform: deleteAction)
         }
-          .searchable(text: $searchingFor)
+        // .searchable(text: $searchingFor)
           .padding([.leading, .trailing], -20)
           .toolbar {
               ToolbarItem(placement: .navigation) {
@@ -89,10 +89,11 @@ struct IngredientList: View {
 
     func getIngredientList() -> [Ingredient] {
         let ingredients = ingredientMgr.get(includeInactive: inactiveIngredientsFilter)
-        if searchingFor.isEmpty {
-            return ingredients
-        }
-        return ingredients.filter { $0.name.contains(searchingFor) }
+        return ingredients
+        //        if searchingFor.isEmpty {
+        //            return ingredients
+        //        }
+        //        return ingredients.filter { $0.name.contains(searchingFor) }
     }
 
     func toggleInactiveIngredientsFilter() {

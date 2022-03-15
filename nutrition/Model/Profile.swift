@@ -1,64 +1,100 @@
 import Foundation
 
 class ProfileMgr: ObservableObject {
-
-    @Published var profile: Profile? {
-        didSet {
-            serialize()
-        }
-    }
+    @Published var profile: Profile
 
     init() {
-        if let json = UserDefaults.standard.data(forKey: "profile") {
-            if let profile = try? JSONDecoder().decode(Profile.self, from: json) {
-                self.profile = profile
-
-                // Minor hack to force profile.compute() to execute
-                self.profile!.weight = self.profile!.weight
-                return
-            }
+        if let json = UserDefaults.standard.data(forKey: "profile"),
+           let profile = try? JSONDecoder().decode(Profile.self, from: json) {
+            self.profile = profile
+            print("...deserialized [")
+            print("]")
+            return
         }
+
+        print("...creating initial default profile")
 
         var components = DateComponents()
         components.year = 1967
         components.month = 9
         components.day = 27
-        let profile: Profile = Profile(name: "", dateOfBirth: Calendar.current.date(from: components)!, gender: Gender.male, height: 72, weight: 184, bodyFat: 20.0, activeEnergy: 200, proteinRatio: 0.85, calorieDeficit: 20, netcarbsGoalUnadjusted: 20, meat: "Chicken", meatAmount: 200)
+        self.profile = Profile(dateOfBirth: Calendar.current.date(from: components)!, gender: Gender.male, height: 72, weight: 184, bodyFat: 20, activeEnergy: 200, proteinRatio: 0.85, calorieDeficit: 20, netcarbsGoalUnadjusted: 20, meat: "Chicken", meatAmount: 200)
+    }
+
+    func cancel() {
+        if let json = UserDefaults.standard.data(forKey: "profile"),
+           let profile = try? JSONDecoder().decode(Profile.self, from: json) {
+            self.profile = profile
+            print("...deserialized [")
+            print("]")
+        }
+    }
+
+    func save() {
         if let json = try? JSONEncoder().encode(profile) {
             UserDefaults.standard.set(json, forKey: "profile")
-            self.profile = profile
-            print("Deserializing profie: " + String(self.profile!.id))
-            print("Weight: " + String(self.profile!.weight))
+            print("...serialized [")
+            print("]")
         }
-    }
-
-    func serialize() {
-        if let json = try? JSONEncoder().encode(self.profile) {
-            print("Serializing profile: ")
-            UserDefaults.standard.set(json, forKey: "profile")
-        }
-    }
-
-    func update(_ profile: Profile) {
-        print("Updating profie: ")
-        self.profile = profile.update(profile: profile)
     }
 }
 
-class Profile: Codable, ObservableObject {
-    var id: String
-    var name: String
-    var dateOfBirth: Date
-    var gender: Gender
-    var height: Int
-    var weight: Double
-    var bodyFat: Double
-    var activeEnergy: Int
-    var proteinRatio: Double
-    var calorieDeficit: Int
-    var netcarbsGoalUnadjusted: Double
-    var meat: String
-    var meatAmount: Double
+struct Profile: Codable {
+    var dateOfBirth: Date {
+        didSet {
+            print("dateOfBirth \(dateOfBirth)")
+        }
+    }
+    var gender: Gender {
+        didSet {
+            print("gender \(gender)")
+        }
+    }
+    var height: Int {
+        didSet {
+            print("height \(height)")
+        }
+    }
+    var weight: Double {
+        didSet {
+            print("weight \(weight)")
+        }
+    }
+    var bodyFat: Double {
+        didSet {
+            print("bodyFat \(bodyFat)")
+        }
+    }
+    var activeEnergy: Int {
+        didSet {
+            print("activeEnergy \(activeEnergy)")
+        }
+    }
+    var proteinRatio: Double {
+        didSet {
+            print("proteinRatio \(proteinRatio)")
+        }
+    }
+    var calorieDeficit: Int {
+        didSet {
+            print("calorieDeficit \(calorieDeficit)")
+        }
+    }
+    var netcarbsGoalUnadjusted: Double {
+        didSet {
+            print("netcarbsGoalUnadjusted \(netcarbsGoalUnadjusted)")
+        }
+    }
+    var meat: String {
+        didSet {
+            print("meat \(meat)")
+        }
+    }
+    var meatAmount: Double {
+        didSet {
+            print("meatAmount \(meatAmount)")
+        }
+    }
 
     var age: Double {
         let ageInMonths = Calendar.current.dateComponents([.month], from: self.dateOfBirth, to: Date()).month ?? 0
@@ -159,32 +195,5 @@ class Profile: Codable, ObservableObject {
 
     var waterLiters: Double {
         (self.weight / 2) * 0.029574
-    }
-
-    init(id: String = UUID().uuidString, name: String, dateOfBirth: Date, gender: Gender, height: Int, weight: Double, bodyFat: Double, activeEnergy: Int, proteinRatio: Double, calorieDeficit: Int, netcarbsGoalUnadjusted: Double, meat: String, meatAmount: Double) {
-        print("Creating profile: ")
-
-        self.id = id
-        self.name = name
-
-        self.dateOfBirth = dateOfBirth
-        self.gender = gender
-
-        self.height = height
-        self.weight = weight
-        self.bodyFat = bodyFat
-        self.activeEnergy = activeEnergy
-
-        self.proteinRatio = proteinRatio
-        self.calorieDeficit = calorieDeficit
-
-        self.netcarbsGoalUnadjusted = netcarbsGoalUnadjusted
-
-        self.meat = meat
-        self.meatAmount = meatAmount
-    }
-
-    func update(profile: Profile) -> Profile {
-        return Profile(id: profile.id, name: profile.name, dateOfBirth: profile.dateOfBirth, gender: profile.gender, height: profile.height, weight: profile.weight, bodyFat: profile.bodyFat, activeEnergy: profile.activeEnergy, proteinRatio: profile.proteinRatio, calorieDeficit: profile.calorieDeficit, netcarbsGoalUnadjusted: profile.netcarbsGoalUnadjusted, meat: profile.meat, meatAmount: profile.meatAmount)
     }
 }

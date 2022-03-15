@@ -25,7 +25,7 @@ struct MyNameLabel: ViewModifier {
     func body(content: Content) -> some View {
         content
           .frame(minHeight: 20, alignment: .leading)
-          .border(Color.black, width: 0)
+          .border(Color.black, width: 1)
     }
 }
 
@@ -33,7 +33,7 @@ struct MyValueLabel: ViewModifier {
     func body(content: Content) -> some View {
         content
           .frame(minHeight: 20, alignment: .trailing)
-          .border(Color.black, width: 0)
+          .border(Color.black, width: 1)
     }
 }
 
@@ -44,7 +44,7 @@ struct MyValue: ViewModifier {
           .frame(minHeight: 20, alignment: .trailing)
           .multilineTextAlignment(.trailing)
           .disableAutocorrection(true)
-          .border(Color.black, width: 0)
+          .border(Color.black, width: 1)
     }
 }
 
@@ -53,7 +53,7 @@ struct MyUnitLabel: ViewModifier {
         content
           .font(.caption2)
           .frame(minWidth: 35, minHeight: 20, alignment: .leading)
-          .border(Color.black, width: 0)
+          .border(Color.black, width: 1)
     }
 }
 
@@ -63,7 +63,7 @@ struct MyUnitValue: ViewModifier {
           .font(.caption2)
           .frame(minWidth: 35, minHeight: 20, alignment: .leading)
           .foregroundColor(.blue)
-          .border(Color.black, width: 0)
+          .border(Color.black, width: 1)
     }
 }
 

@@ -13,10 +13,19 @@ class IngredientMgr: ObservableObject {
         ingredients.append(Ingredient(name: "Avocado Oil", servingSize: 14, calories: 130, fat: 14, fiber: 0, netcarbs: 0, protein: 0, consumptionUnit: Unit.tablespoon, consumptionGrams: 14, meat: false))
         ingredients.append(Ingredient(name: "Pumpkin Seeds", servingSize: 28, calories: 160, fat: 14, fiber: 2, netcarbs: 1, protein: 8, consumptionUnit: Unit.gram, consumptionGrams: 1, meat: false))
         ingredients.append(Ingredient(name: "Chicken", servingSize: 100, calories: 115, fat: 2.7, fiber: 0, netcarbs: 0, protein: 22, consumptionUnit: Unit.gram, consumptionGrams: 1, meat: true, meatAmount: 250))
-        ingredients.append(Ingredient(name: "Beef", servingSize: 100, calories: 214, fat: 15.2, fiber: 0, netcarbs: 0, protein: 19, consumptionUnit: Unit.gram, consumptionGrams: 1, meat: true, meatAmount: 150, meatAdjustments: [ MeatAdjustment(name: "Eggs", amount: -1, consumptionUnit: Unit.egg), MeatAdjustment(name: "Extra Virgin Olive Oil", amount: -1, consumptionUnit: Unit.tablespoon) ]))
-        ingredients.append(Ingredient(name: "Lamb", servingSize: 85, calories: 253, fat: 22, fiber: 0, netcarbs: 0.19, protein: 13.09, consumptionUnit: Unit.gram, consumptionGrams: 1, meat: true, meatAmount: 150, meatAdjustments: [ MeatAdjustment(name: "Eggs", amount: -1, consumptionUnit: Unit.egg), MeatAdjustment(name: "Extra Virgin Olive Oil", amount: -1, consumptionUnit: Unit.tablespoon) ]))
-        ingredients.append(Ingredient(name: "Pork Chop", servingSize: 113, calories: 220, fat: 11, fiber: 0, netcarbs: 0, protein: 30, consumptionUnit: Unit.gram, consumptionGrams: 1, meat: true, meatAdjustments: [ MeatAdjustment(name: "Eggs", amount: -1, consumptionUnit: Unit.egg), MeatAdjustment(name: "Extra Virgin Olive Oil", amount: -1, consumptionUnit: Unit.tablespoon) ]))
-        ingredients.append(Ingredient(name: "Salmon", servingSize: 112, calories: 150, fat: 5, fiber: 0, netcarbs: 0, protein: 25, consumptionUnit: Unit.gram, consumptionGrams: 1, meat: true, meatAdjustments: [ MeatAdjustment(name: "Fish Oil", amount: -1, consumptionUnit: Unit.tablespoon) ]))
+        ingredients.append(Ingredient(name: "Beef", servingSize: 100, calories: 214, fat: 15.2, fiber: 0, netcarbs: 0, protein: 19, consumptionUnit: Unit.gram, consumptionGrams: 1, meat: true, meatAmount: 150,
+                                      meatAdjustments: [ MeatAdjustment(name: "Eggs", amount: -1, consumptionUnit: Unit.egg),
+                                                         MeatAdjustment(name: "Extra Virgin Olive Oil", amount: -1, consumptionUnit: Unit.tablespoon),
+                                                         MeatAdjustment(name: "Mackerel", amount: 1, consumptionUnit: Unit.can),
+                                                         MeatAdjustment(name: "Dark Chocolate (Divine)", amount: 1, consumptionUnit: Unit.block) ]))
+        ingredients.append(Ingredient(name: "Lamb", servingSize: 85, calories: 253, fat: 22, fiber: 0, netcarbs: 0.19, protein: 13.09, consumptionUnit: Unit.gram, consumptionGrams: 1, meat: true, meatAmount: 150,
+                                      meatAdjustments: [ MeatAdjustment(name: "Eggs", amount: -1, consumptionUnit: Unit.egg),
+                                                         MeatAdjustment(name: "Extra Virgin Olive Oil", amount: -1, consumptionUnit: Unit.tablespoon) ]))
+        ingredients.append(Ingredient(name: "Pork Chop", servingSize: 113, calories: 220, fat: 11, fiber: 0, netcarbs: 0, protein: 30, consumptionUnit: Unit.gram, consumptionGrams: 1, meat: true,
+                                      meatAdjustments: [ MeatAdjustment(name: "Eggs", amount: -1, consumptionUnit: Unit.egg),
+                                                         MeatAdjustment(name: "Extra Virgin Olive Oil", amount: -1, consumptionUnit: Unit.tablespoon) ]))
+        ingredients.append(Ingredient(name: "Salmon", servingSize: 112, calories: 150, fat: 5, fiber: 0, netcarbs: 0, protein: 25, consumptionUnit: Unit.gram, consumptionGrams: 1, meat: true,
+                                       meatAdjustments: [ MeatAdjustment(name: "Fish Oil", amount: -1, consumptionUnit: Unit.tablespoon) ]))
         ingredients.append(Ingredient(name: "Top Sirloin Cap", servingSize: 238, calories: 125, fat: 14, fiber: 0, netcarbs: 0, protein: 51, consumptionUnit: Unit.gram, consumptionGrams: 1, meat: true))
         ingredients.append(Ingredient(name: "Argentine Red Shrimp", servingSize: 110, calories: 100, fat: 1.5, fiber: 0, netcarbs: 0, protein: 21, consumptionUnit: Unit.gram, consumptionGrams: 1, meat: true, meatAmount: 250))
         ingredients.append(Ingredient(name: "Eggs", servingSize: 50, calories: 70, fat: 5, fiber: 0, netcarbs: 0, protein: 6, consumptionUnit: Unit.egg, consumptionGrams: 50, meat: false))
@@ -70,7 +79,7 @@ class IngredientMgr: ObservableObject {
         ingredients.append(ingredient)
     }
 
-    func get(includeInactive: Bool) -> [Ingredient] {
+    func get(includeInactive: Bool = false) -> [Ingredient] {
         if includeInactive {
             return ingredients.sorted(by: { $0.name < $1.name })
         }
