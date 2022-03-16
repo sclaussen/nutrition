@@ -9,10 +9,10 @@ class AdjustmentMgr: ObservableObject {
     }
 
     init() {
-        adjustments.append(Adjustment(name: "Eggs", amount: 1, consumptionUnit: Unit.egg, constraints: true, minimum: 4, maximum: 7))
         adjustments.append(Adjustment(name: "Mackerel", amount: 1, consumptionUnit: Unit.can, group: "fish", constraints: true, maximum: 2))
         adjustments.append(Adjustment(name: "Sardines", amount: 1, consumptionUnit: Unit.can, group: "fish", constraints: true, maximum: 2))
         adjustments.append(Adjustment(name: "Smoked Sardines", amount: 1, consumptionUnit: Unit.can, group: "fish", constraints: true, maximum: 2))
+        adjustments.append(Adjustment(name: "Eggs", amount: 1, consumptionUnit: Unit.egg, constraints: true, minimum: 4, maximum: 7))
         adjustments.append(Adjustment(name: "Extra Virgin Olive Oil", amount: 0.25, consumptionUnit: Unit.tablespoon, constraints: true, minimum: 2, maximum: 6))
         adjustments.append(Adjustment(name: "Broccoli", amount: 20, consumptionUnit: Unit.gram, group: "vege", constraints: true, maximum: 300))
         adjustments.append(Adjustment(name: "Cauliflower", amount: 20, consumptionUnit: Unit.gram, group: "vege", constraints: true, maximum: 300))
@@ -23,14 +23,12 @@ class AdjustmentMgr: ObservableObject {
     }
 
     func serialize() {
-        print("Serializing adjustment...")
         if let encodedData = try? JSONEncoder().encode(adjustments) {
             UserDefaults.standard.set(encodedData, forKey: "adjustment")
         }
     }
 
     func deserialize() {
-        print("Deserializing adjustment...")
         guard
           let data = UserDefaults.standard.data(forKey: "adjustment"),
           let savedItems = try? JSONDecoder().decode([Adjustment].self, from: data)
@@ -50,14 +48,7 @@ class AdjustmentMgr: ObservableObject {
         if includeInactive {
             return adjustments
         }
-
         return adjustments.filter({ $0.active == true })
-    }
-
-    func inactiveIngredientsExist() -> Bool {
-        let inactiveIngredients = adjustments.filter({ $0.active == false })
-        print("Inactive ingredient count: " + String(inactiveIngredients.count))
-        return inactiveIngredients.count > 0
     }
 
     func getNames() -> [String] {
@@ -70,12 +61,27 @@ class AdjustmentMgr: ObservableObject {
         }
     }
 
+    func activate(_ name: String) {
+        if let index = adjustments.firstIndex(where: { $0.name == name }) {
+            if !adjustments[index].active {
+                adjustments[index] = adjustments[index].toggleActive()
+            }
+            print("  \(adjustments[index].name) active: \(adjustments[index].active) (adjustment)")
+        }
+    }
+
     func deactivate(_ name: String) {
         if let index = adjustments.firstIndex(where: { $0.name == name }) {
             if adjustments[index].active {
                 adjustments[index] = adjustments[index].toggleActive()
             }
+            print("  \(adjustments[index].name) active: \(adjustments[index].active) (adjustment)")
         }
+    }
+
+    func inactiveIngredientsExist() -> Bool {
+        let inactiveIngredients = adjustments.filter({ $0.active == false })
+        return inactiveIngredients.count > 0
     }
 
     func toggleActive(_ adjustment: Adjustment) -> Adjustment? {

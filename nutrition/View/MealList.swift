@@ -11,95 +11,106 @@ struct MealList: View {
     @State var showInactive: Bool = false
     @State var locked: Bool = false
     @State var amount: Double = 0
+    @State var mealConfigureActive = false
 
     var body: some View {
-
         VStack {
-
-            MyGaugeDashboard(
-              caloriesGoalUnadjusted: macrosMgr.macros.caloriesGoalUnadjusted,
-              caloriesGoal: macrosMgr.macros.caloriesGoal,
-              fatGoal: macrosMgr.macros.fatGoal,
-              fiberGoal: macrosMgr.macros.fiberGoal,
-              netcarbsGoal: macrosMgr.macros.netcarbsGoal,
-              proteinGoal: macrosMgr.macros.proteinGoal,
-              calories: macrosMgr.macros.calories,
-              fat: macrosMgr.macros.fat,
-              fiber: macrosMgr.macros.fiber,
-              netcarbs: macrosMgr.macros.netcarbs,
-              protein: macrosMgr.macros.protein
-            )
-
             List {
-                ForEach(mealIngredientMgr.get(includeInactive: showInactive)) { mealIngredient in
-                    NavigationLink(destination: MealEdit(mealIngredient: mealIngredient),
-                                   label: {
-                                       MealRow(mealIngredient: mealIngredient)
-                                   })
-                      .foregroundColor(!mealIngredient.active ? Color.red :
-                                         (mealIngredient.compensation || (mealIngredient.defaultAmount != mealIngredient.amount)) ? Color.blue :
-                                         Color.black)
-                      .swipeActions(edge: .leading) {
-                          Button {
-                              // Toggle the meal ingredient's active state
-                              // If the meal ingredient has been toggled to active, propogate that change to the ingredient as well
-                              let newMealIngredient = mealIngredientMgr.toggleActive(mealIngredient)
-                              if newMealIngredient!.active {
-                                  ingredientMgr.activate(newMealIngredient!.name)
-                              }
-                          } label: {
-                              // if mealIngredient.active {
-                              //     Label("Deactivate", systemImage: "pause.circle")
-                              // } else {
-                              //     Label("Activate", systemImage: "play.circle")
-                              // }
-                              Label("Deactivate", systemImage: mealIngredient.active ? "pause.circle" : "play.circle")
-                          }
-                            .tint(mealIngredient.active ? .red : .green)
-                      }
-                      .swipeActions(edge: .trailing) {
-                          // TODO: Do not apply a delete to an adjustment item (or it'll just get re-added during generateMeal)
-                          Button(role: .destructive) {
-                              mealIngredientMgr.delete(mealIngredient)
-                          } label: {
-                              Label("Delete", systemImage: "trash.fill")
-                          }
-                      }
+                Section("Meal Dashboard") {
+                    MyGaugeDashboard(caloriesGoalUnadjusted: macrosMgr.macros.caloriesGoalUnadjusted,
+                                     caloriesGoal: macrosMgr.macros.caloriesGoal,
+                                     fatGoal: macrosMgr.macros.fatGoal,
+                                     fiberGoal: macrosMgr.macros.fiberGoal,
+                                     netcarbsGoal: macrosMgr.macros.netcarbsGoal,
+                                     proteinGoal: macrosMgr.macros.proteinGoal,
+                                     calories: macrosMgr.macros.calories,
+                                     fat: macrosMgr.macros.fat,
+                                     fiber: macrosMgr.macros.fiber,
+                                     netcarbs: macrosMgr.macros.netcarbs,
+                                     protein: macrosMgr.macros.protein)
                 }
-                  .onMove(perform: moveAction)
-                  .onDelete(perform: deleteAction)
+
+                Section(header: IngredientRowHeader(nameWidth: 0.345)) {
+                    ForEach(mealIngredientMgr.get(includeInactive: showInactive)) { mealIngredient in
+                        NavigationLink(destination: MealEdit(mealIngredient: mealIngredient),
+                                       label: {
+                                           IngredientRow(nameWidth: 0.325,
+                                                         name: mealIngredient.name,
+                                                         calories: mealIngredient.calories,
+                                                         fat: mealIngredient.fat,
+                                                         fiber: mealIngredient.fiber,
+                                                         netcarbs: mealIngredient.netcarbs,
+                                                         protein: mealIngredient.protein,
+                                                         amount: mealIngredient.amount,
+                                                         consumptionUnit: mealIngredient.consumptionUnit)
+                                       })
+                          .foregroundColor(!mealIngredient.active ? Color.red :
+                                             (mealIngredient.compensantionExists || (mealIngredient.defaultAmount != mealIngredient.amount)) ? Color.blue :
+                                             Color.black)
+                          .swipeActions(edge: .leading) {
+                              Button {
+                                  if mealIngredient.active || ingredientMgr.getIngredient(name: mealIngredient.name)!.available {
+                                      let newMealIngredient = mealIngredientMgr.toggleActive(mealIngredient)
+                                      print("  \(newMealIngredient!.name) active: \(newMealIngredient!.active)")
+                                  }
+                              } label: {
+                                  Label("", systemImage: !ingredientMgr.getIngredient(name: mealIngredient.name)!.available ? "circle.slash" : mealIngredient.active ? "pause.circle" : "play.circle")
+                              }
+                                .tint(!ingredientMgr.getIngredient(name: mealIngredient.name)!.available ? .gray : mealIngredient.active ? .red : .green)
+                          }
+                          .swipeActions(edge: .trailing) {
+                              // TODO: Do not apply a delete to an adjustment item (or it'll just get re-added during generateMeal)
+                              Button(role: .destructive) {
+                                  mealIngredientMgr.delete(mealIngredient)
+                              } label: {
+                                  Label("Delete", systemImage: "trash.fill")
+                              }
+                          }
+                    }
+                      .onMove(perform: moveAction)
+                      .onDelete(perform: deleteAction)
+                }
             }
               .environment(\.defaultMinListRowHeight, 5)
               .padding([.leading, .trailing], -20)
+              .background(
+                NavigationLink(destination: MealConfigure(), isActive: $mealConfigureActive) {
+                    Label("Configure", systemImage: "gear")
+                })
               .toolbar {
                   ToolbarItem(placement: .navigation) {
                       EditButton()
                   }
                   ToolbarItem(placement: .principal) {
-                      VStack(spacing: 5) {
-                          Text("Show Inactive").font(.caption2).foregroundColor(.blue)
-                          CheckboxToggle(status: $showInactive).foregroundColor(.blue)
-                      }.offset(y: -5)
-                  }
-                  ToolbarItem(placement: .primaryAction) {
                       HStack {
                           Button {
-                              toggleLocked()
+                              showInactive.toggle()
+                              print("  Toggling showInactive: \(showInactive) (mealIngredient)")
+                          } label: {
+                              Image(systemName: !mealIngredientMgr.inactiveIngredientsExist() ? "" : showInactive ? "eye" : "eye.slash")
+                          }.frame(width: 40)
+
+                          Button {
+                              locked.toggle()
                           } label: {
                               Image(systemName: locked ? "lock" : "lock.open")
-                          }
+                          }.frame(width: 40)
 
                           Button {
                               generateMeal()
                           } label: {
-                              Image(systemName: "arrow.triangle.2.circlepath")
-                          }
+                              Image(systemName: locked ? "" : "arrow.triangle.2.circlepath")
+                          }.frame(width: 40)
 
-                          NavigationLink(destination: MealConfigure()) {
-                              Label("Configure", systemImage: "gear")
-                          }
-                          NavigationLink("Add", destination: MealAdd())
+                          Button {
+                              mealConfigureActive.toggle()
+                          } label: {
+                              Image(systemName: locked ? "" : "gear")
+                          }.frame(width: 40)
                       }
+                  }
+                  ToolbarItem(placement: .primaryAction) {
+                      NavigationLink("Add", destination: MealAdd())
                   }
               }
               .onAppear {
@@ -125,27 +136,36 @@ struct MealList: View {
 
     func generateMeal() {
         print("\n\n\nGENERATE MEAL\n================================================================================\n")
+
+        print("Old ingredients")
         mealIngredientMgr.p()
 
         print("Rolling back")
-        mealIngredientMgr.rollbackAll()
+        !locked ? mealIngredientMgr.rollbackAll() : print("Locked")
 
         print("\nResetting meal ingredient macros")
-        // for mealIngredient in mealIngredientMgr.mealIngredients {
-        //     mealIngredient.resetMacros()
-        // }
+        mealIngredientMgr.resetMacros()
 
         print("\nSetting macro goals")
         macrosMgr.setGoals(caloriesGoalUnadjusted: profileMgr.profile.caloriesGoalUnadjusted, caloriesGoal: profileMgr.profile.caloriesGoal, fatGoal: profileMgr.profile.fatGoal, fiberGoal: profileMgr.profile.fiberGoal, netcarbsGoal: profileMgr.profile.netcarbsGoal, proteinGoal: profileMgr.profile.proteinGoal)
 
+        print("\nBase ingredients")
+        mealIngredientMgr.p()
+
         print("\nAdding Meat")
-        if profileMgr.profile.meat != "None" {
-            mealIngredientMgr.adjust(name: profileMgr.profile.meat, amount: profileMgr.profile.meatAmount, consumptionUnit: Unit.gram)
+        if !locked {
+            if profileMgr.profile.meat != "None" {
+                mealIngredientMgr.adjust(name: profileMgr.profile.meat, amount: profileMgr.profile.meatAmount, consumptionUnit: Unit.gram)
+            }
+
+            applyMeatAdjustmentsToMealIngredients()
         }
 
-        applyMeatAdjustmentsToMealIngredients()
         addMacrosForBaseMealIngredients()
-        while tryAddingAdjustments() {
+
+        if !locked {
+            while tryAddingAdjustments() {
+            }
         }
     }
 
@@ -169,6 +189,7 @@ struct MealList: View {
     }
 
     func tryAddingAdjustments() -> Bool {
+        // print("\nTrying...")
         for adjustment in getRandomizedOrder() {
             if tryAddingAdjustment(adjustment) {
                 return true
@@ -181,7 +202,7 @@ struct MealList: View {
         var randomizedOrder: [Adjustment] = []
         var groupsSeen: [String] = []
 
-        for adjustment in adjustmentMgr.adjustments {
+        for adjustment in adjustmentMgr.get() {
 
             if adjustment.group == "" {
                 randomizedOrder.append(adjustment)
@@ -207,6 +228,8 @@ struct MealList: View {
 
     func tryAddingAdjustment(_ adjustment: Adjustment) -> Bool {
 
+        // print("  Trying \(adjustment.name) \(adjustment.amount) \(adjustment.active)...")
+
         // Determine if adding the adjustment would break the constraints
         let mealIngredient = mealIngredientMgr.getIngredient(name: adjustment.name)
         if mealIngredient != nil && adjustment.constraints {
@@ -219,9 +242,7 @@ struct MealList: View {
         let ingredient = ingredientMgr.getIngredient(name: adjustment.name)!
         let servings = (adjustment.amount * ingredient.consumptionGrams) / ingredient.servingSize
 
-        let calories: Double = ingredient.calories * servings
         let fat: Double = ingredient.fat * servings
-        let fiber: Double = ingredient.fiber * servings
         let netcarbs: Double = ingredient.netcarbs * servings
         let protein: Double = ingredient.protein * servings
 
@@ -246,7 +267,6 @@ struct MealList: View {
         let netcarbs: Double = ingredient.netcarbs * servings
         let protein: Double = ingredient.protein * servings
 
-        print("Updated macros: " + name + " \(amount)")
         mealIngredientMgr.addMacros(name: name, calories: calories, fat: fat, fiber: fiber, netcarbs: netcarbs, protein: protein)
         macrosMgr.addMacros(name: name, calories: calories, fat: fat, fiber: fiber, netcarbs: netcarbs, protein: protein)
     }

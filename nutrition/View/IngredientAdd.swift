@@ -20,7 +20,7 @@ struct IngredientAdd: View {
     @State var protein: Double = 0
 
     @State var consumptionUnit: Unit = Unit.gram
-    @State var consumptionGrams: Double = 0
+    @State var consumptionGrams: Double = 1.0
 
     @State var meat: Bool = false
     @State var meatAmount: Double = 200
@@ -85,7 +85,7 @@ struct IngredientAdd: View {
                     Button("Save",
                            action: {
                                withAnimation {
-                                   ingredientMgr.create(name: name, servingSize: servingSize, calories: calories, fat: fat, fiber: fiber, netcarbs: netcarbs, protein: protein, consumptionUnit: consumptionUnit, consumptionGrams: consumptionGrams, meat: meat, meatAmount: meatAmount, meatAdjustments: meatAdjustments, active: true)
+                                   ingredientMgr.create(name: name, servingSize: servingSize, calories: calories, fat: fat, fiber: fiber, netcarbs: netcarbs, protein: protein, consumptionUnit: consumptionUnit, consumptionGrams: consumptionGrams, meat: meat, meatAmount: meatAmount, meatAdjustments: meatAdjustments, available: true, verified: "")
                                    presentationMode.wrappedValue.dismiss()
                                }
                            })

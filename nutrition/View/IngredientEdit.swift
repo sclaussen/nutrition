@@ -47,6 +47,7 @@ struct IngredientEdit: View {
                 }
             }
             Section {
+                DoubleView("Calories (per 100g)", ingredient.calories100, Unit.gram, precision: 1)
                 DoubleView("Fat (per 100g)", ingredient.fat100, Unit.gram, precision: 1)
                 DoubleView("Fiber (per 100g)", ingredient.fiber100, Unit.gram, precision: 1)
                 DoubleView("Net Carbs (per 100g)", ingredient.netcarbs100, Unit.gram, precision: 1)

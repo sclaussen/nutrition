@@ -1,103 +1,90 @@
 import SwiftUI
 
-
 struct IngredientList: View {
 
     @EnvironmentObject var ingredientMgr: IngredientMgr
     @EnvironmentObject var mealIngredientMgr: MealIngredientMgr
     @EnvironmentObject var adjustmentMgr: AdjustmentMgr
 
-    // @State var searchingFor = ""
-
-    @State var inactiveIngredientsFilter: Bool = false
+    @State var showUnavailable: Bool = false
 
     var body: some View {
-        List {
-            ForEach(getIngredientList()) { ingredient in
-                NavigationLink(destination: IngredientEdit(ingredient: ingredient),
-                               label: {
-                                   HStack {
-                                       Image(ingredient.name)
-                                         .resizable()
-                                         .aspectRatio(contentMode: .fit)
-                                         .frame(maxWidth: 50)
-                                       Text(ingredient.name).myNameLabel()
-                                       Spacer()
-                                       Text("\(ingredient.fat100.fractionDigits(max: 0))").font(.caption).frame(width: 30).background(Color.green.opacity(0.4)).opacity(0.8).foregroundColor(.black).cornerRadius(30)
-                                       Text("\(ingredient.netcarbs100.fractionDigits(max: 0))").font(.caption).frame(width: 30).background(Color.green.opacity(0.4)).opacity(0.8).foregroundColor(.black).cornerRadius(30)
-                                       Text("\(ingredient.protein100.fractionDigits(max: 0))").font(.caption).frame(width: 30).background(Color.green.opacity(0.4)).opacity(0.8).foregroundColor(.black).cornerRadius(30)
-                                   }.frame(height: 50)
-                               })
-                  .foregroundColor(!ingredient.active ? .red : .black)
-                  .swipeActions(edge: .leading) {
-                      Button {
-                          print("Ingredient active: " + String(ingredient.active))
-                          let newIngredient = ingredientMgr.toggleActive(ingredient)
-                          print("Ingredient active (post): " + String(newIngredient!.active))
-                          if !newIngredient!.active {
-                              mealIngredientMgr.deactivate(ingredient.name)
-                              adjustmentMgr.deactivate(ingredient.name)
+        VStack {
+            List {
+                Section(header: IngredientRowHeader(nameWidth: 0.345)) {
+                    ForEach(getIngredientList()) { ingredient in
+                        NavigationLink(destination: IngredientEdit(ingredient: ingredient),
+                                       label: {
+                                           IngredientRow(nameWidth: 0.325,
+                                                         name: ingredient.name,
+                                                         calories: ingredient.calories,
+                                                         fat: ingredient.fat100,
+                                                         fiber: ingredient.fiber100,
+                                                         netcarbs: ingredient.netcarbs100,
+                                                         protein: ingredient.protein100,
+                                                         amount: 100.0 / ingredient.consumptionGrams,
+                                                         consumptionUnit: ingredient.consumptionUnit)
+                                       })
+                          .foregroundColor(ingredient.available ? .black : .red)
+                          .swipeActions(edge: .leading) {
+                              Button {
+                                  let newIngredient = ingredientMgr.toggleAvailable(ingredient)
+                                  if newIngredient!.available {
+                                      mealIngredientMgr.activate(ingredient.name)
+                                      adjustmentMgr.activate(ingredient.name)
+                                  } else {
+                                      mealIngredientMgr.deactivate(ingredient.name)
+                                      adjustmentMgr.deactivate(ingredient.name)
+                                  }
+                              } label: {
+                                  if ingredient.available {
+                                      Label("Deactivate", systemImage: "pause.circle")
+                                  } else {
+                                      Label("Activate", systemImage: "play.circle")
+                                  }
+                              }
+                                .tint(ingredient.available ? .red : .green)
                           }
-                      } label: {
-                          if ingredient.active {
-                              Label("Deactivate", systemImage: "pause.circle")
-                          } else {
-                              Label("Activate", systemImage: "play.circle")
+                          .swipeActions(edge: .trailing) {
+                              Button(role: .destructive) {
+                                  ingredientMgr.delete(ingredient)
+                              } label: {
+                                  Label("Delete", systemImage: "trash.fill")
+                              }
                           }
-                      }
-                        .tint(ingredient.active ? .red : .green)
-                  }
-                  .swipeActions(edge: .trailing) {
-                      Button(role: .destructive) {
-                          ingredientMgr.delete(ingredient)
-                      } label: {
-                          Label("Delete", systemImage: "trash.fill")
-                      }
-                  }
+                    }
+                      .onMove(perform: moveAction)
+                      .onDelete(perform: deleteAction)
+                }
             }
-              .onMove(perform: moveAction)
-              .onDelete(perform: deleteAction)
+              .environment(\.defaultMinListRowHeight, 5)
+              .padding([.leading, .trailing], -20)
+              .toolbar {
+                  ToolbarItem(placement: .navigation) {
+                      EditButton()
+                  }
+                  ToolbarItem(placement: .principal) {
+                      Button {
+                          showUnavailable.toggle()
+                          print("  Toggling showUnavailable: \(showUnavailable) (ingredient)")
+                      } label: {
+                          Image(systemName: !ingredientMgr.unavailableIngredientsExist() ? "" : showUnavailable ? "eye" : "eye.slash")
+                      }
+                  }
+                  ToolbarItem(placement: .primaryAction) {
+                      NavigationLink("Add", destination: IngredientAdd())
+                  }
+              }
         }
-        // .searchable(text: $searchingFor)
-          .padding([.leading, .trailing], -20)
-          .toolbar {
-              ToolbarItem(placement: .navigation) {
-                  edit
-              }
-              ToolbarItem(placement: .principal) {
-                  toggle
-              }
-              ToolbarItem(placement: .primaryAction) {
-                  add
-              }
-          }
-    }
-
-    var edit: some View {
-        EditButton()
-    }
-
-    var toggle: some View {
-        Button(action: toggleInactiveIngredientsFilter) {
-            Text(ingredientMgr.inactiveIngredientsExist() ? (inactiveIngredientsFilter ? "Hide Inactive" : "Show Inactive"): "").font(.caption)
-        }
-    }
-
-    var add: some View {
-        NavigationLink("Add", destination: IngredientAdd())
     }
 
     func getIngredientList() -> [Ingredient] {
-        let ingredients = ingredientMgr.get(includeInactive: inactiveIngredientsFilter)
+        let ingredients = ingredientMgr.get(includeUnavailable: showUnavailable)
         return ingredients
         //        if searchingFor.isEmpty {
         //            return ingredients
         //        }
         //        return ingredients.filter { $0.name.contains(searchingFor) }
-    }
-
-    func toggleInactiveIngredientsFilter() {
-        inactiveIngredientsFilter = inactiveIngredientsFilter ? false : true
     }
 
     func moveAction(from source: IndexSet, to destination: Int) {

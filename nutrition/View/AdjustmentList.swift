@@ -5,76 +5,64 @@ struct AdjustmentList: View {
     @EnvironmentObject var ingredientMgr: IngredientMgr
     @EnvironmentObject var adjustmentMgr: AdjustmentMgr
 
-    @State var inactiveIngredientsFilter: Bool = false
+    @State var showInactive: Bool = false
 
     var body: some View {
-        List {
-            ForEach(adjustmentMgr.get(includeInactive: inactiveIngredientsFilter)) { adjustment in
-                NavigationLink(destination: AdjustmentEdit(adjustment: adjustment),
-                               label: {
-                                   HStack {
-                                       Image(adjustment.name).resizable().aspectRatio(contentMode: .fit).frame(maxWidth: 50)
-                                       DoubleView(adjustment.name, adjustment.amount, adjustment.consumptionUnit)
-                                   }.frame(height: 50)
-                               })
-                  .foregroundColor(adjustment.active ? Color.black : Color.red)
-                  .swipeActions(edge: .leading) {
-                      Button {
-                          let newAdjustment = adjustmentMgr.toggleActive(adjustment)
-                          if newAdjustment!.active {
-                              ingredientMgr.activate(newAdjustment!.name)
+        VStack {
+            List {
+                Section(header: IngredientRowHeader(showMacros: false, nameWidth: 0.77)) {
+                    ForEach(adjustmentMgr.get(includeInactive: showInactive)) { adjustment in
+                        NavigationLink(destination: AdjustmentEdit(adjustment: adjustment),
+                                       label: {
+                                           IngredientRow(showMacros: false,
+                                                         nameWidth: 0.75,
+                                                         name: adjustment.name,
+                                                         amount: adjustment.amount,
+                                                         consumptionUnit: adjustment.consumptionUnit)
+                                       })
+                          .foregroundColor(adjustment.active ? Color.black : Color.red)
+                          .swipeActions(edge: .leading) {
+                              Button {
+                                  if adjustment.active || ingredientMgr.getIngredient(name: adjustment.name)!.available {
+                                      let newAdjustment = adjustmentMgr.toggleActive(adjustment)
+                                      print("  \(newAdjustment!.name) active: \(newAdjustment!.active)")
+                                  }
+                              } label: {
+                                  Label("", systemImage: !ingredientMgr.getIngredient(name: adjustment.name)!.available ? "circle.slash" : adjustment.active ? "pause.circle" : "play.circle")
+                              }
+                                .tint(!ingredientMgr.getIngredient(name: adjustment.name)!.available ? .gray : adjustment.active ? .red : .green)
                           }
-
-                      } label: {
-                          if adjustment.active {
-                              Label("Deactivate", systemImage: "pause.circle")
-                          } else {
-                              Label("Activate", systemImage: "play.circle")
+                          .swipeActions(edge: .trailing) {
+                              Button(role: .destructive) {
+                                  adjustmentMgr.delete(adjustment)
+                              } label: {
+                                  Label("Delete", systemImage: "trash.fill")
+                              }
                           }
-                      }
-                        .tint(adjustment.active ? .red : .green)
-                  }
-                  .swipeActions(edge: .trailing) {
-                      Button(role: .destructive) {
-                          adjustmentMgr.delete(adjustment)
-                      } label: {
-                          Label("Delete", systemImage: "trash.fill")
-                      }
-                  }
+                    }
+                      .onMove(perform: moveAction)
+                      .onDelete(perform: deleteAction)
+                }
             }
-              .onMove(perform: moveAction)
-              .onDelete(perform: deleteAction)
+              .environment(\.defaultMinListRowHeight, 5)
+              .padding([.leading, .trailing], -20)
+              .toolbar {
+                  ToolbarItem(placement: .navigation) {
+                      EditButton()
+                  }
+                  ToolbarItem(placement: .principal) {
+                      Button {
+                          showInactive.toggle()
+                          print("  Toggling showInactive: \(showInactive) (adjustment)")
+                      } label: {
+                          Image(systemName: !adjustmentMgr.inactiveIngredientsExist() ? "" : showInactive ? "eye" : "eye.slash")
+                      }
+                  }
+                  ToolbarItem(placement: .primaryAction) {
+                      NavigationLink("Add", destination: AdjustmentAdd())
+                  }
+              }
         }
-          .padding([.leading, .trailing], -20)
-          .toolbar {
-              ToolbarItem(placement: .navigation) {
-                  edit
-              }
-              ToolbarItem(placement: .principal) {
-                  toggle
-              }
-              ToolbarItem(placement: .primaryAction) {
-                  add
-              }
-          }
-    }
-
-    var edit: some View {
-        EditButton()
-    }
-
-    var toggle: some View {
-        Button(action: toggleInactiveIngredientsFilter) {
-            Text(adjustmentMgr.inactiveIngredientsExist() ? (inactiveIngredientsFilter ? "Hide Inactive" : "Show Inactive"): "").font(.caption)
-        }
-    }
-
-    var add: some View {
-        NavigationLink("Add", destination: AdjustmentAdd())
-    }
-
-    func toggleInactiveIngredientsFilter() {
-        inactiveIngredientsFilter = inactiveIngredientsFilter ? false : true
     }
 
     func moveAction(from source: IndexSet, to destination: Int) {

@@ -16,7 +16,7 @@ struct StringView: View {
     }
 
     var body: some View {
-        HStack(alignment: .lastTextBaseline) {
+        HStack(alignment: .bottom) {
             Text(text).myNameLabel()
             Spacer()
             Text(value).myValueLabel()
@@ -35,7 +35,7 @@ struct StringEdit: View {
     }
 
     var body: some View {
-        HStack(alignment: .lastTextBaseline) {
+        HStack(alignment: .bottom) {
             Text(text).myNameLabel()
             TextField(text, text: $value).myValue()
             Text("").myUnitValue()
@@ -55,7 +55,7 @@ struct IntView: View {
     }
 
     var body: some View {
-        HStack(alignment: .lastTextBaseline) {
+        HStack(alignment: .bottom) {
             Text(text).myNameLabel()
             Spacer()
             Text("\(value)").myValueLabel()
@@ -76,7 +76,7 @@ struct IntEdit: View {
     }
 
     var body: some View {
-        HStack(alignment: .lastTextBaseline) {
+        HStack(alignment: .bottom) {
             Text(text).myNameLabel()
             TextField(text, value: $value, formatter: NumberFormatter(), prompt: Text("Required")).keyboardType(.numberPad).myValue()
               .onReceive(NotificationCenter.default.publisher(for: UITextField.textDidBeginEditingNotification)) { obj in
@@ -103,7 +103,7 @@ struct DoubleView: View {
     }
 
     var body: some View {
-        HStack(alignment: .lastTextBaseline) {
+        HStack(alignment: .bottom) {
             Text(text).myNameLabel()
             Spacer()
             Text("\(value.fractionDigits(max: self.precision))").myValueLabel()
@@ -128,7 +128,7 @@ struct DoubleEdit: View {
     }
 
     var body: some View {
-        HStack(alignment: .lastTextBaseline) {
+        HStack(alignment: .bottom) {
             Text(text).myNameLabel()
             TextField(text, value: $value, formatter: formatter)
               .myValue()
@@ -155,7 +155,7 @@ struct PickerEdit: View {
     }
 
     var body: some View {
-        HStack(alignment: .lastTextBaseline) {
+        HStack(alignment: .bottom) {
             Text(text).myNameLabel()
             Spacer()
             Picker("", selection: $value) {
@@ -180,7 +180,7 @@ struct PickerUnitEdit: View {
     }
 
     var body: some View {
-        HStack(alignment: .lastTextBaseline) {
+        HStack(alignment: .bottom) {
             Text(text).myNameLabel()
             Spacer()
             Picker("", selection: $value) {
@@ -205,7 +205,7 @@ struct PickerGenderEdit: View {
     }
 
     var body: some View {
-        HStack(alignment: .lastTextBaseline) {
+        HStack(alignment: .bottom) {
             Text(text).myNameLabel()
             Spacer()
             Picker("", selection: $value) {
@@ -230,11 +230,11 @@ struct PickerIntEdit: View {
     }
 
     var body: some View {
-        HStack(alignment: .lastTextBaseline) {
+        HStack(alignment: .bottom) {
             Text(text).myNameLabel()
             Spacer()
             Picker("", selection: $value) {
-                ForEach(0..<options.count) {
+                ForEach(0..<options.count, id: \.self) {
                     Text(options[$0]).myValue()
                 }
             }.offset(x: 21)
@@ -253,10 +253,12 @@ struct ToggleEdit: View {
     }
 
     var body: some View {
-        HStack(alignment: .lastTextBaseline) {
+        HStack(alignment: .bottom) {
             Text(text).myNameLabel()
             Spacer()
-            Toggle("", isOn: $value).myValue()
+            Toggle("", isOn: $value)
+              .toggleStyle(CheckmarkToggleStyle())
+              .border(Color.black, width: 0)
             Text("").myUnitValue()
         }
     }
@@ -272,9 +274,14 @@ struct DateEdit: View {
     }
 
     var body: some View {
-        HStack(alignment: .lastTextBaseline) {
+        HStack(alignment: .bottom) {
             Text(text).myNameLabel()
-            DatePicker("", selection: $value, in: ...Date(), displayedComponents: [.date]).myValue().colorInvert().colorMultiply(Color.blue).offset(x: 5)
+            DatePicker("", selection: $value, in: ...Date(), displayedComponents: [.date])
+              .myValue()
+              .colorInvert()
+              .colorMultiply(Color.blue).offset(x: 5)
+              // .datePickerStyle(WheelDatePickerStyle())
+
             Text("").myUnitValue()
         }
     }

@@ -2,6 +2,7 @@
 
 ## P1
 
+- icon menu
 - Reset all (or one) bases to default amount (Reset single bases to default right right hand menu)
 - Format row
 - Custom tab bar
@@ -40,7 +41,9 @@
 - Disallow duplicate ingredients/base/adjustments
 - Capitalize each word of ingredients
 - Geometry flexibility for different devices
-
+- DatePicker/Sheet https://github.com/shaotaoliu/SwiftUI.DatePickerTextField/tree/main/DatePickerTextField
+- Hover effects
+- Add brand information to ingredients, determine how to display (hover, et al)
 
 ## Future
 - Logging
