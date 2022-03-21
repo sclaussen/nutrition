@@ -10,32 +10,32 @@ struct IngredientEdit: View {
     var body: some View {
         Form {
             Section {
-                StringEdit("Name", $ingredient.name)
+                NVStringEdit("Name", $ingredient.name)
             }
             Section {
-                DoubleEdit("Serving Size", $ingredient.servingSize, Unit.gram)
-                DoubleEdit("Calories", $ingredient.calories, Unit.calorie)
-                DoubleEdit("Fat", $ingredient.fat, Unit.gram)
-                DoubleEdit("Fiber", $ingredient.fiber, Unit.gram)
-                DoubleEdit("Net Carbs", $ingredient.netcarbs, Unit.gram)
-                DoubleEdit("Protein", $ingredient.protein, Unit.gram)
+                NVDoubleEdit("Serving Size", $ingredient.servingSize, Unit.gram)
+                NVDoubleEdit("Calories", $ingredient.calories, Unit.calorie)
+                NVDoubleEdit("Fat", $ingredient.fat, Unit.gram)
+                NVDoubleEdit("Fiber", $ingredient.fiber, Unit.gram)
+                NVDoubleEdit("Net Carbs", $ingredient.netcarbs, Unit.gram)
+                NVDoubleEdit("Protein", $ingredient.protein, Unit.gram)
             }
             Section(header: Text("Ingredient Consumption")) {
-                PickerUnitEdit("Consumption Unit", $ingredient.consumptionUnit, options: Unit.ingredientOptions())
-                DoubleEdit("Grams / Unit", $ingredient.consumptionGrams, Unit.gram)
+                NVPickerUnitEdit("Consumption Unit", $ingredient.consumptionUnit, options: Unit.ingredientOptions())
+                NVDoubleEdit("Grams / Unit", $ingredient.consumptionGrams, Unit.gram)
             }
             Section {
-                ToggleEdit("Meat", $ingredient.meat)
+                NVToggleEdit("Meat", $ingredient.meat)
                 if ingredient.meat {
-                    DoubleEdit("Meat Amount", $ingredient.meatAmount, Unit.gram)
+                    NVDoubleEdit("Meat Amount", $ingredient.meatAmount, Unit.gram)
                 }
             }
             if ingredient.meat {
                 ForEach(0..<ingredient.meatAdjustments.count, id: \.self) { index in
                     Section(header: Text("Base Meal Adjustment " + String(index + 1))) {
-                        PickerEdit("Ingredient", $ingredient.meatAdjustments[index].name, options: ingredientMgr.getPickerOptions(existing: []))
+                        NVPickerEdit("Ingredient", $ingredient.meatAdjustments[index].name, options: ingredientMgr.getPickerOptions(existing: []))
                         if ingredient.meatAdjustments[index].name.count > 0 {
-                            DoubleEdit("Amount", $ingredient.meatAdjustments[index].amount, ingredientMgr.getIngredient(name: ingredient.meatAdjustments[index].name)!.consumptionUnit, negative: true)
+                            NVDoubleEdit("Amount", $ingredient.meatAdjustments[index].amount, ingredientMgr.getIngredient(name: ingredient.meatAdjustments[index].name)!.consumptionUnit, negative: true)
                         }
                     }
                 }
@@ -47,11 +47,11 @@ struct IngredientEdit: View {
                 }
             }
             Section {
-                DoubleView("Calories (per 100g)", ingredient.calories100, Unit.gram, precision: 1)
-                DoubleView("Fat (per 100g)", ingredient.fat100, Unit.gram, precision: 1)
-                DoubleView("Fiber (per 100g)", ingredient.fiber100, Unit.gram, precision: 1)
-                DoubleView("Net Carbs (per 100g)", ingredient.netcarbs100, Unit.gram, precision: 1)
-                DoubleView("Protein (per 100g)", ingredient.protein100, Unit.gram, precision: 1)
+                NVDouble("Calories (per 100g)", ingredient.calories100, Unit.gram, precision: 1)
+                NVDouble("Fat (per 100g)", ingredient.fat100, Unit.gram, precision: 1)
+                NVDouble("Fiber (per 100g)", ingredient.fiber100, Unit.gram, precision: 1)
+                NVDouble("Net Carbs (per 100g)", ingredient.netcarbs100, Unit.gram, precision: 1)
+                NVDouble("Protein (per 100g)", ingredient.protein100, Unit.gram, precision: 1)
             }
         }
           .padding([.leading, .trailing], -20)

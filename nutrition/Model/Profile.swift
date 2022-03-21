@@ -7,8 +7,7 @@ class ProfileMgr: ObservableObject {
         if let json = UserDefaults.standard.data(forKey: "profile"),
            let profile = try? JSONDecoder().decode(Profile.self, from: json) {
             self.profile = profile
-            print("...deserialized [")
-            print("]")
+            print("...deserialized profile")
             return
         }
 
@@ -18,82 +17,54 @@ class ProfileMgr: ObservableObject {
         components.year = 1967
         components.month = 9
         components.day = 27
-        self.profile = Profile(dateOfBirth: Calendar.current.date(from: components)!, gender: Gender.male, height: 72, weight: 184, bodyFat: 20, activeEnergy: 200, proteinRatio: 0.85, calorieDeficit: 20, netcarbsGoalUnadjusted: 20, meat: "Chicken", meatAmount: 200)
+        self.profile = Profile(dateOfBirth: Calendar.current.date(from: components)!, gender: Gender.male, height: 72, bodyMass: 184, bodyFatPercentage: 20, activeEnergy: 200, proteinRatio: 0.85, calorieDeficit: 20, netcarbsGoalUnadjusted: 20, meat: "Chicken", meatAmount: 200)
     }
 
     func cancel() {
         if let json = UserDefaults.standard.data(forKey: "profile"),
            let profile = try? JSONDecoder().decode(Profile.self, from: json) {
             self.profile = profile
-            print("...deserialized [")
-            print("]")
+            print("...deserialized profile")
         }
     }
 
-    func save() {
+    func setBodyMass(bodyMass: Double) {
+        self.profile = profile.setBodyMass(bodyMass: bodyMass)
+        serialize()
+    }
+
+    func setBodyFatPercentage(bodyFatPercentage: Double) {
+        self.profile = profile.setBodyFatPercentage(bodyFatPercentage: bodyFatPercentage)
+        serialize()
+    }
+
+    func serialize() {
         if let json = try? JSONEncoder().encode(profile) {
             UserDefaults.standard.set(json, forKey: "profile")
-            print("...serialized [")
-            print("]")
+            print("...serializing profile")
         }
     }
 }
 
 struct Profile: Codable {
-    var dateOfBirth: Date {
-        didSet {
-            print("dateOfBirth \(dateOfBirth)")
-        }
+    var dateOfBirth: Date
+    var gender: Gender
+    var height: Int
+    var bodyMass: Double
+    var bodyFatPercentage: Double
+    var activeEnergy: Int
+    var proteinRatio: Double
+    var calorieDeficit: Int
+    var netcarbsGoalUnadjusted: Double
+    var meat: String
+    var meatAmount: Double
+
+    func setBodyMass(bodyMass: Double) -> Profile {
+        return Profile(dateOfBirth: self.dateOfBirth, gender: self.gender, height: self.height, bodyMass: bodyMass, bodyFatPercentage: self.bodyFatPercentage, activeEnergy: self.activeEnergy, proteinRatio: self.proteinRatio, calorieDeficit: self.calorieDeficit, netcarbsGoalUnadjusted: self.netcarbsGoalUnadjusted, meat: self.meat, meatAmount: self.meatAmount)
     }
-    var gender: Gender {
-        didSet {
-            print("gender \(gender)")
-        }
-    }
-    var height: Int {
-        didSet {
-            print("height \(height)")
-        }
-    }
-    var weight: Double {
-        didSet {
-            print("weight \(weight)")
-        }
-    }
-    var bodyFat: Double {
-        didSet {
-            print("bodyFat \(bodyFat)")
-        }
-    }
-    var activeEnergy: Int {
-        didSet {
-            print("activeEnergy \(activeEnergy)")
-        }
-    }
-    var proteinRatio: Double {
-        didSet {
-            print("proteinRatio \(proteinRatio)")
-        }
-    }
-    var calorieDeficit: Int {
-        didSet {
-            print("calorieDeficit \(calorieDeficit)")
-        }
-    }
-    var netcarbsGoalUnadjusted: Double {
-        didSet {
-            print("netcarbsGoalUnadjusted \(netcarbsGoalUnadjusted)")
-        }
-    }
-    var meat: String {
-        didSet {
-            print("meat \(meat)")
-        }
-    }
-    var meatAmount: Double {
-        didSet {
-            print("meatAmount \(meatAmount)")
-        }
+
+    func setBodyFatPercentage(bodyFatPercentage: Double) -> Profile {
+        return Profile(dateOfBirth: self.dateOfBirth, gender: self.gender, height: self.height, bodyMass: self.bodyMass, bodyFatPercentage: bodyFatPercentage, activeEnergy: self.activeEnergy, proteinRatio: self.proteinRatio, calorieDeficit: self.calorieDeficit, netcarbsGoalUnadjusted: self.netcarbsGoalUnadjusted, meat: self.meat, meatAmount: self.meatAmount)
     }
 
     var age: Double {
@@ -101,8 +72,8 @@ struct Profile: Codable {
         return Double(ageInMonths) / 12.0
     }
 
-    var weightKg: Double {
-        (self.weight * 0.453592).round(1)
+    var bodyMassKg: Double {
+        (self.bodyMass * 0.453592).round(1)
     }
 
     var heightCm: Double {
@@ -110,23 +81,23 @@ struct Profile: Codable {
     }
 
     var bodyMassIndex: Double {
-        (self.weight / Double(self.height * self.height)) * 703
+        (self.bodyMass / Double(self.height * self.height)) * 703
     }
 
     var fatMass: Double {
-        (self.weight * (self.bodyFat / 100)).round(1)
+        (self.bodyMass * (self.bodyFatPercentage / 100)).round(1)
     }
 
     var leanBodyMass: Double {
-        (self.weight - self.fatMass).round(1)
+        (self.bodyMass - self.fatMass).round(1)
     }
 
     var caloriesBaseMetabolicRate: Double {
         if gender == Gender.male {
-            return (self.weightKg * 9.99) + (self.heightCm * 6.25) - (self.age * 4.92 + 5)
+            return (self.bodyMassKg * 9.99) + (self.heightCm * 6.25) - (self.age * 4.92 + 5)
         }
 
-        return (self.weightKg * 9.99) + (self.heightCm * 6.25) - (self.age * 4.92 - 161)
+        return (self.bodyMassKg * 9.99) + (self.heightCm * 6.25) - (self.age * 4.92 - 161)
     }
 
     var caloriesResting: Double {
@@ -194,6 +165,6 @@ struct Profile: Codable {
     }
 
     var waterLiters: Double {
-        (self.weight / 2) * 0.029574
+        (self.bodyMass / 2) * 0.029574
     }
 }

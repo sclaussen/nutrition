@@ -9,28 +9,26 @@ struct AdjustmentAdd: View {
     @State var name: String = ""
     @State var amount: Double = 0
     @State var constraints: Bool = false
-    @State var minimum: Double = 0
     @State var maximum: Double = 0
     @State var group: String = ""
 
     var body: some View {
         Form {
             Section {
-                PickerEdit("Ingredient", $name, options: ingredientMgr.getPickerOptions(existing: adjustmentMgr.getNames()))
+                NVPickerEdit("Ingredient", $name, options: ingredientMgr.getPickerOptions(existing: adjustmentMgr.getNames()))
                 if name.count > 0 {
-                    DoubleEdit("Amount", $amount, ingredientMgr.getIngredient(name: name)!.consumptionUnit)
+                    NVDoubleEdit("Amount", $amount, ingredientMgr.getIngredient(name: name)!.consumptionUnit)
                 }
             }
             if name.count > 0 {
                 Section {
-                    ToggleEdit("Constraints", $constraints)
+                    NVToggleEdit("Constraints", $constraints)
                     if constraints {
-                        DoubleEdit("Minimum", $minimum)
-                        DoubleEdit("Maximum", $maximum)
+                        NVDoubleEdit("Maximum", $maximum)
                     }
                 }
                 Section {
-                    StringEdit("Group", $group)
+                    NVStringEdit("Group", $group)
                 }
             }
         }

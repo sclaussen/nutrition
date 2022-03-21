@@ -30,33 +30,33 @@ struct IngredientAdd: View {
     var body: some View {
         Form {
             Section {
-                StringEdit("Name", $name)
+                NVStringEdit("Name", $name)
                   .autocapitalization(UITextAutocapitalizationType.words)
             }
             Section {
-                DoubleEdit("Serving Size", $servingSize, Unit.gram)
-                DoubleEdit("Calories", $calories, Unit.calorie)
-                DoubleEdit("Fat", $fat, Unit.gram)
-                DoubleEdit("Fiber", $fiber, Unit.gram)
-                DoubleEdit("Net Carbs", $netcarbs, Unit.gram)
-                DoubleEdit("Protein", $protein, Unit.gram)
+                NVDoubleEdit("Serving Size", $servingSize, Unit.gram)
+                NVDoubleEdit("Calories", $calories, Unit.calorie)
+                NVDoubleEdit("Fat", $fat, Unit.gram)
+                NVDoubleEdit("Fiber", $fiber, Unit.gram)
+                NVDoubleEdit("Net Carbs", $netcarbs, Unit.gram)
+                NVDoubleEdit("Protein", $protein, Unit.gram)
             }
             Section(header: Text("Ingredient Consumption")) {
-                PickerUnitEdit("Consumption Unit", $consumptionUnit, options: Unit.ingredientOptions())
-                DoubleEdit("Grams / Unit", $consumptionGrams, Unit.gram)
+                NVPickerUnitEdit("Consumption Unit", $consumptionUnit, options: Unit.ingredientOptions())
+                NVDoubleEdit("Grams / Unit", $consumptionGrams, Unit.gram)
             }
             Section {
-                ToggleEdit("Meat", $meat)
+                NVToggleEdit("Meat", $meat)
                 if meat {
-                    DoubleEdit("Meat Amount", $meatAmount, Unit.gram)
+                    NVDoubleEdit("Meat Amount", $meatAmount, Unit.gram)
                 }
             }
             if meat {
                 ForEach(0..<adjustmentCount, id: \.self) { index in
                     Section(header: Text("Base Meal Adjustment " + String(index + 1))) {
-                        PickerEdit("Ingredient", $meatAdjustments[index].name, options: ingredientMgr.getPickerOptions(existing: []))
+                        NVPickerEdit("Ingredient", $meatAdjustments[index].name, options: ingredientMgr.getPickerOptions(existing: []))
                         if meatAdjustments[index].name.count > 0 {
-                            DoubleEdit("Amount", $meatAdjustments[index].amount, ingredientMgr.getIngredient(name: meatAdjustments[index].name)!.consumptionUnit, negative: true)
+                            NVDoubleEdit("Amount", $meatAdjustments[index].amount, ingredientMgr.getIngredient(name: meatAdjustments[index].name)!.consumptionUnit, negative: true)
                         }
                     }
                 }

@@ -12,8 +12,8 @@ class AdjustmentMgr: ObservableObject {
         adjustments.append(Adjustment(name: "Mackerel", amount: 1, consumptionUnit: Unit.can, group: "fish", constraints: true, maximum: 2))
         adjustments.append(Adjustment(name: "Sardines", amount: 1, consumptionUnit: Unit.can, group: "fish", constraints: true, maximum: 2))
         adjustments.append(Adjustment(name: "Smoked Sardines", amount: 1, consumptionUnit: Unit.can, group: "fish", constraints: true, maximum: 2))
-        adjustments.append(Adjustment(name: "Eggs", amount: 1, consumptionUnit: Unit.egg, constraints: true, minimum: 4, maximum: 7))
-        adjustments.append(Adjustment(name: "Extra Virgin Olive Oil", amount: 0.25, consumptionUnit: Unit.tablespoon, constraints: true, minimum: 2, maximum: 6))
+        adjustments.append(Adjustment(name: "Eggs", amount: 1, consumptionUnit: Unit.egg, constraints: true, maximum: 7))
+        adjustments.append(Adjustment(name: "Extra Virgin Olive Oil", amount: 0.25, consumptionUnit: Unit.tablespoon, constraints: true, maximum: 6))
         adjustments.append(Adjustment(name: "Broccoli", amount: 20, consumptionUnit: Unit.gram, group: "vege", constraints: true, maximum: 300))
         adjustments.append(Adjustment(name: "Cauliflower", amount: 20, consumptionUnit: Unit.gram, group: "vege", constraints: true, maximum: 300))
         adjustments.append(Adjustment(name: "String Cheese", amount: 1, consumptionUnit: Unit.stick))
@@ -116,27 +116,25 @@ struct Adjustment: Codable, Identifiable {
     var group: String
 
     var constraints : Bool
-    var minimum: Double
     var maximum: Double
     var active: Bool
 
-    init(id: String = UUID().uuidString, name: String, amount: Double, consumptionUnit: Unit = Unit.gram, group: String = "", constraints: Bool = false, minimum: Double = 0, maximum: Double = 0, active: Bool = true) {
+    init(id: String = UUID().uuidString, name: String, amount: Double, consumptionUnit: Unit = Unit.gram, group: String = "", constraints: Bool = false, maximum: Double = 0, active: Bool = true) {
         self.id = id
         self.name = name
         self.amount = amount
         self.consumptionUnit = consumptionUnit
         self.group = group
         self.constraints = constraints
-        self.minimum = minimum
         self.maximum = maximum
         self.active = active
     }
 
     func toggleActive() -> Adjustment {
-        return Adjustment(id: id, name: name, amount: amount, consumptionUnit: consumptionUnit, group: group, constraints: constraints, minimum: minimum, maximum: maximum, active: !active)
+        return Adjustment(id: id, name: name, amount: amount, consumptionUnit: consumptionUnit, group: group, constraints: constraints, maximum: maximum, active: !active)
     }
 
     func update(adjustment: Adjustment) -> Adjustment {
-        return Adjustment(id: adjustment.id, name: adjustment.name, amount: adjustment.amount, consumptionUnit: adjustment.consumptionUnit, group: adjustment.group, constraints: adjustment.constraints, minimum: adjustment.minimum, maximum: adjustment.maximum, active: adjustment.active)
+        return Adjustment(id: adjustment.id, name: adjustment.name, amount: adjustment.amount, consumptionUnit: adjustment.consumptionUnit, group: adjustment.group, constraints: adjustment.constraints, maximum: adjustment.maximum, active: adjustment.active)
     }
 }

@@ -12,9 +12,9 @@ struct MealAdd: View {
     var body: some View {
         Form {
             Section {
-                PickerEdit("Meal Ingredient", $name, options: ingredientMgr.getPickerOptions(existing: mealIngredientMgr.getNames()))
+                NVPickerEdit("Meal Ingredient", $name, options: ingredientMgr.getPickerOptions(existing: mealIngredientMgr.getNames()))
                 if name.count > 0 {
-                    DoubleEdit("Amount", $defaultAmount, ingredientMgr.getIngredient(name: name)!.consumptionUnit)
+                    NVDoubleEdit("Amount", $defaultAmount, ingredientMgr.getIngredient(name: name)!.consumptionUnit)
                 }
             }
         }

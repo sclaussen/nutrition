@@ -2,14 +2,16 @@
 
 ## P1
 
-- icon menu
+- Recalculate macros for inactive meal ingredients
+- Health Kit
+  https://developer.apple.com/documentation/healthkit/setting_up_healthkit
 - Reset all (or one) bases to default amount (Reset single bases to default right right hand menu)
-- Format row
 - Custom tab bar
 - Custom nav bar
 - Retrieve weight/fat percentage from healthkit/garmin/healthmate (HealthKit integration)
 - Do not allow the meat adjustment to be edited in the edit dialog, or, allow it but update profile
 - Lock down mealGen so additional ingredients can be added w/out re-gen
+- Quick actions (icon menu)
 
 
 ## P2
@@ -33,7 +35,7 @@
 - List/ForEach or just List(items, ...)?
 - Fix delete swipe action on lists
 - Fix ing/adj so they don't serialize on each character typed
-
+- Add new ingredient with auto-add options for also adding to adjustments/meals
 
 ## P4
 - Combine input fields into single view w/generics
@@ -44,6 +46,7 @@
 - DatePicker/Sheet https://github.com/shaotaoliu/SwiftUI.DatePickerTextField/tree/main/DatePickerTextField
 - Hover effects
 - Add brand information to ingredients, determine how to display (hover, et al)
+- Dark mode support
 
 ## Future
 - Logging

@@ -29,6 +29,10 @@ class MealIngredientMgr: ObservableObject {
         mealIngredients.append(MealIngredient(name: "String Cheese", defaultAmount: 1, amount: 1, consumptionUnit: Unit.stick, active: false))
         mealIngredients.append(MealIngredient(name: "Dry Roasted Peanuts (unsalted)", defaultAmount: 28, amount: 28, consumptionUnit: Unit.gram, active: false))
         mealIngredients.append(MealIngredient(name: "Mint Chocolate Ice Cream", defaultAmount: 28, amount: 28, consumptionUnit: Unit.gram, active: false))
+        mealIngredients.append(MealIngredient(name: "Dark Chocolate (Divine)", defaultAmount: 1, amount: 1, consumptionUnit: Unit.block, active: false))
+        mealIngredients.append(MealIngredient(name: "Keto Bite (Mint)", defaultAmount: 1, amount: 1, consumptionUnit: Unit.whole, active: false))
+        mealIngredients.append(MealIngredient(name: "Keto Bite (Macadamia)", defaultAmount: 1, amount: 1, consumptionUnit: Unit.whole, active: false))
+        mealIngredients.append(MealIngredient(name: "Cheddar Cheese", defaultAmount: 1, amount: 1, consumptionUnit: Unit.slice, active: false))
     }
 
     func serialize() {
@@ -52,7 +56,7 @@ class MealIngredientMgr: ObservableObject {
                 defaultAmount: Double,
                 amount: Double,
                 consumptionUnit: Unit,
-                compensantionExists: Bool = false,
+                compensationExists: Bool = false,
                 compensationCreated: Bool = false,
                 compensationInitialAmount: Double = 0,
                 compensationInitialState: Bool = true) {
@@ -61,7 +65,7 @@ class MealIngredientMgr: ObservableObject {
                                             defaultAmount: defaultAmount,
                                             amount: amount,
                                             consumptionUnit: consumptionUnit,
-                                            compensantionExists: compensantionExists,
+                                            compensationExists: compensationExists,
                                             compensationCreated: compensationCreated,
                                             compensationInitialAmount: compensationInitialAmount,
                                             compensationInitialState: compensationInitialState)
@@ -138,7 +142,13 @@ class MealIngredientMgr: ObservableObject {
             mealIngredients[index] = mealIngredients[index].adjust(amount: amount)
         } else {
             print("  Creating " + name + " \(amount)")
-            create(name: name, defaultAmount: amount, amount: amount, consumptionUnit: consumptionUnit, compensantionExists: true, compensationCreated: true)
+            create(name: name, defaultAmount: amount, amount: amount, consumptionUnit: consumptionUnit, compensationExists: true, compensationCreated: true)
+        }
+    }
+
+    func resetAmount(name: String) {
+        if let index = mealIngredients.firstIndex(where: { $0.name == name }) {
+            mealIngredients[index] = mealIngredients[index].resetAmount()
         }
     }
 
@@ -149,8 +159,7 @@ class MealIngredientMgr: ObservableObject {
     }
 
     func rollbackAll() {
-        for mealIngredient in mealIngredients.filter({ $0.compensantionExists }) {
-
+        for mealIngredient in mealIngredients.filter({ $0.compensationExists }) {
             if mealIngredient.compensationCreated {
                 delete(mealIngredient)
                 continue
@@ -183,7 +192,7 @@ class MealIngredientMgr: ObservableObject {
 
     func p() {
         for mealIngredient in get() {
-            print(mealIngredient.name + " \(mealIngredient.amount)")
+            print(mealIngredient.name + " \(mealIngredient.amount) \(mealIngredient.compensationExists)")
         }
     }
 }
@@ -203,7 +212,7 @@ struct MealIngredient: Codable, Identifiable {
     var netcarbs: Double
     var protein: Double
 
-    var compensantionExists: Bool
+    var compensationExists: Bool
     var compensationCreated: Bool
     var compensationInitialAmount: Double
     var compensationInitialState: Bool
@@ -220,7 +229,7 @@ struct MealIngredient: Codable, Identifiable {
          fiber: Double = 0,
          netcarbs: Double = 0,
          protein: Double = 0,
-         compensantionExists: Bool = false,
+         compensationExists: Bool = false,
          compensationCreated: Bool = false,
          compensationInitialAmount: Double = 0,
          compensationInitialState: Bool = true,
@@ -240,7 +249,7 @@ struct MealIngredient: Codable, Identifiable {
         self.netcarbs = netcarbs
         self.protein = protein
 
-        self.compensantionExists = compensantionExists
+        self.compensationExists = compensationExists
         self.compensationCreated = compensationCreated
         self.compensationInitialAmount = compensationInitialAmount
         self.compensationInitialState = compensationInitialState
@@ -249,37 +258,42 @@ struct MealIngredient: Codable, Identifiable {
     }
 
     func toggleActive() -> MealIngredient {
-        return MealIngredient(id: id, name: name, defaultAmount: defaultAmount, amount: amount, consumptionUnit: consumptionUnit, calories: calories, fat: fat, fiber: fiber, netcarbs: netcarbs, protein: protein, compensantionExists: compensantionExists, compensationCreated: compensationCreated, compensationInitialAmount: compensationInitialAmount, compensationInitialState: compensationInitialState, active: !active);
+        return MealIngredient(id: id, name: name, defaultAmount: defaultAmount, amount: amount, consumptionUnit: consumptionUnit, calories: calories, fat: fat, fiber: fiber, netcarbs: netcarbs, protein: protein, compensationExists: compensationExists, compensationCreated: compensationCreated, compensationInitialAmount: compensationInitialAmount, compensationInitialState: compensationInitialState, active: !active);
     }
 
     func resetMacros() -> MealIngredient {
-        return MealIngredient(id: id, name: name, defaultAmount: defaultAmount, amount: amount, consumptionUnit: consumptionUnit, calories: 0, fat: 0, fiber: 0, netcarbs: 0, protein: 0, compensantionExists: compensantionExists, compensationCreated: compensationCreated, compensationInitialAmount: compensationInitialAmount, compensationInitialState: compensationInitialState, active: active);
+        return MealIngredient(id: id, name: name, defaultAmount: defaultAmount, amount: amount, consumptionUnit: consumptionUnit, calories: 0, fat: 0, fiber: 0, netcarbs: 0, protein: 0, compensationExists: compensationExists, compensationCreated: compensationCreated, compensationInitialAmount: compensationInitialAmount, compensationInitialState: compensationInitialState, active: active);
     }
 
     func addMacros(calories: Double, fat: Double, fiber: Double, netcarbs: Double, protein: Double) -> MealIngredient {
-        return MealIngredient(id: id, name: name, defaultAmount: defaultAmount, amount: amount, consumptionUnit: consumptionUnit, calories: self.calories + calories, fat: self.fat + fat, fiber: self.fiber + fiber, netcarbs: self.netcarbs + netcarbs, protein: self.protein + protein, compensantionExists: compensantionExists, compensationCreated: compensationCreated, compensationInitialAmount: compensationInitialAmount, compensationInitialState: compensationInitialState, active: active);
+        return MealIngredient(id: id, name: name, defaultAmount: defaultAmount, amount: amount, consumptionUnit: consumptionUnit, calories: self.calories + calories, fat: self.fat + fat, fiber: self.fiber + fiber, netcarbs: self.netcarbs + netcarbs, protein: self.protein + protein, compensationExists: compensationExists, compensationCreated: compensationCreated, compensationInitialAmount: compensationInitialAmount, compensationInitialState: compensationInitialState, active: active);
     }
 
     func adjust(amount: Double, active: Bool = true) -> MealIngredient {
-        if !compensantionExists && !active {
+        if !compensationExists && !active {
             print("  Adjusting (activating - and storing compensation) " + name + " \(amount)")
-            return MealIngredient(id: self.id, name: self.name, defaultAmount: self.defaultAmount, amount: amount, consumptionUnit: self.consumptionUnit, calories: calories, fat: fat, fiber: fiber, netcarbs: netcarbs, protein: protein, compensantionExists: true, compensationCreated: false, compensationInitialAmount: self.amount, compensationInitialState: self.active, active: true)
-        } else if !compensantionExists {
+            return MealIngredient(id: self.id, name: self.name, defaultAmount: self.defaultAmount, amount: amount, consumptionUnit: self.consumptionUnit, calories: calories, fat: fat, fiber: fiber, netcarbs: netcarbs, protein: protein, compensationExists: true, compensationCreated: false, compensationInitialAmount: self.amount, compensationInitialState: self.active, active: true)
+        } else if !compensationExists {
             print("  Adjusting (and storing compensation) " + name + " \(amount)")
-            return MealIngredient(id: self.id, name: self.name, defaultAmount: self.defaultAmount, amount: self.amount + amount, consumptionUnit: self.consumptionUnit, calories: calories, fat: fat, fiber: fiber, netcarbs: netcarbs, protein: protein, compensantionExists: true, compensationCreated: false, compensationInitialAmount: self.amount, compensationInitialState: self.active, active: true)
+            return MealIngredient(id: self.id, name: self.name, defaultAmount: self.defaultAmount, amount: self.amount + amount, consumptionUnit: self.consumptionUnit, calories: calories, fat: fat, fiber: fiber, netcarbs: netcarbs, protein: protein, compensationExists: true, compensationCreated: false, compensationInitialAmount: self.amount, compensationInitialState: self.active, active: true)
         }
 
         print("  Adjusting " + name + " \(amount)")
-        return MealIngredient(id: self.id, name: self.name, defaultAmount: self.defaultAmount, amount: self.amount + amount, consumptionUnit: self.consumptionUnit, calories: calories, fat: fat, fiber: fiber, netcarbs: netcarbs, protein: protein, compensantionExists: self.compensantionExists, compensationCreated: self.compensationCreated, compensationInitialAmount: self.compensationInitialAmount, compensationInitialState: self.compensationInitialState, active: true)
+        return MealIngredient(id: self.id, name: self.name, defaultAmount: self.defaultAmount, amount: self.amount + amount, consumptionUnit: self.consumptionUnit, calories: calories, fat: fat, fiber: fiber, netcarbs: netcarbs, protein: protein, compensationExists: self.compensationExists, compensationCreated: self.compensationCreated, compensationInitialAmount: self.compensationInitialAmount, compensationInitialState: self.compensationInitialState, active: true)
     }
 
     func rollback() -> MealIngredient {
         print("  Rollback " + name + " to \(compensationInitialAmount)")
-        return MealIngredient(id: self.id, name: self.name, defaultAmount: self.defaultAmount, amount: self.compensationInitialAmount, consumptionUnit: self.consumptionUnit, calories: calories, fat: fat, fiber: fiber, netcarbs: netcarbs, protein: protein, compensantionExists: false, compensationCreated: false, compensationInitialAmount: 0, compensationInitialState: false, active: compensationInitialState)
+        return MealIngredient(id: self.id, name: self.name, defaultAmount: self.defaultAmount, amount: self.compensationInitialAmount, consumptionUnit: self.consumptionUnit, calories: calories, fat: fat, fiber: fiber, netcarbs: netcarbs, protein: protein, compensationExists: false, compensationCreated: false, compensationInitialAmount: 0, compensationInitialState: false, active: compensationInitialState)
+    }
+
+    func resetAmount() -> MealIngredient {
+        print("  Reset amount " + name + " Old: \(amount) New: \(defaultAmount)")
+        return MealIngredient(id: id, name: name, defaultAmount: defaultAmount, amount: defaultAmount, consumptionUnit: consumptionUnit, calories: calories, fat: fat, fiber: fiber, netcarbs: netcarbs, protein: protein, compensationExists: self.compensationExists, compensationCreated: self.compensationCreated, compensationInitialAmount: self.compensationInitialAmount, compensationInitialState: self.compensationInitialState, active: active);
     }
 
     func update(mealIngredient: MealIngredient) -> MealIngredient {
         print("  Update " + mealIngredient.name + " \(mealIngredient.amount)")
-        return MealIngredient(id: mealIngredient.id, name: mealIngredient.name, defaultAmount: mealIngredient.defaultAmount, amount: mealIngredient.amount, consumptionUnit: mealIngredient.consumptionUnit, calories: calories, fat: fat, fiber: fiber, netcarbs: netcarbs, protein: protein, compensantionExists: self.compensantionExists, compensationCreated: self.compensationCreated, compensationInitialAmount: self.compensationInitialAmount, compensationInitialState: self.compensationInitialState, active: mealIngredient.active);
+        return MealIngredient(id: mealIngredient.id, name: mealIngredient.name, defaultAmount: mealIngredient.defaultAmount, amount: mealIngredient.amount, consumptionUnit: mealIngredient.consumptionUnit, calories: calories, fat: fat, fiber: fiber, netcarbs: netcarbs, protein: protein, compensationExists: self.compensationExists, compensationCreated: self.compensationCreated, compensationInitialAmount: self.compensationInitialAmount, compensationInitialState: self.compensationInitialState, active: mealIngredient.active);
     }
 }

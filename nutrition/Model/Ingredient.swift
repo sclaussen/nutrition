@@ -15,9 +15,10 @@ class IngredientMgr: ObservableObject {
         ingredients.append(Ingredient(name: "Chicken", servingSize: 100, calories: 115, fat: 2.7, fiber: 0, netcarbs: 0, protein: 22, consumptionUnit: Unit.gram, consumptionGrams: 1, meat: true, meatAmount: 250))
         ingredients.append(Ingredient(name: "Beef", servingSize: 100, calories: 214, fat: 15.2, fiber: 0, netcarbs: 0, protein: 19, consumptionUnit: Unit.gram, consumptionGrams: 1, meat: true, meatAmount: 150,
                                       meatAdjustments: [ MeatAdjustment(name: "Eggs", amount: -1, consumptionUnit: Unit.egg),
-                                                         MeatAdjustment(name: "Extra Virgin Olive Oil", amount: -1, consumptionUnit: Unit.tablespoon),
-                                                         MeatAdjustment(name: "Mackerel", amount: 1, consumptionUnit: Unit.can),
-                                                         MeatAdjustment(name: "Dark Chocolate (Divine)", amount: 1, consumptionUnit: Unit.block) ]))
+                                                         MeatAdjustment(name: "Extra Virgin Olive Oil", amount: -1, consumptionUnit: Unit.tablespoon) ]))
+        ingredients.append(Ingredient(name: "Bison", servingSize: 112, calories: 160, fat: 8, fiber: 0, netcarbs: 0, protein: 23, consumptionUnit: Unit.gram, consumptionGrams: 1, meat: true, meatAmount: 150,
+                                      meatAdjustments: [ MeatAdjustment(name: "Eggs", amount: -1, consumptionUnit: Unit.egg),
+                                                         MeatAdjustment(name: "Extra Virgin Olive Oil", amount: -1, consumptionUnit: Unit.tablespoon) ]))
         ingredients.append(Ingredient(name: "Lamb", servingSize: 85, calories: 253, fat: 22, fiber: 0, netcarbs: 0.19, protein: 13.09, consumptionUnit: Unit.gram, consumptionGrams: 1, meat: true, meatAmount: 150,
                                       meatAdjustments: [ MeatAdjustment(name: "Eggs", amount: -1, consumptionUnit: Unit.egg),
                                                          MeatAdjustment(name: "Extra Virgin Olive Oil", amount: -1, consumptionUnit: Unit.tablespoon) ], available: false))
@@ -25,7 +26,7 @@ class IngredientMgr: ObservableObject {
                                       meatAdjustments: [ MeatAdjustment(name: "Eggs", amount: -1, consumptionUnit: Unit.egg),
                                                          MeatAdjustment(name: "Extra Virgin Olive Oil", amount: -1, consumptionUnit: Unit.tablespoon) ]))
         ingredients.append(Ingredient(name: "Salmon", servingSize: 112, calories: 150, fat: 5, fiber: 0, netcarbs: 0, protein: 25, consumptionUnit: Unit.gram, consumptionGrams: 1, meat: true,
-                                       meatAdjustments: [ MeatAdjustment(name: "Fish Oil", amount: -1, consumptionUnit: Unit.tablespoon) ]))
+                                      meatAdjustments: [ MeatAdjustment(name: "Fish Oil", amount: -1, consumptionUnit: Unit.tablespoon) ]))
         ingredients.append(Ingredient(name: "Top Sirloin Cap", servingSize: 238, calories: 125, fat: 14, fiber: 0, netcarbs: 0, protein: 51, consumptionUnit: Unit.gram, consumptionGrams: 1, meat: true, available: false))
         ingredients.append(Ingredient(name: "Argentine Red Shrimp", servingSize: 110, calories: 100, fat: 1.5, fiber: 0, netcarbs: 0, protein: 21, consumptionUnit: Unit.gram, consumptionGrams: 1, meat: true, meatAmount: 250, available: false))
         ingredients.append(Ingredient(name: "Eggs", servingSize: 50, calories: 70, fat: 5, fiber: 0, netcarbs: 0, protein: 6, consumptionUnit: Unit.egg, consumptionGrams: 50, meat: false, verified: "3/16/22"))
@@ -49,9 +50,12 @@ class IngredientMgr: ObservableObject {
         ingredients.append(Ingredient(name: "Extra Virgin Olive Oil", servingSize: 14, calories: 120, fat: 14, fiber: 0, netcarbs: 0, protein: 0, consumptionUnit: Unit.tablespoon, consumptionGrams: 14, meat: false, verified: "3/16/22"))
         ingredients.append(Ingredient(name: "Fish Oil", servingSize: 4.667, calories: 40, fat: 4.5, fiber: 0, netcarbs: 0, protein: 0, consumptionUnit: Unit.tablespoon, consumptionGrams: 14, meat: false, verified: "3/16/22"))
         ingredients.append(Ingredient(name: "String Cheese", servingSize: 28, calories: 80, fat: 6, fiber: 0, netcarbs: 0, protein: 7, consumptionUnit: Unit.stick, consumptionGrams: 28, meat: false, verified: "3/16/22"))
+        ingredients.append(Ingredient(name: "Cheddar Cheese", servingSize: 28, calories: 110, fat: 9, fiber: 0, netcarbs: 1, protein: 7, consumptionUnit: Unit.slice, consumptionGrams: 9.33, meat: false, verified: "3/16/22"))
+        ingredients.append(Ingredient(name: "Keto Bite (Mint)", servingSize: 25, calories: 140, fat: 12, fiber: 4, netcarbs: 1, protein: 6, consumptionUnit: Unit.whole, consumptionGrams: 9.33, meat: false, verified: "3/16/22"))
+        ingredients.append(Ingredient(name: "Keto Bite (Macadamia)", servingSize: 25, calories: 140, fat: 11, fiber: 6, netcarbs: 0, protein: 6, consumptionUnit: Unit.whole, consumptionGrams: 9.33, meat: false, verified: "3/16/22"))
         ingredients.append(Ingredient(name: "Mini Original Semisoft Cheese", servingSize: 21, calories: 70, fat: 6, fiber: 0, netcarbs: 0, protein: 5, consumptionUnit: Unit.gram, consumptionGrams: 1, meat: false, verified: "3/16/22"))
         ingredients.append(Ingredient(name: "Macadamia Nuts", servingSize: 30, calories: 220, fat: 23, fiber: 3, netcarbs: 1, protein: 2, consumptionUnit: Unit.gram, consumptionGrams: 1, meat: false, verified: "3/16/22"))
-        ingredients.append(Ingredient(name: "Dark Chocolate (Divine)", servingSize: 42.5, calories: 260, fat: 22, fiber: 6, netcarbs: 10, protein: 4, consumptionUnit: Unit.block, consumptionGrams: 3.54, meat: false))
+        ingredients.append(Ingredient(name: "Dark Chocolate (Divine)", servingSize: 28, calories: 180, fat: 14, fiber: 4, netcarbs: 6, protein: 3, consumptionUnit: Unit.block, consumptionGrams: 3.5, meat: false))
         ingredients.append(Ingredient(name: "Mint Chocolate Ice Cream", servingSize: 99, calories: 250, fat: 23, fiber: 4, netcarbs: 3, protein: 4, consumptionUnit: Unit.block, consumptionGrams: 1, meat: false, verified: "3/16/22"))
         ingredients.append(Ingredient(name: "Dry Roasted Peanuts (unsalted)", servingSize: 28, calories: 160, fat: 14, fiber: 2, netcarbs: 4, protein: 7, consumptionUnit: Unit.gram, consumptionGrams: 1, meat: false, verified: "3/16/22"))
     }

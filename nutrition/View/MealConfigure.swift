@@ -3,7 +3,7 @@ import SwiftUI
 struct MealConfigure: View {
 
     enum Field: Hashable {
-        case weight
+        case bodyMass
         case meatAmount
     }
 
@@ -19,19 +19,21 @@ struct MealConfigure: View {
 
             Form {
                 Section {
-                    DoubleEdit("Weight", $profileMgr.profile.weight, Unit.pound, precision: 1)
-                      .focused($focusedField, equals: .weight)
-                    DoubleEdit("Body Fat %", $profileMgr.profile.bodyFat, Unit.percentage, precision: 1)
-                    IntEdit("Active Energy", $profileMgr.profile.activeEnergy, Unit.calorie)
+                    NVDoubleEdit("Weight", $profileMgr.profile.bodyMass, Unit.pound, precision: 1)
+                      .focused($focusedField, equals: .bodyMass)
+                    NVDoubleEdit("Body Fat %", $profileMgr.profile.bodyFatPercentage, Unit.percentage, precision: 1)
+                    NVIntEdit("Active Energy", $profileMgr.profile.activeEnergy, Unit.calorie)
                 }
                 Section {
-                    PickerEdit("Meat", $profileMgr.profile.meat, options: ingredientMgr.getMeatOptions())
-                    DoubleEdit("Meat Weight", $profileMgr.profile.meatAmount, Unit.gram)
+                    NVPickerEdit("Meat", $profileMgr.profile.meat, options: ingredientMgr.getMeatOptions())
+                    if profileMgr.profile.meat != "None" {
+                        NVDoubleEdit("Meat Weight", $profileMgr.profile.meatAmount, Unit.gram)
+                    }
                 }
                 Section {
-                    DoubleEdit("Protein Ratio", $profileMgr.profile.proteinRatio, Unit.gramsPerLbm)
-                    IntEdit("Calorie Deficit", $profileMgr.profile.calorieDeficit, Unit.percentage)
-                    DoubleView("Water", profileMgr.profile.waterLiters, Unit.liter, precision: 1)
+                    NVDoubleEdit("Protein Ratio", $profileMgr.profile.proteinRatio, Unit.gramsPerLbm)
+                    NVIntEdit("Calorie Deficit", $profileMgr.profile.calorieDeficit, Unit.percentage)
+                    NVDouble("Water", profileMgr.profile.waterLiters, Unit.liter, precision: 1)
                 }
             }
         }
@@ -54,7 +56,7 @@ struct MealConfigure: View {
                       Button("Save",
                              action: {
                                  withAnimation {
-                                     profileMgr.save()
+                                     profileMgr.serialize()
                                      presentationMode.wrappedValue.dismiss()
                                  }
                              })

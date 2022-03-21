@@ -1,4 +1,5 @@
 import SwiftUI
+import HealthKit
 
 struct MealList: View {
 
@@ -12,6 +13,8 @@ struct MealList: View {
     @State var locked: Bool = false
     @State var amount: Double = 0
     @State var mealConfigureActive = false
+
+    // var healthStore: HealthStore = HealthStore()
 
     var body: some View {
         VStack {
@@ -45,7 +48,7 @@ struct MealList: View {
                                                          consumptionUnit: mealIngredient.consumptionUnit)
                                        })
                           .foregroundColor(!mealIngredient.active ? Color.red :
-                                             (mealIngredient.compensantionExists || (mealIngredient.defaultAmount != mealIngredient.amount)) ? Color.blue :
+                                             (mealIngredient.compensationExists || (mealIngredient.defaultAmount != mealIngredient.amount)) ? Color.blue :
                                              Color.black)
                           .swipeActions(edge: .leading) {
                               Button {
@@ -53,6 +56,7 @@ struct MealList: View {
                                       let newMealIngredient = mealIngredientMgr.toggleActive(mealIngredient)
                                       print("  \(newMealIngredient!.name) active: \(newMealIngredient!.active)")
                                   }
+                                  generateMeal()
                               } label: {
                                   Label("", systemImage: !ingredientMgr.getIngredient(name: mealIngredient.name)!.available ? "circle.slash" : mealIngredient.active ? "pause.circle" : "play.circle")
                               }
@@ -62,6 +66,7 @@ struct MealList: View {
                               // TODO: Do not apply a delete to an adjustment item (or it'll just get re-added during generateMeal)
                               Button(role: .destructive) {
                                   mealIngredientMgr.delete(mealIngredient)
+                                  generateMeal()
                               } label: {
                                   Label("Delete", systemImage: "trash.fill")
                               }
@@ -92,6 +97,14 @@ struct MealList: View {
 
                           Button {
                               locked.toggle()
+                              if !locked {
+                                  for mealIngredient in mealIngredientMgr.get() {
+                                      if !mealIngredient.compensationExists {
+                                          mealIngredientMgr.resetAmount(name: mealIngredient.name)
+                                      }
+                                  }
+                                  generateMeal()
+                              }
                           } label: {
                               Image(systemName: locked ? "lock" : "lock.open")
                           }.frame(width: 40)
@@ -133,15 +146,26 @@ struct MealList: View {
 
 
 
-
     func generateMeal() {
+        getHealthKitData()
+
         print("\n\n\nGENERATE MEAL\n================================================================================\n")
 
+        if locked {
+            mealIngredientMgr.resetMacros()
+            macrosMgr.setGoals(caloriesGoalUnadjusted: profileMgr.profile.caloriesGoalUnadjusted, caloriesGoal: profileMgr.profile.caloriesGoal, fatGoal: profileMgr.profile.fatGoal, fiberGoal: profileMgr.profile.fiberGoal, netcarbsGoal: profileMgr.profile.netcarbsGoal, proteinGoal: profileMgr.profile.proteinGoal)
+            for mealIngredient in mealIngredientMgr.get() {
+                addMacros(mealIngredient.name, mealIngredient.amount)
+            }
+            // mealIngredientMgr.p()
+            return
+        }
+
         print("Old ingredients")
-        mealIngredientMgr.p()
+        // mealIngredientMgr.p()
 
         print("Rolling back")
-        !locked ? mealIngredientMgr.rollbackAll() : print("Locked")
+        mealIngredientMgr.rollbackAll()
 
         print("\nResetting meal ingredient macros")
         mealIngredientMgr.resetMacros()
@@ -150,42 +174,31 @@ struct MealList: View {
         macrosMgr.setGoals(caloriesGoalUnadjusted: profileMgr.profile.caloriesGoalUnadjusted, caloriesGoal: profileMgr.profile.caloriesGoal, fatGoal: profileMgr.profile.fatGoal, fiberGoal: profileMgr.profile.fiberGoal, netcarbsGoal: profileMgr.profile.netcarbsGoal, proteinGoal: profileMgr.profile.proteinGoal)
 
         print("\nBase ingredients")
-        mealIngredientMgr.p()
+        // mealIngredientMgr.p()
 
         print("\nAdding Meat")
-        if !locked {
-            if profileMgr.profile.meat != "None" {
-                mealIngredientMgr.adjust(name: profileMgr.profile.meat, amount: profileMgr.profile.meatAmount, consumptionUnit: Unit.gram)
-            }
-
-            applyMeatAdjustmentsToMealIngredients()
+        if profileMgr.profile.meat != "None" {
+            mealIngredientMgr.adjust(name: profileMgr.profile.meat, amount: profileMgr.profile.meatAmount, consumptionUnit: Unit.gram)
         }
 
-        addMacrosForBaseMealIngredients()
+        print("\nApplying Meat Adjustments...")
+        applyMeatAdjustmentsToMealIngredients()
 
-        if !locked {
-            while tryAddingAdjustments() {
-            }
+        for mealIngredient in mealIngredientMgr.get() {
+            addMacros(mealIngredient.name, mealIngredient.amount)
+        }
+
+        while tryAddingAdjustments() {
         }
     }
 
     func applyMeatAdjustmentsToMealIngredients() {
-        print("\nApplying Meat Adjustments...")
         for mealIngredient in mealIngredientMgr.get() {
             let ingredient = ingredientMgr.getIngredient(name: mealIngredient.name)!
             for meatAdjustment in ingredient.meatAdjustments {
                 mealIngredientMgr.adjust(name: meatAdjustment.name, amount: meatAdjustment.amount, consumptionUnit: meatAdjustment.consumptionUnit)
             }
         }
-        print()
-    }
-
-    func addMacrosForBaseMealIngredients() {
-        print("Updating Macros...")
-        for mealIngredient in mealIngredientMgr.get() {
-            addMacros(mealIngredient.name, mealIngredient.amount)
-        }
-        print()
     }
 
     func tryAddingAdjustments() -> Bool {
@@ -234,7 +247,7 @@ struct MealList: View {
         let mealIngredient = mealIngredientMgr.getIngredient(name: adjustment.name)
         if mealIngredient != nil && adjustment.constraints {
             let amountAfterAdjustment = mealIngredient!.amount + adjustment.amount
-            if amountAfterAdjustment < adjustment.minimum || amountAfterAdjustment > adjustment.maximum {
+            if amountAfterAdjustment > adjustment.maximum {
                 return false
             }
         }
@@ -270,6 +283,76 @@ struct MealList: View {
         mealIngredientMgr.addMacros(name: name, calories: calories, fat: fat, fiber: fiber, netcarbs: netcarbs, protein: protein)
         macrosMgr.addMacros(name: name, calories: calories, fat: fat, fiber: fiber, netcarbs: netcarbs, protein: protein)
     }
+
+    func getHealthKitData() {
+        HealthStore.authorizeHealthKit { (success, error) in
+            guard success else {
+                let baseMessage = "HealthKit Authorization Failed"
+                if let error = error {
+                    print("\(baseMessage). Reason: \(error)")
+                } else {
+                    print(baseMessage)
+                }
+                return
+            }
+
+            print("HealthKit successfully authorized.")
+            getBodyMass()
+            getBodyFatPercentage()
+        }
+    }
+
+    func getBodyMass() {
+        print("Getting body mass")
+        guard let sampleType = HKSampleType.quantityType(forIdentifier: .bodyMass) else {
+            print("Body Mass Sample Type is no longer available in HealthKit")
+            return
+        }
+
+        HealthStore.getMostRecentSample(for: sampleType) { (sample, error) in
+            guard let sample = sample else {
+                if let error = error {
+                    print("\(error)")
+                }
+                return
+            }
+
+            let bodyMass = sample.quantity.doubleValue(for: HKUnit.pound())
+            print("Weight (healthkit): \(bodyMass)")
+            print("Weight (profile): \(profileMgr.profile.bodyMass)")
+
+            if bodyMass != profileMgr.profile.bodyMass {
+                print("Updating body mass...")
+                profileMgr.setBodyMass(bodyMass: bodyMass)
+            }
+        }
+    }
+
+    func getBodyFatPercentage() {
+        print("Getting body fat percentage")
+        guard let sampleType = HKSampleType.quantityType(forIdentifier: .bodyFatPercentage) else {
+            print("Body Fat Percentage Sample Type is no longer available in HealthKit")
+            return
+        }
+
+        HealthStore.getMostRecentSample(for: sampleType) { (sample, error) in
+            guard let sample = sample else {
+                if let error = error {
+                    print("\(error)")
+                }
+                return
+            }
+
+            let bodyFatPercentage = (sample.quantity.doubleValue(for: HKUnit.percent())) * 100
+            print("Body Fat % (health kit): \(bodyFatPercentage)")
+            print("Body Fat % (profile): \(profileMgr.profile.bodyFatPercentage)")
+
+            if bodyFatPercentage != profileMgr.profile.bodyFatPercentage {
+                print("Updating body fat percentage...")
+                profileMgr.setBodyFatPercentage(bodyFatPercentage: bodyFatPercentage)
+            }
+        }
+    }
 }
 
 //struct MealIngredientList_Previews: PreviewProvider {
@@ -280,24 +363,3 @@ struct MealList: View {
 //        }
 //    }
 //}
-
-
-struct CheckboxToggle: View {
-    @State var text: String = ""
-    @Binding var status: Bool
-
-    var body: some View {
-        Toggle(isOn: $status) {
-            Text(text)
-        }.toggleStyle(CheckboxToggleStyle())
-    }
-}
-
-struct CheckboxToggleStyle: ToggleStyle {
-    func makeBody(configuration: Configuration) -> some View {
-        Image(systemName: configuration.isOn ? "checkmark.square" : "square")
-          .resizable()
-          .frame(width: 20, height: 20)
-          .onTapGesture { configuration.isOn.toggle() }
-    }
-}

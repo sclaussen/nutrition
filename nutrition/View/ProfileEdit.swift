@@ -9,38 +9,38 @@ struct ProfileEdit: View {
     var body: some View {
         Form {
             Section {
-                DateEdit("Date of Birth", $profileMgr.profile.dateOfBirth)
-                PickerGenderEdit("Gender", $profileMgr.profile.gender, options: Gender.values())
-                IntEdit("Height", $profileMgr.profile.height, Unit.inch)
-                DoubleEdit("NetCarbs Ceiling", $profileMgr.profile.netcarbsGoalUnadjusted, Unit.gram)
+                NVDateEdit("Date of Birth", $profileMgr.profile.dateOfBirth)
+                NVPickerGenderEdit("Gender", $profileMgr.profile.gender, options: Gender.values())
+                NVIntEdit("Height", $profileMgr.profile.height, Unit.inch)
+                NVDoubleEdit("NetCarbs Ceiling", $profileMgr.profile.netcarbsGoalUnadjusted, Unit.gram)
             }
             Section {
-                DoubleView("Age", profileMgr.profile.age, Unit.year, precision: 1)
-                DoubleView("Weight", profileMgr.profile.weightKg, Unit.kilogram, precision: 0)
-                DoubleView("Height", profileMgr.profile.heightCm, Unit.centimeter, precision: 0)
-                DoubleView("Body Mass Index", profileMgr.profile.bodyMassIndex, precision: 1)
-                DoubleView("Lean Body Mass", profileMgr.profile.leanBodyMass, Unit.pound, precision: 0)
-                DoubleView("Fat Mass", profileMgr.profile.fatMass, Unit.pound, precision: 0)
+                NVDouble("Age", profileMgr.profile.age, Unit.year, precision: 1)
+                NVDouble("Weight", profileMgr.profile.bodyMassKg, Unit.kilogram, precision: 0)
+                NVDouble("Height", profileMgr.profile.heightCm, Unit.centimeter, precision: 0)
+                NVDouble("Body Mass Index", profileMgr.profile.bodyMassIndex, precision: 1)
+                NVDouble("Lean Body Mass", profileMgr.profile.leanBodyMass, Unit.pound, precision: 0)
+                NVDouble("Fat Mass", profileMgr.profile.fatMass, Unit.pound, precision: 0)
             }
             Section(header: Text("Gross")) {
-                DoubleView("Calories", profileMgr.profile.caloriesGoalUnadjusted, Unit.calorie, precision: 0)
-                DoubleView("Fat", profileMgr.profile.fatGoalUnadjusted, Unit.gram, precision: 0)
-                DoubleView("Fiber", profileMgr.profile.fiberGoalUnadjusted, Unit.gram, precision: 0)
-                DoubleView("Net Carbs", profileMgr.profile.netcarbsGoalUnadjusted, Unit.gram, precision: 0)
-                DoubleView("Protein", profileMgr.profile.proteinGoalUnadjusted, Unit.gram, precision: 0)
-                DoubleView("Fat %", profileMgr.profile.fatGoalPercentageUnadjusted, Unit.percentage, precision: 0)
-                DoubleView("Net Carbs %", profileMgr.profile.netcarbsGoalPercentageUnadjusted, Unit.percentage, precision: 0)
-                DoubleView("Protein %", profileMgr.profile.proteinGoalPercentageUnadjusted, Unit.percentage, precision: 0)
+                NVDouble("Calories", profileMgr.profile.caloriesGoalUnadjusted, Unit.calorie, precision: 0)
+                NVDouble("Fat", profileMgr.profile.fatGoalUnadjusted, Unit.gram, precision: 0)
+                NVDouble("Fiber", profileMgr.profile.fiberGoalUnadjusted, Unit.gram, precision: 0)
+                NVDouble("Net Carbs", profileMgr.profile.netcarbsGoalUnadjusted, Unit.gram, precision: 0)
+                NVDouble("Protein", profileMgr.profile.proteinGoalUnadjusted, Unit.gram, precision: 0)
+                NVDouble("Fat %", profileMgr.profile.fatGoalPercentageUnadjusted, Unit.percentage, precision: 0)
+                NVDouble("Net Carbs %", profileMgr.profile.netcarbsGoalPercentageUnadjusted, Unit.percentage, precision: 0)
+                NVDouble("Protein %", profileMgr.profile.proteinGoalPercentageUnadjusted, Unit.percentage, precision: 0)
             }
             Section(header: Text("Net (with the calorie deficit applied)")) {
-                DoubleView("Calories", profileMgr.profile.caloriesGoal, Unit.calorie, precision: 0)
-                DoubleView("Fat", profileMgr.profile.fatGoal, Unit.gram, precision: 0)
-                DoubleView("Fiber", profileMgr.profile.fiberGoal, Unit.gram, precision: 0)
-                DoubleView("Net Carbs", profileMgr.profile.netcarbsGoal, Unit.gram, precision: 0)
-                DoubleView("Protein", profileMgr.profile.proteinGoal, Unit.gram, precision: 0)
-                DoubleView("Fat %", profileMgr.profile.fatGoalPercentage, Unit.percentage, precision: 0)
-                DoubleView("Net Carbs %", profileMgr.profile.netcarbsGoalPercentage, Unit.percentage, precision: 0)
-                DoubleView("Protein %", profileMgr.profile.proteinGoalPercentage, Unit.percentage, precision: 0)
+                NVDouble("Calories", profileMgr.profile.caloriesGoal, Unit.calorie, precision: 0)
+                NVDouble("Fat", profileMgr.profile.fatGoal, Unit.gram, precision: 0)
+                NVDouble("Fiber", profileMgr.profile.fiberGoal, Unit.gram, precision: 0)
+                NVDouble("Net Carbs", profileMgr.profile.netcarbsGoal, Unit.gram, precision: 0)
+                NVDouble("Protein", profileMgr.profile.proteinGoal, Unit.gram, precision: 0)
+                NVDouble("Fat %", profileMgr.profile.fatGoalPercentage, Unit.percentage, precision: 0)
+                NVDouble("Net Carbs %", profileMgr.profile.netcarbsGoalPercentage, Unit.percentage, precision: 0)
+                NVDouble("Protein %", profileMgr.profile.proteinGoalPercentage, Unit.percentage, precision: 0)
             }
         }
           .padding([.leading, .trailing], -20)
@@ -62,7 +62,7 @@ struct ProfileEdit: View {
                       Button("Save",
                              action: {
                                  withAnimation {
-                                     profileMgr.save()
+                                     profileMgr.serialize()
                                      tab = "Meal"
                                  }
                              })
