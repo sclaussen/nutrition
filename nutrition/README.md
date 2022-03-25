@@ -2,51 +2,51 @@
 
 ## P1
 
-- Recalculate macros for inactive meal ingredients
-- Health Kit
-  https://developer.apple.com/documentation/healthkit/setting_up_healthkit
+- Factor views out of Name/Value
+- Enable profile info to be retrieved from health kit or not (optional)
+- Add health zones
+- Do not allow the meat adjustment to be edited in the edit dialog, or, allow it but update profile
 - Reset all (or one) bases to default amount (Reset single bases to default right right hand menu)
+- Add vitamins/minerals
+- Enable Caden profile (profiles in general)
+- recursive deletes, primary/foreign key updates (eg ing.name)
 - Custom tab bar
 - Custom nav bar
-- Retrieve weight/fat percentage from healthkit/garmin/healthmate (HealthKit integration)
-- Do not allow the meat adjustment to be edited in the edit dialog, or, allow it but update profile
-- Lock down mealGen so additional ingredients can be added w/out re-gen
-- Quick actions (icon menu)
-
-
-## P2
-- Application icon
-- Splash screen
-- Application icon menu (gen meal)
-- Fix toggle bottom alignment view
-
-- NEW DESIGN Adjustment random (broccoli/cauliflower)
-- Remove 0s from int/double input fields
-- Post-meal snack additions
-- Filter ingredients based on fat, carbs, protein, alpha, ..
-- recursive deletes, primary/foreign key updates (eg ing.name)
-
-
-## P3
-- Add form/field validation
-- Tuna freeze out dates
-- Meat adjustments: Add delete capability (to both add/edit)
-- Fix all previews
-- List/ForEach or just List(items, ...)?
-- Fix delete swipe action on lists
-- Fix ing/adj so they don't serialize on each character typed
-- Add new ingredient with auto-add options for also adding to adjustments/meals
-
-## P4
+- Allow meal ingredient update to hit return and go back to meal list
 - Combine input fields into single view w/generics
 - Use generics to combine Picker*Edit
-- Disallow duplicate ingredients/base/adjustments
-- Capitalize each word of ingredients
 - Geometry flexibility for different devices
-- DatePicker/Sheet https://github.com/shaotaoliu/SwiftUI.DatePickerTextField/tree/main/DatePickerTextField
 - Hover effects
 - Add brand information to ingredients, determine how to display (hover, et al)
 - Dark mode support
+- Capitalize each word of ingredients
+
+
+## P2
+
+- Splash screen
+- Remove 0s from int/double input fields
+- Filter ingredients based on fat, carbs, protein, alpha, ..
+
+
+## P3
+
+- Add form/field validation
+- Tuna freeze out dates
+- Meat adjustments: Add delete capability (to both add/edit)
+- Fix delete swipe action on lists
+- Fix ing/adj so they don't serialize on each character typed
+- Add new ingredient with auto-add options for also adding to adjustments/meals
+- Quick actions (icon menu)
+
+
+## P4
+
+- Fix all previews
+- Disallow duplicate ingredients/base/adjustments
+- DatePicker/Sheet https://github.com/shaotaoliu/SwiftUI.DatePickerTextField/tree/main/DatePickerTextField
+- List/ForEach or just List(items, ...)?
+
 
 ## Future
 - Logging

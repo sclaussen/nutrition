@@ -7,7 +7,6 @@ class ProfileMgr: ObservableObject {
         if let json = UserDefaults.standard.data(forKey: "profile"),
            let profile = try? JSONDecoder().decode(Profile.self, from: json) {
             self.profile = profile
-            print("...deserialized profile")
             return
         }
 
@@ -17,14 +16,13 @@ class ProfileMgr: ObservableObject {
         components.year = 1967
         components.month = 9
         components.day = 27
-        self.profile = Profile(dateOfBirth: Calendar.current.date(from: components)!, gender: Gender.male, height: 72, bodyMass: 184, bodyFatPercentage: 20, activeEnergy: 200, proteinRatio: 0.85, calorieDeficit: 20, netcarbsGoalUnadjusted: 20, meat: "Chicken", meatAmount: 200)
+        self.profile = Profile(dateOfBirth: Calendar.current.date(from: components)!, gender: Gender.male, height: 72, bodyMass: 184, bodyFatPercentage: 20, activeEnergyBurned: 200, proteinRatio: 0.85, calorieDeficit: 20, netcarbsGoalUnadjusted: 20, meat: "Chicken", meatAmount: 200)
     }
 
     func cancel() {
         if let json = UserDefaults.standard.data(forKey: "profile"),
            let profile = try? JSONDecoder().decode(Profile.self, from: json) {
             self.profile = profile
-            print("...deserialized profile")
         }
     }
 
@@ -38,10 +36,14 @@ class ProfileMgr: ObservableObject {
         serialize()
     }
 
+    func setActiveEnergyBurned(activeEnergyBurned: Double) {
+        self.profile = profile.setActiveEnergyBurned(activeEnergyBurned: activeEnergyBurned)
+        serialize()
+    }
+
     func serialize() {
         if let json = try? JSONEncoder().encode(profile) {
             UserDefaults.standard.set(json, forKey: "profile")
-            print("...serializing profile")
         }
     }
 }
@@ -52,7 +54,7 @@ struct Profile: Codable {
     var height: Int
     var bodyMass: Double
     var bodyFatPercentage: Double
-    var activeEnergy: Int
+    var activeEnergyBurned: Double
     var proteinRatio: Double
     var calorieDeficit: Int
     var netcarbsGoalUnadjusted: Double
@@ -60,11 +62,15 @@ struct Profile: Codable {
     var meatAmount: Double
 
     func setBodyMass(bodyMass: Double) -> Profile {
-        return Profile(dateOfBirth: self.dateOfBirth, gender: self.gender, height: self.height, bodyMass: bodyMass, bodyFatPercentage: self.bodyFatPercentage, activeEnergy: self.activeEnergy, proteinRatio: self.proteinRatio, calorieDeficit: self.calorieDeficit, netcarbsGoalUnadjusted: self.netcarbsGoalUnadjusted, meat: self.meat, meatAmount: self.meatAmount)
+        return Profile(dateOfBirth: self.dateOfBirth, gender: self.gender, height: self.height, bodyMass: bodyMass, bodyFatPercentage: self.bodyFatPercentage, activeEnergyBurned: self.activeEnergyBurned, proteinRatio: self.proteinRatio, calorieDeficit: self.calorieDeficit, netcarbsGoalUnadjusted: self.netcarbsGoalUnadjusted, meat: self.meat, meatAmount: self.meatAmount)
     }
 
     func setBodyFatPercentage(bodyFatPercentage: Double) -> Profile {
-        return Profile(dateOfBirth: self.dateOfBirth, gender: self.gender, height: self.height, bodyMass: self.bodyMass, bodyFatPercentage: bodyFatPercentage, activeEnergy: self.activeEnergy, proteinRatio: self.proteinRatio, calorieDeficit: self.calorieDeficit, netcarbsGoalUnadjusted: self.netcarbsGoalUnadjusted, meat: self.meat, meatAmount: self.meatAmount)
+        return Profile(dateOfBirth: self.dateOfBirth, gender: self.gender, height: self.height, bodyMass: self.bodyMass, bodyFatPercentage: bodyFatPercentage, activeEnergyBurned: self.activeEnergyBurned, proteinRatio: self.proteinRatio, calorieDeficit: self.calorieDeficit, netcarbsGoalUnadjusted: self.netcarbsGoalUnadjusted, meat: self.meat, meatAmount: self.meatAmount)
+    }
+
+    func setActiveEnergyBurned(activeEnergyBurned: Double) -> Profile {
+        return Profile(dateOfBirth: self.dateOfBirth, gender: self.gender, height: self.height, bodyMass: self.bodyMass, bodyFatPercentage: self.bodyFatPercentage, activeEnergyBurned: activeEnergyBurned, proteinRatio: self.proteinRatio, calorieDeficit: self.calorieDeficit, netcarbsGoalUnadjusted: self.netcarbsGoalUnadjusted, meat: self.meat, meatAmount: self.meatAmount)
     }
 
     var age: Double {
@@ -105,7 +111,7 @@ struct Profile: Codable {
     }
 
     var caloriesGoalUnadjusted: Double {
-        self.caloriesResting + Double(self.activeEnergy)
+        self.caloriesResting + Double(self.activeEnergyBurned)
     }
 
     var fatGoalUnadjusted: Double {

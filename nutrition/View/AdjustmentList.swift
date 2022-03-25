@@ -10,13 +10,13 @@ struct AdjustmentList: View {
     var body: some View {
         VStack {
             List {
-                Section(header: IngredientRowHeader(showMacros: false, nameWidth: 0.77)) {
+                Section(header: IngredientRowHeader(showGroup: true)) {
                     ForEach(adjustmentMgr.get(includeInactive: showInactive)) { adjustment in
                         NavigationLink(destination: AdjustmentEdit(adjustment: adjustment),
                                        label: {
-                                           IngredientRow(showMacros: false,
-                                                         nameWidth: 0.75,
+                                           IngredientRow(showGroup: true,
                                                          name: adjustment.name,
+                                                         group: adjustment.group,
                                                          amount: adjustment.amount,
                                                          consumptionUnit: adjustment.consumptionUnit)
                                        })

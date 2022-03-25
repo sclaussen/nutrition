@@ -54,13 +54,20 @@ struct HealthStore {
     //     return age
     // }
 
-    static func getMostRecentSample(for sampleType: HKSampleType,
-                             completion: @escaping (HKQuantitySample?, Error?) -> Swift.Void) {
+    static func getMostRecentSample(sampleType: HKSampleType,
+                                    startDate: Date = Date.distantPast,
+                                    endDate: Date = Date(),
+                                    completion: @escaping (HKQuantitySample?, Error?) -> Swift.Void) {
+
+        let formatter = DateFormatter()
+        formatter.dateStyle = .short
+        print("Start date: \(formatter.string(from: startDate))")
+        print("End   date: \(formatter.string(from: endDate))")
 
         // 1. Use HKQuery to load the most recent samples.
-        let mostRecentPredicate = HKQuery.predicateForSamples(withStart: Date.distantPast, end: Date(), options: .strictEndDate)
+        let mostRecentPredicate = HKQuery.predicateForSamples(withStart: startDate, end: endDate, options: .strictEndDate)
         let sortDescriptor = NSSortDescriptor(key: HKSampleSortIdentifierStartDate, ascending: false)
-        let sampleQuery = HKSampleQuery(sampleType: sampleType, predicate: mostRecentPredicate, limit: 1, sortDescriptors: [sortDescriptor]) { (query, samples, error) in
+        let sampleQuery = HKSampleQuery(sampleType: sampleType, predicate: mostRecentPredicate, limit: 0, sortDescriptors: [sortDescriptor]) { (query, samples, error) in
 
             // 2. Always dispatch to the main thread when complete
             DispatchQueue.main.async {

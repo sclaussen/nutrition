@@ -9,9 +9,9 @@ enum GaugeType {
 }
 
 struct MyGaugeDashboard: View {
-    let bodyMass: String
-    let bodyFatPercentage: String
-    let activeEnergyBurned: String
+    let bodyMass: Double
+    let bodyFatPercentage: Double
+    let activeCaloriesBurned: Double
     let caloriesGoalUnadjusted: Double
     let caloriesGoal: Double
     let fatGoal: Double
@@ -24,10 +24,10 @@ struct MyGaugeDashboard: View {
     let netcarbs: Double
     let protein: Double
 
-    init(_ profile: Profile, _ macros: Macros) {
-        bodyMass = String(profile.bodyMass.fractionDigits(max: 1)) + " lb"
-        bodyFatPercentage = String(profile.bodyFatPercentage.fractionDigits(max: 1)) + "%"
-        activeEnergyBurned = String(profile.activeEnergyBurned.fractionDigits(max: 0)) + " kcal"
+    var init(profile: Profile, macros: Macros) {
+        bodyMass = profile.bodyMass
+        bodyFatPercentage = profile.bodyFatPercentage
+        activeCaloriesBurned = profile.activeCaloriesBurned
         caloriesGoalUnadjusted = macros.caloriesGoalUnadjusted
         caloriesGoal = macros.caloriesGoal
         fatGoal = macros.fatGoal
@@ -42,13 +42,7 @@ struct MyGaugeDashboard: View {
     }
 
     var body: some View {
-        VStack(spacing: 0) {
-            Spacer()
-            Text("\(bodyMass)         \(bodyFatPercentage)         \(activeEnergyBurned)")
-                .font(.callout)
-                // .bold()
-                .frame(alignment: .center)
-                .foregroundColor(.black)
+        VStack(spacing: 15) {
             HStack {
                 Spacer()
                 MyGauge(title: "Fat", value: fat, goal: fatGoal)
@@ -60,9 +54,7 @@ struct MyGaugeDashboard: View {
                 MyGauge(title: "Protein", value: protein, goal: proteinGoal)
                 Spacer()
             }
-              .padding(.top)
             CalorieProgressBar(title: "Calories", value: calories, goal: caloriesGoal, goalUnadjusted: caloriesGoalUnadjusted)
-              .padding(.top)
         }
     }
 }
@@ -131,7 +123,7 @@ struct MyGauge: View {
     var gaugeType: GaugeType = GaugeType.Goal
 
     var width: CGFloat = 60.0
-    var lineWidth: CGFloat = 15.0
+    var lineWidth: CGFloat = 13.0
 
     var titleFontSize: CGFloat = 16
     var valueFontSize: CGFloat = 20
@@ -181,19 +173,16 @@ struct MyGauge: View {
 
             ZStack {
                 Circle()
-                    .trim(from: 0.0, to: 0.75)
-                  .stroke(Color.black.opacity(0.3), style: StrokeStyle(lineWidth: lineWidth))
-                  .rotationEffect(Angle(degrees: 135.0))
-                  // .stroke(Color.black.opacity(0.5), lineWidth: lineWidth)
+                  .rotation(Angle(degrees: 135.0))
+                  .trim(from: 0.0, to: 0.75)
+                  .stroke(Color.black.opacity(0.5), lineWidth: lineWidth)
                   .frame(width: width, height: width)
 
                 Circle()
-                    .trim(from: 0.0, to: progressBar)
-
-                  .stroke(progressBarColor.opacity(0.9), style: StrokeStyle(lineWidth: lineWidth))
-                  .rotationEffect(Angle(degrees: 135.0))
-                // .stroke(progressBarColor.opacity(0.9), lineWidth: lineWidth)
-                  .frame(width: width, height: width)   
+                  .rotation(Angle(degrees: 135.0))
+                  .trim(from: 0.0, to: progressBar)
+                  .stroke(progressBarColor.opacity(0.9), lineWidth: lineWidth)
+                  .frame(width: width, height: width)
 
                 Text("\(value.fractionDigits(max: precision))").font(.system(size: valueFontSize)).bold().foregroundColor(.blue)
                 Text(String(Int(goal))).font(.system(size: goalFontSize)).offset(y: goalOffset)

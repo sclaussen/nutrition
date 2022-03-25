@@ -20,24 +20,14 @@ struct MealList: View {
         VStack {
             List {
                 Section("Meal Dashboard") {
-                    MyGaugeDashboard(caloriesGoalUnadjusted: macrosMgr.macros.caloriesGoalUnadjusted,
-                                     caloriesGoal: macrosMgr.macros.caloriesGoal,
-                                     fatGoal: macrosMgr.macros.fatGoal,
-                                     fiberGoal: macrosMgr.macros.fiberGoal,
-                                     netcarbsGoal: macrosMgr.macros.netcarbsGoal,
-                                     proteinGoal: macrosMgr.macros.proteinGoal,
-                                     calories: macrosMgr.macros.calories,
-                                     fat: macrosMgr.macros.fat,
-                                     fiber: macrosMgr.macros.fiber,
-                                     netcarbs: macrosMgr.macros.netcarbs,
-                                     protein: macrosMgr.macros.protein)
+                    MyGaugeDashboard(profileMgr.profile, macrosMgr.macros)
                 }
 
-                Section(header: IngredientRowHeader(nameWidth: 0.345)) {
+                Section(header: IngredientRowHeader(showMacros: true)) {
                     ForEach(mealIngredientMgr.get(includeInactive: showInactive)) { mealIngredient in
                         NavigationLink(destination: MealEdit(mealIngredient: mealIngredient),
                                        label: {
-                                           IngredientRow(nameWidth: 0.325,
+                                           IngredientRow(showMacros: true,
                                                          name: mealIngredient.name,
                                                          calories: mealIngredient.calories,
                                                          fat: mealIngredient.fat,
@@ -76,6 +66,9 @@ struct MealList: View {
                       .onDelete(perform: deleteAction)
                 }
             }
+              .refreshable {
+                  generateMeal()
+              }
               .environment(\.defaultMinListRowHeight, 5)
               .padding([.leading, .trailing], -20)
               .background(
@@ -109,11 +102,11 @@ struct MealList: View {
                               Image(systemName: locked ? "lock" : "lock.open")
                           }.frame(width: 40)
 
-                          Button {
-                              generateMeal()
-                          } label: {
-                              Image(systemName: locked ? "" : "arrow.triangle.2.circlepath")
-                          }.frame(width: 40)
+                          // Button {
+                          //     generateMeal()
+                          // } label: {
+                          //     Image(systemName: locked ? "" : "arrow.triangle.2.circlepath")
+                          // }.frame(width: 40)
 
                           Button {
                               mealConfigureActive.toggle()
@@ -154,8 +147,8 @@ struct MealList: View {
         if locked {
             mealIngredientMgr.resetMacros()
             macrosMgr.setGoals(caloriesGoalUnadjusted: profileMgr.profile.caloriesGoalUnadjusted, caloriesGoal: profileMgr.profile.caloriesGoal, fatGoal: profileMgr.profile.fatGoal, fiberGoal: profileMgr.profile.fiberGoal, netcarbsGoal: profileMgr.profile.netcarbsGoal, proteinGoal: profileMgr.profile.proteinGoal)
-            for mealIngredient in mealIngredientMgr.get() {
-                addMacros(mealIngredient.name, mealIngredient.amount)
+            for mealIngredient in mealIngredientMgr.get(includeInactive: true) {
+                addMacros(mealIngredient.name, mealIngredient.amount, mealIngredient.active)
             }
             // mealIngredientMgr.p()
             return
@@ -184,8 +177,8 @@ struct MealList: View {
         print("\nApplying Meat Adjustments...")
         applyMeatAdjustmentsToMealIngredients()
 
-        for mealIngredient in mealIngredientMgr.get() {
-            addMacros(mealIngredient.name, mealIngredient.amount)
+        for mealIngredient in mealIngredientMgr.get(includeInactive: true) {
+            addMacros(mealIngredient.name, mealIngredient.amount, mealIngredient.active)
         }
 
         while tryAddingAdjustments() {
@@ -265,12 +258,12 @@ struct MealList: View {
             return false
         }
 
-        addMacros(adjustment.name, adjustment.amount)
+        addMacros(adjustment.name, adjustment.amount, true)
         mealIngredientMgr.adjust(name: adjustment.name, amount: adjustment.amount, consumptionUnit: adjustment.consumptionUnit)
         return true
     }
 
-    func addMacros(_ name: String, _ amount: Double) {
+    func addMacros(_ name: String, _ amount: Double, _ active: Bool) {
         let ingredient = ingredientMgr.getIngredient(name: name)!
         let servings = (amount * ingredient.consumptionGrams) / ingredient.servingSize
 
@@ -281,7 +274,10 @@ struct MealList: View {
         let protein: Double = ingredient.protein * servings
 
         mealIngredientMgr.addMacros(name: name, calories: calories, fat: fat, fiber: fiber, netcarbs: netcarbs, protein: protein)
-        macrosMgr.addMacros(name: name, calories: calories, fat: fat, fiber: fiber, netcarbs: netcarbs, protein: protein)
+
+        if active {
+            macrosMgr.addMacros(name: name, calories: calories, fat: fat, fiber: fiber, netcarbs: netcarbs, protein: protein)
+        }
     }
 
     func getHealthKitData() {
@@ -299,17 +295,18 @@ struct MealList: View {
             print("HealthKit successfully authorized.")
             getBodyMass()
             getBodyFatPercentage()
+            getActiveEnergyBurned()
         }
     }
 
     func getBodyMass() {
         print("Getting body mass")
         guard let sampleType = HKSampleType.quantityType(forIdentifier: .bodyMass) else {
-            print("Body Mass Sample Type is no longer available in HealthKit")
+            print("Body Mass sample type is no longer available in HealthKit")
             return
         }
 
-        HealthStore.getMostRecentSample(for: sampleType) { (sample, error) in
+        HealthStore.getMostRecentSample(sampleType: sampleType) { (sample, error) in
             guard let sample = sample else {
                 if let error = error {
                     print("\(error)")
@@ -331,11 +328,11 @@ struct MealList: View {
     func getBodyFatPercentage() {
         print("Getting body fat percentage")
         guard let sampleType = HKSampleType.quantityType(forIdentifier: .bodyFatPercentage) else {
-            print("Body Fat Percentage Sample Type is no longer available in HealthKit")
+            print("Body Fat Percentage sample type is no longer available in HealthKit")
             return
         }
 
-        HealthStore.getMostRecentSample(for: sampleType) { (sample, error) in
+        HealthStore.getMostRecentSample(sampleType: sampleType) { (sample, error) in
             guard let sample = sample else {
                 if let error = error {
                     print("\(error)")
@@ -351,6 +348,41 @@ struct MealList: View {
                 print("Updating body fat percentage...")
                 profileMgr.setBodyFatPercentage(bodyFatPercentage: bodyFatPercentage)
             }
+        }
+    }
+
+    func getActiveEnergyBurned () {
+        print("Getting active energy burned")
+        guard let sampleType = HKSampleType.quantityType(forIdentifier: .activeEnergyBurned) else {
+            print("Active Energy Burned sample type is no longer available in HealthKit")
+            return
+        }
+
+        let calendar = Calendar.current
+        var startDateComponents = calendar.dateComponents([.year, .month, .day], from: Date())
+        startDateComponents.month = startDateComponents.month! - 1
+        let startDate = calendar.date(from: startDateComponents)!
+
+        // let energySampleType = HKSampleType.quantityTypeForIdentifier(HKQuantityTypeIdentifierActiveEnergyBurned)
+        // let predicate = HKQuery.predicateForSamplesWithStartDate(startDate, endDate: endDate, options: .None)
+
+        // let query = HKSampleQuery(sampleType: energySampleType!, predicate: predicate, limit: 0, sortDescriptors: nil) { (query, results, error) in
+        HealthStore.getMostRecentSample(sampleType: sampleType, startDate: startDate) { (sample, error) in
+            guard let sample = sample else {
+                if let error = error {
+                    print("\(error)")
+                }
+                return
+            }
+
+            let activeEnergyBurned = sample.quantity.doubleValue(for: HKUnit.kilocalorie())
+            print("Active energy burned (health kit): \(activeEnergyBurned)")
+            print("Active energy burned (profile): \(profileMgr.profile.activeEnergyBurned)")
+
+            // if activeEnergyBurned != profileMgr.profile.activeEnergyBurned {
+            //     print("Updating active energy burned...")
+            //     profileMgr.setActiveEnergyBurned(activeEnergyBurned: activeEnergyBurned)
+            // }
         }
     }
 }

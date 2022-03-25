@@ -11,11 +11,11 @@ struct IngredientList: View {
     var body: some View {
         VStack {
             List {
-                Section(header: IngredientRowHeader(nameWidth: 0.345)) {
+                Section(header: IngredientRowHeader(showMacros: true)) {
                     ForEach(getIngredientList()) { ingredient in
                         NavigationLink(destination: IngredientEdit(ingredient: ingredient),
                                        label: {
-                                           IngredientRow(nameWidth: 0.325,
+                                           IngredientRow(showMacros: true,
                                                          name: ingredient.name,
                                                          calories: ingredient.calories,
                                                          fat: ingredient.fat100,

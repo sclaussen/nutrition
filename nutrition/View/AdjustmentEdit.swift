@@ -27,7 +27,7 @@ struct AdjustmentEdit: View {
                 }
             }
             Section {
-                NVStringEdit("Group", $adjustment.group)
+                NVStringEdit("Choice Group", $adjustment.group)
             }
         }
           .padding([.leading, .trailing], -20)

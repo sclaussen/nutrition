@@ -28,7 +28,7 @@ struct AdjustmentAdd: View {
                     }
                 }
                 Section {
-                    NVStringEdit("Group", $group)
+                    NVStringEdit("Choice Group", $group)
                 }
             }
         }

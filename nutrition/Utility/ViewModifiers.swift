@@ -24,15 +24,29 @@ struct MyButton: ViewModifier {
 struct MyNameLabel: ViewModifier {
     func body(content: Content) -> some View {
         content
-          .frame(minHeight: 20, alignment: .leading)
+          .lineLimit(1)
+          .frame(minWidth: 150, minHeight: 20, alignment: .leading)
           .border(Color.black, width: 0)
+    }
+}
+
+struct MyDescriptionLabel: ViewModifier {
+    func body(content: Content) -> some View {
+        content
+          .lineLimit(1)
+          .frame(minWidth: 150, minHeight: 10, alignment: .leading)
+          .border(Color.black, width: 0)
+          .font(.system(size: 9))
     }
 }
 
 struct MyValueLabel: ViewModifier {
     func body(content: Content) -> some View {
         content
-          .frame(minHeight: 20, alignment: .trailing)
+          .lineLimit(1)
+          .frame(minWidth: 100, minHeight: 20, alignment: .trailing)
+          .fixedSize(horizontal: false, vertical: true)
+          .multilineTextAlignment(.trailing)
           .border(Color.black, width: 0)
     }
 }
@@ -41,6 +55,16 @@ struct MyValue: ViewModifier {
     func body(content: Content) -> some View {
         content
           .foregroundColor(.blue)
+          .frame(minWidth: 100, minHeight: 20, alignment: .trailing)
+          .multilineTextAlignment(.trailing)
+          .disableAutocorrection(true)
+          .border(Color.black, width: 0)
+    }
+}
+
+struct MyValueClear: ViewModifier {
+    func body(content: Content) -> some View {
+        content
           .frame(minHeight: 20, alignment: .trailing)
           .multilineTextAlignment(.trailing)
           .disableAutocorrection(true)
@@ -51,6 +75,7 @@ struct MyValue: ViewModifier {
 struct MyUnitLabel: ViewModifier {
     func body(content: Content) -> some View {
         content
+          .lineLimit(1)
           .font(.caption2)
           .frame(minWidth: 35, minHeight: 20, alignment: .leading)
           .border(Color.black, width: 0)
@@ -72,12 +97,20 @@ extension View {
         return self.modifier(MyNameLabel())
     }
 
+    func myDescriptionLabel() -> some View {
+        return self.modifier(MyDescriptionLabel())
+    }
+
     func myValueLabel() -> some View {
         return self.modifier(MyValueLabel())
     }
 
     func myValue() -> some View {
         return self.modifier(MyValue())
+    }
+
+    func myValueClear() -> some View {
+        return self.modifier(MyValueClear())
     }
 
     func myUnitLabel() -> some View {

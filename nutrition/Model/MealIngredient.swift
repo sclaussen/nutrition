@@ -26,13 +26,11 @@ class MealIngredientMgr: ObservableObject {
         mealIngredients.append(MealIngredient(name: "Mustard", defaultAmount: 4, amount: 4, consumptionUnit: Unit.tablespoon))
         mealIngredients.append(MealIngredient(name: "Fish Oil", defaultAmount: 1, amount: 1, consumptionUnit: Unit.tablespoon))
         mealIngredients.append(MealIngredient(name: "Extra Virgin Olive Oil", defaultAmount: 3.5, amount: 3.5, consumptionUnit: Unit.tablespoon))
+
         mealIngredients.append(MealIngredient(name: "String Cheese", defaultAmount: 1, amount: 1, consumptionUnit: Unit.stick, active: false))
-        mealIngredients.append(MealIngredient(name: "Dry Roasted Peanuts (unsalted)", defaultAmount: 28, amount: 28, consumptionUnit: Unit.gram, active: false))
-        mealIngredients.append(MealIngredient(name: "Mint Chocolate Ice Cream", defaultAmount: 28, amount: 28, consumptionUnit: Unit.gram, active: false))
-        mealIngredients.append(MealIngredient(name: "Dark Chocolate (Divine)", defaultAmount: 1, amount: 1, consumptionUnit: Unit.block, active: false))
-        mealIngredients.append(MealIngredient(name: "Keto Bite (Mint)", defaultAmount: 1, amount: 1, consumptionUnit: Unit.whole, active: false))
-        mealIngredients.append(MealIngredient(name: "Keto Bite (Macadamia)", defaultAmount: 1, amount: 1, consumptionUnit: Unit.whole, active: false))
         mealIngredients.append(MealIngredient(name: "Cheddar Cheese", defaultAmount: 1, amount: 1, consumptionUnit: Unit.slice, active: false))
+        mealIngredients.append(MealIngredient(name: "Dubliner Cheese", defaultAmount: 1, amount: 1, consumptionUnit: Unit.slice, active: false))
+        mealIngredients.append(MealIngredient(name: "Macadamia Nuts", defaultAmount: 1, amount: 1, consumptionUnit: Unit.gram, active: false))
     }
 
     func serialize() {
