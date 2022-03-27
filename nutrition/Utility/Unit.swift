@@ -94,3 +94,7 @@ enum Unit: String, Codable, CaseIterable {
         return options
     }
 }
+
+extension Unit: Identifiable {
+    var id: Self { self }
+}

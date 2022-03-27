@@ -20,6 +20,12 @@
 - Add brand information to ingredients, determine how to display (hover, et al)
 - Dark mode support
 - Capitalize each word of ingredients
+- Custom keyboard to support negative numbers
+  - https://developer.apple.com/documentation/uikit/keyboards_and_input/creating_a_custom_keyboard
+- Rationalize why setNetCarbsMax works diff than setWeight/etc for Profile.swift
+- Correct use case where you want to change 1 piece = 28g to 1 gram = 1gram
+- Add new ingredient with auto-add options for also adding to adjustments/meals
+  - Finished the UI, provide implementation
 
 
 ## P2
@@ -36,7 +42,6 @@
 - Meat adjustments: Add delete capability (to both add/edit)
 - Fix delete swipe action on lists
 - Fix ing/adj so they don't serialize on each character typed
-- Add new ingredient with auto-add options for also adding to adjustments/meals
 - Quick actions (icon menu)
 
 

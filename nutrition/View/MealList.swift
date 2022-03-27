@@ -146,9 +146,9 @@ struct MealList: View {
 
         if locked {
             mealIngredientMgr.resetMacros()
-            macrosMgr.setGoals(caloriesGoalUnadjusted: profileMgr.profile.caloriesGoalUnadjusted, caloriesGoal: profileMgr.profile.caloriesGoal, fatGoal: profileMgr.profile.fatGoal, fiberGoal: profileMgr.profile.fiberGoal, netcarbsGoal: profileMgr.profile.netcarbsGoal, proteinGoal: profileMgr.profile.proteinGoal)
+            macrosMgr.setGoals(caloriesGoalUnadjusted: profileMgr.profile.caloriesGoalUnadjusted, caloriesGoal: profileMgr.profile.caloriesGoal, fatGoal: profileMgr.profile.fatGoal, fiberMinimum: profileMgr.profile.fiberMinimum, netCarbsMaximum: profileMgr.profile.netCarbsMaximum, proteinGoal: profileMgr.profile.proteinGoal)
             for mealIngredient in mealIngredientMgr.get(includeInactive: true) {
-                addMacros(mealIngredient.name, mealIngredient.amount, mealIngredient.active)
+                addMacros(mealIngredient.name, Double(mealIngredient.amount), mealIngredient.active)
             }
             // mealIngredientMgr.p()
             return
@@ -164,7 +164,7 @@ struct MealList: View {
         mealIngredientMgr.resetMacros()
 
         print("\nSetting macro goals")
-        macrosMgr.setGoals(caloriesGoalUnadjusted: profileMgr.profile.caloriesGoalUnadjusted, caloriesGoal: profileMgr.profile.caloriesGoal, fatGoal: profileMgr.profile.fatGoal, fiberGoal: profileMgr.profile.fiberGoal, netcarbsGoal: profileMgr.profile.netcarbsGoal, proteinGoal: profileMgr.profile.proteinGoal)
+        macrosMgr.setGoals(caloriesGoalUnadjusted: profileMgr.profile.caloriesGoalUnadjusted, caloriesGoal: profileMgr.profile.caloriesGoal, fatGoal: profileMgr.profile.fatGoal, fiberMinimum: profileMgr.profile.fiberMinimum, netCarbsMaximum: profileMgr.profile.netCarbsMaximum, proteinGoal: profileMgr.profile.proteinGoal)
 
         print("\nBase ingredients")
         // mealIngredientMgr.p()
@@ -178,7 +178,7 @@ struct MealList: View {
         applyMeatAdjustmentsToMealIngredients()
 
         for mealIngredient in mealIngredientMgr.get(includeInactive: true) {
-            addMacros(mealIngredient.name, mealIngredient.amount, mealIngredient.active)
+            addMacros(mealIngredient.name, Double(mealIngredient.amount), mealIngredient.active)
         }
 
         while tryAddingAdjustments() {
@@ -248,35 +248,35 @@ struct MealList: View {
         let ingredient = ingredientMgr.getIngredient(name: adjustment.name)!
         let servings = (adjustment.amount * ingredient.consumptionGrams) / ingredient.servingSize
 
-        let fat: Double = ingredient.fat * servings
-        let netcarbs: Double = ingredient.netcarbs * servings
-        let protein: Double = ingredient.protein * servings
+        let fat: Double = Double(ingredient.fat * servings)
+        let netCarbs: Double = Double(ingredient.netCarbs * servings)
+        let protein: Double = Double(ingredient.protein * servings)
 
-        if macrosMgr.macros.fatGoal < macrosMgr.macros.fat + fat ||
-             macrosMgr.macros.netcarbsGoal < macrosMgr.macros.netcarbs + netcarbs ||
-             macrosMgr.macros.proteinGoal < macrosMgr.macros.protein + protein {
+        if macrosMgr.macros.fatGoal < macrosMgr.macros.fat + Float(fat) ||
+            macrosMgr.macros.netCarbsMaximum < macrosMgr.macros.netCarbs + Float(netCarbs) ||
+            macrosMgr.macros.proteinGoal < macrosMgr.macros.protein + Float(protein) {
             return false
         }
 
-        addMacros(adjustment.name, adjustment.amount, true)
+        addMacros(adjustment.name, Double(adjustment.amount), true)
         mealIngredientMgr.adjust(name: adjustment.name, amount: adjustment.amount, consumptionUnit: adjustment.consumptionUnit)
         return true
     }
 
     func addMacros(_ name: String, _ amount: Double, _ active: Bool) {
         let ingredient = ingredientMgr.getIngredient(name: name)!
-        let servings = (amount * ingredient.consumptionGrams) / ingredient.servingSize
+        let servings = (Float(amount) * ingredient.consumptionGrams) / ingredient.servingSize
 
-        let calories: Double = ingredient.calories * servings
-        let fat: Double = ingredient.fat * servings
-        let fiber: Double = ingredient.fiber * servings
-        let netcarbs: Double = ingredient.netcarbs * servings
-        let protein: Double = ingredient.protein * servings
+        let calories: Double = Double(ingredient.calories * servings)
+        let fat: Double = Double(ingredient.fat * servings)
+        let fiber: Double = Double(ingredient.fiber * servings)
+        let netcarbs: Double = Double(ingredient.netCarbs * servings)
+        let protein: Double = Double(ingredient.protein * servings)
 
-        mealIngredientMgr.addMacros(name: name, calories: calories, fat: fat, fiber: fiber, netcarbs: netcarbs, protein: protein)
+        mealIngredientMgr.addMacros(name: name, calories: Float(calories), fat: Float(fat), fiber: Float(fiber), netcarbs: Float(netcarbs), protein: Float(protein))
 
         if active {
-            macrosMgr.addMacros(name: name, calories: calories, fat: fat, fiber: fiber, netcarbs: netcarbs, protein: protein)
+            macrosMgr.addMacros(name: name, calories: Float(calories), fat: Float(fat), fiber: Float(fiber), netCarbs: Float(netcarbs), protein: Float(protein))
         }
     }
 
@@ -318,9 +318,9 @@ struct MealList: View {
             print("Weight (healthkit): \(bodyMass)")
             print("Weight (profile): \(profileMgr.profile.bodyMass)")
 
-            if bodyMass != profileMgr.profile.bodyMass {
+            if bodyMass != Double(profileMgr.profile.bodyMass) {
                 print("Updating body mass...")
-                profileMgr.setBodyMass(bodyMass: bodyMass)
+                profileMgr.setBodyMass(bodyMass: Float(bodyMass))
             }
         }
     }
@@ -344,9 +344,9 @@ struct MealList: View {
             print("Body Fat % (health kit): \(bodyFatPercentage)")
             print("Body Fat % (profile): \(profileMgr.profile.bodyFatPercentage)")
 
-            if bodyFatPercentage != profileMgr.profile.bodyFatPercentage {
+            if bodyFatPercentage != Double(profileMgr.profile.bodyFatPercentage) {
                 print("Updating body fat percentage...")
-                profileMgr.setBodyFatPercentage(bodyFatPercentage: bodyFatPercentage)
+                profileMgr.setBodyFatPercentage(bodyFatPercentage: Float(bodyFatPercentage))
             }
         }
     }

@@ -16,7 +16,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "87"
             endingLineNumber = "87"
-            landmarkName = "heightCm"
+            landmarkName = "bodyMassKg"
             landmarkType = "24">
          </BreakpointContent>
       </BreakpointProxy>

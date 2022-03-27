@@ -16,18 +16,18 @@ struct AdjustmentEdit: View {
     var body: some View {
         Form {
             Section {
-                NVString("Ingredient", adjustment.name)
-                NVDoubleEdit("Amount", $adjustment.amount, adjustment.consumptionUnit)
+                NameValue("Ingredient", $adjustment.name, .none)
+                NameValue("Amount", description: "Amount added per adjustment", $adjustment.amount, adjustment.consumptionUnit, edit: true)
                   .focused($focusedField, equals: .amount)
             }
             Section {
                 NVToggleEdit("Constraints", $adjustment.constraints)
                 if adjustment.constraints {
-                    NVDoubleEdit("Maximum", $adjustment.maximum)
+                    NameValue("Maximum", description: "Maximum auto-added to meal", $adjustment.maximum, .can, edit: true)
                 }
             }
             Section {
-                NVStringEdit("Choice Group", $adjustment.group)
+                NameValue("Choice Group", description: "Random selection group", $adjustment.group, .none, edit: true)
             }
         }
           .padding([.leading, .trailing], -20)

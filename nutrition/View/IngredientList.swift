@@ -20,7 +20,7 @@ struct IngredientList: View {
                                                          calories: ingredient.calories,
                                                          fat: ingredient.fat100,
                                                          fiber: ingredient.fiber100,
-                                                         netcarbs: ingredient.netcarbs100,
+                                                         netcarbs: ingredient.netCarbs100,
                                                          protein: ingredient.protein100,
                                                          amount: 100.0 / ingredient.consumptionGrams,
                                                          consumptionUnit: ingredient.consumptionUnit)

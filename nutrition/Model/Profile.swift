@@ -16,7 +16,7 @@ class ProfileMgr: ObservableObject {
         components.year = 1967
         components.month = 9
         components.day = 27
-        self.profile = Profile(dateOfBirth: Calendar.current.date(from: components)!, gender: Gender.male, height: 72, bodyMass: 184, bodyFatPercentage: 20, activeEnergyBurned: 200, proteinRatio: 0.85, calorieDeficit: 20, netcarbsGoalUnadjusted: 20, meat: "Chicken", meatAmount: 200)
+        self.profile = Profile(dateOfBirth: Calendar.current.date(from: components)!, gender: Gender.male, height: 72, bodyMass: 184, bodyFatPercentage: 20, activeEnergyBurned: 200, proteinRatio: 0.85, calorieDeficit: 20, netCarbsMaximum: 20, meat: "Chicken", meatAmount: 200)
     }
 
     func cancel() {
@@ -26,17 +26,17 @@ class ProfileMgr: ObservableObject {
         }
     }
 
-    func setBodyMass(bodyMass: Double) {
+    func setBodyMass(bodyMass: Float) {
         self.profile = profile.setBodyMass(bodyMass: bodyMass)
         serialize()
     }
 
-    func setBodyFatPercentage(bodyFatPercentage: Double) {
+    func setBodyFatPercentage(bodyFatPercentage: Float) {
         self.profile = profile.setBodyFatPercentage(bodyFatPercentage: bodyFatPercentage)
         serialize()
     }
 
-    func setActiveEnergyBurned(activeEnergyBurned: Double) {
+    func setActiveEnergyBurned(activeEnergyBurned: Float) {
         self.profile = profile.setActiveEnergyBurned(activeEnergyBurned: activeEnergyBurned)
         serialize()
     }
@@ -52,125 +52,208 @@ struct Profile: Codable {
     var dateOfBirth: Date
     var gender: Gender
     var height: Int
-    var bodyMass: Double
-    var bodyFatPercentage: Double
-    var activeEnergyBurned: Double
-    var proteinRatio: Double
+    var bodyMass: Float
+    var bodyFatPercentage: Float
+    var activeEnergyBurned: Float
+    var proteinRatio: Float
     var calorieDeficit: Int
-    var netcarbsGoalUnadjusted: Double
+    var netCarbsMaximum: Float
     var meat: String
-    var meatAmount: Double
+    var meatAmount: Float
 
-    func setBodyMass(bodyMass: Double) -> Profile {
-        return Profile(dateOfBirth: self.dateOfBirth, gender: self.gender, height: self.height, bodyMass: bodyMass, bodyFatPercentage: self.bodyFatPercentage, activeEnergyBurned: self.activeEnergyBurned, proteinRatio: self.proteinRatio, calorieDeficit: self.calorieDeficit, netcarbsGoalUnadjusted: self.netcarbsGoalUnadjusted, meat: self.meat, meatAmount: self.meatAmount)
+    func setBodyMass(bodyMass: Float) -> Profile {
+        return Profile(dateOfBirth: self.dateOfBirth, gender: self.gender, height: self.height, bodyMass: bodyMass, bodyFatPercentage: self.bodyFatPercentage, activeEnergyBurned: self.activeEnergyBurned, proteinRatio: self.proteinRatio, calorieDeficit: self.calorieDeficit, netCarbsMaximum: self.netCarbsMaximum, meat: self.meat, meatAmount: self.meatAmount)
     }
 
-    func setBodyFatPercentage(bodyFatPercentage: Double) -> Profile {
-        return Profile(dateOfBirth: self.dateOfBirth, gender: self.gender, height: self.height, bodyMass: self.bodyMass, bodyFatPercentage: bodyFatPercentage, activeEnergyBurned: self.activeEnergyBurned, proteinRatio: self.proteinRatio, calorieDeficit: self.calorieDeficit, netcarbsGoalUnadjusted: self.netcarbsGoalUnadjusted, meat: self.meat, meatAmount: self.meatAmount)
+    func setBodyFatPercentage(bodyFatPercentage: Float) -> Profile {
+        return Profile(dateOfBirth: self.dateOfBirth, gender: self.gender, height: self.height, bodyMass: self.bodyMass, bodyFatPercentage: bodyFatPercentage, activeEnergyBurned: self.activeEnergyBurned, proteinRatio: self.proteinRatio, calorieDeficit: self.calorieDeficit, netCarbsMaximum: self.netCarbsMaximum, meat: self.meat, meatAmount: self.meatAmount)
     }
 
-    func setActiveEnergyBurned(activeEnergyBurned: Double) -> Profile {
-        return Profile(dateOfBirth: self.dateOfBirth, gender: self.gender, height: self.height, bodyMass: self.bodyMass, bodyFatPercentage: self.bodyFatPercentage, activeEnergyBurned: activeEnergyBurned, proteinRatio: self.proteinRatio, calorieDeficit: self.calorieDeficit, netcarbsGoalUnadjusted: self.netcarbsGoalUnadjusted, meat: self.meat, meatAmount: self.meatAmount)
+    func setActiveEnergyBurned(activeEnergyBurned: Float) -> Profile {
+        return Profile(dateOfBirth: self.dateOfBirth, gender: self.gender, height: self.height, bodyMass: self.bodyMass, bodyFatPercentage: self.bodyFatPercentage, activeEnergyBurned: activeEnergyBurned, proteinRatio: self.proteinRatio, calorieDeficit: self.calorieDeficit, netCarbsMaximum: self.netCarbsMaximum, meat: self.meat, meatAmount: self.meatAmount)
     }
 
-    var age: Double {
-        let ageInMonths = Calendar.current.dateComponents([.month], from: self.dateOfBirth, to: Date()).month ?? 0
-        return Double(ageInMonths) / 12.0
-    }
-
-    var bodyMassKg: Double {
-        (self.bodyMass * 0.453592).round(1)
-    }
-
-    var heightCm: Double {
-        Double(self.height) * 2.54
-    }
-
-    var bodyMassIndex: Double {
-        (self.bodyMass / Double(self.height * self.height)) * 703
-    }
-
-    var fatMass: Double {
-        (self.bodyMass * (self.bodyFatPercentage / 100)).round(1)
-    }
-
-    var leanBodyMass: Double {
-        (self.bodyMass - self.fatMass).round(1)
-    }
-
-    var caloriesBaseMetabolicRate: Double {
-        if gender == Gender.male {
-            return (self.bodyMassKg * 9.99) + (self.heightCm * 6.25) - (self.age * 4.92 + 5)
+    var age: Float {
+        set {
         }
-
-        return (self.bodyMassKg * 9.99) + (self.heightCm * 6.25) - (self.age * 4.92 - 161)
+        get {
+            return Float(Calendar.current.dateComponents([.month], from: self.dateOfBirth, to: Date()).month ?? 0) / 12.0
+        }
     }
 
-    var caloriesResting: Double {
-        self.caloriesBaseMetabolicRate * 1.2
+    var bodyMassKg: Float {
+        set {
+        }
+        get {
+            (self.bodyMass * 0.453592).round(1)
+        }
     }
 
-    var caloriesGoalUnadjusted: Double {
-        self.caloriesResting + Double(self.activeEnergyBurned)
+    var heightCm: Float {
+        set {
+        }
+        get {
+            Float(self.height) * 2.54
+        }
     }
 
-    var fatGoalUnadjusted: Double {
-        (self.caloriesGoalUnadjusted - ((self.proteinGoalUnadjusted + self.netcarbsGoalUnadjusted) * 4)) / 9
+    var bodyMassIndex: Float {
+        set {
+        }
+        get {
+            (self.bodyMass / Float(self.height * self.height)) * 703
+        }
     }
 
-    var fiberGoalUnadjusted: Double {
-        (self.caloriesGoalUnadjusted / 1000) * 14
+    var fatMass: Float {
+        set {
+        }
+        get {
+            (self.bodyMass * (self.bodyFatPercentage / 100)).round(1)
+        }
     }
 
-    var proteinGoalUnadjusted: Double {
-        self.leanBodyMass * self.proteinRatio
+    var leanBodyMass: Float {
+        set {
+        }
+        get {
+            (self.bodyMass - self.fatMass).round(1)
+        }
     }
 
-    var fatGoalPercentageUnadjusted: Double {
-        ((self.fatGoalUnadjusted * 9) / self.caloriesGoalUnadjusted) * 100
+    var caloriesBaseMetabolicRate: Float {
+        set {
+        }
+        get {
+            return gender == Gender.male ? (self.bodyMassKg * 9.99) + (self.heightCm * 6.25) - (self.age * 4.92 + 5) : (self.bodyMassKg * 9.99) + (self.heightCm * 6.25) - (self.age * 4.92 - 161)
+        }
     }
 
-    var netcarbsGoalPercentageUnadjusted: Double {
-        ((self.netcarbsGoalUnadjusted * 4) / self.caloriesGoalUnadjusted) * 100
+    var caloriesResting: Float {
+        set {
+        }
+        get {
+            self.caloriesBaseMetabolicRate * 1.2
+        }
     }
 
-    var proteinGoalPercentageUnadjusted: Double {
-        ((self.proteinGoalUnadjusted * 4) / self.caloriesGoalUnadjusted) * 100
+    var caloriesGoalUnadjusted: Float {
+        set {
+        }
+        get {
+            self.caloriesResting + Float(self.activeEnergyBurned)
+        }
     }
 
-    var caloriesGoal: Double {
-        self.caloriesGoalUnadjusted - (self.caloriesGoalUnadjusted * (Double(self.calorieDeficit) / 100))
+    var fatGoalUnadjusted: Float {
+        set {
+        }
+        get {
+            (self.caloriesGoalUnadjusted - ((self.proteinGoalUnadjusted + self.netCarbsMaximum) * 4)) / 9
+        }
     }
 
-    var fiberGoal: Double {
-        (self.caloriesGoal / 1000) * 14
+    var fiberMinimumUnadjusted: Float {
+        set {
+        }
+        get {
+            (self.caloriesGoalUnadjusted / 1000) * 14
+        }
     }
 
-    var netcarbsGoal: Double {
-        self.netcarbsGoalUnadjusted
+    var proteinGoalUnadjusted: Float {
+        set {
+        }
+        get {
+            self.leanBodyMass * self.proteinRatio
+        }
     }
 
-    var proteinGoal: Double {
-        self.leanBodyMass * self.proteinRatio
+    var fatGoalPercentageUnadjusted: Float {
+        set {
+        }
+        get {
+            ((self.fatGoalUnadjusted * 9) / self.caloriesGoalUnadjusted) * 100
+        }
     }
 
-    var fatGoal: Double {
-        (self.caloriesGoal - ((self.proteinGoal + self.netcarbsGoal) * 4)) / 9
+    var netCarbsMaximumPercentageUnadjusted: Float {
+        set {
+        }
+        get {
+            ((self.netCarbsMaximum * 4) / self.caloriesGoalUnadjusted) * 100
+        }
     }
 
-    var fatGoalPercentage: Double {
-        ((self.fatGoal * 9) / self.caloriesGoal) * 100
+    var proteinGoalPercentageUnadjusted: Float {
+        set {
+        }
+        get {
+            ((self.proteinGoalUnadjusted * 4) / self.caloriesGoalUnadjusted) * 100
+        }
     }
 
-    var netcarbsGoalPercentage: Double {
-        ((self.netcarbsGoal * 4) / self.caloriesGoal) * 100
+    var caloriesGoal: Float {
+        set {
+        }
+        get {
+            self.caloriesGoalUnadjusted - (self.caloriesGoalUnadjusted * (Float(self.calorieDeficit) / 100))
+        }
     }
 
-    var proteinGoalPercentage: Double {
-        ((self.proteinGoal * 4) / self.caloriesGoal) * 100
+    var fiberMinimum: Float {
+        set {
+        }
+        get {
+            (self.caloriesGoal / 1000) * 14
+        }
     }
 
-    var waterLiters: Double {
-        (self.bodyMass / 2) * 0.029574
+    var proteinGoal: Float {
+        set {
+        }
+        get {
+            self.leanBodyMass * self.proteinRatio
+        }
+    }
+
+    var fatGoal: Float {
+        set {
+        }
+        get {
+            (self.caloriesGoal - ((self.proteinGoal + self.netCarbsMaximum) * 4)) / 9
+        }
+    }
+
+    var fatGoalPercentage: Float {
+        set {
+        }
+        get {
+            ((self.fatGoal * 9) / self.caloriesGoal) * 100
+        }
+    }
+
+    var netCarbsMaximumPercentage: Float {
+        set {
+        }
+        get {
+            ((self.netCarbsMaximum * 4) / self.caloriesGoal) * 100
+        }
+    }
+
+    var proteinGoalPercentage: Float {
+        set {
+        }
+        get {
+            ((self.proteinGoal * 4) / self.caloriesGoal) * 100
+        }
+    }
+
+    var waterLiters: Float {
+        set {
+        }
+        get {
+            (self.bodyMass / 2) * 0.029574
+        }
     }
 }

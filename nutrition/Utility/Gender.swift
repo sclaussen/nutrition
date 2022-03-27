@@ -12,3 +12,7 @@ enum Gender: String, Codable, CaseIterable {
         return values
     }
 }
+
+extension Gender: Identifiable {
+    var id: Self { self }
+}

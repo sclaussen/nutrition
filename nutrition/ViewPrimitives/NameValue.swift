@@ -1,190 +1,86 @@
 import SwiftUI
 
-let formatter: NumberFormatter = {
-    let formatter = NumberFormatter()
-    formatter.numberStyle = .decimal
-    formatter.maximumFractionDigits = 3
-    return formatter
-}()
-
-struct NVString: View {
-    var name: String
-    var description: String
-    var value: String
-
-    init(_ name: String, description: String = "",  _ value: String) {
-        self.name = name
-        self.description = description
-        self.value = value
-    }
-
-    var body: some View {
-        VStack(alignment: .leading, spacing: 0) {
-            HStack(alignment: .bottom) {
-                NVName(name: name)
-                NVValue(value: value)
-                NVUnit(unit: Unit.none)
-            }
-            NVDescription(description: description)
-        }
-    }
+enum ValueType {
+    case int
+    case float
+    case string
 }
 
-struct NVStringEdit: View {
+// Credit: https://betterprogramming.pub/generic-text-field-in-swiftui-aca764ac93d4
+struct NameValue<ConversionType: CustomStringConvertible & Singular & Fmt>: View {
     var name: String
     var description: String
-    @Binding var value: String
+    @Binding var value: ConversionType
+    @State var valueString: String
+    var unit: Unit
+    var precision: Int
+    var keyboard: UIKeyboardType = .default
+    var valueType: ValueType = .string
+    var edit: Bool
 
-    init(_ name: String, description: String = "", _ value: Binding<String>) {
+    init(_ name: String, description: String = "", _ value: Binding<ConversionType>, _ unit: Unit = Unit.gram, precision: Int = 0, negative: Bool = false, edit: Bool = false) {
         self.name = name
         self.description = description
         self._value = value
-    }
-
-    var body: some View {
-        VStack(alignment: .leading, spacing: 0) {
-            HStack(alignment: .bottom) {
-                NVName(name: name)
-                TextField(name, text: $value)
-                  .myValue()
-                NVUnit(unit: Unit.none)
-            }
-            NVDescription(description: description)
-        }
-    }
-}
-
-struct NVInt: View {
-    var name: String
-    var description: String
-    var value: Int
-    var unit: Unit
-
-    init(_ name: String, description: String = "", _ value: Int, _ unit: Unit = Unit.none) {
-        self.name = name
-        self.description = description
-        self.value = value
+        self._valueString = State(initialValue: value.wrappedValue.description.toStr(precision))
         self.unit = unit
-    }
+        self.precision = precision
 
-    var body: some View {
-        VStack(alignment: .leading, spacing: 0) {
-            HStack(alignment: .bottom) {
-                NVName(name: name)
-                NVValue(value: value)
-                NVUnit(value: value, unit: unit)
-            }
-            NVDescription(description: description)
+        if type(of: value.wrappedValue) == Int.self {
+            valueType = .int
+        } else if type(of: value.wrappedValue) == Float.self {
+            valueType = .float
         }
-    }
-}
 
-struct NVIntEdit: View {
-    var name: String
-    var description: String
-    @Binding var value: Int
-    var unit: Unit
+        if valueType == .int && !negative {
+            self.keyboard = .numberPad
+        } else if valueType == .float && !negative {
+            self.keyboard = .decimalPad
+        }
 
-    init(_ name: String, description: String = "", _ value: Binding<Int>, _ unit: Unit = Unit.none) {
-        self.name = name
-        self._value = value
-        self.description = description
-        self.unit = unit
+        self.edit = edit
     }
 
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
             HStack(alignment: .bottom) {
-                NVName(name: name)
+                NVName(name)
 
-                // Value
-                TextField(name, value: $value, formatter: NumberFormatter(), prompt: Text("Required"))
-                  .myValue()
-                  .keyboardType(.numberPad)
-                  .onReceive(NotificationCenter.default.publisher(for: UITextField.textDidBeginEditingNotification)) { obj in
-                      if let textEdit = obj.object as? UITextField {
-                          textEdit.selectedTextRange = textEdit.textRange(from: textEdit.beginningOfDocument, to: textEdit.endOfDocument)
+                if !edit {
+                    NVValue(value, precision: precision)
+                } else {
+                    TextField(description.count > 0 ? description : name, text: $valueString)
+                      .myValue()
+                      .keyboardType(keyboard)
+                      .onReceive(NotificationCenter.default.publisher(for: UITextField.textDidBeginEditingNotification)) { obj in
+                          if let textEdit = obj.object as? UITextField {
+                              textEdit.selectedTextRange = textEdit.textRange(from: textEdit.beginningOfDocument, to: textEdit.endOfDocument)
+                          }
                       }
-                  }
+                      .onChange(of: valueString) { (newValue) in
+                          print(valueType)
+                          if valueType == .int {
+                              if let convertedValue = Int(newValue) {
+                                  value = convertedValue as! ConversionType
+                              } else {
+                                  print("Error...")
+                              }
+                          } else if valueType == .float {
+                              if let convertedValue = Float(newValue) {
+                                  value = convertedValue as! ConversionType
+                              } else {
+                                  print("Error...")
+                              }
+                          } else {
+                              value = newValue as! ConversionType
+                          }
+                      }
+                }
 
-                NVUnit(value: value, unit: unit)
+                NVUnit(value: value, unit)
             }
-            NVDescription(description: description)
+            NVDescription(description)
         }
-    }
-}
-
-struct NVDouble: View {
-    var name: String
-    var description: String
-    var value: Double
-    var unit: Unit
-    var precision: Int
-
-    init(_ name: String, description: String = "", _ value: Double, _ unit: Unit = Unit.none, precision: Int = 0) {
-        self.name = name
-        self.description = description
-        self.value = value
-        self.unit = unit
-        self.precision = precision
-    }
-
-    var body: some View {
-        VStack(alignment: .leading, spacing: 0) {
-            HStack(alignment: .bottom) {
-                NVName(name: name)
-                NVValue(value: value, precision: precision)
-                NVUnit(value: Int(value), unit: unit)
-            }
-            NVDescription(description: description)
-        }
-    }
-}
-
-struct NVDoubleEdit: View {
-    var name: String
-    var description: String
-    @Binding var value: Double
-    var unit: Unit
-    var precision: Int
-    var negative: Bool
-
-    init(_ name: String, description: String = "", _ value: Binding<Double>, _ unit: Unit = Unit.none, precision: Int = 2, negative: Bool = false) {
-        self.name = name
-        self.description = description
-        self._value = value
-        self.unit = unit
-        self.precision = precision
-        self.negative = negative
-    }
-
-    var body: some View {
-        let formatter2: NumberFormatter = {
-            let formatter2 = NumberFormatter()
-            formatter2.numberStyle = .decimal
-            formatter2.maximumFractionDigits = self.precision
-            return formatter2
-        }()
-
-        return
-          VStack(alignment: .leading, spacing: 0) {
-              HStack(alignment: .bottom) {
-                  NVName(name: name)
-
-                  // Value
-                  TextField(name, value: $value, formatter: formatter2)
-                    .myValue()
-                    .keyboardType(negative ? .numbersAndPunctuation : .decimalPad)
-                    .onReceive(NotificationCenter.default.publisher(for: UITextField.textDidBeginEditingNotification)) { obj in
-                        if let textEdit = obj.object as? UITextField {
-                            textEdit.selectedTextRange = textEdit.textRange(from: textEdit.beginningOfDocument, to: textEdit.endOfDocument)
-                        }
-                    }
-
-                  NVUnit(value: Int(value), unit: unit)
-              }
-              NVDescription(description: description)
-          }
     }
 }
 
@@ -204,7 +100,7 @@ struct NVPickerEdit: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
             HStack(alignment: .bottom) {
-                NVName(name: name)
+                NVName(name)
                 Picker("", selection: $value) {
                     ForEach(options, id: \.self) {
                         Text($0)
@@ -212,9 +108,9 @@ struct NVPickerEdit: View {
                 }
                   .offset(x: 20)
                   .myValue()
-                NVUnit(unit: Unit.none)
+                NVUnit(value: Int(0), Unit.none)
             }
-            NVDescription(description: description)
+            NVDescription(description)
         }
     }
 }
@@ -235,7 +131,7 @@ struct NVPickerUnitEdit: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
             HStack(alignment: .bottom) {
-                NVName(name: name)
+                NVName(name)
                 Picker("", selection: $value) {
                     ForEach(options, id: \.self) {
                         Text($0.rawValue)
@@ -244,9 +140,9 @@ struct NVPickerUnitEdit: View {
                 }
                   .offset(x: 20)
                   .myValue()
-                NVUnit(unit: Unit.none)
+                NVUnit(value: Int(0), Unit.none)
             }
-            NVDescription(description: description)
+            NVDescription(description)
         }
     }
 }
@@ -267,7 +163,7 @@ struct NVPickerGenderEdit: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
             HStack(alignment: .bottom) {
-                NVName(name: name)
+                NVName(name)
                 Picker("", selection: $value) {
                     ForEach(options, id: \.self) {
                         Text($0.rawValue)
@@ -276,9 +172,9 @@ struct NVPickerGenderEdit: View {
                 }
                   .offset(x: 20)
                   .myValue()
-                NVUnit(unit: Unit.none)
+                NVUnit(value: Int(0), Unit.none)
             }
-            NVDescription(description: description)
+            NVDescription(description)
         }
     }
 }
@@ -299,7 +195,7 @@ struct NVPickerIntEdit: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
             HStack(alignment: .bottom) {
-                NVName(name: name)
+                NVName(name)
 
                 // Value
                 Picker("", selection: $value) {
@@ -310,9 +206,9 @@ struct NVPickerIntEdit: View {
                   .offset(x: 20)
                   .myValue()
 
-                NVUnit(unit: Unit.none)
+                NVUnit(value: Int(0), Unit.none)
             }
-            NVDescription(description: description)
+            NVDescription(description)
         }
     }
 }
@@ -331,17 +227,14 @@ struct NVToggleEdit: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
             HStack(alignment: .bottom) {
-                NVName(name: name)
-
-                // Value
+                NVName(name)
                 Toggle("", isOn: $value)
                   .myValue()
                   .toggleStyle(CheckmarkToggleStyle())
                   .border(Color.black, width: 0)
-
-                NVUnit(unit: Unit.none)
+                NVUnit(value: Int(0), Unit.none)
             }
-            NVDescription(description: description)
+            NVDescription(description)
         }
     }
 }
@@ -360,90 +253,93 @@ struct NVDateEdit: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
             HStack(alignment: .bottom) {
-                NVName(name: name)
-
-                // Value
+                NVName(name)
                 DatePicker("", selection: $value, in: ...Date(), displayedComponents: [.date])
                   .myValue()
                   .colorInvert()
                   .colorMultiply(Color.blue)
                   .offset(x: 5)
-
-                NVUnit(unit: Unit.none)
+                NVUnit(value: Int(0), Unit.none)
             }
-            NVDescription(description: description)
+            NVDescription(description)
         }
     }
 }
 
 struct NVName: View {
     var name: String
-    var widthPercentage: Double = 0.66
+    var widthPercentage: Float = 0.66
+
+    init(_ name: String) {
+        self.name = name
+    }
+
     var body: some View {
         let width = 300 * widthPercentage
         Text(name)
           .lineLimit(1)
-          .frame(minWidth: width, minHeight: 20, alignment: .leading)
+          .frame(minWidth: CGFloat(width), minHeight: 20, alignment: .leading)
           .border(Color.black, width: 0)
     }
 }
 
-struct NVValue<T>: View {
+struct NVValue<T: Fmt>: View {
     var value: T
-    var widthPercentage: Double = 0.33
-    var precision: Int = 0
+    var precision: Int
+    var widthPercentage: Float = 0.33
+
+    init(_ value: T, precision: Int = 0) {
+        self.value = value
+        self.precision = precision
+    }
 
     var body: some View {
         let width = 300 * widthPercentage
-
-        if let value = value as? Int {
-            return AnyView(HStack {
-                               Text(String(value))
-                                 .lineLimit(1)
-                                 .frame(minWidth: width, minHeight: 20, alignment: .trailing)
-                                 .border(Color.black, width: 0)
-                           })
+        return HStack {
+            Text(value.toStr(precision))
+              .lineLimit(1)
+              .frame(minWidth: CGFloat(width), minHeight: 20, alignment: .trailing)
+              .border(Color.black, width: 0)
         }
-
-        if let value = value as? Double {
-            let formatter = NumberFormatter()
-            formatter.numberStyle = .decimal
-            formatter.maximumFractionDigits = precision
-
-            return AnyView(Text(formatter.string(from: value as NSNumber)!)
-                             .lineLimit(1)
-                             .frame(minWidth: width, minHeight: 20, alignment: .trailing)
-                             .border(Color.black, width: 0))
-        }
-
-        return AnyView(Text((value as? String)!)
-                         .lineLimit(1)
-                         .frame(minWidth: width, minHeight: 20, alignment: .trailing)
-                         .border(Color.black, width: 0))
     }
 }
 
-struct NVUnit: View {
-    var value: Int = 0
+struct NVUnit<T: Singular>: View {
+    var value: T
     var unit: Unit
 
+    init(value: T, _ unit: Unit) {
+        self.value = value
+        self.unit = unit
+    }
+
     var body: some View {
-        if value == 1 {
+        if unit == Unit.none {
+            return AnyView(Text("")
+                             .frame(minWidth: 35, minHeight: 20)
+                             .border(Color.black, width: 0))
+        }
+
+        if value.singular() {
             return AnyView(Text(unit.singular)
-              .font(.caption2)
-              .frame(minWidth: 35, minHeight: 20, alignment: .leading)
-              .border(Color.black, width: 0))
+                             .font(.caption2)
+                             .frame(minWidth: 35, minHeight: 20, alignment: .leading)
+                             .border(Color.black, width: 0))
         }
 
         return AnyView(Text(unit.plural)
-          .font(.caption2)
-          .frame(minWidth: 35, minHeight: 20, alignment: .leading)
-          .border(Color.black, width: 0))
+                         .font(.caption2)
+                         .frame(minWidth: 35, minHeight: 20, alignment: .leading)
+                         .border(Color.black, width: 0))
     }
 }
 
 struct NVDescription: View {
     var description: String
+
+    init(_ description: String) {
+        self.description = description
+    }
 
     var body: some View {
         if description.count > 0 {

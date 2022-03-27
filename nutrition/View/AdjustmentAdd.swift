@@ -7,9 +7,9 @@ struct AdjustmentAdd: View {
     @EnvironmentObject var ingredientMgr: IngredientMgr
 
     @State var name: String = ""
-    @State var amount: Double = 0
+    @State var amount: Float = 0
     @State var constraints: Bool = false
-    @State var maximum: Double = 0
+    @State var maximum: Float = 0
     @State var group: String = ""
 
     var body: some View {
@@ -17,18 +17,18 @@ struct AdjustmentAdd: View {
             Section {
                 NVPickerEdit("Ingredient", $name, options: ingredientMgr.getPickerOptions(existing: adjustmentMgr.getNames()))
                 if name.count > 0 {
-                    NVDoubleEdit("Amount", $amount, ingredientMgr.getIngredient(name: name)!.consumptionUnit)
+                    NameValue("Amount", $amount, ingredientMgr.getIngredient(name: name)!.consumptionUnit, edit: true)
                 }
             }
             if name.count > 0 {
                 Section {
                     NVToggleEdit("Constraints", $constraints)
                     if constraints {
-                        NVDoubleEdit("Maximum", $maximum)
+                        NameValue("Maximum", $maximum, edit: true)
                     }
                 }
                 Section {
-                    NVStringEdit("Choice Group", $group)
+                    NameValue("Choice Group", $group, edit: true)
                 }
             }
         }

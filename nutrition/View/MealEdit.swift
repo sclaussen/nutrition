@@ -16,10 +16,10 @@ struct MealEdit: View {
     var body: some View {
         Form {
             Section {
-                NVString("Ingredient", mealIngredient.name)
-                NVDoubleEdit("Current Amount", $mealIngredient.amount, mealIngredient.consumptionUnit)
+                NameValue("Ingredient", $mealIngredient.name)
+                NameValue("Current Amount", $mealIngredient.amount, mealIngredient.consumptionUnit, edit: true)
                   .focused($focusedField, equals: .amount)
-                NVDoubleEdit("Default Amount", $mealIngredient.defaultAmount, mealIngredient.consumptionUnit)
+                NameValue("Default Amount", $mealIngredient.defaultAmount, mealIngredient.consumptionUnit, edit: true)
             }
         }
           .padding([.leading, .trailing], -20)

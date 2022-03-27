@@ -10,24 +10,24 @@ struct IngredientEdit: View {
     var body: some View {
         Form {
             Section {
-                NVStringEdit("Name", $ingredient.name)
+                NameValue("Name", $ingredient.name, .none)
             }
             Section {
-                NVDoubleEdit("Serving Size", $ingredient.servingSize, Unit.gram)
-                NVDoubleEdit("Calories", $ingredient.calories, Unit.calorie)
-                NVDoubleEdit("Fat", $ingredient.fat, Unit.gram)
-                NVDoubleEdit("Fiber", $ingredient.fiber, Unit.gram)
-                NVDoubleEdit("Net Carbs", $ingredient.netcarbs, Unit.gram)
-                NVDoubleEdit("Protein", $ingredient.protein, Unit.gram)
+                NameValue("Serving Size", $ingredient.servingSize, edit: true)
+                NameValue("Calories", $ingredient.calories, Unit.calorie, edit: true)
+                NameValue("Fat", $ingredient.fat, edit: true)
+                NameValue("Fiber", $ingredient.fiber, edit: true)
+                NameValue("Net Carbs", $ingredient.netCarbs, edit: true)
+                NameValue("Protein", $ingredient.protein, edit: true)
             }
             Section(header: Text("Ingredient Consumption")) {
                 NVPickerUnitEdit("Consumption Unit", $ingredient.consumptionUnit, options: Unit.ingredientOptions())
-                NVDoubleEdit("Grams / Unit", $ingredient.consumptionGrams, Unit.gram)
+                NameValue("Grams / Unit", $ingredient.consumptionGrams, edit: true)
             }
             Section {
                 NVToggleEdit("Meat", $ingredient.meat)
                 if ingredient.meat {
-                    NVDoubleEdit("Meat Amount", $ingredient.meatAmount, Unit.gram)
+                    NameValue("Meat Amount", $ingredient.meatAmount, edit: true)
                 }
             }
             if ingredient.meat {
@@ -35,7 +35,7 @@ struct IngredientEdit: View {
                     Section(header: Text("Base Meal Adjustment " + String(index + 1))) {
                         NVPickerEdit("Ingredient", $ingredient.meatAdjustments[index].name, options: ingredientMgr.getPickerOptions(existing: []))
                         if ingredient.meatAdjustments[index].name.count > 0 {
-                            NVDoubleEdit("Amount", $ingredient.meatAdjustments[index].amount, ingredientMgr.getIngredient(name: ingredient.meatAdjustments[index].name)!.consumptionUnit, negative: true)
+                            NameValue("Amount", $ingredient.meatAdjustments[index].amount, ingredientMgr.getIngredient(name: ingredient.meatAdjustments[index].name)!.consumptionUnit, negative: true, edit: true)
                         }
                     }
                 }
@@ -47,11 +47,11 @@ struct IngredientEdit: View {
                 }
             }
             Section {
-                NVDouble("Calories (per 100g)", ingredient.calories100, Unit.gram, precision: 1)
-                NVDouble("Fat (per 100g)", ingredient.fat100, Unit.gram, precision: 1)
-                NVDouble("Fiber (per 100g)", ingredient.fiber100, Unit.gram, precision: 1)
-                NVDouble("Net Carbs (per 100g)", ingredient.netcarbs100, Unit.gram, precision: 1)
-                NVDouble("Protein (per 100g)", ingredient.protein100, Unit.gram, precision: 1)
+                NameValue("Calories (per 100g)", $ingredient.calories100)
+                NameValue("Fat (per 100g)", $ingredient.fat100)
+                NameValue("Fiber (per 100g)", $ingredient.fiber100)
+                NameValue("Net Carbs (per 100g)", $ingredient.netCarbs100, precision: 1)
+                NameValue("Protein (per 100g)", $ingredient.protein100)
             }
         }
           .padding([.leading, .trailing], -20)
@@ -87,7 +87,7 @@ struct IngredientEdit: View {
 struct IngredientEdit_Previews: PreviewProvider {
     static var previews: some View {
         NavigationView {
-            IngredientEdit(ingredient: Ingredient(name: "Chicken", servingSize: 200, calories: 180, fat: 2, fiber: 1, netcarbs: 0.5, protein: 10, consumptionUnit: Unit.gram, consumptionGrams: 100))
+            IngredientEdit(ingredient: Ingredient(name: "Chicken", servingSize: 200, calories: 180, fat: 2, fiber: 1, netCarbs: 0.5, protein: 10, consumptionUnit: Unit.gram, consumptionGrams: 100))
         }
     }
 }

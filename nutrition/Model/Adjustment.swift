@@ -39,7 +39,7 @@ class AdjustmentMgr: ObservableObject {
         self.adjustments = savedItems
     }
 
-    func create(name: String, amount: Double, consumptionUnit: Unit, group: String, active: Bool) {
+    func create(name: String, amount: Float, consumptionUnit: Unit, group: String, active: Bool) {
         let adjustment = Adjustment(name: name, amount: amount, consumptionUnit: consumptionUnit, group: group, active: active)
         adjustments.append(adjustment)
     }
@@ -110,16 +110,16 @@ class AdjustmentMgr: ObservableObject {
 struct Adjustment: Codable, Identifiable {
     var id: String
     var name: String
-    var amount: Double
+    var amount: Float
     var consumptionUnit: Unit
 
     var group: String
 
     var constraints : Bool
-    var maximum: Double
+    var maximum: Float
     var active: Bool
 
-    init(id: String = UUID().uuidString, name: String, amount: Double, consumptionUnit: Unit = Unit.gram, group: String = "", constraints: Bool = false, maximum: Double = 0, active: Bool = true) {
+    init(id: String = UUID().uuidString, name: String, amount: Float, consumptionUnit: Unit = Unit.gram, group: String = "", constraints: Bool = false, maximum: Float = 0, active: Bool = true) {
         self.id = id
         self.name = name
         self.amount = amount

@@ -7,14 +7,14 @@ struct MealAdd: View {
     @EnvironmentObject var ingredientMgr: IngredientMgr
 
     @State var name: String = ""
-    @State var defaultAmount: Double = 0
+    @State var defaultAmount: Float = 0
 
     var body: some View {
         Form {
             Section {
                 NVPickerEdit("Meal Ingredient", $name, options: ingredientMgr.getPickerOptions(existing: mealIngredientMgr.getNames()))
                 if name.count > 0 {
-                    NVDoubleEdit("Amount", $defaultAmount, ingredientMgr.getIngredient(name: name)!.consumptionUnit)
+                    NameValue("Amount", $defaultAmount, ingredientMgr.getIngredient(name: name)!.consumptionUnit, edit: true)
                 }
             }
         }

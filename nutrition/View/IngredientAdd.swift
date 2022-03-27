@@ -1,54 +1,52 @@
 import SwiftUI
 
 struct IngredientAdd: View {
-    //     var body: some View {
-    //         Text("Hello")
-    //     }
-    // }
-
     @Environment(\.presentationMode) var presentationMode
     @EnvironmentObject var ingredientMgr: IngredientMgr
     @EnvironmentObject var mealIngredientMgr: MealIngredientMgr
 
     @State var name: String = ""
 
-    @State var servingSize: Double = 0
-    @State var calories: Double = 0
-    @State var fat: Double = 0
-    @State var fiber: Double = 0
-    @State var netcarbs: Double = 0
-    @State var protein: Double = 0
+    @State var servingSize: Float = 0
+    @State var calories: Float = 0
+    @State var fat: Float = 0
+    @State var fiber: Float = 0
+    @State var netCarbs: Float = 0
+    @State var protein: Float = 0
 
     @State var consumptionUnit: Unit = Unit.gram
-    @State var consumptionGrams: Double = 1.0
+    @State var consumptionGrams: Float = 1.0
 
     @State var meat: Bool = false
-    @State var meatAmount: Double = 200
+    @State var meatAmount: Float = 200
     @State var adjustmentCount = 0
     @State var meatAdjustments: [MeatAdjustment] = []
+
+    @State var ingredientAdd: Bool = false
+    @State var adjustmentAdd: Bool = false
 
     var body: some View {
         Form {
             Section {
-                NVStringEdit("Name", $name)
+                NameValue("Name", $name, .none, edit: true)
                   .autocapitalization(UITextAutocapitalizationType.words)
             }
             Section {
-                NVDoubleEdit("Serving Size", $servingSize, Unit.gram)
-                NVDoubleEdit("Calories", $calories, Unit.calorie)
-                NVDoubleEdit("Fat", $fat, Unit.gram)
-                NVDoubleEdit("Fiber", $fiber, Unit.gram)
-                NVDoubleEdit("Net Carbs", $netcarbs, Unit.gram)
-                NVDoubleEdit("Protein", $protein, Unit.gram)
+                NameValue("Serving Size", $servingSize, edit: true)
+                NameValue("Calories", $calories, .calorie, edit: true)
+                NameValue("Fat", $fat, edit: true)
+                NameValue("Fiber", $fiber, edit: true)
+                NameValue("Net Carbs", $netCarbs, edit: true)
+                NameValue("Protein", $protein, edit: true)
             }
             Section(header: Text("Ingredient Consumption")) {
                 NVPickerUnitEdit("Consumption Unit", $consumptionUnit, options: Unit.ingredientOptions())
-                NVDoubleEdit("Grams / Unit", $consumptionGrams, Unit.gram)
+                NameValue("Grams / Unit", $consumptionGrams, edit: true)
             }
             Section {
                 NVToggleEdit("Meat", $meat)
                 if meat {
-                    NVDoubleEdit("Meat Amount", $meatAmount, Unit.gram)
+                    NameValue("Meat Amount", $meatAmount, edit: true)
                 }
             }
             if meat {
@@ -56,17 +54,21 @@ struct IngredientAdd: View {
                     Section(header: Text("Base Meal Adjustment " + String(index + 1))) {
                         NVPickerEdit("Ingredient", $meatAdjustments[index].name, options: ingredientMgr.getPickerOptions(existing: []))
                         if meatAdjustments[index].name.count > 0 {
-                            NVDoubleEdit("Amount", $meatAdjustments[index].amount, ingredientMgr.getIngredient(name: meatAdjustments[index].name)!.consumptionUnit, negative: true)
+                            NameValue("Amount", $meatAdjustments[index].amount, ingredientMgr.getIngredient(name: meatAdjustments[index].name)!.consumptionUnit, negative: true, edit: true)
                         }
                     }
                 }
                 Button {
                     adjustmentCount += 1
-                    let meadAdustment: MeatAdjustment = MeatAdjustment(name: "", amount: 0.0, consumptionUnit: Unit.none)
+                    let meadAdustment: MeatAdjustment = MeatAdjustment(name: "", amount: 0.0, consumptionUnit: .none)
                     meatAdjustments.append(meadAdustment)
                 } label: {
                     Label("New Meal Ingredient Adjustment", systemImage: "plus.circle")
                 }
+            }
+            Section(header: Text("Quick Add")) {
+                NVToggleEdit("Add to Meal Ingredients", $ingredientAdd)
+                NVToggleEdit("Add to Adjustments", $adjustmentAdd)
             }
         }
         .padding([.leading, .trailing], -20)
@@ -85,7 +87,7 @@ struct IngredientAdd: View {
                     Button("Save",
                            action: {
                                withAnimation {
-                                   ingredientMgr.create(name: name, servingSize: servingSize, calories: calories, fat: fat, fiber: fiber, netcarbs: netcarbs, protein: protein, consumptionUnit: consumptionUnit, consumptionGrams: consumptionGrams, meat: meat, meatAmount: meatAmount, meatAdjustments: meatAdjustments, available: true, verified: "")
+                                   ingredientMgr.create(name: name, servingSize: servingSize, calories: calories, fat: fat, fiber: fiber, netCarbs: netCarbs, protein: protein, consumptionUnit: consumptionUnit, consumptionGrams: consumptionGrams, meat: meat, meatAmount: meatAmount, meatAdjustments: meatAdjustments, available: true, verified: "")
                                    presentationMode.wrappedValue.dismiss()
                                }
                            })
