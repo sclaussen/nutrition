@@ -25,7 +25,7 @@ struct IngredientEdit: View {
                 NameValue("Grams / Unit", $ingredient.consumptionGrams, edit: true)
             }
             Section {
-                NVToggleEdit("Meat", $ingredient.meat)
+                NameValue("Meat", $ingredient.meat, control: .toggle)
                 if ingredient.meat {
                     NameValue("Meat Amount", $ingredient.meatAmount, edit: true)
                 }

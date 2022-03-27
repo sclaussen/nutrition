@@ -44,7 +44,7 @@ struct IngredientAdd: View {
                 NameValue("Grams / Unit", $consumptionGrams, edit: true)
             }
             Section {
-                NVToggleEdit("Meat", $meat)
+                NameValue("Meat", description: "main course", $meat, control: .toggle)
                 if meat {
                     NameValue("Meat Amount", $meatAmount, edit: true)
                 }
@@ -67,8 +67,8 @@ struct IngredientAdd: View {
                 }
             }
             Section(header: Text("Quick Add")) {
-                NVToggleEdit("Add to Meal Ingredients", $ingredientAdd)
-                NVToggleEdit("Add to Adjustments", $adjustmentAdd)
+                NameValue("Add to Meal Ingredients", $ingredientAdd, control: .toggle)
+                NameValue("Add to Adjustments", $adjustmentAdd, control: .toggle)
             }
         }
         .padding([.leading, .trailing], -20)

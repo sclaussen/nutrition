@@ -22,7 +22,7 @@ struct AdjustmentAdd: View {
             }
             if name.count > 0 {
                 Section {
-                    NVToggleEdit("Constraints", $constraints)
+                    NameValue("Constraints", $constraints, control: .toggle)
                     if constraints {
                         NameValue("Maximum", $maximum, edit: true)
                     }

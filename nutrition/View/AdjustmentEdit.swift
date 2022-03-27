@@ -21,7 +21,7 @@ struct AdjustmentEdit: View {
                   .focused($focusedField, equals: .amount)
             }
             Section {
-                NVToggleEdit("Constraints", $adjustment.constraints)
+                NameValue("Constraints", $adjustment.constraints, control: .toggle)
                 if adjustment.constraints {
                     NameValue("Maximum", description: "Maximum auto-added to meal", $adjustment.maximum, .can, edit: true)
                 }

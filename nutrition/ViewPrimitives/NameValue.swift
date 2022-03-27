@@ -1,54 +1,107 @@
 import SwiftUI
 
+enum Control {
+    case text
+    case toggle
+    case date
+}
+
 enum ValueType {
     case int
     case float
     case string
+    case bool
+    case date
 }
 
 // Credit: https://betterprogramming.pub/generic-text-field-in-swiftui-aca764ac93d4
-struct NameValue<ConversionType: CustomStringConvertible & Singular & Fmt>: View {
+struct NameValue<T: CustomStringConvertible & Singular & Fmt>: View {
     var name: String
     var description: String
-    @Binding var value: ConversionType
+    @Binding var value: T
     @State var valueString: String
+    // @Binding var valueBool: Bool?
     var unit: Unit
     var precision: Int
     var keyboard: UIKeyboardType = .default
     var valueType: ValueType = .string
+    var control: Control = .text
     var edit: Bool
+    let nameWidth: Float
+    let valueWidth: Float
 
-    init(_ name: String, description: String = "", _ value: Binding<ConversionType>, _ unit: Unit = Unit.gram, precision: Int = 0, negative: Bool = false, edit: Bool = false) {
+    init(_ name: String,
+         description: String = "",
+         _ value: Binding<T>,
+         _ unit: Unit = Unit.gram,
+         precision: Int = 0,
+         negative: Bool = false,
+         control: Control = .text,
+         edit: Bool = false) {
+
         self.name = name
         self.description = description
         self._value = value
         self._valueString = State(initialValue: value.wrappedValue.description.toStr(precision))
-        self.unit = unit
+        self.unit = (control == .text) ? unit : .none
         self.precision = precision
 
         if type(of: value.wrappedValue) == Int.self {
             valueType = .int
+            self.keyboard = negative ? .default : .numberPad
         } else if type(of: value.wrappedValue) == Float.self {
             valueType = .float
+            self.keyboard = negative ? .default : .decimalPad
+        } else if type(of: value.wrappedValue) == Bool.self {
+            valueType = .bool
+        } else if type(of: value.wrappedValue) == Date.self {
+            valueType = .date
         }
 
-        if valueType == .int && !negative {
-            self.keyboard = .numberPad
-        } else if valueType == .float && !negative {
-            self.keyboard = .decimalPad
-        }
+        self.control = control
+        self.edit = (control == .text) ? edit : true
 
-        self.edit = edit
+        self.nameWidth  = 300 * 0.66
+        self.valueWidth = 300 * 0.33
     }
 
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
             HStack(alignment: .bottom) {
-                NVName(name)
 
+
+                // Name
+                Text(name)
+                  .lineLimit(1)
+                  .frame(minWidth: CGFloat(nameWidth), minHeight: 20, alignment: .leading)
+                  .border(Color.black, width: 0)
+
+
+                // Value
                 if !edit {
-                    NVValue(value, precision: precision)
-                } else {
+                    Text(value.toStr(precision))
+                      .lineLimit(1)
+                      .frame(minWidth: CGFloat(valueWidth), minHeight: 20, alignment: .trailing)
+                      .border(Color.black, width: 0)
+
+                } else if control == .toggle {
+                    Toggle("", isOn: Binding(get: { $value.wrappedValue as! Bool },
+                                             set: { $value.wrappedValue = $0 as! T }))
+                      .myValue()
+                      .toggleStyle(CheckmarkToggleStyle())
+                      .border(Color.black, width: 0)
+
+                } else if control == .date {
+                    DatePicker("",
+                               selection: Binding(get: { $value.wrappedValue as! Date },
+                                                  set: { $value.wrappedValue = $0 as! T }),
+                               in: ...Date(), displayedComponents: [.date])
+                      .myValue()
+                      .colorInvert()
+                      .colorMultiply(Color.blue)
+                      .offset(x: 5)
+
+                } else if control == .text {
                     TextField(description.count > 0 ? description : name, text: $valueString)
                       .myValue()
                       .keyboardType(keyboard)
@@ -61,25 +114,46 @@ struct NameValue<ConversionType: CustomStringConvertible & Singular & Fmt>: View
                           print(valueType)
                           if valueType == .int {
                               if let convertedValue = Int(newValue) {
-                                  value = convertedValue as! ConversionType
+                                  value = convertedValue as! T
                               } else {
                                   print("Error...")
                               }
                           } else if valueType == .float {
                               if let convertedValue = Float(newValue) {
-                                  value = convertedValue as! ConversionType
+                                  value = convertedValue as! T
                               } else {
                                   print("Error...")
                               }
                           } else {
-                              value = newValue as! ConversionType
+                              value = newValue as! T
                           }
                       }
                 }
 
-                NVUnit(value: value, unit)
+
+                // Unit
+                if value.singular() {
+                    AnyView(Text(unit.singular)
+                              .font(.caption2)
+                              .frame(minWidth: 35, minHeight: 20, alignment: .leading)
+                              .border(Color.black, width: 0))
+                } else {
+                    AnyView(Text(unit.plural)
+                              .font(.caption2)
+                              .frame(minWidth: 35, minHeight: 20, alignment: .leading)
+                              .border(Color.black, width: 0))
+                }
             }
-            NVDescription(description)
+
+
+            // Description
+            if description.count > 0 {
+                AnyView(Text(description)
+                          .lineLimit(1)
+                          .frame(minWidth: 050, minHeight: 10, alignment: .leading)
+                          .border(Color.black, width: 0)
+                          .font(.system(size: 9)))
+            }
         }
     }
 }
@@ -213,32 +287,6 @@ struct NVPickerIntEdit: View {
     }
 }
 
-struct NVToggleEdit: View {
-    var name: String
-    var description: String
-    @Binding var value: Bool
-
-    init(_ name: String, description: String = "", _ value: Binding<Bool>) {
-        self.name = name
-        self.description = description
-        self._value = value
-    }
-
-    var body: some View {
-        VStack(alignment: .leading, spacing: 0) {
-            HStack(alignment: .bottom) {
-                NVName(name)
-                Toggle("", isOn: $value)
-                  .myValue()
-                  .toggleStyle(CheckmarkToggleStyle())
-                  .border(Color.black, width: 0)
-                NVUnit(value: Int(0), Unit.none)
-            }
-            NVDescription(description)
-        }
-    }
-}
-
 struct NVDateEdit: View {
     var name: String
     var description: String
@@ -280,27 +328,6 @@ struct NVName: View {
           .lineLimit(1)
           .frame(minWidth: CGFloat(width), minHeight: 20, alignment: .leading)
           .border(Color.black, width: 0)
-    }
-}
-
-struct NVValue<T: Fmt>: View {
-    var value: T
-    var precision: Int
-    var widthPercentage: Float = 0.33
-
-    init(_ value: T, precision: Int = 0) {
-        self.value = value
-        self.precision = precision
-    }
-
-    var body: some View {
-        let width = 300 * widthPercentage
-        return HStack {
-            Text(value.toStr(precision))
-              .lineLimit(1)
-              .frame(minWidth: CGFloat(width), minHeight: 20, alignment: .trailing)
-              .border(Color.black, width: 0)
-        }
     }
 }
 

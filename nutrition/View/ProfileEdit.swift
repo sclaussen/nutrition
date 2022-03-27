@@ -9,7 +9,7 @@ struct ProfileEdit: View {
     var body: some View {
         Form {
             Section {
-                NVDateEdit("Date of Birth", $profileMgr.profile.dateOfBirth)
+                NameValue("Date of Birth", $profileMgr.profile.dateOfBirth, control: .date)
                 NVPickerGenderEdit("Gender", $profileMgr.profile.gender, options: Gender.values())
                 NameValue("Height", $profileMgr.profile.height, Unit.inch, edit: true)
                 NameValue("Net Carbs Maximum", description: "consumption max (carbs - fiber)", $profileMgr.profile.netCarbsMaximum, edit: true)
