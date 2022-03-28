@@ -28,7 +28,7 @@ struct IngredientAdd: View {
     var body: some View {
         Form {
             Section {
-                NameValue("Name", $name, edit: true)
+                 NameValue("Name", $name, edit: true)
                   .autocapitalization(UITextAutocapitalizationType.words)
             }
             Section {
@@ -40,7 +40,7 @@ struct IngredientAdd: View {
                 NameValue("Protein", $protein, edit: true)
             }
             Section(header: Text("Ingredient Consumption")) {
-                NVPicker("Consumption Unit", $consumptionUnit, options: Unit.ingredientOptions())
+                NameValue("Consumption Unit", $consumptionUnit, options: Unit.ingredientOptions(), control: .picker)
                 NameValue("Grams / Unit", $consumptionGrams, edit: true)
             }
             Section {
@@ -52,7 +52,8 @@ struct IngredientAdd: View {
             if meat {
                 ForEach(0..<adjustmentCount, id: \.self) { index in
                     Section(header: Text("Base Meal Adjustment " + String(index + 1))) {
-                        NVPickerEdit("Ingredient", $meatAdjustments[index].name, options: ingredientMgr.getPickerOptions(existing: []))
+                        // TODO: Update this to exclude existing meat adjustments, or, should this be fetching all ingredients (which is what it appears to do...)?
+                        NameValue("Ingredient", $meatAdjustments[index].name, options: ingredientMgr.getNewMeatNames(existing: []), control: .picker)
                         if meatAdjustments[index].name.count > 0 {
                             NameValue("Amount", $meatAdjustments[index].amount, ingredientMgr.getIngredient(name: meatAdjustments[index].name)!.consumptionUnit, negative: true, edit: true)
                         }

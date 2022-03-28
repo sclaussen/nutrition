@@ -1,6 +1,6 @@
 import Foundation
 
-enum Unit: MyEnum {
+enum Unit: PickerType, Fmt, Singular {
     case none
 
     case bar
@@ -28,7 +28,7 @@ enum Unit: MyEnum {
         String(describing: self).capitalized
     }
 
-    var singular: String {
+    var singularForm: String {
         switch self {
         case .none: return ""
 
@@ -55,7 +55,7 @@ enum Unit: MyEnum {
         }
     }
 
-    var plural: String {
+    var pluralForm: String {
         switch self {
 
         case .none: return ""
@@ -96,5 +96,13 @@ enum Unit: MyEnum {
         options.append(tablet)
         options.append(whole)
         return options
+    }
+
+    func toStr(_ precision: Int) -> String {
+        return self.displayName
+    }
+
+    func singular() -> Bool {
+        return true
     }
 }

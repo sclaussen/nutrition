@@ -90,7 +90,7 @@ class IngredientMgr: ObservableObject {
         return ingredients.filter({ $0.available == true }).sorted(by: { $0.name < $1.name })
     }
 
-    func getMeatOptions() -> [String] {
+    func getAllMeatNames() -> [String] {
         let meats = ingredients.filter({ $0.meat == true })
         var meatNames: [String] = []
         meatNames.append("None")
@@ -100,10 +100,10 @@ class IngredientMgr: ObservableObject {
         return meatNames
     }
 
-    func getPickerOptions(existing: [String]) -> [String] {
+    func getNewMeatNames(existing: [String]) -> [String] {
         let existingSet = Set(existing)
         var ingredientsSet = Set(ingredients.map { $0.name })
-        let meatOptionSet = Set(getMeatOptions())
+        let meatOptionSet = Set(getAllMeatNames())
         ingredientsSet.subtract(existingSet)
         ingredientsSet.subtract(meatOptionSet)
         var pickerOptions = [String](ingredientsSet)

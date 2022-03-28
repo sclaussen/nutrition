@@ -32,7 +32,7 @@
 		345F5F0A27E0EF1400129BAC /* IngredientRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 345F5F0927E0EF1400129BAC /* IngredientRow.swift */; };
 		346CA59827F0F176002B41FB /* Bool.swift in Sources */ = {isa = PBXBuildFile; fileRef = 346CA59727F0F176002B41FB /* Bool.swift */; };
 		346CA59A27F0FF5D002B41FB /* Date.swift in Sources */ = {isa = PBXBuildFile; fileRef = 346CA59927F0FF5D002B41FB /* Date.swift */; };
-		346CA5B827F13072002B41FB /* MyEnum.swift in Sources */ = {isa = PBXBuildFile; fileRef = 346CA5B727F13072002B41FB /* MyEnum.swift */; };
+		346CA5B827F13072002B41FB /* PickerType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 346CA5B727F13072002B41FB /* PickerType.swift */; };
 		347A335627DA925C005E3F33 /* Unit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 347A335527DA925C005E3F33 /* Unit.swift */; };
 		347A335827DAA1FE005E3F33 /* IngredientAdd.swift in Sources */ = {isa = PBXBuildFile; fileRef = 347A335727DAA1FE005E3F33 /* IngredientAdd.swift */; };
 		349EE53127C99AC30072255A /* app.swift in Sources */ = {isa = PBXBuildFile; fileRef = 349EE53027C99AC30072255A /* app.swift */; };
@@ -78,7 +78,7 @@
 		345F5F0927E0EF1400129BAC /* IngredientRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IngredientRow.swift; sourceTree = "<group>"; };
 		346CA59727F0F176002B41FB /* Bool.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Bool.swift; sourceTree = "<group>"; };
 		346CA59927F0FF5D002B41FB /* Date.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Date.swift; sourceTree = "<group>"; };
-		346CA5B727F13072002B41FB /* MyEnum.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyEnum.swift; sourceTree = "<group>"; };
+		346CA5B727F13072002B41FB /* PickerType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PickerType.swift; sourceTree = "<group>"; };
 		347A335527DA925C005E3F33 /* Unit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Unit.swift; sourceTree = "<group>"; };
 		347A335727DAA1FE005E3F33 /* IngredientAdd.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IngredientAdd.swift; sourceTree = "<group>"; };
 		349EE52D27C99AC30072255A /* Nutrition.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Nutrition.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -140,7 +140,7 @@
 			children = (
 				341B4DC027EE082600B68819 /* Singular.swift */,
 				341B4DBA27EE028800B68819 /* Fmt.swift */,
-				346CA5B727F13072002B41FB /* MyEnum.swift */,
+				346CA5B727F13072002B41FB /* PickerType.swift */,
 			);
 			path = Protocols;
 			sourceTree = "<group>";
@@ -332,7 +332,7 @@
 				34F8003B27DBFAD1002F1380 /* Macros.swift in Sources */,
 				3402286E27D8298E00741FBB /* MyGauge.swift in Sources */,
 				342CD48F27E25539008703C2 /* View.swift in Sources */,
-				346CA5B827F13072002B41FB /* MyEnum.swift in Sources */,
+				346CA5B827F13072002B41FB /* PickerType.swift in Sources */,
 				342CD49527E25611008703C2 /* Formatter.swift in Sources */,
 				349EE57227CAB4760072255A /* Ingredient.swift in Sources */,
 				349EE53327C99AC30072255A /* Tabs.swift in Sources */,

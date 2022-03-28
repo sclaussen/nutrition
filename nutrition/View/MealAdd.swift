@@ -12,7 +12,7 @@ struct MealAdd: View {
     var body: some View {
         Form {
             Section {
-                NVPickerEdit("Meal Ingredient", $name, options: ingredientMgr.getPickerOptions(existing: mealIngredientMgr.getNames()))
+                NameValue("Meal Ingredient", $name, options: ingredientMgr.getNewMeatNames(existing: mealIngredientMgr.getNames()), control: .picker)
                 if name.count > 0 {
                     NameValue("Amount", $defaultAmount, ingredientMgr.getIngredient(name: name)!.consumptionUnit, edit: true)
                 }

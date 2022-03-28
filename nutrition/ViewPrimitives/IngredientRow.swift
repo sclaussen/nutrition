@@ -78,7 +78,7 @@ struct IngredientRow: View {
 
                 if showAmount {
                     Text("\(amount.fractionDigits(max: 1))").font(.caption2).frame(width: CGFloat(amountWidthPercentage) * geometry.size.width, alignment: .trailing).border(Color.black, width: 0)
-                    Text(amount == 1 ? consumptionUnit.singular : consumptionUnit.plural).font(.caption2).frame(width: CGFloat(unitWidthPercentage) * geometry.size.width, alignment: .leading).border(Color.black, width: 0)
+                    Text(amount == 1 ? consumptionUnit.singularForm : consumptionUnit.pluralForm).font(.caption2).frame(width: CGFloat(unitWidthPercentage) * geometry.size.width, alignment: .leading).border(Color.black, width: 0)
                 }
             }.frame(height: 8)
         }

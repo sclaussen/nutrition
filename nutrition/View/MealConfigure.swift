@@ -17,7 +17,7 @@ struct MealConfigure: View {
     var body: some View {
         Form {
             Section {
-                NVPickerEdit("Meat", $profileMgr.profile.meat, options: ingredientMgr.getMeatOptions())
+                NameValue("Meat", $profileMgr.profile.meat, options: ingredientMgr.getAllMeatNames(), control: .picker)
                 if profileMgr.profile.meat != "None" {
                     NameValue("Meat Weight", $profileMgr.profile.meatAmount, edit: true)
                 }

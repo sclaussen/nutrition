@@ -1,6 +1,6 @@
 import Foundation
 
-extension Float: Fmt, Singular {
+extension Float: Fmt, Singular, PickerType {
     func round(_ places:Int = 1) -> Float {
         let divisor = pow(10.0, Float(places))
         return (self * divisor).rounded() / divisor
@@ -15,5 +15,13 @@ extension Float: Fmt, Singular {
 
     func singular() -> Bool {
         return self == 1.0
+    }
+
+    var displayName: String {
+        return String(self)
+    }
+
+    public static var allCases: [Float] {
+        return []
     }
 }

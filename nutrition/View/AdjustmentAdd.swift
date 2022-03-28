@@ -15,7 +15,7 @@ struct AdjustmentAdd: View {
     var body: some View {
         Form {
             Section {
-                NVPickerEdit("Ingredient", $name, options: ingredientMgr.getPickerOptions(existing: adjustmentMgr.getNames()))
+                NameValue("Ingredient", $name, options: ingredientMgr.getNewMeatNames(existing: adjustmentMgr.getNames()), control: .picker)
                 if name.count > 0 {
                     NameValue("Amount", $amount, ingredientMgr.getIngredient(name: name)!.consumptionUnit, edit: true)
                 }

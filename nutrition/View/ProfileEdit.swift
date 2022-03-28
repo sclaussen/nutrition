@@ -10,8 +10,8 @@ struct ProfileEdit: View {
         Form {
             Section {
                 NameValue("Date of Birth", $profileMgr.profile.dateOfBirth, control: .date)
-                // NVPicker("Gender", $profileMgr.profile.gender, options: Gender.values())
-                NVPicker("Gender", $profileMgr.profile.gender, options: Gender.allCases)
+                NameValue("Gender", $profileMgr.profile.gender, options: Gender.allCases, control: .picker)
+                // NVPicker("Gender", $profileMgr.profile.gender, options: Gender.allCases)
                 NameValue("Height", $profileMgr.profile.height, .inch, edit: true)
                 NameValue("Net Carbs Maximum", description: "consumption max (carbs - fiber)", $profileMgr.profile.netCarbsMaximum, edit: true)
                 NameValue("Weight", description: "body mass (from health kit)", $profileMgr.profile.bodyMass, .pound, precision: 1, edit: true)

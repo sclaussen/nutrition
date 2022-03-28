@@ -21,7 +21,7 @@ struct IngredientEdit: View {
                 NameValue("Protein", $ingredient.protein, edit: true)
             }
             Section(header: Text("Ingredient Consumption")) {
-                NVPicker("Consumption Unit", $ingredient.consumptionUnit, options: Unit.ingredientOptions())
+                NameValue("Consumption Unit", $ingredient.consumptionUnit, options: Unit.ingredientOptions(), control: .picker)
                 NameValue("Grams / Unit", $ingredient.consumptionGrams, edit: true)
             }
             Section {
@@ -30,22 +30,22 @@ struct IngredientEdit: View {
                     NameValue("Meat Amount", $ingredient.meatAmount, edit: true)
                 }
             }
-            if ingredient.meat {
-                ForEach(0..<ingredient.meatAdjustments.count, id: \.self) { index in
-                    Section(header: Text("Base Meal Adjustment " + String(index + 1))) {
-                        NVPickerEdit("Ingredient", $ingredient.meatAdjustments[index].name, options: ingredientMgr.getPickerOptions(existing: []))
-                        if ingredient.meatAdjustments[index].name.count > 0 {
-                            NameValue("Amount", $ingredient.meatAdjustments[index].amount, ingredientMgr.getIngredient(name: ingredient.meatAdjustments[index].name)!.consumptionUnit, negative: true, edit: true)
-                        }
-                    }
-                }
-                Button {
-                    let meadAdustment: MeatAdjustment = MeatAdjustment(name: "", amount: 0.0, consumptionUnit: .none)
-                    ingredient.meatAdjustments.append(meadAdustment)
-                } label: {
-                    Label("Add a Base Meal Adjustment (Optional)", systemImage: "plus.circle")
-                }
-            }
+//            if ingredient.meat {
+//                ForEach(0..<ingredient.meatAdjustments.count, id: \.self) { index in
+//                    Section(header: Text("Base Meal Adjustment " + String(index + 1))) {
+//                        NameValue("Ingredient", $ingredient.meatAdjustments[index].name, options: ingredientMgr.getNewMeatNames(existing: []), control: .picker)
+//                        if ingredient.meatAdjustments[index].name.count > 0 {
+//                            NameValue("Amount", $ingredient.meatAdjustments[index].amount, ingredientMgr.getIngredient(name: ingredient.meatAdjustments[index].name)!.consumptionUnit, negative: true, edit: true)
+//                        }
+//                    }
+//                }
+//                Button {
+//                    let meadAdustment: MeatAdjustment = MeatAdjustment(name: "", amount: 0.0, consumptionUnit: .none)
+//                    ingredient.meatAdjustments.append(meadAdustment)
+//                } label: {
+//                    Label("Add a Base Meal Adjustment (Optional)", systemImage: "plus.circle")
+//                }
+//            }
             Section {
                 NameValue("Calories (per 100g)", $ingredient.calories100)
                 NameValue("Fat (per 100g)", $ingredient.fat100)
