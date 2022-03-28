@@ -1,18 +1,18 @@
 import Foundation
 
-enum Unit: String, Codable, CaseIterable {
+enum Unit: MyEnum {
     case none
 
-    case bar = "Bars"
-    case block = "Blocks"
-    case can = "Cans"
-    case egg = "Eggs"
-    case gram = "Grams"
-    case slice = "Slices"
-    case stick = "Sticks"
-    case tablespoon = "Tablespoons"
-    case tablet = "Tablets"
-    case whole = "Whole"
+    case bar
+    case block
+    case can
+    case egg
+    case gram
+    case slice
+    case stick
+    case tablespoon
+    case tablet
+    case whole
 
     case calorie
     case centimeter
@@ -23,6 +23,10 @@ enum Unit: String, Codable, CaseIterable {
     case percentage
     case pound
     case year
+
+    var displayName: String {
+        String(describing: self).capitalized
+    }
 
     var singular: String {
         switch self {
@@ -93,8 +97,4 @@ enum Unit: String, Codable, CaseIterable {
         options.append(whole)
         return options
     }
-}
-
-extension Unit: Identifiable {
-    var id: Self { self }
 }

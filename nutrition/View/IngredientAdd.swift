@@ -14,7 +14,7 @@ struct IngredientAdd: View {
     @State var netCarbs: Float = 0
     @State var protein: Float = 0
 
-    @State var consumptionUnit: Unit = Unit.gram
+    @State var consumptionUnit: Unit = .gram
     @State var consumptionGrams: Float = 1.0
 
     @State var meat: Bool = false
@@ -28,7 +28,7 @@ struct IngredientAdd: View {
     var body: some View {
         Form {
             Section {
-                NameValue("Name", $name, .none, edit: true)
+                NameValue("Name", $name, edit: true)
                   .autocapitalization(UITextAutocapitalizationType.words)
             }
             Section {
@@ -40,7 +40,7 @@ struct IngredientAdd: View {
                 NameValue("Protein", $protein, edit: true)
             }
             Section(header: Text("Ingredient Consumption")) {
-                NVPickerUnitEdit("Consumption Unit", $consumptionUnit, options: Unit.ingredientOptions())
+                NVPicker("Consumption Unit", $consumptionUnit, options: Unit.ingredientOptions())
                 NameValue("Grams / Unit", $consumptionGrams, edit: true)
             }
             Section {

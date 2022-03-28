@@ -171,7 +171,7 @@ struct MealList: View {
 
         print("\nAdding Meat")
         if profileMgr.profile.meat != "None" {
-            mealIngredientMgr.adjust(name: profileMgr.profile.meat, amount: profileMgr.profile.meatAmount, consumptionUnit: Unit.gram)
+            mealIngredientMgr.adjust(name: profileMgr.profile.meat, amount: profileMgr.profile.meatAmount, consumptionUnit: .gram)
         }
 
         print("\nApplying Meat Adjustments...")

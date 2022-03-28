@@ -16,7 +16,7 @@ struct AdjustmentEdit: View {
     var body: some View {
         Form {
             Section {
-                NameValue("Ingredient", $adjustment.name, .none)
+                NameValue("Ingredient", $adjustment.name)
                 NameValue("Amount", description: "Amount added per adjustment", $adjustment.amount, adjustment.consumptionUnit, edit: true)
                   .focused($focusedField, equals: .amount)
             }
@@ -27,7 +27,7 @@ struct AdjustmentEdit: View {
                 }
             }
             Section {
-                NameValue("Choice Group", description: "Random selection group", $adjustment.group, .none, edit: true)
+                NameValue("Choice Group", description: "Random selection group", $adjustment.group, edit: true)
             }
         }
           .padding([.leading, .trailing], -20)

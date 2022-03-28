@@ -32,6 +32,7 @@
 		345F5F0A27E0EF1400129BAC /* IngredientRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 345F5F0927E0EF1400129BAC /* IngredientRow.swift */; };
 		346CA59827F0F176002B41FB /* Bool.swift in Sources */ = {isa = PBXBuildFile; fileRef = 346CA59727F0F176002B41FB /* Bool.swift */; };
 		346CA59A27F0FF5D002B41FB /* Date.swift in Sources */ = {isa = PBXBuildFile; fileRef = 346CA59927F0FF5D002B41FB /* Date.swift */; };
+		346CA5B827F13072002B41FB /* MyEnum.swift in Sources */ = {isa = PBXBuildFile; fileRef = 346CA5B727F13072002B41FB /* MyEnum.swift */; };
 		347A335627DA925C005E3F33 /* Unit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 347A335527DA925C005E3F33 /* Unit.swift */; };
 		347A335827DAA1FE005E3F33 /* IngredientAdd.swift in Sources */ = {isa = PBXBuildFile; fileRef = 347A335727DAA1FE005E3F33 /* IngredientAdd.swift */; };
 		349EE53127C99AC30072255A /* app.swift in Sources */ = {isa = PBXBuildFile; fileRef = 349EE53027C99AC30072255A /* app.swift */; };
@@ -77,6 +78,7 @@
 		345F5F0927E0EF1400129BAC /* IngredientRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IngredientRow.swift; sourceTree = "<group>"; };
 		346CA59727F0F176002B41FB /* Bool.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Bool.swift; sourceTree = "<group>"; };
 		346CA59927F0FF5D002B41FB /* Date.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Date.swift; sourceTree = "<group>"; };
+		346CA5B727F13072002B41FB /* MyEnum.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyEnum.swift; sourceTree = "<group>"; };
 		347A335527DA925C005E3F33 /* Unit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Unit.swift; sourceTree = "<group>"; };
 		347A335727DAA1FE005E3F33 /* IngredientAdd.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IngredientAdd.swift; sourceTree = "<group>"; };
 		349EE52D27C99AC30072255A /* Nutrition.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Nutrition.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -119,8 +121,6 @@
 		342CD48D27E25389008703C2 /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
-				341B4DC027EE082600B68819 /* Singular.swift */,
-				341B4DBA27EE028800B68819 /* Fmt.swift */,
 				341B4DBE27EE02A600B68819 /* String.swift */,
 				342CD49227E255B1008703C2 /* Float.swift */,
 				341B4DBC27EE029D00B68819 /* Int.swift */,
@@ -133,6 +133,25 @@
 				342CD48E27E25539008703C2 /* View.swift */,
 			);
 			path = Extensions;
+			sourceTree = "<group>";
+		};
+		346CA5B927F13828002B41FB /* Protocols */ = {
+			isa = PBXGroup;
+			children = (
+				341B4DC027EE082600B68819 /* Singular.swift */,
+				341B4DBA27EE028800B68819 /* Fmt.swift */,
+				346CA5B727F13072002B41FB /* MyEnum.swift */,
+			);
+			path = Protocols;
+			sourceTree = "<group>";
+		};
+		346CA5BA27F1388B002B41FB /* Enums */ = {
+			isa = PBXGroup;
+			children = (
+				344D201327CEB36700343108 /* Gender.swift */,
+				347A335527DA925C005E3F33 /* Unit.swift */,
+			);
+			path = Enums;
 			sourceTree = "<group>";
 		};
 		349EE52427C99AC30072255A = {
@@ -161,6 +180,8 @@
 				349EE54527C9A3750072255A /* View */,
 				34DC9A3827E8D8E40082D62E /* ViewPrimitives */,
 				349EE54C27C9FC6C0072255A /* Model */,
+				346CA5BA27F1388B002B41FB /* Enums */,
+				346CA5B927F13828002B41FB /* Protocols */,
 				342CD48D27E25389008703C2 /* Extensions */,
 				349EE54F27CA8EE40072255A /* Utility */,
 				349EE53627C99AC40072255A /* Preview Content */,
@@ -211,9 +232,7 @@
 			isa = PBXGroup;
 			children = (
 				342CD49827E26F3C008703C2 /* HealthStore.swift */,
-				344D201327CEB36700343108 /* Gender.swift */,
 				34B7171527D1B9EB00322B18 /* ViewModifiers.swift */,
-				347A335527DA925C005E3F33 /* Unit.swift */,
 			);
 			path = Utility;
 			sourceTree = "<group>";
@@ -313,6 +332,7 @@
 				34F8003B27DBFAD1002F1380 /* Macros.swift in Sources */,
 				3402286E27D8298E00741FBB /* MyGauge.swift in Sources */,
 				342CD48F27E25539008703C2 /* View.swift in Sources */,
+				346CA5B827F13072002B41FB /* MyEnum.swift in Sources */,
 				342CD49527E25611008703C2 /* Formatter.swift in Sources */,
 				349EE57227CAB4760072255A /* Ingredient.swift in Sources */,
 				349EE53327C99AC30072255A /* Tabs.swift in Sources */,

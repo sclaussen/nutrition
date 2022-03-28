@@ -23,13 +23,13 @@ struct MealConfigure: View {
                 }
             }
             Section {
-                NameValue("Active Energy Burned", description: "daily exercise calories", $profileMgr.profile.activeEnergyBurned, Unit.calorie, edit: true)
+                NameValue("Active Energy Burned", description: "daily exercise calories", $profileMgr.profile.activeEnergyBurned, .calorie, edit: true)
                       .focused($focusedField, equals: .activeEnergyBurned)
-                NameValue("Weight", $profileMgr.profile.bodyMass, Unit.pound, precision: 1, edit: true)
+                NameValue("Weight", $profileMgr.profile.bodyMass, .pound, precision: 1, edit: true)
                 NameValue("Body Fat %", $profileMgr.profile.bodyFatPercentage, .percentage, precision: 1, edit: true)
             }
             Section {
-                NameValue("Water Minimum", description: "daily min, weight/2 * ~.03", $profileMgr.profile.waterLiters, Unit.liter, precision: 1)
+                NameValue("Water Minimum", description: "daily min, weight/2 * ~.03", $profileMgr.profile.waterLiters, .liter, precision: 1)
             }
         }
           .padding([.leading, .trailing], -20)

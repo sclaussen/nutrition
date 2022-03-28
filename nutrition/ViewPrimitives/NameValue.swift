@@ -4,6 +4,7 @@ enum Control {
     case text
     case toggle
     case date
+    case picker
 }
 
 enum ValueType {
@@ -20,7 +21,6 @@ struct NameValue<T: CustomStringConvertible & Singular & Fmt>: View {
     var description: String
     @Binding var value: T
     @State var valueString: String
-    // @Binding var valueBool: Bool?
     var unit: Unit
     var precision: Int
     var keyboard: UIKeyboardType = .default
@@ -29,6 +29,7 @@ struct NameValue<T: CustomStringConvertible & Singular & Fmt>: View {
     var edit: Bool
     let nameWidth: Float
     let valueWidth: Float
+
 
     init(_ name: String,
          description: String = "",
@@ -43,7 +44,6 @@ struct NameValue<T: CustomStringConvertible & Singular & Fmt>: View {
         self.description = description
         self._value = value
         self._valueString = State(initialValue: value.wrappedValue.description.toStr(precision))
-        self.unit = (control == .text) ? unit : .none
         self.precision = precision
 
         if type(of: value.wrappedValue) == Int.self {
@@ -58,6 +58,7 @@ struct NameValue<T: CustomStringConvertible & Singular & Fmt>: View {
             valueType = .date
         }
 
+        self.unit = (control == .text && valueType != .string) ? unit : .none
         self.control = control
         self.edit = (control == .text) ? edit : true
 
@@ -78,20 +79,64 @@ struct NameValue<T: CustomStringConvertible & Singular & Fmt>: View {
 
 
                 // Value
-                if !edit {
-                    Text(value.toStr(precision))
-                      .lineLimit(1)
-                      .frame(minWidth: CGFloat(valueWidth), minHeight: 20, alignment: .trailing)
-                      .border(Color.black, width: 0)
+                if control == .text {
+
+                    if !edit {
+
+                        // TEXT control for text values (LABEL)
+                        Text(value.toStr(precision))
+                          .lineLimit(1)
+                          .frame(minWidth: CGFloat(valueWidth), minHeight: 20, alignment: .trailing)
+                          .border(Color.black, width: 0)
+
+
+
+                    } else {
+
+                        // TEXTFIELD control for text values (EDIT)
+                        TextField(description.count > 0 ? description : name, text: $valueString)
+                          .myValue()
+                          .keyboardType(keyboard)
+                          .onReceive(NotificationCenter.default.publisher(for: UITextField.textDidBeginEditingNotification)) { obj in
+                              if let textEdit = obj.object as? UITextField {
+                                  textEdit.selectedTextRange = textEdit.textRange(from: textEdit.beginningOfDocument, to: textEdit.endOfDocument)
+                              }
+                          }
+                          .onChange(of: valueString) { (newValue) in
+                              print(valueType)
+                              if valueType == .int {
+                                  if let convertedValue = Int(newValue) {
+                                      value = convertedValue as! T
+                                  } else {
+                                      print("Error...")
+                                  }
+                              } else if valueType == .float {
+                                  if let convertedValue = Float(newValue) {
+                                      value = convertedValue as! T
+                                  } else {
+                                      print("Error...")
+                                  }
+                              } else {
+                                  value = newValue as! T
+                              }
+                          }
+                    }
+
 
                 } else if control == .toggle {
+
+                    // TOGGLE control for boolean values (EDIT)
                     Toggle("", isOn: Binding(get: { $value.wrappedValue as! Bool },
                                              set: { $value.wrappedValue = $0 as! T }))
                       .myValue()
                       .toggleStyle(CheckmarkToggleStyle())
                       .border(Color.black, width: 0)
 
+
+
                 } else if control == .date {
+
+                    // TOGGLE control for date values (EDIT)
                     DatePicker("",
                                selection: Binding(get: { $value.wrappedValue as! Date },
                                                   set: { $value.wrappedValue = $0 as! T }),
@@ -100,34 +145,6 @@ struct NameValue<T: CustomStringConvertible & Singular & Fmt>: View {
                       .colorInvert()
                       .colorMultiply(Color.blue)
                       .offset(x: 5)
-
-                } else if control == .text {
-                    TextField(description.count > 0 ? description : name, text: $valueString)
-                      .myValue()
-                      .keyboardType(keyboard)
-                      .onReceive(NotificationCenter.default.publisher(for: UITextField.textDidBeginEditingNotification)) { obj in
-                          if let textEdit = obj.object as? UITextField {
-                              textEdit.selectedTextRange = textEdit.textRange(from: textEdit.beginningOfDocument, to: textEdit.endOfDocument)
-                          }
-                      }
-                      .onChange(of: valueString) { (newValue) in
-                          print(valueType)
-                          if valueType == .int {
-                              if let convertedValue = Int(newValue) {
-                                  value = convertedValue as! T
-                              } else {
-                                  print("Error...")
-                              }
-                          } else if valueType == .float {
-                              if let convertedValue = Float(newValue) {
-                                  value = convertedValue as! T
-                              } else {
-                                  print("Error...")
-                              }
-                          } else {
-                              value = newValue as! T
-                          }
-                      }
                 }
 
 
@@ -145,7 +162,6 @@ struct NameValue<T: CustomStringConvertible & Singular & Fmt>: View {
                 }
             }
 
-
             // Description
             if description.count > 0 {
                 AnyView(Text(description)
@@ -154,6 +170,38 @@ struct NameValue<T: CustomStringConvertible & Singular & Fmt>: View {
                           .border(Color.black, width: 0)
                           .font(.system(size: 9)))
             }
+        }
+    }
+}
+
+extension String.StringInterpolation {
+    mutating func appendInterpolation(_ value: Unit) {
+        appendInterpolation("My name is shane")
+    }
+}
+
+struct NVPicker<T: MyEnum>: View {
+    var name: String
+    var value: Binding<T>
+    let options: [T]
+
+    init(_ name: String, _ value: Binding<T>, options: [T]) {
+        self.name = name
+        self.value = value
+        self.options = options
+    }
+
+    var body: some View {
+        HStack(alignment: .bottom) {
+            NVName(name)
+            Picker("", selection: value) {
+                ForEach(options, id: \.self) {
+                    Text($0.displayName).tag($0)
+                }
+            }
+              .pickerStyle(MenuPickerStyle())
+              .myValue()
+            NVUnit(value: Int(0), Unit.none)
         }
     }
 }
@@ -182,131 +230,6 @@ struct NVPickerEdit: View {
                 }
                   .offset(x: 20)
                   .myValue()
-                NVUnit(value: Int(0), Unit.none)
-            }
-            NVDescription(description)
-        }
-    }
-}
-
-struct NVPickerUnitEdit: View {
-    var name: String
-    var description: String
-    @Binding var value: Unit
-    var options: [Unit]
-
-    init(_ name: String, description: String = "", _ value: Binding<Unit>, options: [Unit]) {
-        self.name = name
-        self.description = description
-        self._value = value
-        self.options = options
-    }
-
-    var body: some View {
-        VStack(alignment: .leading, spacing: 0) {
-            HStack(alignment: .bottom) {
-                NVName(name)
-                Picker("", selection: $value) {
-                    ForEach(options, id: \.self) {
-                        Text($0.rawValue)
-                          .tag($0)
-                    }
-                }
-                  .offset(x: 20)
-                  .myValue()
-                NVUnit(value: Int(0), Unit.none)
-            }
-            NVDescription(description)
-        }
-    }
-}
-
-struct NVPickerGenderEdit: View {
-    var name: String
-    var description: String
-    @Binding var value: Gender
-    var options: [Gender]
-
-    init(_ name: String, description: String = "", _ value: Binding<Gender>, options: [Gender]) {
-        self.name = name
-        self.description = description
-        self._value = value
-        self.options = options
-    }
-
-    var body: some View {
-        VStack(alignment: .leading, spacing: 0) {
-            HStack(alignment: .bottom) {
-                NVName(name)
-                Picker("", selection: $value) {
-                    ForEach(options, id: \.self) {
-                        Text($0.rawValue)
-                          .tag($0)
-                    }
-                }
-                  .offset(x: 20)
-                  .myValue()
-                NVUnit(value: Int(0), Unit.none)
-            }
-            NVDescription(description)
-        }
-    }
-}
-
-struct NVPickerIntEdit: View {
-    var name: String
-    var description: String
-    @Binding var value: Int
-    var options: [String]
-
-    init(_ name: String, description: String = "", _ value: Binding<Int>, options: [String]) {
-        self.name = name
-        self.description = description
-        self._value = value
-        self.options = options
-    }
-
-    var body: some View {
-        VStack(alignment: .leading, spacing: 0) {
-            HStack(alignment: .bottom) {
-                NVName(name)
-
-                // Value
-                Picker("", selection: $value) {
-                    ForEach(0..<options.count, id: \.self) {
-                        Text(options[$0])
-                    }
-                }
-                  .offset(x: 20)
-                  .myValue()
-
-                NVUnit(value: Int(0), Unit.none)
-            }
-            NVDescription(description)
-        }
-    }
-}
-
-struct NVDateEdit: View {
-    var name: String
-    var description: String
-    @Binding var value: Date
-
-    init(_ name: String, description: String = "", _ value: Binding<Date>) {
-        self.name = name
-        self.description = description
-        self._value = value
-    }
-
-    var body: some View {
-        VStack(alignment: .leading, spacing: 0) {
-            HStack(alignment: .bottom) {
-                NVName(name)
-                DatePicker("", selection: $value, in: ...Date(), displayedComponents: [.date])
-                  .myValue()
-                  .colorInvert()
-                  .colorMultiply(Color.blue)
-                  .offset(x: 5)
                 NVUnit(value: Int(0), Unit.none)
             }
             NVDescription(description)
