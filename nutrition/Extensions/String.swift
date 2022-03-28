@@ -1,4 +1,4 @@
-extension String: Fmt, Singular, PickerType {
+extension String: NVValueTypeProtocol {
     func toStr(_ precision: Int = 0) -> String {
         return self
     }

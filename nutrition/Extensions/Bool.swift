@@ -1,4 +1,4 @@
-extension Bool: Fmt, Singular, PickerType {
+extension Bool: NVValueTypeProtocol {
     func toStr(_ precision: Int = 0) -> String {
         return self.description
     }

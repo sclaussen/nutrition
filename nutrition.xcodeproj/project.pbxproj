@@ -9,10 +9,8 @@
 /* Begin PBXBuildFile section */
 		3402286C27D7C7C800741FBB /* HealthKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3402286B27D7C7C800741FBB /* HealthKit.framework */; };
 		3402286E27D8298E00741FBB /* MyGauge.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3402286D27D8298E00741FBB /* MyGauge.swift */; };
-		341B4DBB27EE028800B68819 /* Fmt.swift in Sources */ = {isa = PBXBuildFile; fileRef = 341B4DBA27EE028800B68819 /* Fmt.swift */; };
 		341B4DBD27EE029D00B68819 /* Int.swift in Sources */ = {isa = PBXBuildFile; fileRef = 341B4DBC27EE029D00B68819 /* Int.swift */; };
 		341B4DBF27EE02A600B68819 /* String.swift in Sources */ = {isa = PBXBuildFile; fileRef = 341B4DBE27EE02A600B68819 /* String.swift */; };
-		341B4DC127EE082600B68819 /* Singular.swift in Sources */ = {isa = PBXBuildFile; fileRef = 341B4DC027EE082600B68819 /* Singular.swift */; };
 		342CD48F27E25539008703C2 /* View.swift in Sources */ = {isa = PBXBuildFile; fileRef = 342CD48E27E25539008703C2 /* View.swift */; };
 		342CD49127E25583008703C2 /* FloatingPoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 342CD49027E25583008703C2 /* FloatingPoint.swift */; };
 		342CD49327E255B1008703C2 /* Float.swift in Sources */ = {isa = PBXBuildFile; fileRef = 342CD49227E255B1008703C2 /* Float.swift */; };
@@ -32,7 +30,6 @@
 		345F5F0A27E0EF1400129BAC /* IngredientRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 345F5F0927E0EF1400129BAC /* IngredientRow.swift */; };
 		346CA59827F0F176002B41FB /* Bool.swift in Sources */ = {isa = PBXBuildFile; fileRef = 346CA59727F0F176002B41FB /* Bool.swift */; };
 		346CA59A27F0FF5D002B41FB /* Date.swift in Sources */ = {isa = PBXBuildFile; fileRef = 346CA59927F0FF5D002B41FB /* Date.swift */; };
-		346CA5B827F13072002B41FB /* PickerType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 346CA5B727F13072002B41FB /* PickerType.swift */; };
 		347A335627DA925C005E3F33 /* Unit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 347A335527DA925C005E3F33 /* Unit.swift */; };
 		347A335827DAA1FE005E3F33 /* IngredientAdd.swift in Sources */ = {isa = PBXBuildFile; fileRef = 347A335727DAA1FE005E3F33 /* IngredientAdd.swift */; };
 		349EE53127C99AC30072255A /* app.swift in Sources */ = {isa = PBXBuildFile; fileRef = 349EE53027C99AC30072255A /* app.swift */; };
@@ -55,10 +52,8 @@
 		3402286927D7C7C800741FBB /* nutrition.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = nutrition.entitlements; sourceTree = "<group>"; };
 		3402286B27D7C7C800741FBB /* HealthKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = HealthKit.framework; path = System/Library/Frameworks/HealthKit.framework; sourceTree = SDKROOT; };
 		3402286D27D8298E00741FBB /* MyGauge.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyGauge.swift; sourceTree = "<group>"; };
-		341B4DBA27EE028800B68819 /* Fmt.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Fmt.swift; sourceTree = "<group>"; };
 		341B4DBC27EE029D00B68819 /* Int.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Int.swift; sourceTree = "<group>"; };
 		341B4DBE27EE02A600B68819 /* String.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = String.swift; sourceTree = "<group>"; };
-		341B4DC027EE082600B68819 /* Singular.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Singular.swift; sourceTree = "<group>"; };
 		342CD48E27E25539008703C2 /* View.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = View.swift; sourceTree = "<group>"; };
 		342CD49027E25583008703C2 /* FloatingPoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FloatingPoint.swift; sourceTree = "<group>"; };
 		342CD49227E255B1008703C2 /* Float.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Float.swift; sourceTree = "<group>"; };
@@ -78,7 +73,6 @@
 		345F5F0927E0EF1400129BAC /* IngredientRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IngredientRow.swift; sourceTree = "<group>"; };
 		346CA59727F0F176002B41FB /* Bool.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Bool.swift; sourceTree = "<group>"; };
 		346CA59927F0FF5D002B41FB /* Date.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Date.swift; sourceTree = "<group>"; };
-		346CA5B727F13072002B41FB /* PickerType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PickerType.swift; sourceTree = "<group>"; };
 		347A335527DA925C005E3F33 /* Unit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Unit.swift; sourceTree = "<group>"; };
 		347A335727DAA1FE005E3F33 /* IngredientAdd.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IngredientAdd.swift; sourceTree = "<group>"; };
 		349EE52D27C99AC30072255A /* Nutrition.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Nutrition.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -135,16 +129,6 @@
 			path = Extensions;
 			sourceTree = "<group>";
 		};
-		346CA5B927F13828002B41FB /* Protocols */ = {
-			isa = PBXGroup;
-			children = (
-				341B4DC027EE082600B68819 /* Singular.swift */,
-				341B4DBA27EE028800B68819 /* Fmt.swift */,
-				346CA5B727F13072002B41FB /* PickerType.swift */,
-			);
-			path = Protocols;
-			sourceTree = "<group>";
-		};
 		346CA5BA27F1388B002B41FB /* Enums */ = {
 			isa = PBXGroup;
 			children = (
@@ -181,7 +165,6 @@
 				34DC9A3827E8D8E40082D62E /* ViewPrimitives */,
 				349EE54C27C9FC6C0072255A /* Model */,
 				346CA5BA27F1388B002B41FB /* Enums */,
-				346CA5B927F13828002B41FB /* Protocols */,
 				342CD48D27E25389008703C2 /* Extensions */,
 				349EE54F27CA8EE40072255A /* Utility */,
 				349EE53627C99AC40072255A /* Preview Content */,
@@ -320,7 +303,6 @@
 			files = (
 				344D200827CE2B4E00343108 /* MealAdd.swift in Sources */,
 				344D200E27CE35F100343108 /* AdjustmentList.swift in Sources */,
-				341B4DC127EE082600B68819 /* Singular.swift in Sources */,
 				344D200A27CE2B6300343108 /* MealEdit.swift in Sources */,
 				347A335627DA925C005E3F33 /* Unit.swift in Sources */,
 				349EE54427C9A3690072255A /* IngredientList.swift in Sources */,
@@ -332,11 +314,9 @@
 				34F8003B27DBFAD1002F1380 /* Macros.swift in Sources */,
 				3402286E27D8298E00741FBB /* MyGauge.swift in Sources */,
 				342CD48F27E25539008703C2 /* View.swift in Sources */,
-				346CA5B827F13072002B41FB /* PickerType.swift in Sources */,
 				342CD49527E25611008703C2 /* Formatter.swift in Sources */,
 				349EE57227CAB4760072255A /* Ingredient.swift in Sources */,
 				349EE53327C99AC30072255A /* Tabs.swift in Sources */,
-				341B4DBB27EE028800B68819 /* Fmt.swift in Sources */,
 				345F5F0A27E0EF1400129BAC /* IngredientRow.swift in Sources */,
 				34B7171627D1B9EB00322B18 /* ViewModifiers.swift in Sources */,
 				342CD49327E255B1008703C2 /* Float.swift in Sources */,

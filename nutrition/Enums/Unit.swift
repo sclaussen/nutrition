@@ -1,6 +1,6 @@
 import Foundation
 
-enum Unit: PickerType, Fmt, Singular {
+enum Unit: NVValueTypeProtocol {
     case none
 
     case bar

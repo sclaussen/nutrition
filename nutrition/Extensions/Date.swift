@@ -1,7 +1,7 @@
 import Foundation
 import SwiftUI
 
-extension Date: Fmt, Singular, PickerType {
+extension Date: NVValueTypeProtocol {
     func toStr(_ precision: Int = 0) -> String {
         return self.description
     }

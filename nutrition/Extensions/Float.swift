@@ -1,6 +1,6 @@
 import Foundation
 
-extension Float: Fmt, Singular, PickerType {
+extension Float: NVValueTypeProtocol {
     func round(_ places:Int = 1) -> Float {
         let divisor = pow(10.0, Float(places))
         return (self * divisor).rounded() / divisor

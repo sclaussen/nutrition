@@ -1,6 +1,12 @@
 import SwiftUI
 
-enum Control {
+protocol NVValueTypeProtocol: Codable, Hashable, CaseIterable where AllCases: RandomAccessCollection {
+    var displayName: String { get }
+    func singular() -> Bool
+    func toStr(_ precision: Int) -> String
+}
+
+enum NVControl {
     case text
     case toggle
     case date
@@ -16,7 +22,7 @@ enum NVValueType {
 }
 
 // Credit: https://betterprogramming.pub/generic-text-field-in-swiftui-aca764ac93d4
-struct NameValue<T: PickerType & Singular & Fmt>: View {
+struct NameValue<T: NVValueTypeProtocol>: View {
     var name: String
     var description: String
     @Binding var value: T
@@ -24,7 +30,7 @@ struct NameValue<T: PickerType & Singular & Fmt>: View {
     var unit: Unit
     var precision: Int
     var options: [T]
-    var control: Control = .text
+    var control: NVControl = .text
     var edit: Bool
 
     let nameWidth: Float
@@ -39,7 +45,7 @@ struct NameValue<T: PickerType & Singular & Fmt>: View {
          precision: Int = 0,
          negative: Bool = false,
          options: [T] = [],
-         control: Control = .text,
+         control: NVControl = .text,
          edit: Bool = false) {
 
         self.name = name

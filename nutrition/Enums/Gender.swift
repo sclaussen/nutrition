@@ -1,6 +1,6 @@
 import Foundation
 
-enum Gender: PickerType, Fmt, Singular {
+enum Gender: NVValueTypeProtocol {
     case male
     case female
 
