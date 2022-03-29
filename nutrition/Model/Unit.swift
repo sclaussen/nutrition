@@ -41,7 +41,7 @@ enum Unit: NVValueTypeProtocol {
         case .tablespoon: return "tbsp"
         case .whole: return "whole"
 
-        case .calorie: return "kcal"
+        case .calorie: return "cal"
         case .centimeter: return "cm"
         case .gramsPerLbm: return "g/lbm"
         case .inch: return "in"
@@ -68,7 +68,7 @@ enum Unit: NVValueTypeProtocol {
         case .stick: return "sticks"
         case .piece: return "pieces"
 
-        case .calorie: return "kcals"
+        case .calorie: return "cals"
         case .centimeter: return "cm"
         case .gramsPerLbm: return "g/lbm"
         case .inch: return "inches"

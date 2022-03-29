@@ -11,7 +11,6 @@ struct ProfileEdit: View {
             Section {
                 NameValue("Date of Birth", $profileMgr.profile.dateOfBirth, control: .date)
                 NameValue("Gender", $profileMgr.profile.gender, options: Gender.allCases, control: .picker)
-                // NVPicker("Gender", $profileMgr.profile.gender, options: Gender.allCases)
                 NameValue("Height", $profileMgr.profile.height, .inch, edit: true)
                 NameValue("Net Carbs Maximum", description: "consumption max (carbs - fiber)", $profileMgr.profile.netCarbsMaximum, edit: true)
                 NameValue("Weight", description: "body mass (from health kit)", $profileMgr.profile.bodyMass, .pound, precision: 1, edit: true)
@@ -27,7 +26,7 @@ struct ProfileEdit: View {
                 NameValue("Water", description: "daily min, weight/2 * ~.03", $profileMgr.profile.waterLiters, .liter, precision: 1)
             }
             Section(header: Text("Gross (without the caloric deficit)")) {
-                VStack {
+                Group {
                     NameValue("Base Metabolic Rate", description: "Mifflin-St Jeor", $profileMgr.profile.caloriesBaseMetabolicRate, .calorie)
                     NameValue("Resting Calories", description: "Mifflin-St Jeor BMR * 1.2", $profileMgr.profile.caloriesResting, .calorie)
                     NameValue("Active Energy Burned", description: "daily daily exercise calories", $profileMgr.profile.activeEnergyBurned, .calorie)
@@ -54,6 +53,8 @@ struct ProfileEdit: View {
                 NameValue("Protein %", description: "percentage of net calories from protein", $profileMgr.profile.proteinGoalPercentage, .percentage)
             }
         }
+          // .environment(\.defaultMinListRowHeight, 60)
+          // .environment(\.defaultMinListHeaderHeight, 45)
           .padding([.leading, .trailing], -20)
           .navigationBarBackButtonHidden(true)
           .toolbar {
@@ -64,20 +65,16 @@ struct ProfileEdit: View {
                                    })
               }
               ToolbarItem(placement: .primaryAction) {
-                  HStack {
-                      Button {
-                          self.hideKeyboard()
-                      } label: {
-                          Label("Keyboard Down", systemImage: "keyboard.chevron.compact.down")
-                      }
-                      Button("Save",
-                             action: {
-                                 withAnimation {
-                                     profileMgr.serialize()
-                                     tab = "Meal"
-                                 }
-                             })
-                  }
+                  Button("Save",
+                         action: {
+                             withAnimation {
+                                 profileMgr.serialize()
+                                 tab = "Meal"
+                             }
+                         })
+              }
+              ToolbarItemGroup(placement: .keyboard) {
+                  DismissKeyboard()
               }
           }
     }

@@ -30,23 +30,19 @@ struct MealEdit: View {
           .navigationBarBackButtonHidden(true)
           .toolbar {
               ToolbarItem(placement: .navigation) {
-                  cancel
+                  Button("Cancel", action: { self.presentationMode.wrappedValue.dismiss() })
               }
               ToolbarItem(placement: .primaryAction) {
-                  HStack {
-                      Button {
-                          self.hideKeyboard()
-                      } label: {
-                          Label("Keyboard Down", systemImage: "keyboard.chevron.compact.down")
-                      }
-                      Button("Save",
-                             action: {
-                                 withAnimation {
-                                     mealIngredientMgr.update(mealIngredient)
-                                     presentationMode.wrappedValue.dismiss()
-                                 }
-                             })
-                  }
+                  Button("Save",
+                         action: {
+                             withAnimation {
+                                 mealIngredientMgr.update(mealIngredient)
+                                 presentationMode.wrappedValue.dismiss()
+                             }
+                         })
+              }
+              ToolbarItemGroup(placement: .keyboard) {
+                  DismissKeyboard()
               }
           }
           .onAppear {
@@ -54,10 +50,6 @@ struct MealEdit: View {
                   self.focusedField = .amount
               }
           }
-    }
-
-    var cancel: some View {
-        Button("Cancel", action: { self.presentationMode.wrappedValue.dismiss() })
     }
 }
 

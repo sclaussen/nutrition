@@ -2,7 +2,6 @@ import SwiftUI
 
 @main
 struct app: App {
-
     @StateObject var ingredientMgr: IngredientMgr = IngredientMgr()
     @StateObject var adjustmentMgr: AdjustmentMgr = AdjustmentMgr()
     @StateObject var mealIngredientMgr: MealIngredientMgr = MealIngredientMgr()

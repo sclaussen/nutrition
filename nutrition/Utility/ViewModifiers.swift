@@ -1,61 +1,86 @@
 import SwiftUI
 
 struct NameViewModifier: ViewModifier {
+    var geo: GeometryProxy
+
+    init(_ geo: GeometryProxy) {
+        self.geo = geo
+    }
+
     func body(content: Content) -> some View {
         content
           .lineLimit(1)
-          .frame(minWidth: 200, minHeight: 20, alignment: .bottomLeading)
-          .border(Color.black, width: 0)
+          .font(.callout)
+          .frame(minWidth: geo.size.width * 0.6, minHeight: 32, alignment: .leading)
+          .border(Color.red, width: 0)
     }
 }
 
 struct ValueViewModifier: ViewModifier {
+    var geo: GeometryProxy
+
+    init(_ geo: GeometryProxy) {
+        self.geo = geo
+    }
+
     func body(content: Content) -> some View {
         content
           .lineLimit(1)
-          .frame(minWidth: 100, minHeight: 20, alignment: .bottomTrailing)
-          .fixedSize(horizontal: false, vertical: true)
+          .font(.callout)
           .multilineTextAlignment(.trailing)
-          .border(Color.black, width: 0)
+          .frame(minWidth: geo.size.width * 0.25, minHeight: 32, alignment: .trailing)
+          .border(Color.red, width: 0)
     }
 }
 
 struct UnitViewModifier: ViewModifier {
+    var geo: GeometryProxy
+
+    init(_ geo: GeometryProxy) {
+        self.geo = geo
+    }
+
     func body(content: Content) -> some View {
         content
           .lineLimit(1)
-          .font(.caption2)
-          .frame(minWidth: 35, minHeight: 20, alignment: .bottomLeading)
-          .border(Color.black, width: 0)
+          .font(.callout)
+          .frame(minWidth: geo.size.width * 0.15, minHeight: 32, alignment: .leading)
+          .border(Color.red, width: 0)
     }
 }
 
 struct DescriptionViewModifier: ViewModifier {
+    var geo: GeometryProxy
+
+    init(_ geo: GeometryProxy) {
+        self.geo = geo
+    }
+
     func body(content: Content) -> some View {
         content
           .lineLimit(1)
-          .frame(minWidth: 345, minHeight: 10, alignment: .bottomLeading)
-          .border(Color.black, width: 0)
-          .font(.system(size: 9))
-          .opacity(0.8)
+          .font(.caption2)
+          .opacity(0.6)
+          .frame(minWidth: geo.size.width * 1 + 5, minHeight: 10, alignment: .leading)
+          .border(Color.red, width: 0)
     }
 }
 
 extension View {
-    func name() -> some View {
-        return self.modifier(NameViewModifier())
+    func name(_ geo: GeometryProxy) -> some View {
+        return self.modifier(NameViewModifier(geo))
     }
 
-    func description() -> some View {
-        return self.modifier(DescriptionViewModifier())
+    func value(_ geo: GeometryProxy) -> some View {
+        return self.modifier(ValueViewModifier(geo))
     }
 
-    func value() -> some View {
-        return self.modifier(ValueViewModifier())
+    func unit(_ geo: GeometryProxy) -> some View {
+        return self.modifier(UnitViewModifier(geo))
     }
 
-    func unit() -> some View {
-        return self.modifier(UnitViewModifier())
+    func description(_ geo: GeometryProxy) -> some View {
+        return self.modifier(DescriptionViewModifier(geo))
     }
 }
 
@@ -68,7 +93,7 @@ struct CheckmarkToggleStyle: ToggleStyle {
             Spacer()
             Rectangle()
               .foregroundColor(configuration.isOn ? .green : .gray)
-              .frame(width: 51, height: 20, alignment: .center)
+              .frame(width: 51, alignment: .center)
               .overlay(
                 Circle()
                   .foregroundColor(.white)
@@ -82,7 +107,7 @@ struct CheckmarkToggleStyle: ToggleStyle {
                       .foregroundColor(configuration.isOn ? .green : .gray)
                   )
                   .offset(x: configuration.isOn ? 11 : -11, y: 0)
-//                  .animation(Animation.linear(duration: 0.1))
+            //                  .animation(Animation.linear(duration: 0.1))
 
               ).cornerRadius(20)
               .onTapGesture { configuration.isOn.toggle() }

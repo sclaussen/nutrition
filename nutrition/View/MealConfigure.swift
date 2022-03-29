@@ -24,7 +24,7 @@ struct MealConfigure: View {
             }
             Section {
                 NameValue("Active Energy Burned", description: "daily exercise calories", $profileMgr.profile.activeEnergyBurned, .calorie, edit: true)
-                      .focused($focusedField, equals: .activeEnergyBurned)
+                  .focused($focusedField, equals: .activeEnergyBurned)
                 NameValue("Weight", $profileMgr.profile.bodyMass, .pound, precision: 1, edit: true)
                 NameValue("Body Fat %", $profileMgr.profile.bodyFatPercentage, .percentage, precision: 1, edit: true)
             }
@@ -42,20 +42,16 @@ struct MealConfigure: View {
                                    })
               }
               ToolbarItem(placement: .primaryAction) {
-                  HStack {
-                      Button {
-                          self.hideKeyboard()
-                      } label: {
-                          Label("Keyboard Down", systemImage: "keyboard.chevron.compact.down")
-                      }
-                      Button("Save",
-                             action: {
-                                 withAnimation {
-                                     profileMgr.serialize()
-                                     presentationMode.wrappedValue.dismiss()
-                                 }
-                             })
-                  }
+                  Button("Save",
+                         action: {
+                             withAnimation {
+                                 profileMgr.serialize()
+                                 presentationMode.wrappedValue.dismiss()
+                             }
+                         })
+              }
+              ToolbarItemGroup(placement: .keyboard) {
+                  DismissKeyboard()
               }
           }
           .onAppear {

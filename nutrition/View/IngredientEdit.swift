@@ -11,9 +11,13 @@ struct IngredientEdit: View {
         Form {
             Section {
                 NameValue("Name", $ingredient.name)
-                NameValue("Brand", $ingredient.brand)
             }
-            Section {
+            Section(header: Text("Optional Details")) {
+                NameValue("Brand", $ingredient.brand, edit: true)
+                NameValue("Cost", $ingredient.cost, edit: true)
+                NameValue("Cost/Gram", $ingredient.costPerGram, edit: true)
+            }
+            Section(header: Text("Macronutrient Details")) {
                 NameValue("Serving Size", $ingredient.servingSize, edit: true)
                 NameValue("Calories", $ingredient.calories, .calorie, edit: true)
                 NameValue("Fat", $ingredient.fat, edit: true)
@@ -61,29 +65,21 @@ struct IngredientEdit: View {
           .navigationBarBackButtonHidden(true)
           .toolbar {
               ToolbarItem(placement: .navigation) {
-                  cancel
+                  Button("Cancel", action: { self.presentationMode.wrappedValue.dismiss() })
               }
               ToolbarItem(placement: .primaryAction) {
-                  HStack {
-                      Button {
-                          self.hideKeyboard()
-                      } label: {
-                          Label("Keyboard Down", systemImage: "keyboard.chevron.compact.down")
-                      }
-                      Button("Save",
-                             action: {
-                                 withAnimation {
-                                     ingredientMgr.update(ingredient)
-                                     presentationMode.wrappedValue.dismiss()
-                                 }
-                             })
-                  }
+                  Button("Save",
+                         action: {
+                             withAnimation {
+                                 ingredientMgr.update(ingredient)
+                                 presentationMode.wrappedValue.dismiss()
+                             }
+                         })
+              }
+              ToolbarItemGroup(placement: .keyboard) {
+                  DismissKeyboard()
               }
           }
-    }
-
-    var cancel: some View {
-        Button("Cancel", action: { self.presentationMode.wrappedValue.dismiss() })
     }
 }
 

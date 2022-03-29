@@ -13,11 +13,14 @@
 - Disallow duplicate ingredients/base/adjustments
 - Fix ing/adj so they don't serialize on each character typed
 - Meat meal adjustments: Add delete capability (to both add/edit)
+- Fix issue wrt what meal adjustments are shown in IngredientAdd
 - Read text values that are too long for the text fied's frame
-
+- Broccoli adjustment max is in cans
 
 ## P1
 
+- Re-add the grams/100 to the IngredientEdit view
+- Variable picker style type
 - Add health zones
 - Allow meal ingredient update to hit return and go back to meal list
 - Rationalize why setNetCarbsMax works diff than setWeight/etc for Profile.swift
@@ -48,18 +51,9 @@
 }
 https://www.hackingwithswift.com/quick-start/swiftui/how-to-detect-shake-gestures
 
-- Move hide keyboard to keyboard toolbar
-                .toolbar {
-                    ToolbarItemGroup(placement: .keyboard) {
-                        Spacer()
-                        Button("Hide") {
-                            isInputActive = false
-                        }
-                    }
-                }
-
 ## P2
 
+- Fix date picker so it sizes properly
 - Splash screen
 - Remove 0s from int/double input fields
 - Filter ingredients based on fat, carbs, protein, alpha, ..

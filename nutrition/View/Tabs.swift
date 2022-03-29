@@ -2,7 +2,7 @@ import SwiftUI
 
 struct Tabs: View {
 
-    @State var tab: String = "Meal"
+    @State var tab: String = "Profile"
 
     var body: some View {
 

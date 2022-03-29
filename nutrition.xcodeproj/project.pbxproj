@@ -11,6 +11,7 @@
 		3402286E27D8298E00741FBB /* MyGauge.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3402286D27D8298E00741FBB /* MyGauge.swift */; };
 		341B4DBD27EE029D00B68819 /* Int.swift in Sources */ = {isa = PBXBuildFile; fileRef = 341B4DBC27EE029D00B68819 /* Int.swift */; };
 		341B4DBF27EE02A600B68819 /* String.swift in Sources */ = {isa = PBXBuildFile; fileRef = 341B4DBE27EE02A600B68819 /* String.swift */; };
+		342B9C2327F3B985000D7EB7 /* DismissKeyboard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 342B9C2227F3B985000D7EB7 /* DismissKeyboard.swift */; };
 		342CD48F27E25539008703C2 /* View.swift in Sources */ = {isa = PBXBuildFile; fileRef = 342CD48E27E25539008703C2 /* View.swift */; };
 		342CD49327E255B1008703C2 /* Float.swift in Sources */ = {isa = PBXBuildFile; fileRef = 342CD49227E255B1008703C2 /* Float.swift */; };
 		342CD49527E25611008703C2 /* Formatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 342CD49427E25611008703C2 /* Formatter.swift */; };
@@ -52,6 +53,7 @@
 		3402286D27D8298E00741FBB /* MyGauge.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyGauge.swift; sourceTree = "<group>"; };
 		341B4DBC27EE029D00B68819 /* Int.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Int.swift; sourceTree = "<group>"; };
 		341B4DBE27EE02A600B68819 /* String.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = String.swift; sourceTree = "<group>"; };
+		342B9C2227F3B985000D7EB7 /* DismissKeyboard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DismissKeyboard.swift; sourceTree = "<group>"; };
 		342CD48E27E25539008703C2 /* View.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = View.swift; sourceTree = "<group>"; };
 		342CD49227E255B1008703C2 /* Float.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Float.swift; sourceTree = "<group>"; };
 		342CD49427E25611008703C2 /* Formatter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Formatter.swift; sourceTree = "<group>"; };
@@ -213,6 +215,7 @@
 				345F5F0927E0EF1400129BAC /* IngredientRow.swift */,
 				3402286D27D8298E00741FBB /* MyGauge.swift */,
 				349EE57527CBF3600072255A /* NameValue.swift */,
+				342B9C2227F3B985000D7EB7 /* DismissKeyboard.swift */,
 			);
 			path = ViewPrimitives;
 			sourceTree = "<group>";
@@ -291,6 +294,7 @@
 				344D200E27CE35F100343108 /* AdjustmentList.swift in Sources */,
 				344D200A27CE2B6300343108 /* MealEdit.swift in Sources */,
 				347A335627DA925C005E3F33 /* Unit.swift in Sources */,
+				342B9C2327F3B985000D7EB7 /* DismissKeyboard.swift in Sources */,
 				349EE54427C9A3690072255A /* IngredientList.swift in Sources */,
 				342CD49927E26F3C008703C2 /* HealthStore.swift in Sources */,
 				342F816927D42D1600B16B9E /* MealIngredient.swift in Sources */,

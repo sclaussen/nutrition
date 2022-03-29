@@ -23,7 +23,7 @@ struct AdjustmentEdit: View {
             Section {
                 NameValue("Constraints", $adjustment.constraints, control: .toggle)
                 if adjustment.constraints {
-                    NameValue("Maximum", description: "Maximum auto-added to meal", $adjustment.maximum, .can, edit: true)
+                    NameValue("Maximum", description: "Maximum auto-added to meal", $adjustment.maximum, adjustment.consumptionUnit, edit: true)
                 }
             }
             Section {
@@ -34,23 +34,19 @@ struct AdjustmentEdit: View {
           .navigationBarBackButtonHidden(true)
           .toolbar {
               ToolbarItem(placement: .navigation) {
-                  cancel
+                  Button("Cancel", action: { self.presentationMode.wrappedValue.dismiss() })
               }
               ToolbarItem(placement: .primaryAction) {
-                  HStack {
-                      Button {
-                          self.hideKeyboard()
-                      } label: {
-                          Label("Keyboard Down", systemImage: "keyboard.chevron.compact.down")
-                      }
-                      Button("Save",
-                             action: {
-                                 withAnimation {
-                                     adjustmentMgr.update(adjustment)
-                                     presentationMode.wrappedValue.dismiss()
-                                 }
-                             })
-                  }
+                  Button("Save",
+                         action: {
+                             withAnimation {
+                                 adjustmentMgr.update(adjustment)
+                                 presentationMode.wrappedValue.dismiss()
+                             }
+                         })
+              }
+              ToolbarItemGroup(placement: .keyboard) {
+                  DismissKeyboard()
               }
           }
           .onAppear {
@@ -58,10 +54,6 @@ struct AdjustmentEdit: View {
                   self.focusedField = .amount
               }
           }
-    }
-
-    var cancel: some View {
-        Button("Cancel", action: { self.presentationMode.wrappedValue.dismiss() })
     }
 }
 

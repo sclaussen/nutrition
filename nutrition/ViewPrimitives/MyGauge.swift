@@ -48,7 +48,7 @@ struct MyGaugeDashboard: View {
                 .font(.callout)
                 // .bold()
                 .frame(alignment: .center)
-                .foregroundColor(.black)
+                .foregroundColor(.primary)
             HStack {
                 Spacer()
                 MyGauge(title: "Fat", value: fat, goal: fatGoal)
@@ -107,7 +107,7 @@ struct CalorieProgressBar: View {
             ZStack(alignment: .leading) {
                 Rectangle()
                   .frame(width: screenWidth * 0.90, height: 12)
-                  .foregroundColor(Color.black.opacity(0.5))
+                  .foregroundColor(Color.primary.opacity(0.5))
                 Rectangle()
                     .frame(width: min(Double((value / goal)) * screenWidth * 0.90, screenWidth * 0.90), height: 12, alignment: .leading)
                   .foregroundColor(progressBarColor.opacity(0.9))
@@ -182,9 +182,9 @@ struct MyGauge: View {
             ZStack {
                 Circle()
                     .trim(from: 0.0, to: 0.75)
-                  .stroke(Color.black.opacity(0.3), style: StrokeStyle(lineWidth: lineWidth))
+                  .stroke(Color.primary.opacity(0.3), style: StrokeStyle(lineWidth: lineWidth))
                   .rotationEffect(Angle(degrees: 135.0))
-                  // .stroke(Color.black.opacity(0.5), lineWidth: lineWidth)
+                // .stroke(Color.primary.opacity(0.5), lineWidth: lineWidth)
                   .frame(width: width, height: width)
 
                 Circle()
