@@ -1,32 +1,62 @@
 # Features
 
+## P0
+
+- Next/Next/Next field ...
+- Move Keyboard Down to keyboard menu
+- Geometry flexibility for different devices
+- recursive deletes, primary/foreign key updates (eg ing.name)
+- Do not allow the meat adjustment to be edited in the edit dialog, or, allow it but update profile
+- Dark mode support
+- Correct use case where you want to change 1 piece = 28g to 1 gram = 1gram
+- Add form/field validation
+- Disallow duplicate ingredients/base/adjustments
+- Fix ing/adj so they don't serialize on each character typed
+- Meat meal adjustments: Add delete capability (to both add/edit)
+- Read text values that are too long for the text fied's frame
+
+
 ## P1
 
-- Factor views out of Name/Value
-- Enable profile info to be retrieved from health kit or not (optional)
 - Add health zones
-- Do not allow the meat adjustment to be edited in the edit dialog, or, allow it but update profile
+- Allow meal ingredient update to hit return and go back to meal list
+- Rationalize why setNetCarbsMax works diff than setWeight/etc for Profile.swift
+- Enable profile info to be retrieved from health kit or not (optional)
 - Reset all (or one) bases to default amount (Reset single bases to default right right hand menu)
+- Populate brands
+- Display brand on hover?
+- Add $/gram
 - Add vitamins/minerals
 - Enable Caden profile (profiles in general)
-- recursive deletes, primary/foreign key updates (eg ing.name)
 - Custom tab bar
 - Custom nav bar
-- Allow meal ingredient update to hit return and go back to meal list
-- Combine input fields into single view w/generics
-- Use generics to combine Picker*Edit
-- Geometry flexibility for different devices
 - Hover effects
-- Add brand information to ingredients, determine how to display (hover, et al)
-- Dark mode support
 - Capitalize each word of ingredients
 - Custom keyboard to support negative numbers
   - https://developer.apple.com/documentation/uikit/keyboards_and_input/creating_a_custom_keyboard
-- Rationalize why setNetCarbsMax works diff than setWeight/etc for Profile.swift
-- Correct use case where you want to change 1 piece = 28g to 1 gram = 1gram
 - Add new ingredient with auto-add options for also adding to adjustments/meals
   - Finished the UI, provide implementation
+- Alternative BMR:
+  Harris-Benedict               if(Sex="Male", 66+(6.2*Weight)+(12.7*Height)-(6.76*Age), 655+(4.35*Weight)+(4.7*Height)-(4.7*Age))
+  Harris-Benedict-Revised       =if(Sex="Male", (88.362 + (13.397 * WeightKG) + (4.799 * HeightCM) - (5.677 * Age)), 447.593 + (9.247 * WeightKG) + (3.098 * Height) - (4.33 * Age))
+  Katch-McArdle                 =370+(21.6*LeanBodyMassKG)
+  Cunningham                    =500+(22*LeanBodyMassKG)
+- Ingredient URLs
+  Link(destination: URL(string: "https://www.apple.com")!) {
+    Image(systemName: "link.circle.fill")
+        .font(.largeTitle)
+}
+https://www.hackingwithswift.com/quick-start/swiftui/how-to-detect-shake-gestures
 
+- Move hide keyboard to keyboard toolbar
+                .toolbar {
+                    ToolbarItemGroup(placement: .keyboard) {
+                        Spacer()
+                        Button("Hide") {
+                            isInputActive = false
+                        }
+                    }
+                }
 
 ## P2
 
@@ -37,29 +67,15 @@
 
 ## P3
 
-- Add form/field validation
 - Tuna freeze out dates
-- Meat adjustments: Add delete capability (to both add/edit)
 - Fix delete swipe action on lists
-- Fix ing/adj so they don't serialize on each character typed
 - Quick actions (icon menu)
 
 
 ## P4
 
 - Fix all previews
-- Disallow duplicate ingredients/base/adjustments
 - DatePicker/Sheet https://github.com/shaotaoliu/SwiftUI.DatePickerTextField/tree/main/DatePickerTextField
-- List/ForEach or just List(items, ...)?
-
-
-## Future
+- Add No Item views
 - Logging
 - export/import yaml/json
-
-
-## Visual
-
-- HStack(alignment: .bottom)?
-- Use sheets for picks, date selection, et al
-- Add No Item views

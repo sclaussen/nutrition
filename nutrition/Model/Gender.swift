@@ -8,7 +8,7 @@ enum Gender: NVValueTypeProtocol {
         String(describing: self).capitalized
     }
 
-    func toStr(_ precision: Int) -> String {
+    func string(_ precision: Int) -> String {
         return self.displayName
     }
 

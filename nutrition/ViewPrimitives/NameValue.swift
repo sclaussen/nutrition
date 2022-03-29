@@ -1,9 +1,14 @@
 import SwiftUI
 
 protocol NVValueTypeProtocol: Codable, Hashable, CaseIterable where AllCases: RandomAccessCollection {
-    var displayName: String { get }
+    func string(_ max: Int) -> String
     func singular() -> Bool
-    func toStr(_ precision: Int) -> String
+}
+
+extension NVValueTypeProtocol {
+    func string(_ max: Int = -1) -> String {
+        return string(max)
+    }
 }
 
 enum NVControl {
@@ -30,11 +35,10 @@ struct NameValue<T: NVValueTypeProtocol>: View {
     var unit: Unit
     var precision: Int
     var options: [T]
-    var control: NVControl = .text
+    var control: NVControl
+    // var pickerStyle: PickerStyle
     var edit: Bool
 
-    let nameWidth: Float
-    let valueWidth: Float
     var keyboard: UIKeyboardType = .default
     var valueType: NVValueType = .string
 
@@ -46,12 +50,13 @@ struct NameValue<T: NVValueTypeProtocol>: View {
          negative: Bool = false,
          options: [T] = [],
          control: NVControl = .text,
+         // pickerStyle: PickerStyle = MenuPickerStyle()
          edit: Bool = false) {
 
         self.name = name
         self.description = description
         self._value = value
-        self._valueString = State(initialValue: value.wrappedValue.displayName.toStr(precision))
+        self._valueString = State(initialValue: value.wrappedValue.string(precision))
         self.precision = precision
 
         if type(of: value.wrappedValue) == Int.self {
@@ -69,22 +74,19 @@ struct NameValue<T: NVValueTypeProtocol>: View {
         self.unit = (control == .text && valueType != .string) ? unit : .none
         self.options = options
         self.control = control
+        // self.pickerStyle = pickerStyle
         self.edit = (control == .text) ? edit : true
-
-        self.nameWidth  = 300 * 0.66
-        self.valueWidth = 300 * 0.33
     }
 
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
-            HStack(alignment: .bottom) {
+            HStack(alignment: .bottom, spacing: 5) {
 
 
                 // Name
                 Text(name)
-                  .lineLimit(1)
-                  .frame(minWidth: CGFloat(nameWidth), minHeight: 20, alignment: .leading)
-                  .border(Color.black, width: 0)
+                  .tracking(-0.6)
+                  .name()
 
 
                 // Value
@@ -93,18 +95,16 @@ struct NameValue<T: NVValueTypeProtocol>: View {
                     if !edit {
 
                         // TEXT control for text values (LABEL)
-                        Text(value.toStr(precision))
-                          .lineLimit(1)
-                          .frame(minWidth: CGFloat(valueWidth), minHeight: 20, alignment: .trailing)
-                          .border(Color.black, width: 0)
-
+                        Text(value.string(precision))
+                          .value()
 
 
                     } else {
 
                         // TEXTFIELD control for text values (EDIT)
                         TextField(description.count > 0 ? description : name, text: $valueString)
-                          .myValue()
+                          .value()
+                          .foregroundColor(.blue)
                           .keyboardType(keyboard)
                           .onReceive(NotificationCenter.default.publisher(for: UITextField.textDidBeginEditingNotification)) { obj in
                               if let textEdit = obj.object as? UITextField {
@@ -137,10 +137,9 @@ struct NameValue<T: NVValueTypeProtocol>: View {
                     // TOGGLE control for boolean values (EDIT)
                     Toggle("", isOn: Binding(get: { $value.wrappedValue as! Bool },
                                              set: { $value.wrappedValue = $0 as! T }))
-                      .myValue()
+                      .value()
+                      .foregroundColor(.blue)
                       .toggleStyle(CheckmarkToggleStyle())
-                      .border(Color.black, width: 0)
-
 
 
                 } else if control == .picker {
@@ -148,12 +147,16 @@ struct NameValue<T: NVValueTypeProtocol>: View {
                     // PICKER control for lists (EDIT)
                     Picker("", selection: $value) {
                         ForEach(options, id: \.self) {
-                            Text($0.displayName).tag($0)
+                            Text($0.string()).tag($0)
+                              .value()
+                              .foregroundColor(.blue)
                         }
                     }
+                      .value()
+                      .offset(x: 7)
+                      .foregroundColor(.blue)
+                      .labelsHidden()
                       .pickerStyle(MenuPickerStyle())
-                      .myValue()
-
 
 
                 } else if control == .date {
@@ -163,34 +166,27 @@ struct NameValue<T: NVValueTypeProtocol>: View {
                                selection: Binding(get: { $value.wrappedValue as! Date },
                                                   set: { $value.wrappedValue = $0 as! T }),
                                in: ...Date(), displayedComponents: [.date])
-                      .myValue()
+                      .value()
+                      .foregroundColor(.blue)
                       .colorInvert()
                       .colorMultiply(Color.blue)
-                      .offset(x: 5)
                 }
 
 
                 // Unit
                 if value.singular() {
                     AnyView(Text(unit.singularForm)
-                              .font(.caption2)
-                              .frame(minWidth: 35, minHeight: 20, alignment: .leading)
-                              .border(Color.black, width: 0))
+                              .unit())
                 } else {
                     AnyView(Text(unit.pluralForm)
-                              .font(.caption2)
-                              .frame(minWidth: 35, minHeight: 20, alignment: .leading)
-                              .border(Color.black, width: 0))
+                              .unit())
                 }
             }
 
             // Description
             if description.count > 0 {
                 AnyView(Text(description)
-                          .lineLimit(1)
-                          .frame(minWidth: 050, minHeight: 10, alignment: .leading)
-                          .border(Color.black, width: 0)
-                          .font(.system(size: 9)))
+                          .description())
             }
         }
     }

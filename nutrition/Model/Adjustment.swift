@@ -13,13 +13,13 @@ class AdjustmentMgr: ObservableObject {
         adjustments.append(Adjustment(name: "Sardines", amount: 1, consumptionUnit: Unit.can, group: "fish", constraints: true, maximum: 2))
         adjustments.append(Adjustment(name: "Smoked Sardines", amount: 1, consumptionUnit: Unit.can, group: "fish", constraints: true, maximum: 2))
         adjustments.append(Adjustment(name: "Eggs", amount: 1, consumptionUnit: Unit.egg, constraints: true, maximum: 7))
-        adjustments.append(Adjustment(name: "Extra Virgin Olive Oil", amount: 0.5, consumptionUnit: Unit.tablespoon, constraints: true, maximum: 6))
-        adjustments.append(Adjustment(name: "Broccoli", amount: 20, consumptionUnit: Unit.gram, group: "vege", constraints: true, maximum: 300))
-        adjustments.append(Adjustment(name: "Cauliflower", amount: 20, consumptionUnit: Unit.gram, group: "vege", constraints: true, maximum: 300))
-        adjustments.append(Adjustment(name: "Pumpkin Seeds", amount: 5, consumptionUnit: Unit.gram, group: "vege"))
+        adjustments.append(Adjustment(name: "Extra Virgin Olive Oil", amount: 0.5, consumptionUnit: Unit.tablespoon, constraints: true, maximum: 4.5))
+        adjustments.append(Adjustment(name: "Broccoli", amount: 20, group: "vege", constraints: true, maximum: 300))
+        adjustments.append(Adjustment(name: "Cauliflower", amount: 20, group: "vege", constraints: true, maximum: 300))
+        adjustments.append(Adjustment(name: "Pumpkin Seeds", amount: 10, group: "vege"))
         adjustments.append(Adjustment(name: "String Cheese", amount: 1, consumptionUnit: Unit.stick))
-        adjustments.append(Adjustment(name: "Macadamia Nuts", amount: 5, consumptionUnit: Unit.gram, active: false))
-        adjustments.append(Adjustment(name: "Dark Chocolate (Divine)", amount: 1, consumptionUnit: Unit.block))
+        adjustments.append(Adjustment(name: "Macadamia Nuts", amount: 5))
+        adjustments.append(Adjustment(name: "Dark Chocolate (Divine)", amount: 1, consumptionUnit: Unit.piece))
     }
 
     func serialize() {
@@ -39,8 +39,16 @@ class AdjustmentMgr: ObservableObject {
         self.adjustments = savedItems
     }
 
-    func create(name: String, amount: Float, consumptionUnit: Unit, group: String, active: Bool) {
-        let adjustment = Adjustment(name: name, amount: amount, consumptionUnit: consumptionUnit, group: group, active: active)
+    func create(name: String,
+                amount: Float,
+                consumptionUnit: Unit,
+                group: String = "",
+                active: Bool = true) {
+        let adjustment = Adjustment(name: name,
+                                    amount: amount,
+                                    consumptionUnit: consumptionUnit,
+                                    group: group,
+                                    active: active)
         adjustments.append(adjustment)
     }
 

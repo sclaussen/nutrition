@@ -4,14 +4,13 @@ enum Unit: NVValueTypeProtocol {
     case none
 
     case bar
-    case block
+    case piece
     case can
     case egg
     case gram
     case slice
     case stick
     case tablespoon
-    case tablet
     case whole
 
     case calorie
@@ -33,14 +32,13 @@ enum Unit: NVValueTypeProtocol {
         case .none: return ""
 
         case .bar: return "bar"
-        case .block: return "block"
+        case .piece: return "piece"
         case .can: return "can"
         case .egg: return "egg"
         case .gram: return "gram"
         case .slice: return "slice"
         case .stick: return "stick"
         case .tablespoon: return "tbsp"
-        case .tablet: return "tablet"
         case .whole: return "whole"
 
         case .calorie: return "kcal"
@@ -68,8 +66,7 @@ enum Unit: NVValueTypeProtocol {
         case .whole: return "whole"
         case .can: return "cans"
         case .stick: return "sticks"
-        case .tablet: return "tablets"
-        case .block: return "blocks"
+        case .piece: return "pieces"
 
         case .calorie: return "kcals"
         case .centimeter: return "cm"
@@ -86,19 +83,18 @@ enum Unit: NVValueTypeProtocol {
     static func ingredientOptions() -> [Unit] {
         var options: [Unit] = []
         options.append(bar)
-        options.append(block)
         options.append(can)
         options.append(egg)
         options.append(gram)
+        options.append(piece)
         options.append(slice)
         options.append(stick)
         options.append(tablespoon)
-        options.append(tablet)
         options.append(whole)
         return options
     }
 
-    func toStr(_ precision: Int) -> String {
+    func string(_ precision: Int) -> String {
         return self.displayName
     }
 

@@ -12,10 +12,8 @@
 		341B4DBD27EE029D00B68819 /* Int.swift in Sources */ = {isa = PBXBuildFile; fileRef = 341B4DBC27EE029D00B68819 /* Int.swift */; };
 		341B4DBF27EE02A600B68819 /* String.swift in Sources */ = {isa = PBXBuildFile; fileRef = 341B4DBE27EE02A600B68819 /* String.swift */; };
 		342CD48F27E25539008703C2 /* View.swift in Sources */ = {isa = PBXBuildFile; fileRef = 342CD48E27E25539008703C2 /* View.swift */; };
-		342CD49127E25583008703C2 /* FloatingPoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 342CD49027E25583008703C2 /* FloatingPoint.swift */; };
 		342CD49327E255B1008703C2 /* Float.swift in Sources */ = {isa = PBXBuildFile; fileRef = 342CD49227E255B1008703C2 /* Float.swift */; };
 		342CD49527E25611008703C2 /* Formatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 342CD49427E25611008703C2 /* Formatter.swift */; };
-		342CD49727E25A12008703C2 /* Binding.swift in Sources */ = {isa = PBXBuildFile; fileRef = 342CD49627E25A12008703C2 /* Binding.swift */; };
 		342CD49927E26F3C008703C2 /* HealthStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 342CD49827E26F3C008703C2 /* HealthStore.swift */; };
 		342F816927D42D1600B16B9E /* MealIngredient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 342F816827D42D1600B16B9E /* MealIngredient.swift */; };
 		344D200227CDC53800343108 /* MealConfigure.swift in Sources */ = {isa = PBXBuildFile; fileRef = 344D200127CDC53700343108 /* MealConfigure.swift */; };
@@ -55,10 +53,8 @@
 		341B4DBC27EE029D00B68819 /* Int.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Int.swift; sourceTree = "<group>"; };
 		341B4DBE27EE02A600B68819 /* String.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = String.swift; sourceTree = "<group>"; };
 		342CD48E27E25539008703C2 /* View.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = View.swift; sourceTree = "<group>"; };
-		342CD49027E25583008703C2 /* FloatingPoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FloatingPoint.swift; sourceTree = "<group>"; };
 		342CD49227E255B1008703C2 /* Float.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Float.swift; sourceTree = "<group>"; };
 		342CD49427E25611008703C2 /* Formatter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Formatter.swift; sourceTree = "<group>"; };
-		342CD49627E25A12008703C2 /* Binding.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Binding.swift; sourceTree = "<group>"; };
 		342CD49827E26F3C008703C2 /* HealthStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HealthStore.swift; sourceTree = "<group>"; };
 		342F816827D42D1600B16B9E /* MealIngredient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MealIngredient.swift; sourceTree = "<group>"; };
 		344D200127CDC53700343108 /* MealConfigure.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MealConfigure.swift; sourceTree = "<group>"; };
@@ -120,22 +116,11 @@
 				341B4DBC27EE029D00B68819 /* Int.swift */,
 				346CA59727F0F176002B41FB /* Bool.swift */,
 				346CA59927F0FF5D002B41FB /* Date.swift */,
-				342CD49627E25A12008703C2 /* Binding.swift */,
-				342CD49027E25583008703C2 /* FloatingPoint.swift */,
 				342CD49427E25611008703C2 /* Formatter.swift */,
 				349EE57327CAE2DA0072255A /* Optional.swift */,
 				342CD48E27E25539008703C2 /* View.swift */,
 			);
 			path = Extensions;
-			sourceTree = "<group>";
-		};
-		346CA5BA27F1388B002B41FB /* Enums */ = {
-			isa = PBXGroup;
-			children = (
-				344D201327CEB36700343108 /* Gender.swift */,
-				347A335527DA925C005E3F33 /* Unit.swift */,
-			);
-			path = Enums;
 			sourceTree = "<group>";
 		};
 		349EE52427C99AC30072255A = {
@@ -164,7 +149,6 @@
 				349EE54527C9A3750072255A /* View */,
 				34DC9A3827E8D8E40082D62E /* ViewPrimitives */,
 				349EE54C27C9FC6C0072255A /* Model */,
-				346CA5BA27F1388B002B41FB /* Enums */,
 				342CD48D27E25389008703C2 /* Extensions */,
 				349EE54F27CA8EE40072255A /* Utility */,
 				349EE53627C99AC40072255A /* Preview Content */,
@@ -207,6 +191,8 @@
 				34F8003A27DBFAD1002F1380 /* Macros.swift */,
 				342F816827D42D1600B16B9E /* MealIngredient.swift */,
 				349EE57727CC10E60072255A /* Profile.swift */,
+				344D201327CEB36700343108 /* Gender.swift */,
+				347A335527DA925C005E3F33 /* Unit.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -329,13 +315,11 @@
 				34DC9A3A27E8D99B0082D62E /* CheckboxToggle.swift in Sources */,
 				349EE57627CBF3600072255A /* NameValue.swift in Sources */,
 				349EE57827CC10E60072255A /* Profile.swift in Sources */,
-				342CD49727E25A12008703C2 /* Binding.swift in Sources */,
 				344D200627CE299D00343108 /* MealList.swift in Sources */,
 				349EE57427CAE2DA0072255A /* Optional.swift in Sources */,
 				341B4DBF27EE02A600B68819 /* String.swift in Sources */,
 				346CA59827F0F176002B41FB /* Bool.swift in Sources */,
 				346CA59A27F0FF5D002B41FB /* Date.swift in Sources */,
-				342CD49127E25583008703C2 /* FloatingPoint.swift in Sources */,
 				347A335827DAA1FE005E3F33 /* IngredientAdd.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

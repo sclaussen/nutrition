@@ -25,9 +25,9 @@ struct MyGaugeDashboard: View {
     let protein: Float
 
     init(_ profile: Profile, _ macros: Macros) {
-        bodyMass = String(profile.bodyMass.fractionDigits(max: 1)) + " lb"
-        bodyFatPercentage = String(profile.bodyFatPercentage.fractionDigits(max: 1)) + "%"
-        activeEnergyBurned = String(profile.activeEnergyBurned.fractionDigits(max: 0)) + " kcal"
+        bodyMass = String(profile.bodyMass.string(1)) + " lb"
+        bodyFatPercentage = String(profile.bodyFatPercentage.string(1)) + "%"
+        activeEnergyBurned = String(profile.activeEnergyBurned.string(0)) + " kcal"
         caloriesGoalUnadjusted = macros.caloriesGoalUnadjusted
         caloriesGoal = macros.caloriesGoal
         fatGoal = macros.fatGoal
@@ -195,7 +195,7 @@ struct MyGauge: View {
                 // .stroke(progressBarColor.opacity(0.9), lineWidth: lineWidth)
                   .frame(width: width, height: width)
 
-                Text("\(value.fractionDigits(max: precision))").font(.system(size: valueFontSize)).bold().foregroundColor(.blue)
+                Text("\(value.string(precision))").font(.system(size: valueFontSize)).bold().foregroundColor(.blue)
                 Text(String(Int(goal))).font(.system(size: goalFontSize)).offset(y: CGFloat(goalOffset))
             }.cornerRadius(50)
         }

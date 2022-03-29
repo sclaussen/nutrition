@@ -1,124 +1,61 @@
 import SwiftUI
 
-struct MyButton: ViewModifier {
-
-    let font: Font
-
-    init(font: Font = .headline) {
-        self.font = font
-    }
-
-    func body(content: Content) -> some View {
-        content
-          .font(font)
-          .foregroundColor(.white)
-          .frame(height: 55)
-          .frame(maxWidth: .infinity)
-          .background(Color.blue)
-          .cornerRadius(10)
-          .shadow(radius: 10)
-          .padding()
-    }
-}
-
-struct MyNameLabel: ViewModifier {
+struct NameViewModifier: ViewModifier {
     func body(content: Content) -> some View {
         content
           .lineLimit(1)
-          .frame(minWidth: 150, minHeight: 20, alignment: .leading)
+          .frame(minWidth: 200, minHeight: 20, alignment: .bottomLeading)
           .border(Color.black, width: 0)
     }
 }
 
-struct MyDescriptionLabel: ViewModifier {
+struct ValueViewModifier: ViewModifier {
     func body(content: Content) -> some View {
         content
           .lineLimit(1)
-          .frame(minWidth: 150, minHeight: 10, alignment: .leading)
-          .border(Color.black, width: 0)
-          .font(.system(size: 9))
-    }
-}
-
-struct MyValueLabel: ViewModifier {
-    func body(content: Content) -> some View {
-        content
-          .lineLimit(1)
-          .frame(minWidth: 100, minHeight: 20, alignment: .trailing)
+          .frame(minWidth: 100, minHeight: 20, alignment: .bottomTrailing)
           .fixedSize(horizontal: false, vertical: true)
           .multilineTextAlignment(.trailing)
           .border(Color.black, width: 0)
     }
 }
 
-struct MyValue: ViewModifier {
-    func body(content: Content) -> some View {
-        content
-          .foregroundColor(.blue)
-          .frame(minWidth: 100, minHeight: 20, alignment: .trailing)
-          .multilineTextAlignment(.trailing)
-          .disableAutocorrection(true)
-          .border(Color.black, width: 0)
-    }
-}
-
-struct MyValueClear: ViewModifier {
-    func body(content: Content) -> some View {
-        content
-          .frame(minHeight: 20, alignment: .trailing)
-          .multilineTextAlignment(.trailing)
-          .disableAutocorrection(true)
-          .border(Color.black, width: 0)
-    }
-}
-
-struct MyUnitLabel: ViewModifier {
+struct UnitViewModifier: ViewModifier {
     func body(content: Content) -> some View {
         content
           .lineLimit(1)
           .font(.caption2)
-          .frame(minWidth: 35, minHeight: 20, alignment: .leading)
+          .frame(minWidth: 35, minHeight: 20, alignment: .bottomLeading)
           .border(Color.black, width: 0)
     }
 }
 
-struct MyUnitValue: ViewModifier {
+struct DescriptionViewModifier: ViewModifier {
     func body(content: Content) -> some View {
         content
-          .font(.caption2)
-          .frame(minWidth: 35, minHeight: 20, alignment: .leading)
-          .foregroundColor(.blue)
+          .lineLimit(1)
+          .frame(minWidth: 345, minHeight: 10, alignment: .bottomLeading)
           .border(Color.black, width: 0)
+          .font(.system(size: 9))
+          .opacity(0.8)
     }
 }
 
 extension View {
-    func myNameLabel() -> some View {
-        return self.modifier(MyNameLabel())
+    func name() -> some View {
+        return self.modifier(NameViewModifier())
     }
 
-    func myDescriptionLabel() -> some View {
-        return self.modifier(MyDescriptionLabel())
+    func description() -> some View {
+        return self.modifier(DescriptionViewModifier())
     }
 
-    func myValueLabel() -> some View {
-        return self.modifier(MyValueLabel())
+    func value() -> some View {
+        return self.modifier(ValueViewModifier())
     }
 
-    func myValue() -> some View {
-        return self.modifier(MyValue())
-    }
-
-    func myValueClear() -> some View {
-        return self.modifier(MyValueClear())
-    }
-
-    func myUnitLabel() -> some View {
-        return self.modifier(MyUnitLabel())
-    }
-
-    func myUnitValue() -> some View {
-        return self.modifier(MyUnitValue())
+    func unit() -> some View {
+        return self.modifier(UnitViewModifier())
     }
 }
 

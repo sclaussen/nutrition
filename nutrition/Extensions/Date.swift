@@ -2,7 +2,7 @@ import Foundation
 import SwiftUI
 
 extension Date: NVValueTypeProtocol {
-    func toStr(_ precision: Int = 0) -> String {
+    func string(_ max: Int = -1) -> String {
         return self.description
     }
 

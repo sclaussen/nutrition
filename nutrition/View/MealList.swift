@@ -19,7 +19,7 @@ struct MealList: View {
     var body: some View {
         VStack {
             List {
-                Section("Meal Dashboard") {
+                Section(header: Text("Meal Dashboard")) {
                     MyGaugeDashboard(profileMgr.profile, macrosMgr.macros)
                 }
 
@@ -40,7 +40,10 @@ struct MealList: View {
                           .foregroundColor(!mealIngredient.active ? Color.red :
                                              (mealIngredient.compensationExists || (mealIngredient.defaultAmount != mealIngredient.amount)) ? Color.blue :
                                              Color.black)
-                          .swipeActions(edge: .leading) {
+                          // .swipeActions(edge: .leading) {
+                          // }
+                          .swipeActions(edge: .trailing) {
+
                               Button {
                                   if mealIngredient.active || ingredientMgr.getIngredient(name: mealIngredient.name)!.available {
                                       let newMealIngredient = mealIngredientMgr.toggleActive(mealIngredient)
@@ -51,8 +54,16 @@ struct MealList: View {
                                   Label("", systemImage: !ingredientMgr.getIngredient(name: mealIngredient.name)!.available ? "circle.slash" : mealIngredient.active ? "pause.circle" : "play.circle")
                               }
                                 .tint(!ingredientMgr.getIngredient(name: mealIngredient.name)!.available ? .gray : mealIngredient.active ? .red : .green)
-                          }
-                          .swipeActions(edge: .trailing) {
+
+
+                              // Button {
+                              //     print("Logic")
+                              // } label: {
+                              //     Label("", systemImage: !ingredientMgr.getIngredient(name: mealIngredient.name)!.available ? "circle.slash" : mealIngredient.active ? "pause.circle" : "play.circle")
+                              // }
+                              //   .tint(!ingredientMgr.getIngredient(name: mealIngredient.name)!.available ? .gray : mealIngredient.active ? .red : .green)
+
+
                               // TODO: Do not apply a delete to an adjustment item (or it'll just get re-added during generateMeal)
                               Button(role: .destructive) {
                                   mealIngredientMgr.delete(mealIngredient)
@@ -175,7 +186,7 @@ struct MealList: View {
         }
 
         print("\nApplying Meat Adjustments...")
-        applyMeatAdjustmentsToMealIngredients()
+        applyMealAdjustmentsToMealIngredients()
 
         for mealIngredient in mealIngredientMgr.get(includeInactive: true) {
             addMacros(mealIngredient.name, Double(mealIngredient.amount), mealIngredient.active)
@@ -185,10 +196,10 @@ struct MealList: View {
         }
     }
 
-    func applyMeatAdjustmentsToMealIngredients() {
+    func applyMealAdjustmentsToMealIngredients() {
         for mealIngredient in mealIngredientMgr.get() {
             let ingredient = ingredientMgr.getIngredient(name: mealIngredient.name)!
-            for meatAdjustment in ingredient.meatAdjustments {
+            for meatAdjustment in ingredient.mealAdjustments {
                 mealIngredientMgr.adjust(name: meatAdjustment.name, amount: meatAdjustment.amount, consumptionUnit: meatAdjustment.consumptionUnit)
             }
         }

@@ -22,6 +22,10 @@ struct MealEdit: View {
                 NameValue("Default Amount", $mealIngredient.defaultAmount, mealIngredient.consumptionUnit, edit: true)
             }
         }
+          .onSubmit {
+              mealIngredientMgr.update(mealIngredient)
+              presentationMode.wrappedValue.dismiss()
+          }
           .padding([.leading, .trailing], -20)
           .navigationBarBackButtonHidden(true)
           .toolbar {

@@ -3,9 +3,11 @@ import SwiftUI
 struct IngredientAdd: View {
     @Environment(\.presentationMode) var presentationMode
     @EnvironmentObject var ingredientMgr: IngredientMgr
+    @EnvironmentObject var adjustmentMgr: AdjustmentMgr
     @EnvironmentObject var mealIngredientMgr: MealIngredientMgr
 
     @State var name: String = ""
+    @State var brand: String = ""
 
     @State var servingSize: Float = 0
     @State var calories: Float = 0
@@ -20,7 +22,7 @@ struct IngredientAdd: View {
     @State var meat: Bool = false
     @State var meatAmount: Float = 200
     @State var adjustmentCount = 0
-    @State var meatAdjustments: [MeatAdjustment] = []
+    @State var mealAdjustments: [MealAdjustment] = []
 
     @State var ingredientAdd: Bool = false
     @State var adjustmentAdd: Bool = false
@@ -28,8 +30,9 @@ struct IngredientAdd: View {
     var body: some View {
         Form {
             Section {
-                 NameValue("Name", $name, edit: true)
+                NameValue("Name", $name, edit: true)
                   .autocapitalization(UITextAutocapitalizationType.words)
+                NameValue("Brand", $brand, edit: true)
             }
             Section {
                 NameValue("Serving Size", $servingSize, edit: true)
@@ -49,52 +52,67 @@ struct IngredientAdd: View {
                     NameValue("Meat Amount", $meatAmount, edit: true)
                 }
             }
+
             if meat {
                 ForEach(0..<adjustmentCount, id: \.self) { index in
-                    Section(header: Text("Base Meal Adjustment " + String(index + 1))) {
+                    Section(header: Text("Base Meal Adjustment #" + String(index + 1))) {
                         // TODO: Update this to exclude existing meat adjustments, or, should this be fetching all ingredients (which is what it appears to do...)?
-                        NameValue("Ingredient", $meatAdjustments[index].name, options: ingredientMgr.getNewMeatNames(existing: []), control: .picker)
-                        if meatAdjustments[index].name.count > 0 {
-                            NameValue("Amount", $meatAdjustments[index].amount, ingredientMgr.getIngredient(name: meatAdjustments[index].name)!.consumptionUnit, negative: true, edit: true)
+                        NameValue("Ingredient", $mealAdjustments[index].name, options: ingredientMgr.getNewMeatNames(existing: []), control: .picker)
+                        if mealAdjustments[index].name.count > 0 {
+                            NameValue("Amount", $mealAdjustments[index].amount, ingredientMgr.getIngredient(name: mealAdjustments[index].name)!.consumptionUnit, negative: true, edit: true)
                         }
                     }
                 }
                 Button {
                     adjustmentCount += 1
-                    let meadAdustment: MeatAdjustment = MeatAdjustment(name: "", amount: 0.0, consumptionUnit: .none)
-                    meatAdjustments.append(meadAdustment)
+                    let meadAdustment: MealAdjustment = MealAdjustment(name: "", amount: 0.0, consumptionUnit: .none)
+                    mealAdjustments.append(meadAdustment)
                 } label: {
                     Label("New Meal Ingredient Adjustment", systemImage: "plus.circle")
                 }
             }
+
             Section(header: Text("Quick Add")) {
-                NameValue("Add to Meal Ingredients", $ingredientAdd, control: .toggle)
                 NameValue("Add to Adjustments", $adjustmentAdd, control: .toggle)
+                NameValue("Add to Meal Ingredients", $ingredientAdd, control: .toggle)
             }
         }
-        .padding([.leading, .trailing], -20)
-        .navigationBarBackButtonHidden(true)
-        .toolbar {
-            ToolbarItem(placement: .navigation) {
-                cancel
-            }
-            ToolbarItem(placement: .primaryAction) {
-                HStack {
-                    Button {
-                        self.hideKeyboard()
-                    } label: {
-                        Label("Keyboard Down", systemImage: "keyboard.chevron.compact.down")
-                    }
-                    Button("Save",
-                           action: {
-                               withAnimation {
-                                   ingredientMgr.create(name: name, servingSize: servingSize, calories: calories, fat: fat, fiber: fiber, netCarbs: netCarbs, protein: protein, consumptionUnit: consumptionUnit, consumptionGrams: consumptionGrams, meat: meat, meatAmount: meatAmount, meatAdjustments: meatAdjustments, available: true, verified: "")
-                                   presentationMode.wrappedValue.dismiss()
-                               }
-                           })
-                }
-            }
-        }
+          .padding([.leading, .trailing], -20)
+          .navigationBarBackButtonHidden(true)
+          .toolbar {
+              ToolbarItem(placement: .navigation) {
+                  cancel
+              }
+              ToolbarItem(placement: .primaryAction) {
+                  HStack {
+                      Button {
+                          self.hideKeyboard()
+                      } label: {
+                          Label("Keyboard Down", systemImage: "keyboard.chevron.compact.down")
+                      }
+                      Button("Save",
+                             action: {
+                                 withAnimation {
+                                     ingredientMgr.create(name: name, brand: brand, servingSize: servingSize, calories: calories, fat: fat, fiber: fiber, netCarbs: netCarbs, protein: protein, consumptionUnit: consumptionUnit, consumptionGrams: consumptionGrams, meat: meat, meatAmount: meatAmount, mealAdjustments: mealAdjustments, available: true, verified: "")
+                                     if adjustmentAdd {
+                                         adjustmentMgr.create(name: name,
+                                                              amount: 1,
+                                                              consumptionUnit: consumptionUnit,
+                                                              active: false)
+                                     }
+                                     if ingredientAdd {
+                                         mealIngredientMgr.create(name: name,
+                                                                  defaultAmount: 1,
+                                                                  amount: 1,
+                                                                  consumptionUnit: consumptionUnit,
+                                                                  active: false)
+                                     }
+                                     presentationMode.wrappedValue.dismiss()
+                                 }
+                             })
+                  }
+              }
+          }
     }
 
     var cancel: some View {

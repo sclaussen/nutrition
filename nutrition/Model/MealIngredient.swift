@@ -10,27 +10,29 @@ class MealIngredientMgr: ObservableObject {
 
     init() {
         mealIngredients.append(MealIngredient(name: "Coconut Oil", defaultAmount: 1, amount: 1, consumptionUnit: Unit.tablespoon))
-        mealIngredients.append(MealIngredient(name: "Serrano Pepper", defaultAmount: 70, amount: 70, consumptionUnit: Unit.gram))
+        mealIngredients.append(MealIngredient(name: "Serrano Pepper", defaultAmount: 70, amount: 70))
+        mealIngredients.append(MealIngredient(name: "Eggs", defaultAmount: 5, amount: 5, consumptionUnit: Unit.egg))
+        mealIngredients.append(MealIngredient(name: "Broccoli", defaultAmount: 60, amount: 60))
+        mealIngredients.append(MealIngredient(name: "Cauliflower", defaultAmount: 60, amount: 60))
+        mealIngredients.append(MealIngredient(name: "Pumpkin Seeds", defaultAmount: 10, amount: 10, active: false))
+        mealIngredients.append(MealIngredient(name: "Arugula", defaultAmount: 145, amount: 145))
+        mealIngredients.append(MealIngredient(name: "Romaine", defaultAmount: 300, amount: 300))
+        mealIngredients.append(MealIngredient(name: "Collared Greens", defaultAmount: 50, amount: 50))
+        mealIngredients.append(MealIngredient(name: "Mushrooms", defaultAmount: 100, amount: 100))
+        mealIngredients.append(MealIngredient(name: "Radish", defaultAmount: 100, amount: 100))
+        mealIngredients.append(MealIngredient(name: "Avocado", defaultAmount: 140, amount: 140))
+        mealIngredients.append(MealIngredient(name: "Mustard", defaultAmount: 4, amount: 4, consumptionUnit: Unit.tablespoon))
         mealIngredients.append(MealIngredient(name: "Mackerel", defaultAmount: 1, amount: 1, consumptionUnit: Unit.can, active: false))
         mealIngredients.append(MealIngredient(name: "Sardines", defaultAmount: 1, amount: 1, consumptionUnit: Unit.can, active: false))
         mealIngredients.append(MealIngredient(name: "Smoked Sardines", defaultAmount: 1, amount: 1, consumptionUnit: Unit.can, active: false))
-        mealIngredients.append(MealIngredient(name: "Eggs", defaultAmount: 5, amount: 5, consumptionUnit: Unit.egg))
-        mealIngredients.append(MealIngredient(name: "Broccoli", defaultAmount: 60, amount: 60, consumptionUnit: Unit.gram))
-        mealIngredients.append(MealIngredient(name: "Cauliflower", defaultAmount: 60, amount: 60, consumptionUnit: Unit.gram))
-        mealIngredients.append(MealIngredient(name: "Arugula", defaultAmount: 145, amount: 145, consumptionUnit: Unit.gram))
-        mealIngredients.append(MealIngredient(name: "Romaine", defaultAmount: 300, amount: 300, consumptionUnit: Unit.gram))
-        mealIngredients.append(MealIngredient(name: "Collared Greens", defaultAmount: 50, amount: 50, consumptionUnit: Unit.gram))
-        mealIngredients.append(MealIngredient(name: "Mushrooms", defaultAmount: 100, amount: 100, consumptionUnit: Unit.gram))
-        mealIngredients.append(MealIngredient(name: "Radish", defaultAmount: 100, amount: 100, consumptionUnit: Unit.gram))
-        mealIngredients.append(MealIngredient(name: "Avocado", defaultAmount: 140, amount: 140, consumptionUnit: Unit.gram))
-        mealIngredients.append(MealIngredient(name: "Mustard", defaultAmount: 4, amount: 4, consumptionUnit: Unit.tablespoon))
         mealIngredients.append(MealIngredient(name: "Fish Oil", defaultAmount: 1, amount: 1, consumptionUnit: Unit.tablespoon))
         mealIngredients.append(MealIngredient(name: "Extra Virgin Olive Oil", defaultAmount: 3.5, amount: 3.5, consumptionUnit: Unit.tablespoon))
 
         mealIngredients.append(MealIngredient(name: "String Cheese", defaultAmount: 1, amount: 1, consumptionUnit: Unit.stick, active: false))
         mealIngredients.append(MealIngredient(name: "Cheddar Cheese", defaultAmount: 1, amount: 1, consumptionUnit: Unit.slice, active: false))
         mealIngredients.append(MealIngredient(name: "Dubliner Cheese", defaultAmount: 1, amount: 1, consumptionUnit: Unit.slice, active: false))
-        mealIngredients.append(MealIngredient(name: "Macadamia Nuts", defaultAmount: 1, amount: 1, consumptionUnit: Unit.gram, active: false))
+        mealIngredients.append(MealIngredient(name: "Macadamia Nuts", defaultAmount: 1, amount: 1, active: false))
+        mealIngredients.append(MealIngredient(name: "Keto Mint Ice Cream", defaultAmount: 30, amount: 30, active: false))
     }
 
     func serialize() {
@@ -57,7 +59,8 @@ class MealIngredientMgr: ObservableObject {
                 compensationExists: Bool = false,
                 compensationCreated: Bool = false,
                 compensationInitialAmount: Float = 0,
-                compensationInitialState: Bool = true) {
+                compensationInitialState: Bool = true,
+                active: Bool = true) {
 
         let mealIngredient = MealIngredient(name: name,
                                             defaultAmount: defaultAmount,
@@ -66,8 +69,8 @@ class MealIngredientMgr: ObservableObject {
                                             compensationExists: compensationExists,
                                             compensationCreated: compensationCreated,
                                             compensationInitialAmount: compensationInitialAmount,
-                                            compensationInitialState: compensationInitialState)
-
+                                            compensationInitialState: compensationInitialState,
+                                            active: active)
         mealIngredients.append(mealIngredient)
     }
 

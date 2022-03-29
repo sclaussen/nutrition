@@ -11,6 +11,7 @@ struct IngredientEdit: View {
         Form {
             Section {
                 NameValue("Name", $ingredient.name)
+                NameValue("Brand", $ingredient.brand)
             }
             Section {
                 NameValue("Serving Size", $ingredient.servingSize, edit: true)
@@ -30,29 +31,31 @@ struct IngredientEdit: View {
                     NameValue("Meat Amount", $ingredient.meatAmount, edit: true)
                 }
             }
-//            if ingredient.meat {
-//                ForEach(0..<ingredient.meatAdjustments.count, id: \.self) { index in
-//                    Section(header: Text("Base Meal Adjustment " + String(index + 1))) {
-//                        NameValue("Ingredient", $ingredient.meatAdjustments[index].name, options: ingredientMgr.getNewMeatNames(existing: []), control: .picker)
-//                        if ingredient.meatAdjustments[index].name.count > 0 {
-//                            NameValue("Amount", $ingredient.meatAdjustments[index].amount, ingredientMgr.getIngredient(name: ingredient.meatAdjustments[index].name)!.consumptionUnit, negative: true, edit: true)
-//                        }
-//                    }
-//                }
-//                Button {
-//                    let meadAdustment: MeatAdjustment = MeatAdjustment(name: "", amount: 0.0, consumptionUnit: .none)
-//                    ingredient.meatAdjustments.append(meadAdustment)
-//                } label: {
-//                    Label("Add a Base Meal Adjustment (Optional)", systemImage: "plus.circle")
-//                }
-//            }
-            Section {
-                NameValue("Calories (per 100g)", $ingredient.calories100)
-                NameValue("Fat (per 100g)", $ingredient.fat100)
-                NameValue("Fiber (per 100g)", $ingredient.fiber100)
-                NameValue("Net Carbs (per 100g)", $ingredient.netCarbs100, precision: 1)
-                NameValue("Protein (per 100g)", $ingredient.protein100)
+
+            if ingredient.meat {
+                ForEach(0..<ingredient.mealAdjustments.count, id: \.self) { index in
+                    Section(header: Text("Base Meal Adjustment #" + String(index + 1))) {
+                        NameValue("Ingredient", $ingredient.mealAdjustments[index].name, options: ingredientMgr.getNewMeatNames(existing: []), control: .picker)
+                        if ingredient.mealAdjustments[index].name.count > 0 {
+                            NameValue("Amount", $ingredient.mealAdjustments[index].amount, ingredientMgr.getIngredient(name: ingredient.mealAdjustments[index].name)!.consumptionUnit, negative: true, edit: true)
+                        }
+                    }
+                }
+                Button {
+                    let mealAdustment: MealAdjustment = MealAdjustment(name: "", amount: 0.0, consumptionUnit: .none)
+                    ingredient.mealAdjustments.append(mealAdustment)
+                } label: {
+                    Label("Add a Base Meal Adjustment (Optional)", systemImage: "plus.circle")
+                }
             }
+
+            // Section {
+            //     NameValue("Calories (per 100g)", $ingredient.calories100)
+            //     NameValue("Fat (per 100g)", $ingredient.fat100)
+            //     NameValue("Fiber (per 100g)", $ingredient.fiber100)
+            //     NameValue("Net Carbs (per 100g)", $ingredient.netCarbs100, precision: 1)
+            //     NameValue("Protein (per 100g)", $ingredient.protein100)
+            // }
         }
           .padding([.leading, .trailing], -20)
           .navigationBarBackButtonHidden(true)
@@ -87,7 +90,7 @@ struct IngredientEdit: View {
 struct IngredientEdit_Previews: PreviewProvider {
     static var previews: some View {
         NavigationView {
-            IngredientEdit(ingredient: Ingredient(name: "Chicken", servingSize: 200, calories: 180, fat: 2, fiber: 1, netCarbs: 0.5, protein: 10, consumptionUnit: .gram, consumptionGrams: 100))
+            IngredientEdit(ingredient: Ingredient(name: "Chicken", brand: "Butcher Box", servingSize: 200, calories: 180, fat: 2, fiber: 1, netCarbs: 0.5, protein: 10, consumptionUnit: .gram, consumptionGrams: 100))
         }
     }
 }

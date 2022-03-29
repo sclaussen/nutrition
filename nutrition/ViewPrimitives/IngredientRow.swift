@@ -65,11 +65,11 @@ struct IngredientRow: View {
                 Text(name).font(.caption).bold().frame(width: CGFloat(nameWidthPercentage) * geometry.size.width, alignment: .leading).border(Color.black, width: 0)
 
                 if showMacros {
-                    Text("\(calories.fractionDigits(max: 0))").font(.caption2).frame(width: CGFloat(macroWidthPercentage) * geometry.size.width, alignment: .trailing).border(Color.black, width: 0)
-                    Text("\(fat.fractionDigits(max: 0))").font(.caption2).frame(width: CGFloat(macroWidthPercentage) * geometry.size.width, alignment: .trailing).border(Color.black, width: 0)
-                    Text("\(fiber.fractionDigits(max: 0))").font(.caption2).frame(width: CGFloat(macroWidthPercentage) * geometry.size.width, alignment: .trailing).border(Color.black, width: 0)
-                    Text("\(netcarbs.fractionDigits(max: 0))").font(.caption2).frame(width: CGFloat(macroWidthPercentage) * geometry.size.width, alignment: .trailing).border(Color.black, width: 0)
-                    Text("\(protein.fractionDigits(max: 0))").font(.caption2).frame(width: CGFloat(macroWidthPercentage) * geometry.size.width, alignment: .trailing).border(Color.black, width: 0)
+                    Text("\(calories.string(0))").font(.caption2).frame(width: CGFloat(macroWidthPercentage) * geometry.size.width, alignment: .trailing).border(Color.black, width: 0)
+                    Text("\(fat.string(0))").font(.caption2).frame(width: CGFloat(macroWidthPercentage) * geometry.size.width, alignment: .trailing).border(Color.black, width: 0)
+                    Text("\(fiber.string(0))").font(.caption2).frame(width: CGFloat(macroWidthPercentage) * geometry.size.width, alignment: .trailing).border(Color.black, width: 0)
+                    Text("\(netcarbs.string(0))").font(.caption2).frame(width: CGFloat(macroWidthPercentage) * geometry.size.width, alignment: .trailing).border(Color.black, width: 0)
+                    Text("\(protein.string(0))").font(.caption2).frame(width: CGFloat(macroWidthPercentage) * geometry.size.width, alignment: .trailing).border(Color.black, width: 0)
                 }
 
                 if showGroup {
@@ -77,7 +77,7 @@ struct IngredientRow: View {
                 }
 
                 if showAmount {
-                    Text("\(amount.fractionDigits(max: 1))").font(.caption2).frame(width: CGFloat(amountWidthPercentage) * geometry.size.width, alignment: .trailing).border(Color.black, width: 0)
+                    Text("\(amount.string(1))").font(.caption2).frame(width: CGFloat(amountWidthPercentage) * geometry.size.width, alignment: .trailing).border(Color.black, width: 0)
                     Text(amount == 1 ? consumptionUnit.singularForm : consumptionUnit.pluralForm).font(.caption2).frame(width: CGFloat(unitWidthPercentage) * geometry.size.width, alignment: .leading).border(Color.black, width: 0)
                 }
             }.frame(height: 8)

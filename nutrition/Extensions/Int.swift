@@ -1,6 +1,6 @@
 extension Int: NVValueTypeProtocol {
-    func toStr(_ precision: Int = 0) -> String {
-        return String(self)
+    func string(_ max: Int = -1) -> String {
+        return self.description
     }
 
     func singular() -> Bool {
