@@ -27,7 +27,7 @@ struct MyGaugeDashboard: View {
     init(_ profile: Profile, _ macros: Macros) {
         bodyMass = String(profile.bodyMass.string(1)) + " lb"
         bodyFatPercentage = String(profile.bodyFatPercentage.string(1)) + "%"
-        activeCaloriesBurned = String(profile.activeCaloriesBurned.string(0)) + " kcal"
+        activeCaloriesBurned = String(profile.activeCaloriesBurned.string(0)) + " cal"
         caloriesGoalUnadjusted = macros.caloriesGoalUnadjusted
         caloriesGoal = macros.caloriesGoal
         fatGoal = macros.fatGoal
@@ -44,11 +44,12 @@ struct MyGaugeDashboard: View {
     var body: some View {
         VStack(spacing: 0) {
             Spacer()
+
             Text("\(bodyMass)         \(bodyFatPercentage)         \(activeCaloriesBurned)")
               .font(.callout)
-            // .bold()
               .frame(alignment: .center)
               .foregroundColor(.primary)
+
             HStack {
                 Spacer()
                 MyGauge(title: "Fat", value: fat, goal: fatGoal)
@@ -61,6 +62,7 @@ struct MyGaugeDashboard: View {
                 Spacer()
             }
               .padding(.top)
+
             CalorieProgressBar(title: "Calories", value: calories, goal: caloriesGoal, goalUnadjusted: caloriesGoalUnadjusted)
               .padding(.top)
         }

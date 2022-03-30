@@ -19,6 +19,7 @@ struct Tabs: View {
                 Image(systemName: "fork.knife.circle")
                 Text("Meal")
             }.tag("Meal")
+              .navigationViewStyle(StackNavigationViewStyle())
 
 
             NavigationView {
@@ -28,6 +29,7 @@ struct Tabs: View {
                 Image(systemName: "plus.circle")
                 Text("Adjustments")
             }.tag("Adds")
+              .navigationViewStyle(StackNavigationViewStyle())
 
 
             NavigationView {
@@ -37,6 +39,7 @@ struct Tabs: View {
                 Image(systemName: "cart.fill")
                 Text("Ingredients")
             }.tag("Ingredients")
+              .navigationViewStyle(StackNavigationViewStyle())
 
 
             NavigationView {
@@ -46,6 +49,7 @@ struct Tabs: View {
                 Image(systemName: "person")
                 Text("Profile")
             }.tag("Profile")
+              .navigationViewStyle(StackNavigationViewStyle())
         }
           .accentColor(Color("Blue"))
     }
