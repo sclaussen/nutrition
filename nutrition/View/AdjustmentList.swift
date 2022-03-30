@@ -20,7 +20,7 @@ struct AdjustmentList: View {
                                                          amount: adjustment.amount,
                                                          consumptionUnit: adjustment.consumptionUnit)
                                        })
-                          .foregroundColor(adjustment.active ? Color.black : Color.red)
+                          .foregroundColor(adjustment.active ? Color("Black") : Color("Red"))
                           .swipeActions(edge: .leading) {
                               Button {
                                   if adjustment.active || ingredientMgr.getIngredient(name: adjustment.name)!.available {
@@ -49,6 +49,7 @@ struct AdjustmentList: View {
               .toolbar {
                   ToolbarItem(placement: .navigation) {
                       EditButton()
+                        .foregroundColor(Color("Blue"))
                   }
                   ToolbarItem(placement: .principal) {
                       Button {
@@ -57,9 +58,11 @@ struct AdjustmentList: View {
                       } label: {
                           Image(systemName: !adjustmentMgr.inactiveIngredientsExist() ? "" : showInactive ? "eye" : "eye.slash")
                       }
+                        .foregroundColor(Color("Blue"))
                   }
                   ToolbarItem(placement: .primaryAction) {
                       NavigationLink("Add", destination: AdjustmentAdd())
+                        .foregroundColor(Color("Blue"))
                   }
               }
         }

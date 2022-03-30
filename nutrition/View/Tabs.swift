@@ -1,8 +1,12 @@
 import SwiftUI
 
 struct Tabs: View {
+    @State var tab: String = "Meal"
 
-    @State var tab: String = "Profile"
+    init() {
+        // UITabBar.appearance().backgroundColor = UIColor(Color("Tab"))
+        // UITabBar.appearance().barTintColor = UIColor(Color.green.opacity(0.5))
+    }
 
     var body: some View {
 
@@ -37,12 +41,13 @@ struct Tabs: View {
 
             NavigationView {
                 ProfileEdit(tab: $tab)
-                    .navigationTitle("Profile")
+                  .navigationTitle("Profile")
             }.tabItem {
                 Image(systemName: "person")
                 Text("Profile")
             }.tag("Profile")
         }
+          .accentColor(Color("Blue"))
     }
 }
 

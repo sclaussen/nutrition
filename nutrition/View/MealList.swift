@@ -38,12 +38,9 @@ struct MealList: View {
                                                          consumptionUnit: mealIngredient.consumptionUnit)
                                        })
                           .foregroundColor(!mealIngredient.active ? Color.red :
-                                             (mealIngredient.compensationExists || (mealIngredient.defaultAmount != mealIngredient.amount)) ? Color.blue :
-                                             Color.black)
-                          // .swipeActions(edge: .leading) {
-                          // }
+                                             (mealIngredient.compensationExists || (mealIngredient.defaultAmount != mealIngredient.amount)) ? Color("Blue") :
+                                             Color("Black"))
                           .swipeActions(edge: .trailing) {
-
                               Button {
                                   if mealIngredient.active || ingredientMgr.getIngredient(name: mealIngredient.name)!.available {
                                       let newMealIngredient = mealIngredientMgr.toggleActive(mealIngredient)
@@ -89,6 +86,7 @@ struct MealList: View {
               .toolbar {
                   ToolbarItem(placement: .navigation) {
                       EditButton()
+                        .foregroundColor(Color("Blue"))
                   }
                   ToolbarItem(placement: .principal) {
                       HStack {
@@ -97,7 +95,9 @@ struct MealList: View {
                               print("  Toggling showInactive: \(showInactive) (mealIngredient)")
                           } label: {
                               Image(systemName: !mealIngredientMgr.inactiveIngredientsExist() ? "" : showInactive ? "eye" : "eye.slash")
-                          }.frame(width: 40)
+                          }
+                            .frame(width: 40)
+                            .foregroundColor(Color("Blue"))
 
                           Button {
                               locked.toggle()
@@ -111,7 +111,9 @@ struct MealList: View {
                               }
                           } label: {
                               Image(systemName: locked ? "lock" : "lock.open")
-                          }.frame(width: 40)
+                          }
+                            .frame(width: 40)
+                            .foregroundColor(Color("Blue"))
 
                           // Button {
                           //     generateMeal()
@@ -123,11 +125,14 @@ struct MealList: View {
                               mealConfigureActive.toggle()
                           } label: {
                               Image(systemName: locked ? "" : "gear")
-                          }.frame(width: 40)
+                          }
+                            .frame(width: 40)
+                            .foregroundColor(Color("Blue"))
                       }
                   }
                   ToolbarItem(placement: .primaryAction) {
                       NavigationLink("Add", destination: MealAdd())
+                        .foregroundColor(Color("Blue"))
                   }
               }
               .onAppear {
@@ -386,13 +391,13 @@ struct MealList: View {
                 return
             }
 
-            let activeEnergyBurned = sample.quantity.doubleValue(for: HKUnit.kilocalorie())
-            print("Active energy burned (health kit): \(activeEnergyBurned)")
-            print("Active energy burned (profile): \(profileMgr.profile.activeEnergyBurned)")
+            let activeCaloriesBurned = sample.quantity.doubleValue(for: HKUnit.kilocalorie())
+            print("Active energy burned (health kit): \(activeCaloriesBurned)")
+            print("Active energy burned (profile): \(profileMgr.profile.activeCaloriesBurned)")
 
-            // if activeEnergyBurned != profileMgr.profile.activeEnergyBurned {
+            // if activeCaloriesBurned != profileMgr.profile.activeCaloriesBurned {
             //     print("Updating active energy burned...")
-            //     profileMgr.setActiveEnergyBurned(activeEnergyBurned: activeEnergyBurned)
+            //     profileMgr.setActiveEnergyBurned(activeCaloriesBurned: activeCaloriesBurned)
             // }
         }
     }

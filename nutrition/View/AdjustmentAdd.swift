@@ -36,21 +36,35 @@ struct AdjustmentAdd: View {
           .navigationBarBackButtonHidden(true)
           .toolbar {
               ToolbarItem(placement: .navigation) {
-                  Button("Cancel", action: { self.presentationMode.wrappedValue.dismiss() })
+                  Button("Cancel", action: cancel)
+                    .foregroundColor(Color("Blue"))
               }
               ToolbarItem(placement: .primaryAction) {
-                  Button("Save",
-                         action: {
-                             withAnimation {
-                                 adjustmentMgr.create(name: name, amount: amount, consumptionUnit: ingredientMgr.getIngredient(name: name)!.consumptionUnit, group: group, active: true)
-                                 presentationMode.wrappedValue.dismiss()
-                             }
-                         })
+                  Button("Save", action: save)
+                    .foregroundColor(Color("Blue"))
               }
               ToolbarItemGroup(placement: .keyboard) {
-                  DismissKeyboard()
+                  HStack {
+                      DismissKeyboard()
+                      Spacer()
+                      Button("Save", action: save)
+                        .foregroundColor(Color("Blue"))
+                  }
               }
           }
+    }
+
+    func cancel() {
+        withAnimation {
+            self.presentationMode.wrappedValue.dismiss()
+        }
+    }
+
+    func save() {
+        withAnimation {
+            adjustmentMgr.create(name: name, amount: amount, consumptionUnit: ingredientMgr.getIngredient(name: name)!.consumptionUnit, group: group, active: true)
+            presentationMode.wrappedValue.dismiss()
+        }
     }
 }
 

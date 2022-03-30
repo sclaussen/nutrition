@@ -11,7 +11,7 @@ enum GaugeType {
 struct MyGaugeDashboard: View {
     let bodyMass: String
     let bodyFatPercentage: String
-    let activeEnergyBurned: String
+    let activeCaloriesBurned: String
     let caloriesGoalUnadjusted: Float
     let caloriesGoal: Float
     let fatGoal: Float
@@ -27,7 +27,7 @@ struct MyGaugeDashboard: View {
     init(_ profile: Profile, _ macros: Macros) {
         bodyMass = String(profile.bodyMass.string(1)) + " lb"
         bodyFatPercentage = String(profile.bodyFatPercentage.string(1)) + "%"
-        activeEnergyBurned = String(profile.activeEnergyBurned.string(0)) + " kcal"
+        activeCaloriesBurned = String(profile.activeCaloriesBurned.string(0)) + " kcal"
         caloriesGoalUnadjusted = macros.caloriesGoalUnadjusted
         caloriesGoal = macros.caloriesGoal
         fatGoal = macros.fatGoal
@@ -44,11 +44,11 @@ struct MyGaugeDashboard: View {
     var body: some View {
         VStack(spacing: 0) {
             Spacer()
-            Text("\(bodyMass)         \(bodyFatPercentage)         \(activeEnergyBurned)")
-                .font(.callout)
-                // .bold()
-                .frame(alignment: .center)
-                .foregroundColor(.primary)
+            Text("\(bodyMass)         \(bodyFatPercentage)         \(activeCaloriesBurned)")
+              .font(.callout)
+            // .bold()
+              .frame(alignment: .center)
+              .foregroundColor(.primary)
             HStack {
                 Spacer()
                 MyGauge(title: "Fat", value: fat, goal: fatGoal)
@@ -109,15 +109,25 @@ struct CalorieProgressBar: View {
                   .frame(width: screenWidth * 0.90, height: 12)
                   .foregroundColor(Color.primary.opacity(0.5))
                 Rectangle()
-                    .frame(width: min(Double((value / goal)) * screenWidth * 0.90, screenWidth * 0.90), height: 12, alignment: .leading)
+                  .frame(width: min(Double((value / goal)) * screenWidth * 0.90, screenWidth * 0.90), height: 12, alignment: .leading)
                   .foregroundColor(progressBarColor.opacity(0.9))
             }.cornerRadius(50)
+
             HStack {
-                Text(bottomLeftAnnotation).font(.system(size: goalFontSize)).frame(alignment: .leading).padding([.leading, .trailing], screenWidth * 0.03)
+                Text(bottomLeftAnnotation)
+                  .font(.system(size: goalFontSize))
+                  .frame(alignment: .leading)
+                  .padding([.leading, .trailing], screenWidth * 0.03)
                 Spacer()
-                Text(bottomCenterAnnotation).font(.system(size: calorieFontSize)).bold().frame(alignment: .leading).padding([.leading, .trailing], screenWidth * 0.03)
+                Text(bottomCenterAnnotation)
+                  .font(.system(size: calorieFontSize))
+                  .bold().frame(alignment: .leading)
+                  .padding([.leading, .trailing], screenWidth * 0.03)
                 Spacer()
-                Text(bottomRightAnnotation).font(.system(size: goalFontSize)).frame(alignment: .trailing).padding([.leading, .trailing], screenWidth * 0.03)
+                Text(bottomRightAnnotation)
+                  .font(.system(size: goalFontSize))
+                  .frame(alignment: .trailing)
+                  .padding([.leading, .trailing], screenWidth * 0.03)
             }
         }
     }
@@ -177,27 +187,35 @@ struct MyGauge: View {
 
         return VStack {
 
-            Text(title).font(.system(size: titleFontSize)).bold().offset(y: CGFloat(titleOffset))
+            Text(title)
+              .font(.system(size: titleFontSize))
+              .bold()
+              .offset(y: CGFloat(titleOffset))
 
             ZStack {
                 Circle()
-                    .trim(from: 0.0, to: 0.75)
+                  .trim(from: 0.0, to: 0.75)
                   .stroke(Color.primary.opacity(0.3), style: StrokeStyle(lineWidth: lineWidth))
                   .rotationEffect(Angle(degrees: 135.0))
-                // .stroke(Color.primary.opacity(0.5), lineWidth: lineWidth)
                   .frame(width: width, height: width)
 
                 Circle()
-                    .trim(from: 0.0, to: CGFloat(progressBar))
-
+                  .trim(from: 0.0, to: CGFloat(progressBar))
                   .stroke(progressBarColor.opacity(0.9), style: StrokeStyle(lineWidth: lineWidth))
                   .rotationEffect(Angle(degrees: 135.0))
-                // .stroke(progressBarColor.opacity(0.9), lineWidth: lineWidth)
                   .frame(width: width, height: width)
 
-                Text("\(value.string(precision))").font(.system(size: valueFontSize)).bold().foregroundColor(.blue)
-                Text(String(Int(goal))).font(.system(size: goalFontSize)).offset(y: CGFloat(goalOffset))
-            }.cornerRadius(50)
+                Text("\(value.string(precision))")
+                  .foregroundColor(Color("Blue"))
+                  .font(.system(size: valueFontSize))
+                  .bold()
+
+                Text(String(Int(goal)))
+                  .foregroundColor(Color("Blue"))
+                  .font(.system(size: goalFontSize))
+                  .offset(y: CGFloat(goalOffset))
+            }
+              .cornerRadius(50)
         }
     }
 }

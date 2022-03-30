@@ -3,7 +3,7 @@ import SwiftUI
 struct MealConfigure: View {
 
     enum Field: Hashable {
-        case activeEnergyBurned
+        case activeCaloriesBurned
         case meatAmount
     }
 
@@ -17,48 +17,58 @@ struct MealConfigure: View {
     var body: some View {
         Form {
             Section {
-                NameValue("Meat", $profileMgr.profile.meat, options: ingredientMgr.getAllMeatNames(), control: .picker)
+                NameValue("Active Calories Burned", description: "daily calories burned due to exercise/movement", $profileMgr.profile.activeCaloriesBurned, .calorie, edit: true)
+                  .focused($focusedField, equals: .activeCaloriesBurned)
+                // NameValue("Weight", $profileMgr.profile.bodyMass, .pound, precision: 1)
+                // NameValue("Body Fat %", $profileMgr.profile.bodyFatPercentage, .percentage, precision: 1)
+            }
+            Section {
+                NameValue("Meat", description: "main course", $profileMgr.profile.meat, options: ingredientMgr.getAllMeatNames(), control: .picker)
                 if profileMgr.profile.meat != "None" {
                     NameValue("Meat Weight", $profileMgr.profile.meatAmount, edit: true)
                 }
             }
-            Section {
-                NameValue("Active Energy Burned", description: "daily exercise calories", $profileMgr.profile.activeEnergyBurned, .calorie, edit: true)
-                  .focused($focusedField, equals: .activeEnergyBurned)
-                NameValue("Weight", $profileMgr.profile.bodyMass, .pound, precision: 1, edit: true)
-                NameValue("Body Fat %", $profileMgr.profile.bodyFatPercentage, .percentage, precision: 1, edit: true)
-            }
-            Section {
-                NameValue("Water Minimum", description: "daily min, weight/2 * ~.03", $profileMgr.profile.waterLiters, .liter, precision: 1)
-            }
+            // Section {
+            //     NameValue("Water Minimum", description: "daily consumption mininimum, weight/2 * ~.03", $profileMgr.profile.waterLiters, .liter, precision: 1)
+            // }
         }
           .padding([.leading, .trailing], -20)
           .navigationBarBackButtonHidden(true)
+          .onAppear {
+              DispatchQueue.main.asyncAfter(deadline: .now() + 0.75) {
+                  self.focusedField = .activeCaloriesBurned
+              }
+          }
           .toolbar {
               ToolbarItem(placement: .navigation) {
-                  Button("Cancel", action: {
-                                       profileMgr.cancel()
-                                       self.presentationMode.wrappedValue.dismiss()
-                                   })
+                  Button("Cancel", action: cancel)
+                    .foregroundColor(Color("Blue"))
               }
               ToolbarItem(placement: .primaryAction) {
-                  Button("Save",
-                         action: {
-                             withAnimation {
-                                 profileMgr.serialize()
-                                 presentationMode.wrappedValue.dismiss()
-                             }
-                         })
+                  Button("Save", action: save)
+                    .foregroundColor(Color("Blue"))
               }
               ToolbarItemGroup(placement: .keyboard) {
                   DismissKeyboard()
+                  Spacer()
+                  Button("Save", action: save)
+                    .foregroundColor(Color("Blue"))
               }
           }
-          .onAppear {
-              DispatchQueue.main.asyncAfter(deadline: .now() + 0.75) {
-                  self.focusedField = .activeEnergyBurned
-              }
-          }
+    }
+
+    func cancel() {
+        withAnimation {
+            profileMgr.cancel()
+            self.presentationMode.wrappedValue.dismiss()
+        }
+    }
+
+    func save() {
+        withAnimation {
+            profileMgr.serialize()
+            presentationMode.wrappedValue.dismiss()
+        }
     }
 }
 

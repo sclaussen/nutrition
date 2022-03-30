@@ -11,7 +11,7 @@ extension NVValueTypeProtocol {
     }
 }
 
-enum NVControl: CaseIterable {
+enum NVControl {
     case text
     case toggle
     case date
@@ -38,6 +38,7 @@ struct NameValue<T: NVValueTypeProtocol>: View {
 
     var keyboard: UIKeyboardType = .default
     var valueType: NVValueType = .string
+    var wideValue: Bool = false
 
 
     init(_ name: String,
@@ -62,6 +63,8 @@ struct NameValue<T: NVValueTypeProtocol>: View {
 
         self.valueType = getValueType(value)
         self.keyboard = getKeyboard(valueType, negative)
+
+        self.wideValue = control == .text && $value.wrappedValue.string(precision).count > 7
     }
 
     var body: some View {
@@ -74,7 +77,8 @@ struct NameValue<T: NVValueTypeProtocol>: View {
 
                     // Name
                     Text(name)
-                      .name(geo)
+                      .name(geo, wideValue)
+                      .foregroundColor(Color("Black"))
                       .if (!description.isEmpty) { view in
                           view.offset(x: -2, y: -7)
                       }
@@ -84,7 +88,8 @@ struct NameValue<T: NVValueTypeProtocol>: View {
                         if !edit {
                             // TEXT control for text values (VIEW)
                             Text(value.string(precision))
-                              .value(geo)
+                              .value(geo, wideValue)
+                              .foregroundColor(Color("Black"))
                               .if (!description.isEmpty) { view in
                                   view.offset(x: -2)
                               }
@@ -106,8 +111,8 @@ struct NameValue<T: NVValueTypeProtocol>: View {
                     // TOGGLE control for boolean values (EDIT)
                     if control == .toggle {
                         Toggle("", isOn: Binding(get: { $value.wrappedValue as! Bool }, set: { $value.wrappedValue = $0 as! T }))
-                          .value(geo)
-                          .foregroundColor(.blue)
+                          .value(geo, false)
+                          .foregroundColor(Color("Blue"))
                           .toggleStyle(CheckmarkToggleStyle())
                     }
 
@@ -116,24 +121,24 @@ struct NameValue<T: NVValueTypeProtocol>: View {
                         Picker("", selection: $value) {
                             ForEach(options, id: \.self) {
                                 Text($0.string()).tag($0)
-                                  .value(geo)
-                                  .foregroundColor(.blue)
+                                  .value(geo, false)
+                                  .accentColor(Color("Blue"))
                             }
                         }
-                          .value(geo)
-                          .foregroundColor(.blue)
+                          .value(geo, false)
                           .labelsHidden()
                           .pickerStyle(MenuPickerStyle())
+                          .accentColor(Color("Blue"))
                     }
 
                     // DATE control for date values (EDIT)
                     if control == .date {
                         DatePicker("", selection: Binding(get: { $value.wrappedValue as! Date }, set: { $value.wrappedValue = $0 as! T }), in: ...Date(), displayedComponents: [.date])
-                          .value(geo)
+                          .value(geo, false)
                           .labelsHidden()
-                          .foregroundColor(.blue)
-                          .colorInvert()
-                          .colorMultiply(Color.blue)
+                          .foregroundColor(Color("Blue"))
+                          .colorMultiply(Color("Blue"))
+                          //colorInvert()
                     }
 
                     // Unit
@@ -141,9 +146,11 @@ struct NameValue<T: NVValueTypeProtocol>: View {
                         AnyView(Text(unit.singularForm)
                                   .unit(geo)
                                   .if (edit) { view in
-                                      view.foregroundColor(.blue)
+                                      view.foregroundColor(Color("BlueLight"))
                                   }
-                                  .offset(x: 5)
+                                  .if (!edit) { view in
+                                      view.foregroundColor(Color("BlackLight"))
+                                  }
                                   .if (!description.isEmpty) { view in
                                       view.offset(x: -2)
                                   }
@@ -152,9 +159,11 @@ struct NameValue<T: NVValueTypeProtocol>: View {
                         AnyView(Text(unit.pluralForm)
                                   .unit(geo)
                                   .if (edit) { view in
-                                      view.foregroundColor(.blue)
+                                      view.foregroundColor(Color("BlueLight"))
                                   }
-                                  .offset(x: 5)
+                                  .if (!edit) { view in
+                                      view.foregroundColor(Color("BlackLight"))
+                                  }
                                   .if (!description.isEmpty) { view in
                                       view.offset(x: -2)
                                   }
@@ -166,6 +175,7 @@ struct NameValue<T: NVValueTypeProtocol>: View {
                 if !description.isEmpty {
                     AnyView(Text(description)
                               .description(geo)
+                              .foregroundColor(Color("BlackLight"))
                               .offset(y: -13))
                 }
             }
@@ -204,29 +214,39 @@ struct NVTextField<T: NVValueTypeProtocol>: View {
     var name: String
     var description: String
     @Binding var value: T
+    var precision: Int
     var valueType: NVValueType
     var keyboard: UIKeyboardType
 
     @State var valueString: String
+
+    // @State var refreshMe: Bool = false // this is a hack to refresh the view
+
 
     init(geo: GeometryProxy, name: String, description: String, value: Binding<T>, precision: Int, valueType: NVValueType, keyboard: UIKeyboardType) {
         self.geo = geo
         self.name = name
         self.description = description
         self._value = value
+        self.precision = precision
         self.valueType = valueType
         self.keyboard = keyboard
 
         self._valueString = State(initialValue: value.wrappedValue.string(precision))
+
+        if name == "Weight" {
+            print("\nReloading weight!!!\n")
+        }
     }
 
     var body: some View {
 
         // TEXTFIELD control for text values (EDIT)
         TextField(description.count > 0 ? description : name, text: $valueString)
-          .value(geo)
+            .value(geo, valueString.count > 7)
           .autocapitalization(UITextAutocapitalizationType.words)
-          .foregroundColor(.blue)
+          .foregroundColor(Color("Blue"))
+          // .foregroundColor(self.refreshMe ? Color("Blue") : Color("Blue"))
           .keyboardType(keyboard)
           .onReceive(NotificationCenter.default.publisher(for: UITextField.textDidBeginEditingNotification)) { obj in
               if let textEdit = obj.object as? UITextField {
@@ -236,20 +256,30 @@ struct NVTextField<T: NVValueTypeProtocol>: View {
           .onChange(of: valueString) { (newValue) in
               print(valueType)
               if valueType == .int {
+                  print("\nConvering int")
                   if let convertedValue = Int(newValue) {
                       value = convertedValue as! T
+                      valueString = value.string(precision)
+                      print(valueString)
                   } else {
                       print("Error...")
                   }
               } else if valueType == .float {
+                  print("\nConvering float")
                   if let convertedValue = Float(newValue) {
                       value = convertedValue as! T
+                      valueString = value.string(precision)
+                      print(valueString)
                   } else {
                       print("Error...")
                   }
               } else {
+                  print("\nConvering string")
                   value = newValue as! T
+                  valueString = value.string(precision)
+                  print(valueString)
               }
+              // self.refreshMe = !self.refreshMe
           }
     }
 }

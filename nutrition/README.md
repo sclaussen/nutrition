@@ -3,19 +3,18 @@
 ## P0
 
 - Next/Next/Next field ...
-- Move Keyboard Down to keyboard menu
 - Geometry flexibility for different devices
 - recursive deletes, primary/foreign key updates (eg ing.name)
 - Do not allow the meat adjustment to be edited in the edit dialog, or, allow it but update profile
-- Dark mode support
 - Correct use case where you want to change 1 piece = 28g to 1 gram = 1gram
 - Add form/field validation
 - Disallow duplicate ingredients/base/adjustments
 - Fix ing/adj so they don't serialize on each character typed
 - Meat meal adjustments: Add delete capability (to both add/edit)
 - Fix issue wrt what meal adjustments are shown in IngredientAdd
-- Read text values that are too long for the text fied's frame
-- Broccoli adjustment max is in cans
+- BUG: profile change value, then cancel, value remains...  valueString "feature"
+  - Numbers Only
+    https://programmingwithswift.com/numbers-only-textfield-with-swiftui/
 
 ## P1
 

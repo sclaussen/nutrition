@@ -62,36 +62,36 @@ struct IngredientAdd: View {
                 }
             }
 
-//            if meat {
-//                ForEach(0..<adjustmentCount, id: \.self) { index in
-//                    Section(header: Text("Base Meal Adjustment #" + String(index + 1))) {
-//                        // TODO: Update this to exclude existing meal adjustments, or, should this be fetching all ingredients (which is what it appears to do...)?
-//                        NameValue("Ingredient", $mealAdjustments[index].name, options: ingredientMgr.getNewMeatNames(existing: []), control: .picker)
-//                        if mealAdjustments[index].name.count > 0 {
-//                            NameValue("Amount", $mealAdjustments[index].amount, ingredientMgr.getIngredient(name: mealAdjustments[index].name)!.consumptionUnit, negative: true, edit: true)
-//                        }
-//                    }
-//                }
-//                Button {
-//                    adjustmentCount += 1
-//                    let meadAdustment: MealAdjustment = MealAdjustment(name: "", amount: 0.0, consumptionUnit: .none)
-//                    mealAdjustments.append(meadAdustment)
-//                } label: {
-//                    Label("New Meal Ingredient Adjustment", systemImage: "plus.circle")
-//                }
-//            }
+            //            if meat {
+            //                ForEach(0..<adjustmentCount, id: \.self) { index in
+            //                    Section(header: Text("Base Meal Adjustment #" + String(index + 1))) {
+            //                        // TODO: Update this to exclude existing meal adjustments, or, should this be fetching all ingredients (which is what it appears to do...)?
+            //                        NameValue("Ingredient", $mealAdjustments[index].name, options: ingredientMgr.getNewMeatNames(existing: []), control: .picker)
+            //                        if mealAdjustments[index].name.count > 0 {
+            //                            NameValue("Amount", $mealAdjustments[index].amount, ingredientMgr.getIngredient(name: mealAdjustments[index].name)!.consumptionUnit, negative: true, edit: true)
+            //                        }
+            //                    }
+            //                }
+            //                Button {
+            //                    adjustmentCount += 1
+            //                    let meadAdustment: MealAdjustment = MealAdjustment(name: "", amount: 0.0, consumptionUnit: .none)
+            //                    mealAdjustments.append(meadAdustment)
+            //                } label: {
+            //                    Label("New Meal Ingredient Adjustment", systemImage: "plus.circle")
+            //                }
+            //            }
 
             Section(header: Text("Meal Ingredients Quick Add")) {
                 NameValue("Add to Meal Ingredients", $ingredientAdd, control: .toggle)
                 if ingredientAdd {
-                    NameValue("Ingredient Amount", $ingredientAmount)
+                    NameValue("Ingredient Amount", $ingredientAmount, edit: true)
                 }
             }
 
             Section(header: Text("Meal Adjustments Quick Add")) {
                 NameValue("Add to Adjustments", $adjustmentAdd, control: .toggle)
                 if adjustmentAdd {
-                    NameValue("Adjustment Amount", $adjustmentAmount)
+                    NameValue("Adjustment Amount", $adjustmentAmount, edit: true)
                 }
             }
         }
@@ -99,34 +99,48 @@ struct IngredientAdd: View {
           .navigationBarBackButtonHidden(true)
           .toolbar {
               ToolbarItem(placement: .navigation) {
-                  Button("Cancel", action: { self.presentationMode.wrappedValue.dismiss() })
+                  Button("Cancel", action: cancel)
+                    .foregroundColor(Color("Blue"))
               }
               ToolbarItem(placement: .primaryAction) {
-                  Button("Save",
-                         action: {
-                             withAnimation {
-                                 ingredientMgr.create(name: name, brand: brand, servingSize: servingSize, calories: calories, fat: fat, fiber: fiber, netCarbs: netCarbs, protein: protein, consumptionUnit: consumptionUnit, consumptionGrams: consumptionGrams, meat: meat, meatAmount: meatAmount, mealAdjustments: mealAdjustments, available: true, verified: "")
-                                 if ingredientAdd {
-                                     mealIngredientMgr.create(name: name,
-                                                              defaultAmount: ingredientAmount,
-                                                              amount: ingredientAmount,
-                                                              consumptionUnit: consumptionUnit,
-                                                              active: false)
-                                 }
-                                 if adjustmentAdd {
-                                     adjustmentMgr.create(name: name,
-                                                          amount: adjustmentAmount,
-                                                          consumptionUnit: consumptionUnit,
-                                                          active: false)
-                                 }
-                                 presentationMode.wrappedValue.dismiss()
-                             }
-                         })
+                  Button("Save", action: save)
+                    .foregroundColor(Color("Blue"))
               }
               ToolbarItemGroup(placement: .keyboard) {
-                  DismissKeyboard()
+                  HStack {
+                      DismissKeyboard()
+                      Spacer()
+                      Button("Save", action: save)
+                        .foregroundColor(Color("Blue"))
+                  }
               }
           }
+    }
+
+    func cancel() {
+        withAnimation {
+            self.presentationMode.wrappedValue.dismiss()
+        }
+    }
+
+    func save() {
+        withAnimation {
+            ingredientMgr.create(name: name, brand: brand, servingSize: servingSize, calories: calories, fat: fat, fiber: fiber, netCarbs: netCarbs, protein: protein, consumptionUnit: consumptionUnit, consumptionGrams: consumptionGrams, meat: meat, meatAmount: meatAmount, mealAdjustments: mealAdjustments, available: true, verified: "")
+            if ingredientAdd {
+                mealIngredientMgr.create(name: name,
+                                         defaultAmount: ingredientAmount,
+                                         amount: ingredientAmount,
+                                         consumptionUnit: consumptionUnit,
+                                         active: false)
+            }
+            if adjustmentAdd {
+                adjustmentMgr.create(name: name,
+                                     amount: adjustmentAmount,
+                                     consumptionUnit: consumptionUnit,
+                                     active: false)
+            }
+            presentationMode.wrappedValue.dismiss()
+        }
     }
 }
 

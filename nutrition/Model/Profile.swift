@@ -16,7 +16,7 @@ class ProfileMgr: ObservableObject {
         components.year = 1967
         components.month = 9
         components.day = 27
-        self.profile = Profile(dateOfBirth: Calendar.current.date(from: components)!, gender: Gender.male, height: 72, bodyMass: 184, bodyFatPercentage: 20, activeEnergyBurned: 200, proteinRatio: 0.85, calorieDeficit: 20, netCarbsMaximum: 20, meat: "Chicken", meatAmount: 200)
+        self.profile = Profile(dateOfBirth: Calendar.current.date(from: components)!, gender: Gender.male, height: 72, bodyMass: 184, bodyFatPercentage: 20, activeCaloriesBurned: 200, proteinRatio: 0.85, calorieDeficit: 20, netCarbsMaximum: 20, meat: "Chicken", meatAmount: 200)
     }
 
     func cancel() {
@@ -36,8 +36,8 @@ class ProfileMgr: ObservableObject {
         serialize()
     }
 
-    func setActiveEnergyBurned(activeEnergyBurned: Float) {
-        self.profile = profile.setActiveEnergyBurned(activeEnergyBurned: activeEnergyBurned)
+    func setActiveEnergyBurned(activeCaloriesBurned: Float) {
+        self.profile = profile.setActiveEnergyBurned(activeCaloriesBurned: activeCaloriesBurned)
         serialize()
     }
 
@@ -54,7 +54,7 @@ struct Profile: Codable {
     var height: Int
     var bodyMass: Float
     var bodyFatPercentage: Float
-    var activeEnergyBurned: Float
+    var activeCaloriesBurned: Float
     var proteinRatio: Float
     var calorieDeficit: Int
     var netCarbsMaximum: Float
@@ -62,15 +62,15 @@ struct Profile: Codable {
     var meatAmount: Float
 
     func setBodyMass(bodyMass: Float) -> Profile {
-        return Profile(dateOfBirth: self.dateOfBirth, gender: self.gender, height: self.height, bodyMass: bodyMass, bodyFatPercentage: self.bodyFatPercentage, activeEnergyBurned: self.activeEnergyBurned, proteinRatio: self.proteinRatio, calorieDeficit: self.calorieDeficit, netCarbsMaximum: self.netCarbsMaximum, meat: self.meat, meatAmount: self.meatAmount)
+        return Profile(dateOfBirth: self.dateOfBirth, gender: self.gender, height: self.height, bodyMass: bodyMass, bodyFatPercentage: self.bodyFatPercentage, activeCaloriesBurned: self.activeCaloriesBurned, proteinRatio: self.proteinRatio, calorieDeficit: self.calorieDeficit, netCarbsMaximum: self.netCarbsMaximum, meat: self.meat, meatAmount: self.meatAmount)
     }
 
     func setBodyFatPercentage(bodyFatPercentage: Float) -> Profile {
-        return Profile(dateOfBirth: self.dateOfBirth, gender: self.gender, height: self.height, bodyMass: self.bodyMass, bodyFatPercentage: bodyFatPercentage, activeEnergyBurned: self.activeEnergyBurned, proteinRatio: self.proteinRatio, calorieDeficit: self.calorieDeficit, netCarbsMaximum: self.netCarbsMaximum, meat: self.meat, meatAmount: self.meatAmount)
+        return Profile(dateOfBirth: self.dateOfBirth, gender: self.gender, height: self.height, bodyMass: self.bodyMass, bodyFatPercentage: bodyFatPercentage, activeCaloriesBurned: self.activeCaloriesBurned, proteinRatio: self.proteinRatio, calorieDeficit: self.calorieDeficit, netCarbsMaximum: self.netCarbsMaximum, meat: self.meat, meatAmount: self.meatAmount)
     }
 
-    func setActiveEnergyBurned(activeEnergyBurned: Float) -> Profile {
-        return Profile(dateOfBirth: self.dateOfBirth, gender: self.gender, height: self.height, bodyMass: self.bodyMass, bodyFatPercentage: self.bodyFatPercentage, activeEnergyBurned: activeEnergyBurned, proteinRatio: self.proteinRatio, calorieDeficit: self.calorieDeficit, netCarbsMaximum: self.netCarbsMaximum, meat: self.meat, meatAmount: self.meatAmount)
+    func setActiveEnergyBurned(activeCaloriesBurned: Float) -> Profile {
+        return Profile(dateOfBirth: self.dateOfBirth, gender: self.gender, height: self.height, bodyMass: self.bodyMass, bodyFatPercentage: self.bodyFatPercentage, activeCaloriesBurned: activeCaloriesBurned, proteinRatio: self.proteinRatio, calorieDeficit: self.calorieDeficit, netCarbsMaximum: self.netCarbsMaximum, meat: self.meat, meatAmount: self.meatAmount)
     }
 
     var age: Float {
@@ -141,7 +141,7 @@ struct Profile: Codable {
         set {
         }
         get {
-            self.caloriesResting + Float(self.activeEnergyBurned)
+            self.caloriesResting + Float(self.activeCaloriesBurned)
         }
     }
 

@@ -34,19 +34,20 @@ struct AdjustmentEdit: View {
           .navigationBarBackButtonHidden(true)
           .toolbar {
               ToolbarItem(placement: .navigation) {
-                  Button("Cancel", action: { self.presentationMode.wrappedValue.dismiss() })
+                  Button("Cancel", action: cancel)
+                    .foregroundColor(Color("Blue"))
               }
               ToolbarItem(placement: .primaryAction) {
-                  Button("Save",
-                         action: {
-                             withAnimation {
-                                 adjustmentMgr.update(adjustment)
-                                 presentationMode.wrappedValue.dismiss()
-                             }
-                         })
+                  Button("Save", action: save)
+                    .foregroundColor(Color("Blue"))
               }
               ToolbarItemGroup(placement: .keyboard) {
-                  DismissKeyboard()
+                  HStack {
+                      DismissKeyboard()
+                      Spacer()
+                      Button("Save", action: save)
+                        .foregroundColor(Color("Blue"))
+                  }
               }
           }
           .onAppear {
@@ -54,6 +55,19 @@ struct AdjustmentEdit: View {
                   self.focusedField = .amount
               }
           }
+    }
+
+    func cancel() {
+        withAnimation {
+            self.presentationMode.wrappedValue.dismiss()
+        }
+    }
+
+    func save() {
+        withAnimation {
+            adjustmentMgr.update(adjustment)
+            presentationMode.wrappedValue.dismiss()
+        }
     }
 }
 

@@ -22,21 +22,33 @@ struct MealAdd: View {
           .navigationBarBackButtonHidden(true)
           .toolbar {
               ToolbarItem(placement: .navigation) {
-                  Button("Cancel", action: { self.presentationMode.wrappedValue.dismiss() })
+                  Button("Cancel", action: cancel)
+                    .foregroundColor(Color("Blue"))
               }
               ToolbarItem(placement: .primaryAction) {
-                  Button("Save",
-                         action: {
-                             withAnimation {
-                                 mealIngredientMgr.create(name: name, defaultAmount: defaultAmount, amount: defaultAmount, consumptionUnit: ingredientMgr.getIngredient(name: name)!.consumptionUnit)
-                                 presentationMode.wrappedValue.dismiss()
-                             }
-                         })
+                  Button("Save", action: save)
+                    .foregroundColor(Color("Blue"))
               }
               ToolbarItemGroup(placement: .keyboard) {
                   DismissKeyboard()
+                  Spacer()
+                  Button("Save", action: save)
+                    .foregroundColor(Color("Blue"))
               }
           }
+    }
+
+    func cancel() {
+        withAnimation {
+            self.presentationMode.wrappedValue.dismiss()
+        }
+    }
+
+    func save() {
+        withAnimation {
+            mealIngredientMgr.create(name: name, defaultAmount: defaultAmount, amount: defaultAmount, consumptionUnit: ingredientMgr.getIngredient(name: name)!.consumptionUnit)
+            presentationMode.wrappedValue.dismiss()
+        }
     }
 }
 

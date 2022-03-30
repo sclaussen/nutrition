@@ -12,9 +12,9 @@ struct ProfileEdit: View {
                 NameValue("Date of Birth", $profileMgr.profile.dateOfBirth, control: .date)
                 NameValue("Gender", $profileMgr.profile.gender, options: Gender.allCases, control: .picker)
                 NameValue("Height", $profileMgr.profile.height, .inch, edit: true)
-                NameValue("Net Carbs Maximum", description: "consumption max (carbs - fiber)", $profileMgr.profile.netCarbsMaximum, edit: true)
-                NameValue("Weight", description: "body mass (from health kit)", $profileMgr.profile.bodyMass, .pound, precision: 1, edit: true)
-                NameValue("Body Fat %", description: "from health kit", $profileMgr.profile.bodyFatPercentage, .percentage, precision: 1)
+                NameValue("Net Carbs Maximum", description: "daily consumption maximum (carbs - fiber)", $profileMgr.profile.netCarbsMaximum, edit: true)
+                NameValue("Weight", description: "body mass (from apple health kit)", $profileMgr.profile.bodyMass, .pound, precision: 1)
+                NameValue("Body Fat %", description: "from apple health kit", $profileMgr.profile.bodyFatPercentage, .percentage, precision: 1)
             }
             Section {
                 NameValue("Age", $profileMgr.profile.age, .year, precision: 1)
@@ -23,13 +23,13 @@ struct ProfileEdit: View {
                 NameValue("Body Mass Index", description: "normal <25, fat >25, obese >30", $profileMgr.profile.bodyMassIndex, precision: 1)
                 NameValue("Lean Body Mass", description: "non-fat body mass", $profileMgr.profile.leanBodyMass, .pound)
                 NameValue("Fat Mass", description: "weight * body fat percentage", $profileMgr.profile.fatMass, .pound)
-                NameValue("Water", description: "daily min, weight/2 * ~.03", $profileMgr.profile.waterLiters, .liter, precision: 1)
+                NameValue("Water", description: "daily consumption minimum, weight/2 * ~.03", $profileMgr.profile.waterLiters, .liter, precision: 1)
             }
             Section(header: Text("Gross (without the caloric deficit)")) {
                 Group {
                     NameValue("Base Metabolic Rate", description: "Mifflin-St Jeor", $profileMgr.profile.caloriesBaseMetabolicRate, .calorie)
                     NameValue("Resting Calories", description: "Mifflin-St Jeor BMR * 1.2", $profileMgr.profile.caloriesResting, .calorie)
-                    NameValue("Active Energy Burned", description: "daily daily exercise calories", $profileMgr.profile.activeEnergyBurned, .calorie)
+                    NameValue("Active Calories Burned", description: "daily calories burned due to exercise/movement", $profileMgr.profile.activeCaloriesBurned, .calorie)
                     NameValue("Unadjusted Caloric Goal", description: "resting + active energy burned", $profileMgr.profile.caloriesGoalUnadjusted, .calorie)
                     NameValue("Fat Goal", description: "caloric goal - netCarbs - protein", $profileMgr.profile.fatGoalUnadjusted)
                     NameValue("Fiber Minimum", description: "14g fiber/1k consumed calories", $profileMgr.profile.fiberMinimumUnadjusted)
@@ -53,30 +53,42 @@ struct ProfileEdit: View {
                 NameValue("Protein %", description: "percentage of net calories from protein", $profileMgr.profile.proteinGoalPercentage, .percentage)
             }
         }
-          // .environment(\.defaultMinListRowHeight, 60)
-          // .environment(\.defaultMinListHeaderHeight, 45)
+        // .environment(\.defaultMinListRowHeight, 60)
+        // .environment(\.defaultMinListHeaderHeight, 45)
           .padding([.leading, .trailing], -20)
           .navigationBarBackButtonHidden(true)
           .toolbar {
               ToolbarItem(placement: .navigation) {
-                  Button("Cancel", action: {
-                                       profileMgr.cancel()
-                                       tab = "Meal"
-                                   })
+                  Button("Cancel", action: cancel)
+                    .foregroundColor(Color("Blue"))
               }
               ToolbarItem(placement: .primaryAction) {
-                  Button("Save",
-                         action: {
-                             withAnimation {
-                                 profileMgr.serialize()
-                                 tab = "Meal"
-                             }
-                         })
+                  Button("Save", action: save)
+                    .foregroundColor(Color("Blue"))
               }
               ToolbarItemGroup(placement: .keyboard) {
-                  DismissKeyboard()
+                  HStack {
+                      DismissKeyboard()
+                      Spacer()
+                      Button("Save", action: save)
+                        .foregroundColor(Color("Blue"))
+                  }
               }
           }
+    }
+
+    func cancel() {
+        withAnimation {
+            profileMgr.cancel()
+            tab = "Meal"
+        }
+    }
+
+    func save() {
+        withAnimation {
+            profileMgr.serialize()
+            tab = "Meal"
+        }
     }
 }
 

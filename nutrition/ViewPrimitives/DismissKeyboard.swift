@@ -2,12 +2,12 @@ import SwiftUI
 
 struct DismissKeyboard: View {
     var body: some View {
-        Spacer()
         Button {
             self.hideKeyboard()
         } label: {
             Label("Keyboard Down", systemImage: "keyboard.chevron.compact.down")
         }
+          .foregroundColor(Color("Blue"))
     }
 }
 

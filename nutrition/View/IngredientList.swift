@@ -25,7 +25,7 @@ struct IngredientList: View {
                                                          amount: 100.0 / ingredient.consumptionGrams,
                                                          consumptionUnit: ingredient.consumptionUnit)
                                        })
-                          .foregroundColor(ingredient.available ? .black : .red)
+                          .foregroundColor(ingredient.available ? Color("Black") : Color("Red"))
                           .swipeActions(edge: .leading) {
                               Button {
                                   let newIngredient = ingredientMgr.toggleAvailable(ingredient)
@@ -62,6 +62,7 @@ struct IngredientList: View {
               .toolbar {
                   ToolbarItem(placement: .navigation) {
                       EditButton()
+                        .foregroundColor(Color("Blue"))
                   }
                   ToolbarItem(placement: .principal) {
                       Button {
@@ -70,9 +71,11 @@ struct IngredientList: View {
                       } label: {
                           Image(systemName: !ingredientMgr.unavailableIngredientsExist() ? "" : showUnavailable ? "eye" : "eye.slash")
                       }
+                        .foregroundColor(Color("Blue"))
                   }
                   ToolbarItem(placement: .primaryAction) {
                       NavigationLink("Add", destination: IngredientAdd())
+                        .foregroundColor(Color("Blue"))
                   }
               }
         }

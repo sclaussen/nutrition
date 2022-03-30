@@ -30,19 +30,20 @@ struct MealEdit: View {
           .navigationBarBackButtonHidden(true)
           .toolbar {
               ToolbarItem(placement: .navigation) {
-                  Button("Cancel", action: { self.presentationMode.wrappedValue.dismiss() })
+                  Button("Cancel", action: cancel)
+                    .foregroundColor(Color("Blue"))
               }
               ToolbarItem(placement: .primaryAction) {
-                  Button("Save",
-                         action: {
-                             withAnimation {
-                                 mealIngredientMgr.update(mealIngredient)
-                                 presentationMode.wrappedValue.dismiss()
-                             }
-                         })
+                  Button("Save", action: save)
+                    .foregroundColor(Color("Blue"))
               }
               ToolbarItemGroup(placement: .keyboard) {
-                  DismissKeyboard()
+                  HStack {
+                      DismissKeyboard()
+                      Spacer()
+                      Button("Save", action: save)
+                        .foregroundColor(Color("Blue"))
+                  }
               }
           }
           .onAppear {
@@ -50,6 +51,19 @@ struct MealEdit: View {
                   self.focusedField = .amount
               }
           }
+    }
+
+    func cancel() {
+        withAnimation {
+            self.presentationMode.wrappedValue.dismiss()
+        }
+    }
+
+    func save() {
+        withAnimation {
+            mealIngredientMgr.update(mealIngredient)
+            presentationMode.wrappedValue.dismiss()
+        }
     }
 }
 
