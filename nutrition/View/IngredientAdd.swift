@@ -8,9 +8,9 @@ struct IngredientAdd: View {
 
     @State var name: String = ""
 
-    @State var brand: String = ""
-    @State var cost: Float = 0
-    @State var costPerGram: Float = 0
+    @State var productBrand: String = ""
+    @State var productCost: Float = 0
+    @State var productGrams: Float = 0
 
     @State var servingSize: Float = 0
     @State var calories: Float = 0
@@ -38,12 +38,12 @@ struct IngredientAdd: View {
             Section {
                 NameValue("Name", $name, edit: true)
             }
-            Section(header: Text("Optional Details")) {
-                NameValue("Brand", $brand, edit: true)
-                NameValue("Cost", $cost, edit: true)
-                NameValue("Cost/Gram", $costPerGram, edit: true)
+            Section(header: Text("Optional Product Details")) {
+                NameValue("Name", $productBrand, edit: true)
+                NameValue("Cost", $productCost, .dollar, precision: 2, edit: true)
+                NameValue("Grams", description: "total ingredient grams in the product", $productGrams, edit: true)
             }
-            Section(header: Text("Macronutrient Details")) {
+            Section(header: Text("Macronutrients")) {
                 NameValue("Serving Size", $servingSize, edit: true)
                 NameValue("Calories", $calories, .calorie, edit: true)
                 NameValue("Fat", $fat, edit: true)
@@ -51,9 +51,9 @@ struct IngredientAdd: View {
                 NameValue("Net Carbs", $netCarbs, edit: true)
                 NameValue("Protein", $protein, edit: true)
             }
-            Section(header: Text("Ingredient Consumption")) {
-                NameValue("Consumption Unit", $consumptionUnit, options: Unit.ingredientOptions(), control: .picker)
-                NameValue("Grams / Unit", $consumptionGrams, edit: true)
+            Section(header: Text("Preparation/Consumption Unit")) {
+                NameValue("Consumption Unit", description: "preferred meal prep/consumption unit", $consumptionUnit, options: Unit.ingredientOptions(), control: .picker)
+                NameValue("Grams / Unit", description: "grams per each prep/consumption unit", $consumptionGrams, edit: true)
             }
             Section {
                 NameValue("Meat", description: "main course", $meat, control: .toggle)
@@ -125,7 +125,7 @@ struct IngredientAdd: View {
 
     func save() {
         withAnimation {
-            ingredientMgr.create(name: name, brand: brand, servingSize: servingSize, calories: calories, fat: fat, fiber: fiber, netCarbs: netCarbs, protein: protein, consumptionUnit: consumptionUnit, consumptionGrams: consumptionGrams, meat: meat, meatAmount: meatAmount, mealAdjustments: mealAdjustments, available: true, verified: "")
+            ingredientMgr.create(name: name, productBrand: productBrand, servingSize: servingSize, calories: calories, fat: fat, fiber: fiber, netCarbs: netCarbs, protein: protein, consumptionUnit: consumptionUnit, consumptionGrams: consumptionGrams, meat: meat, meatAmount: meatAmount, mealAdjustments: mealAdjustments, available: true, verified: "")
             if ingredientAdd {
                 mealIngredientMgr.create(name: name,
                                          defaultAmount: ingredientAmount,

@@ -78,8 +78,8 @@ class IngredientMgr: ObservableObject {
         self.ingredients = savedItems
     }
 
-    func create(name: String, brand: String = "", cost: Float = 0, costPerGram:Float = 0, servingSize: Float, calories: Float, fat: Float, fiber: Float, netCarbs: Float, protein: Float, consumptionUnit: Unit, consumptionGrams: Float, meat: Bool, meatAmount: Float, mealAdjustments: [MealAdjustment], available: Bool, verified: String) {
-        let ingredient = Ingredient(name: name, brand: brand, cost: cost, costPerGram: costPerGram, servingSize: servingSize, calories: calories, fat: fat, fiber: fiber, netCarbs: netCarbs, protein: protein, consumptionUnit: consumptionUnit, consumptionGrams: consumptionGrams, meat: meat, meatAmount: meatAmount, mealAdjustments: mealAdjustments, available: available, verified: verified)
+    func create(name: String, productBrand: String = "", productCost: Float = 0, productGrams:Float = 0, servingSize: Float, calories: Float, fat: Float, fiber: Float, netCarbs: Float, protein: Float, consumptionUnit: Unit, consumptionGrams: Float, meat: Bool, meatAmount: Float, mealAdjustments: [MealAdjustment], available: Bool, verified: String) {
+        let ingredient = Ingredient(name: name, productBrand: productBrand, productCost: productCost, productGrams: productGrams, servingSize: servingSize, calories: calories, fat: fat, fiber: fiber, netCarbs: netCarbs, protein: protein, consumptionUnit: consumptionUnit, consumptionGrams: consumptionGrams, meat: meat, meatAmount: meatAmount, mealAdjustments: mealAdjustments, available: available, verified: verified)
         ingredients.append(ingredient)
     }
 
@@ -189,9 +189,9 @@ struct Ingredient: Codable, Identifiable {
 
     var name: String
 
-    var brand: String
-    var cost: Float
-    var costPerGram: Float
+    var productBrand: String
+    var productCost: Float
+    var productGrams: Float
 
     var servingSize: Float
     var calories: Float
@@ -212,14 +212,14 @@ struct Ingredient: Codable, Identifiable {
 
     var verified: String
 
-    init(id: String = UUID().uuidString, name: String, brand: String = "", cost: Float = 0, costPerGram: Float = 0, servingSize: Float, calories: Float, fat: Float, fiber: Float, netCarbs: Float, protein: Float, consumptionUnit: Unit = Unit.gram, consumptionGrams: Float, meat: Bool = false, meatAmount: Float = 200, mealAdjustments: [MealAdjustment] = [], available: Bool = true, verified: String = "") {
+    init(id: String = UUID().uuidString, name: String, productBrand: String = "", productCost: Float = 0, productGrams: Float = 0, servingSize: Float, calories: Float, fat: Float, fiber: Float, netCarbs: Float, protein: Float, consumptionUnit: Unit = Unit.gram, consumptionGrams: Float, meat: Bool = false, meatAmount: Float = 200, mealAdjustments: [MealAdjustment] = [], available: Bool = true, verified: String = "") {
         self.id = id
 
         self.name = name
 
-        self.brand = brand
-        self.cost = cost
-        self.costPerGram = costPerGram
+        self.productBrand = productBrand
+        self.productCost = productCost
+        self.productGrams = productGrams
 
         self.servingSize = servingSize
         self.calories = calories
@@ -281,10 +281,10 @@ struct Ingredient: Codable, Identifiable {
     }
 
     func toggleAvailable() -> Ingredient {
-        return Ingredient(id: id, name: name, brand: brand, cost: cost, costPerGram: costPerGram, servingSize: servingSize, calories: calories, fat: fat, fiber: fiber, netCarbs: netCarbs, protein: protein, consumptionUnit: consumptionUnit, consumptionGrams: consumptionGrams, meat: meat, mealAdjustments: mealAdjustments, available: !available, verified: verified)
+        return Ingredient(id: id, name: name, productBrand: productBrand, productCost: productCost, productGrams: productGrams, servingSize: servingSize, calories: calories, fat: fat, fiber: fiber, netCarbs: netCarbs, protein: protein, consumptionUnit: consumptionUnit, consumptionGrams: consumptionGrams, meat: meat, mealAdjustments: mealAdjustments, available: !available, verified: verified)
     }
 
     func update(ingredient: Ingredient) -> Ingredient {
-        return Ingredient(id: ingredient.id, name: ingredient.name, brand: ingredient.brand, cost: ingredient.cost, costPerGram: ingredient.costPerGram, servingSize: ingredient.servingSize, calories: ingredient.calories, fat: ingredient.fat, fiber: ingredient.fiber, netCarbs: ingredient.netCarbs, protein: ingredient.protein, consumptionUnit: ingredient.consumptionUnit, consumptionGrams: ingredient.consumptionGrams, meat: ingredient.meat, meatAmount: ingredient.meatAmount, mealAdjustments: ingredient.mealAdjustments, available: ingredient.available, verified: verified)
+        return Ingredient(id: ingredient.id, name: ingredient.name, productBrand: ingredient.productBrand, productCost: ingredient.productCost, productGrams: ingredient.productGrams, servingSize: ingredient.servingSize, calories: ingredient.calories, fat: ingredient.fat, fiber: ingredient.fiber, netCarbs: ingredient.netCarbs, protein: ingredient.protein, consumptionUnit: ingredient.consumptionUnit, consumptionGrams: ingredient.consumptionGrams, meat: ingredient.meat, meatAmount: ingredient.meatAmount, mealAdjustments: ingredient.mealAdjustments, available: ingredient.available, verified: verified)
     }
 }

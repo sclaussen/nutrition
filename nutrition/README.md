@@ -16,9 +16,11 @@
 - BUG: profile change value, then cancel, value remains...  valueString "feature"
   - Numbers Only
     https://programmingwithswift.com/numbers-only-textfield-with-swiftui/
+- Meat Amount default is not being used
 
 ## P1
 
+- Consider changing consumption unit to preparation unit
 - Re-add the grams/100 to the IngredientEdit view
 - Variable picker style type
 - Add health zones

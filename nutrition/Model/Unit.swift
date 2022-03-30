@@ -15,6 +15,7 @@ enum Unit: NVValueTypeProtocol {
 
     case calorie
     case centimeter
+    case dollar
     case gramsPerLbm
     case inch
     case kilogram
@@ -43,6 +44,7 @@ enum Unit: NVValueTypeProtocol {
 
         case .calorie: return "cal"
         case .centimeter: return "cm"
+        case .dollar: return "$"
         case .gramsPerLbm: return "g/lbm"
         case .inch: return "in"
         case .kilogram: return "kg"
@@ -70,6 +72,7 @@ enum Unit: NVValueTypeProtocol {
 
         case .calorie: return "cals"
         case .centimeter: return "cm"
+        case .dollar: return "$"
         case .gramsPerLbm: return "g/lbm"
         case .inch: return "inches"
         case .kilogram: return "kgs"

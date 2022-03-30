@@ -12,12 +12,12 @@ struct IngredientEdit: View {
             Section {
                 NameValue("Name", $ingredient.name)
             }
-            Section(header: Text("Optional Details")) {
-                NameValue("Brand", $ingredient.brand, edit: true)
-                NameValue("Cost", $ingredient.cost, edit: true)
-                NameValue("Cost/Gram", $ingredient.costPerGram, edit: true)
+            Section(header: Text("Optional Product Details")) {
+                NameValue("Name", $ingredient.productBrand, edit: true)
+                NameValue("Cost", $ingredient.productCost, .dollar, precision: 2, edit: true)
+                NameValue("Grams", description: "total ingredient grams in the product", $ingredient.productGrams, edit: true)
             }
-            Section(header: Text("Macronutrient Details")) {
+            Section(header: Text("Macronutrients")) {
                 NameValue("Serving Size", $ingredient.servingSize, edit: true)
                 NameValue("Calories", $ingredient.calories, .calorie, edit: true)
                 NameValue("Fat", $ingredient.fat, edit: true)
@@ -25,9 +25,9 @@ struct IngredientEdit: View {
                 NameValue("Net Carbs", $ingredient.netCarbs, edit: true)
                 NameValue("Protein", $ingredient.protein, edit: true)
             }
-            Section(header: Text("Ingredient Consumption")) {
-                NameValue("Consumption Unit", $ingredient.consumptionUnit, options: Unit.ingredientOptions(), control: .picker)
-                NameValue("Grams / Unit", $ingredient.consumptionGrams, edit: true)
+            Section(header: Text("Preparation/Consumption Unit")) {
+                NameValue("Consumption Unit", description: "preferred meal prep/consumption unit", $ingredient.consumptionUnit, options: Unit.ingredientOptions(), control: .picker)
+                NameValue("Grams / Consumption Unit", description: "grams per each prep/consumption unit", $ingredient.consumptionGrams, edit: true)
             }
             Section {
                 NameValue("Meat", $ingredient.meat, control: .toggle)
@@ -97,10 +97,10 @@ struct IngredientEdit: View {
     }
 }
 
-struct IngredientEdit_Previews: PreviewProvider {
-    static var previews: some View {
-        NavigationView {
-            IngredientEdit(ingredient: Ingredient(name: "Chicken", brand: "Butcher Box", servingSize: 200, calories: 180, fat: 2, fiber: 1, netCarbs: 0.5, protein: 10, consumptionUnit: .gram, consumptionGrams: 100))
-        }
-    }
-}
+//struct IngredientEdit_Previews: PreviewProvider {
+//    static var previews: some View {
+//        NavigationView {
+//            IngredientEdit(ingredient: Ingredient(name: "Chicken", productName: "Butcher Box", servingSize: 200, calories: 180, fat: 2, fiber: 1, netCarbs: 0.5, protein: 10, consumptionUnit: .gram, consumptionGrams: 100))
+//        }
+//    }
+//}
