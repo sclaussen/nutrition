@@ -25,6 +25,7 @@ struct MealConfigure: View {
                 if !profileMgr.profile.bodyFatPercentageFromHealthKit {
                     NameValue("Body Fat %", $profileMgr.profile.bodyFatPercentage, .percentage, precision: 1, edit: true)
                 }
+                NameValue("Protein Ratio", description: "daily protein grams required / lb of lean body mass", $profileMgr.profile.proteinRatio, precision: 2, edit: true)
             }
             Section {
                 NameValue("Meat", description: "main course", $profileMgr.profile.meat, options: ingredientMgr.getAllMeatNames(), control: .picker)

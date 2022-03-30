@@ -13,6 +13,7 @@ struct ProfileEdit: View {
                 NameValue("Gender", $profileMgr.profile.gender, options: Gender.allCases, control: .picker)
                 NameValue("Height", $profileMgr.profile.height, .inch, edit: true)
                 NameValue("Net Carbs Maximum", description: "daily consumption maximum (carbs - fiber)", $profileMgr.profile.netCarbsMaximum, edit: true)
+                NameValue("Protein Ratio", description: "daily protein grams required / lb of lean body mass", $profileMgr.profile.proteinRatio, precision: 2, edit: true)
             }
             Section(header: Text("Daily Metrics")) {
                 NameValue("Weight from Health Kit", description: "source daily weight updates from apple health kit", $profileMgr.profile.bodyMassFromHealthKit, control: .toggle)
