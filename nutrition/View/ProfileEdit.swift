@@ -8,12 +8,13 @@ struct ProfileEdit: View {
 
     var body: some View {
         Form {
-            Section {
+            Section(header: Text("Profile Data")) {
                 NameValue("Date of Birth", $profileMgr.profile.dateOfBirth, control: .date)
                 NameValue("Gender", $profileMgr.profile.gender, options: Gender.allCases, control: .picker)
                 NameValue("Height", $profileMgr.profile.height, .inch, edit: true)
                 NameValue("Net Carbs Maximum", description: "daily consumption maximum (carbs - fiber)", $profileMgr.profile.netCarbsMaximum, edit: true)
                 NameValue("Protein Ratio", description: "daily protein grams required / lb of lean body mass", $profileMgr.profile.proteinRatio, precision: 2, edit: true)
+                NameValue("Caloric Deficit", description: "percentage to adjust daily caloric and macro goals", $profileMgr.profile.calorieDeficit, .percentage, edit: true)
             }
             Section(header: Text("Daily Metrics")) {
                 NameValue("Weight from Health Kit", description: "source daily weight updates from apple health kit", $profileMgr.profile.bodyMassFromHealthKit, control: .toggle)
@@ -25,7 +26,7 @@ struct ProfileEdit: View {
                     NameValue("Body Fat %", description: "from apple health kit", $profileMgr.profile.bodyFatPercentage, .percentage, precision: 1, edit: true)
                 }
             }
-            Section {
+            Section(header: Text("Derived Profile Data")) {
                 NameValue("Age", $profileMgr.profile.age, .year, precision: 1)
                 NameValue("Weight", description: "body mass (from health kit)", $profileMgr.profile.bodyMassKg, .kilogram)
                 NameValue("Height", $profileMgr.profile.heightCm, .centimeter)

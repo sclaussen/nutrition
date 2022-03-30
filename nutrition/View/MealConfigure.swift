@@ -26,6 +26,8 @@ struct MealConfigure: View {
                     NameValue("Body Fat %", $profileMgr.profile.bodyFatPercentage, .percentage, precision: 1, edit: true)
                 }
                 NameValue("Protein Ratio", description: "daily protein grams required / lb of lean body mass", $profileMgr.profile.proteinRatio, precision: 2, edit: true)
+                NameValue("Caloric Deficit", description: "percentage to adjust daily caloric and macro goals", $profileMgr.profile.calorieDeficit, .percentage, edit: true)
+                NameValue("Water Minimum", description: "daily consumption mininimum, weight/2 * ~.03", $profileMgr.profile.waterLiters, .liter, precision: 1)
             }
             Section {
                 NameValue("Meat", description: "main course", $profileMgr.profile.meat, options: ingredientMgr.getAllMeatNames(), control: .picker)
@@ -33,9 +35,6 @@ struct MealConfigure: View {
                     NameValue("Meat Weight", $profileMgr.profile.meatAmount, edit: true)
                 }
             }
-            // Section {
-            //     NameValue("Water Minimum", description: "daily consumption mininimum, weight/2 * ~.03", $profileMgr.profile.waterLiters, .liter, precision: 1)
-            // }
         }
           .padding([.leading, .trailing], -20)
           .navigationBarBackButtonHidden(true)
