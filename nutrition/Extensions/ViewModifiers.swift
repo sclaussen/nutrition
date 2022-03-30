@@ -17,9 +17,12 @@ struct NameViewModifier: ViewModifier {
 struct ValueViewModifier: ViewModifier {
     var geo: GeometryProxy
     var wideValue: Bool
+    var unit: Unit
 
     func body(content: Content) -> some View {
-        let width = geo.size.width * (wideValue ? 0.6 : 0.3)
+        var width = geo.size.width * (wideValue ? 0.6 : 0.3)
+        width += (unit == .none) ? geo.size.width * 0.1 : 0
+
         return content
           .lineLimit(1)
           .font(.callout)
@@ -59,8 +62,8 @@ extension View {
         return self.modifier(NameViewModifier(geo: geo, wideValue: wideValue))
     }
 
-    func value(_ geo: GeometryProxy, _ wideValue: Bool) -> some View {
-        return self.modifier(ValueViewModifier(geo: geo, wideValue: wideValue))
+    func value(_ geo: GeometryProxy, _ wideValue: Bool, _ unit: Unit) -> some View {
+        return self.modifier(ValueViewModifier(geo: geo, wideValue: wideValue, unit: unit))
     }
 
     func unit(_ geo: GeometryProxy) -> some View {

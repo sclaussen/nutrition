@@ -88,7 +88,7 @@ struct NameValue<T: NVValueTypeProtocol>: View {
                         if !edit {
                             // TEXT control for text values (VIEW)
                             Text(value.string(precision))
-                              .value(geo, wideValue)
+                              .value(geo, wideValue, unit)
                               .foregroundColor(Color("Black"))
                               .if (!description.isEmpty) { view in
                                   view.offset(x: -2)
@@ -99,6 +99,7 @@ struct NameValue<T: NVValueTypeProtocol>: View {
                                         name: name,
                                         description: description,
                                         value: _value,
+                                        unit: unit,
                                         precision: precision,
                                         valueType: valueType,
                                         keyboard: keyboard)
@@ -111,7 +112,7 @@ struct NameValue<T: NVValueTypeProtocol>: View {
                     // TOGGLE control for boolean values (EDIT)
                     if control == .toggle {
                         Toggle("", isOn: Binding(get: { $value.wrappedValue as! Bool }, set: { $value.wrappedValue = $0 as! T }))
-                          .value(geo, false)
+                          .value(geo, false, .none)
                           .foregroundColor(Color("Blue"))
                           .toggleStyle(CheckmarkToggleStyle())
                     }
@@ -121,11 +122,11 @@ struct NameValue<T: NVValueTypeProtocol>: View {
                         Picker("", selection: $value) {
                             ForEach(options, id: \.self) {
                                 Text($0.string()).tag($0)
-                                  .value(geo, false)
+                                  .value(geo, false, .none)
                                   .accentColor(Color("Blue"))
                             }
                         }
-                          .value(geo, false)
+                          .value(geo, false, .none)
                           .labelsHidden()
                           .pickerStyle(MenuPickerStyle())
                           .accentColor(Color("Blue"))
@@ -134,40 +135,42 @@ struct NameValue<T: NVValueTypeProtocol>: View {
                     // DATE control for date values (EDIT)
                     if control == .date {
                         DatePicker("", selection: Binding(get: { $value.wrappedValue as! Date }, set: { $value.wrappedValue = $0 as! T }), in: ...Date(), displayedComponents: [.date])
-                          .value(geo, false)
+                          .value(geo, false, .none)
                           .labelsHidden()
                           .foregroundColor(Color("Blue"))
                           .colorMultiply(Color("Blue"))
-                          //colorInvert()
+                        //colorInvert()
                     }
 
                     // Unit
-                    if value.singular() {
-                        AnyView(Text(unit.singularForm)
-                                  .unit(geo)
-                                  .if (edit) { view in
-                                      view.foregroundColor(Color("BlueLight"))
-                                  }
-                                  .if (!edit) { view in
-                                      view.foregroundColor(Color("BlackLight"))
-                                  }
-                                  .if (!description.isEmpty) { view in
-                                      view.offset(x: -2)
-                                  }
-                        )
-                    } else {
-                        AnyView(Text(unit.pluralForm)
-                                  .unit(geo)
-                                  .if (edit) { view in
-                                      view.foregroundColor(Color("BlueLight"))
-                                  }
-                                  .if (!edit) { view in
-                                      view.foregroundColor(Color("BlackLight"))
-                                  }
-                                  .if (!description.isEmpty) { view in
-                                      view.offset(x: -2)
-                                  }
-                        )
+                    if unit != .none {
+                        if value.singular() {
+                            AnyView(Text(unit.singularForm)
+                                      .unit(geo)
+                                      .if (edit) { view in
+                                          view.foregroundColor(Color("BlueLight"))
+                                      }
+                                      .if (!edit) { view in
+                                          view.foregroundColor(Color("BlackLight"))
+                                      }
+                                      .if (!description.isEmpty) { view in
+                                          view.offset(x: -2)
+                                      }
+                            )
+                        } else {
+                            AnyView(Text(unit.pluralForm)
+                                      .unit(geo)
+                                      .if (edit) { view in
+                                          view.foregroundColor(Color("BlueLight"))
+                                      }
+                                      .if (!edit) { view in
+                                          view.foregroundColor(Color("BlackLight"))
+                                      }
+                                      .if (!description.isEmpty) { view in
+                                          view.offset(x: -2)
+                                      }
+                            )
+                        }
                     }
                 }
 
@@ -214,6 +217,7 @@ struct NVTextField<T: NVValueTypeProtocol>: View {
     var name: String
     var description: String
     @Binding var value: T
+    var unit: Unit
     var precision: Int
     var valueType: NVValueType
     var keyboard: UIKeyboardType
@@ -223,11 +227,12 @@ struct NVTextField<T: NVValueTypeProtocol>: View {
     // @State var refreshMe: Bool = false // this is a hack to refresh the view
 
 
-    init(geo: GeometryProxy, name: String, description: String, value: Binding<T>, precision: Int, valueType: NVValueType, keyboard: UIKeyboardType) {
+    init(geo: GeometryProxy, name: String, description: String, value: Binding<T>, unit: Unit, precision: Int, valueType: NVValueType, keyboard: UIKeyboardType) {
         self.geo = geo
         self.name = name
         self.description = description
         self._value = value
+        self.unit = unit
         self.precision = precision
         self.valueType = valueType
         self.keyboard = keyboard
@@ -243,10 +248,10 @@ struct NVTextField<T: NVValueTypeProtocol>: View {
 
         // TEXTFIELD control for text values (EDIT)
         TextField(description.count > 0 ? description : name, text: $valueString)
-            .value(geo, valueString.count > 7)
+          .value(geo, valueString.count > 7, unit)
           .autocapitalization(UITextAutocapitalizationType.words)
           .foregroundColor(Color("Blue"))
-          // .foregroundColor(self.refreshMe ? Color("Blue") : Color("Blue"))
+        // .foregroundColor(self.refreshMe ? Color("Blue") : Color("Blue"))
           .keyboardType(keyboard)
           .onReceive(NotificationCenter.default.publisher(for: UITextField.textDidBeginEditingNotification)) { obj in
               if let textEdit = obj.object as? UITextField {

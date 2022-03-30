@@ -4,9 +4,7 @@
 
 - Fix visual for progress bar
 - Update progress bar to what I actually care about
-- Move toggle/date/etc to far right margin where unit normally is
 - Next/Next/Next field ...
-- Geometry flexibility for different devices
 - recursive deletes, primary/foreign key updates (eg ing.name)
 - Do not allow the meat adjustment to be edited in the edit dialog, or, allow it but update profile
 - Correct use case where you want to change 1 piece = 28g to 1 gram = 1gram
