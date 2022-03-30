@@ -15,6 +15,7 @@ struct Tabs: View {
 
             NavigationView {
                 MealList()
+                  .hiddenNavigationBarStyle()
             }.tabItem {
                 Image(systemName: "fork.knife.circle")
                 Text("Meal")
@@ -24,7 +25,8 @@ struct Tabs: View {
 
             NavigationView {
                 AdjustmentList()
-                  .navigationTitle("Adjustments")
+                  .hiddenNavigationBarStyle()
+                  // .navigationTitle("Adjustments")
             }.tabItem {
                 Image(systemName: "plus.circle")
                 Text("Adjustments")
@@ -34,7 +36,8 @@ struct Tabs: View {
 
             NavigationView {
                 IngredientList()
-                  .navigationTitle("Ingredients")
+                  .hiddenNavigationBarStyle()
+                  // .navigationTitle("Ingredients")
             }.tabItem {
                 Image(systemName: "cart.fill")
                 Text("Ingredients")
@@ -44,7 +47,8 @@ struct Tabs: View {
 
             NavigationView {
                 ProfileEdit(tab: $tab)
-                  .navigationTitle("Profile")
+                  .hiddenNavigationBarStyle()
+                  // .navigationTitle("Profile")
             }.tabItem {
                 Image(systemName: "person")
                 Text("Profile")

@@ -16,7 +16,7 @@ class ProfileMgr: ObservableObject {
         components.year = 1967
         components.month = 9
         components.day = 27
-        self.profile = Profile(dateOfBirth: Calendar.current.date(from: components)!, gender: Gender.male, height: 72, bodyMassFromHealthKit: true, bodyMass: 184, bodyFatPercentageFromHealthKit: true, bodyFatPercentage: 20, activeCaloriesBurned: 200, proteinRatio: 0.85, calorieDeficit: 20, netCarbsMaximum: 20, meat: "Chicken", meatAmount: 200)
+        self.profile = Profile(dateOfBirth: Calendar.current.date(from: components)!, gender: Gender.male, height: 72, bodyMassFromHealthKit: true, bodyMass: 184, bodyFatPercentageFromHealthKit: true, bodyFatPercentage: 20, activeCaloriesBurned: 600, proteinRatio: 0.85, calorieDeficit: 20, netCarbsMaximum: 20, meat: "Chicken", meatAmount: 200)
     }
 
     func cancel() {

@@ -14,131 +14,133 @@ struct MealList: View {
     @State var amount: Double = 0
     @State var mealConfigureActive = false
 
-    // var healthStore: HealthStore = HealthStore()
-
     var body: some View {
-        VStack {
-            List {
-                Section(header: Text("Meal Dashboard")) {
-                    MyGaugeDashboard(profileMgr.profile, macrosMgr.macros)
-                }
+        List {
 
-                Section(header: IngredientRowHeader(showMacros: true)) {
-                    ForEach(mealIngredientMgr.get(includeInactive: showInactive)) { mealIngredient in
-                        NavigationLink(destination: MealEdit(mealIngredient: mealIngredient),
-                                       label: {
-                                           IngredientRow(showMacros: true,
-                                                         name: mealIngredient.name,
-                                                         calories: mealIngredient.calories,
-                                                         fat: mealIngredient.fat,
-                                                         fiber: mealIngredient.fiber,
-                                                         netcarbs: mealIngredient.netcarbs,
-                                                         protein: mealIngredient.protein,
-                                                         amount: mealIngredient.amount,
-                                                         consumptionUnit: mealIngredient.consumptionUnit)
-                                       })
-                          .foregroundColor(!mealIngredient.active ? Color.red :
-                                             (mealIngredient.compensationExists || (mealIngredient.defaultAmount != mealIngredient.amount)) ? Color("Blue") :
-                                             Color("Black"))
-                          .swipeActions(edge: .trailing) {
-                              Button {
-                                  if mealIngredient.active || ingredientMgr.getIngredient(name: mealIngredient.name)!.available {
-                                      let newMealIngredient = mealIngredientMgr.toggleActive(mealIngredient)
-                                      print("  \(newMealIngredient!.name) active: \(newMealIngredient!.active)")
-                                  }
-                                  generateMeal()
-                              } label: {
-                                  Label("", systemImage: !ingredientMgr.getIngredient(name: mealIngredient.name)!.available ? "circle.slash" : mealIngredient.active ? "pause.circle" : "play.circle")
-                              }
-                                .tint(!ingredientMgr.getIngredient(name: mealIngredient.name)!.available ? .gray : mealIngredient.active ? .red : .green)
+            Dashboard(profileMgr.profile, macrosMgr.macros)
+              .listRowSeparator(.hidden)
+              .frame(height: 185)
+              .listRowInsets(EdgeInsets(top: 0, leading: 10, bottom: 0, trailing: 10))
+              .border(Color.green, width: 0)
 
+            IngredientRowHeader(showMacros: true)
+              .listRowInsets(EdgeInsets(top: 8, leading: 10, bottom: 8, trailing: 10))
+              .border(Color.green, width: 0)
 
-                              // Button {
-                              //     print("Logic")
-                              // } label: {
-                              //     Label("", systemImage: !ingredientMgr.getIngredient(name: mealIngredient.name)!.available ? "circle.slash" : mealIngredient.active ? "pause.circle" : "play.circle")
-                              // }
-                              //   .tint(!ingredientMgr.getIngredient(name: mealIngredient.name)!.available ? .gray : mealIngredient.active ? .red : .green)
-
-
-                              // TODO: Do not apply a delete to an adjustment item (or it'll just get re-added during generateMeal)
-                              Button(role: .destructive) {
-                                  mealIngredientMgr.delete(mealIngredient)
-                                  generateMeal()
-                              } label: {
-                                  Label("Delete", systemImage: "trash.fill")
-                              }
+            ForEach(mealIngredientMgr.get(includeInactive: showInactive)) { mealIngredient in
+                NavigationLink(destination: MealEdit(mealIngredient: mealIngredient),
+                               label: {
+                                   IngredientRow(showMacros: true,
+                                                 name: mealIngredient.name,
+                                                 calories: mealIngredient.calories,
+                                                 fat: mealIngredient.fat,
+                                                 fiber: mealIngredient.fiber,
+                                                 netcarbs: mealIngredient.netcarbs,
+                                                 protein: mealIngredient.protein,
+                                                 amount: mealIngredient.amount,
+                                                 consumptionUnit: mealIngredient.consumptionUnit)
+                               })
+                  .foregroundColor(!mealIngredient.active ? Color.red :
+                                     (mealIngredient.compensationExists || (mealIngredient.defaultAmount != mealIngredient.amount)) ? Color("Blue") :
+                                     Color("Black"))
+                  .swipeActions(edge: .trailing) {
+                      Button {
+                          if mealIngredient.active || ingredientMgr.getIngredient(name: mealIngredient.name)!.available {
+                              let newMealIngredient = mealIngredientMgr.toggleActive(mealIngredient)
+                              print("  \(newMealIngredient!.name) active: \(newMealIngredient!.active)")
                           }
-                    }
-                      .onMove(perform: moveAction)
-                      .onDelete(perform: deleteAction)
-                }
-            }
-              .refreshable {
-                  generateMeal()
-              }
-              .environment(\.defaultMinListRowHeight, 5)
-              .padding([.leading, .trailing], -20)
-              .background(
-                NavigationLink(destination: MealConfigure(), isActive: $mealConfigureActive) {
-                    Label("Configure", systemImage: "gear")
-                })
-              .toolbar {
-                  ToolbarItem(placement: .navigation) {
-                      EditButton()
-                        .foregroundColor(Color("Blue"))
-                  }
-                  ToolbarItem(placement: .principal) {
-                      HStack {
-                          Button {
-                              showInactive.toggle()
-                              print("  Toggling showInactive: \(showInactive) (mealIngredient)")
-                          } label: {
-                              Image(systemName: !mealIngredientMgr.inactiveIngredientsExist() ? "" : showInactive ? "eye" : "eye.slash")
-                          }
-                            .frame(width: 40)
-                            .foregroundColor(Color("Blue"))
+                          generateMeal()
+                      } label: {
+                          Label("", systemImage: !ingredientMgr.getIngredient(name: mealIngredient.name)!.available ? "circle.slash" : mealIngredient.active ? "pause.circle" : "play.circle")
+                      }
+                        .tint(!ingredientMgr.getIngredient(name: mealIngredient.name)!.available ? .gray : mealIngredient.active ? .red : .green)
 
-                          Button {
-                              locked.toggle()
-                              if !locked {
-                                  for mealIngredient in mealIngredientMgr.get() {
-                                      if !mealIngredient.compensationExists {
-                                          mealIngredientMgr.resetAmount(name: mealIngredient.name)
-                                      }
-                                  }
-                                  generateMeal()
-                              }
-                          } label: {
-                              Image(systemName: locked ? "lock" : "lock.open")
-                          }
-                            .frame(width: 40)
-                            .foregroundColor(Color("Blue"))
 
-                          // Button {
-                          //     generateMeal()
-                          // } label: {
-                          //     Image(systemName: locked ? "" : "arrow.triangle.2.circlepath")
-                          // }.frame(width: 40)
+                      // Button {
+                      //     print("Logic")
+                      // } label: {
+                      //     Label("", systemImage: !ingredientMgr.getIngredient(name: mealIngredient.name)!.available ? "circle.slash" : mealIngredient.active ? "pause.circle" : "play.circle")
+                      // }
+                      //   .tint(!ingredientMgr.getIngredient(name: mealIngredient.name)!.available ? .gray : mealIngredient.active ? .red : .green)
 
-                          Button {
-                              mealConfigureActive.toggle()
-                          } label: {
-                              Image(systemName: locked ? "" : "gear")
-                          }
-                            .frame(width: 40)
-                            .foregroundColor(Color("Blue"))
+
+                      // TODO: Do not apply a delete to an adjustment item (or it'll just get re-added during generateMeal)
+                      Button(role: .destructive) {
+                          mealIngredientMgr.delete(mealIngredient)
+                          generateMeal()
+                      } label: {
+                          Label("Delete", systemImage: "trash.fill")
                       }
                   }
-                  ToolbarItem(placement: .primaryAction) {
-                      NavigationLink("Add", destination: MealAdd())
+            }
+              .onMove(perform: moveAction)
+              .onDelete(perform: deleteAction)
+              .border(Color.green, width: 0)
+              .listRowInsets(EdgeInsets(top: 8, leading: 10, bottom: 8, trailing: 10))
+        }
+          .refreshable {
+              generateMeal()
+          }
+          .environment(\.defaultMinListRowHeight, 5)
+          .padding([.leading, .trailing], -20)
+          .background(
+            NavigationLink(destination: MealConfigure(), isActive: $mealConfigureActive) {
+                Label("Configure", systemImage: "gear")
+            })
+          .toolbar {
+              ToolbarItem(placement: .navigation) {
+                  EditButton()
+                    .foregroundColor(Color("Blue"))
+              }
+              ToolbarItem(placement: .principal) {
+                  HStack {
+
+                      // Active/Inactive Toggle
+                      Button {
+                          showInactive.toggle()
+                      } label: {
+                          Image(systemName: !mealIngredientMgr.inactiveIngredientsExist() ? "" : showInactive ? "eye" : "eye.slash")
+                      }
+                        .frame(width: 40)
+                        .foregroundColor(Color("Blue"))
+
+                      // Locked Toggle
+                      Button {
+                          locked.toggle()
+                          if !locked {
+                              for mealIngredient in mealIngredientMgr.get() {
+                                  if !mealIngredient.compensationExists {
+                                      mealIngredientMgr.resetAmount(name: mealIngredient.name)
+                                  }
+                              }
+                              generateMeal()
+                          }
+                      } label: {
+                          Image(systemName: locked ? "lock" : "lock.open")
+                      }
+                        .frame(width: 40)
+                        .foregroundColor(Color("Blue"))
+
+                      // Meal Configure
+                      Button {
+                          mealConfigureActive.toggle()
+                          NavigationLink("Add", destination: MealAdd())
+                            .foregroundColor(Color("Blue"))
+                      } label: {
+                          Image(systemName: locked ? "" : "gear")
+                      }
+                        .frame(width: 40)
                         .foregroundColor(Color("Blue"))
                   }
               }
-              .onAppear {
-                  generateMeal()
+              ToolbarItem(placement: .primaryAction) {
+                  NavigationLink("Add", destination: MealAdd())
+                    .foregroundColor(Color("Blue"))
               }
-        }
+          }
+          .onAppear {
+              generateMeal()
+          }
     }
 
     func toggleLocked() {
@@ -269,8 +271,8 @@ struct MealList: View {
         let protein: Double = Double(ingredient.protein * servings)
 
         if macrosMgr.macros.fatGoal < macrosMgr.macros.fat + Float(fat) ||
-            macrosMgr.macros.netCarbsMaximum < macrosMgr.macros.netCarbs + Float(netCarbs) ||
-            macrosMgr.macros.proteinGoal < macrosMgr.macros.protein + Float(protein) {
+             macrosMgr.macros.netCarbsMaximum < macrosMgr.macros.netCarbs + Float(netCarbs) ||
+             macrosMgr.macros.proteinGoal < macrosMgr.macros.protein + Float(protein) {
             return false
         }
 

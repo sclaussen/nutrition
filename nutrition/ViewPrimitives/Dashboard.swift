@@ -8,9 +8,11 @@ enum GaugeType {
     case FYI
 }
 
-struct MyGaugeDashboard: View {
+struct Dashboard: View {
     let bodyMass: String
     let bodyFatPercentage: String
+    let proteinRatio: String
+    let calorieDeficit: String
     let activeCaloriesBurned: String
     let caloriesGoalUnadjusted: Float
     let caloriesGoal: Float
@@ -25,9 +27,11 @@ struct MyGaugeDashboard: View {
     let protein: Float
 
     init(_ profile: Profile, _ macros: Macros) {
-        bodyMass = String(profile.bodyMass.string(1)) + " lb"
+        bodyMass = String(profile.bodyMass.string(1))
         bodyFatPercentage = String(profile.bodyFatPercentage.string(1)) + "%"
-        activeCaloriesBurned = String(profile.activeCaloriesBurned.string(0)) + " cal"
+        proteinRatio = String(profile.proteinRatio.string(2))
+        calorieDeficit = String(profile.calorieDeficit.string())
+        activeCaloriesBurned = String(profile.activeCaloriesBurned.string(0)) + "cal"
         caloriesGoalUnadjusted = macros.caloriesGoalUnadjusted
         caloriesGoal = macros.caloriesGoal
         fatGoal = macros.fatGoal
@@ -42,42 +46,78 @@ struct MyGaugeDashboard: View {
     }
 
     var body: some View {
-        VStack(spacing: 0) {
-            Spacer()
+        GeometryReader { geo in
+            VStack(spacing: 0) {
 
-            Text("\(bodyMass)         \(bodyFatPercentage)         \(activeCaloriesBurned)")
-              .font(.callout)
-              .frame(alignment: .center)
-              .foregroundColor(.primary)
+                HStack {
+                    VStack(spacing: 0) {
+                        Text("Wt/Body Fat")
+                          .font(.caption)
+                          .bold()
+                        Text("\(bodyMass)/\(bodyFatPercentage)")
+                          .font(.caption)
+                          .foregroundColor(.primary)
+                    }.frame(width: geo.size.width / 5)
+                    VStack(spacing: 0) {
+                        Text("Active")
+                          .font(.caption)
+                          .bold()
+                        Text("\(activeCaloriesBurned)")
+                          .font(.caption)
+                          .foregroundColor(.primary)
+                    }.frame(width: geo.size.width / 5)
+                    VStack(spacing: 0) {
+                        Text("Ratio")
+                          .font(.caption)
+                          .bold()
+                        Text("\(proteinRatio)")
+                          .font(.caption)
+                          .foregroundColor(.primary)
+                    }.frame(width: geo.size.width / 5)
+                    VStack(spacing: 0) {
+                        Text("Deficit")
+                          .font(.caption)
+                          .bold()
+                        Text("\(calorieDeficit)%")
+                          .font(.caption)
+                          .foregroundColor(.primary)
+                    }.frame(width: geo.size.width / 5)
+                }
+                  .border(Color.red, width: 0)
+                  .padding(.top, 5)
 
-            HStack {
-                Spacer()
-                MyGauge(title: "Fat", value: fat, goal: fatGoal)
-                Spacer()
-                MyGauge(title: "Fiber", value: fiber, goal: fiberMinimum, gaugeType: GaugeType.Floor)
-                Spacer()
-                MyGauge(title: "NCarbs", value: netCarbs, goal: netCarbsMaximum, precision: 1, gaugeType: GaugeType.Ceiling)
-                Spacer()
-                MyGauge(title: "Protein", value: protein, goal: proteinGoal)
-                Spacer()
+                HStack(spacing: 0) {
+                    Spacer()
+                    MyGauge(title: "Fat", value: fat, goal: fatGoal)
+                    Spacer()
+                    MyGauge(title: "Fiber", value: fiber, goal: fiberMinimum, gaugeType: GaugeType.Floor)
+                    Spacer()
+                    MyGauge(title: "NCarbs", value: netCarbs, goal: netCarbsMaximum, precision: 1, gaugeType: GaugeType.Ceiling)
+                    Spacer()
+                    MyGauge(title: "Protein", value: protein, goal: proteinGoal)
+                    Spacer()
+                }
+                  .border(Color.red, width: 0)
+
+                CalorieProgressBar(geo: geo, title: "Calories", value: calories, goal: caloriesGoal, goalUnadjusted: caloriesGoalUnadjusted)
+                  .border(Color.red, width: 0)
+                  .padding(.top, 5)
             }
-              .padding(.top)
-
-            CalorieProgressBar(title: "Calories", value: calories, goal: caloriesGoal, goalUnadjusted: caloriesGoalUnadjusted)
-              .padding(.top)
+              .border(Color.orange, width: 0)
         }
+          .border(Color("Blue"), width: 0)
     }
 }
 
+
 // TODO: Update to make this generic
 struct CalorieProgressBar: View {
+    var geo: GeometryProxy
     var title: String
     var value: Float
     var goal: Float
     var goalUnadjusted: Float
 
-    // TODO: Figure out how to use GeometryReader to calculate the screenWidth
-    let screenWidth = 390.0
     let titleFontSize = 16.0
     let calorieFontSize = 14.0
     let goalFontSize = 12.0
@@ -91,47 +131,35 @@ struct CalorieProgressBar: View {
             progressBarColor = Color.red
         }
 
-        let topLeftAnnotation = "Deficit"
-        let topRightAnnotation = "Unadjusted"
+        let gap = value - goalUnadjusted
+        let valueString = String(Int(value))
+        let goalUnadjustedString = String(Int(goalUnadjusted))
+        let gapString = String(Int(gap))
+        let gapPercentageString = String(Int(abs((gap / goalUnadjusted) * 100)))
+        let bottomCenterAnnotation = "\(valueString) of \(goalUnadjustedString) (\(gapString) / \(gapPercentageString)%)"
 
-        let bottomLeftAnnotation = String(Int(goal)) + "/" + ((value < goal) ? "-" : "+") + String(Int(abs(goal - value)))
-        let bottomRightAnnotation = String(Int(goalUnadjusted)) + "/" + ((value < goalUnadjusted) ? "-" : "+") + String(Int(abs(goalUnadjusted - value)))
-        let bottomCenterAnnotation = String(Int(value))
+        return
+          VStack(spacing: 1) {
 
-        return VStack(spacing: 1) {
-            HStack {
-                Text(topLeftAnnotation).font(.system(size: goalFontSize)).frame(width: screenWidth * 0.3, alignment: .leading).padding([.leading, .trailing], screenWidth * 0.03)
-                Spacer()
-                Text(title).font(.system(size: titleFontSize)).bold().frame(alignment: .center)
-                Spacer()
-                Text(topRightAnnotation).font(.system(size: goalFontSize)).frame(width: screenWidth * 0.3, alignment: .trailing).padding([.leading, .trailing], screenWidth * 0.03)
-            }
-            ZStack(alignment: .leading) {
-                Rectangle()
-                  .frame(width: screenWidth * 0.90, height: 12)
-                  .foregroundColor(Color.primary.opacity(0.5))
-                Rectangle()
-                  .frame(width: min(Double((value / goal)) * screenWidth * 0.90, screenWidth * 0.90), height: 12, alignment: .leading)
-                  .foregroundColor(progressBarColor.opacity(0.9))
-            }.cornerRadius(50)
+              Text(title)
+                .font(.system(size: titleFontSize))
+                .bold()
+                .frame(alignment: .center)
 
-            HStack {
-                Text(bottomLeftAnnotation)
-                  .font(.system(size: goalFontSize))
-                  .frame(alignment: .leading)
-                  .padding([.leading, .trailing], screenWidth * 0.03)
-                Spacer()
-                Text(bottomCenterAnnotation)
-                  .font(.system(size: calorieFontSize))
-                  .bold().frame(alignment: .leading)
-                  .padding([.leading, .trailing], screenWidth * 0.03)
-                Spacer()
-                Text(bottomRightAnnotation)
-                  .font(.system(size: goalFontSize))
-                  .frame(alignment: .trailing)
-                  .padding([.leading, .trailing], screenWidth * 0.03)
-            }
-        }
+              ZStack(alignment: .leading) {
+                  Rectangle()
+                    .frame(width: geo.size.width * 0.9, height: 12)
+                    .foregroundColor(Color.primary.opacity(0.9))
+                  Rectangle()
+                    .frame(width: min(Double((value / goal)) * geo.size.width * 0.9, geo.size.width * 0.9), height: 12, alignment: .leading)
+                    .foregroundColor(progressBarColor.opacity(1))
+              }
+                .cornerRadius(50)
+
+              Text(bottomCenterAnnotation)
+                .font(.system(size: calorieFontSize))
+                .frame(alignment: .center)
+          }
     }
 }
 
@@ -149,7 +177,7 @@ struct MyGauge: View {
     var valueFontSize: CGFloat = 20
     var goalFontSize: CGFloat = 12
 
-    var titleOffset: Float = 7
+    var titleOffset: Float = 11
     var goalOffset: Float = 18
 
     var body: some View {

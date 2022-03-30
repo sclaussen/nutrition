@@ -2,7 +2,6 @@
 
 ## P0
 
-- Fix visual for progress bar
 - Update progress bar to what I actually care about
 - Next/Next/Next field ...
 - recursive deletes, primary/foreign key updates (eg ing.name)
@@ -17,11 +16,16 @@
   - Numbers Only
     https://programmingwithswift.com/numbers-only-textfield-with-swiftui/
 - Meat Amount default is not being used
+- MealIngredient header row off to the right a bit
 
 
 
 ## P1
 
+- Collapsible: https://betterprogramming.pub/how-to-write-a-collapsible-expandable-view-for-your-swiftui-app-d4a47fe8cb52
+- Cloud Kit Extending/Collaboration:
+  - https://swiftwithmajid.com/2022/03/29/zone-sharing-in-cloudkit/
+  - https://swiftwithmajid.com/2022/03/22/getting-started-with-cloudkit/
 - Consider changing consumption unit to preparation unit
 - Re-add the grams/100 to the IngredientEdit view
 - Variable picker style type
@@ -57,6 +61,7 @@ https://www.hackingwithswift.com/quick-start/swiftui/how-to-detect-shake-gesture
 
 ## P2
 
+- Make progressbar generic
 - Fix date picker so it sizes properly
 - Splash screen
 - Remove 0s from int/double input fields

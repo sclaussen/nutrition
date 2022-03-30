@@ -8,7 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		3402286C27D7C7C800741FBB /* HealthKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3402286B27D7C7C800741FBB /* HealthKit.framework */; };
-		3402286E27D8298E00741FBB /* MyGauge.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3402286D27D8298E00741FBB /* MyGauge.swift */; };
+		3402286E27D8298E00741FBB /* Dashboard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3402286D27D8298E00741FBB /* Dashboard.swift */; };
 		341B4DBD27EE029D00B68819 /* Int.swift in Sources */ = {isa = PBXBuildFile; fileRef = 341B4DBC27EE029D00B68819 /* Int.swift */; };
 		341B4DBF27EE02A600B68819 /* String.swift in Sources */ = {isa = PBXBuildFile; fileRef = 341B4DBE27EE02A600B68819 /* String.swift */; };
 		342B9C2327F3B985000D7EB7 /* DismissKeyboard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 342B9C2227F3B985000D7EB7 /* DismissKeyboard.swift */; };
@@ -51,7 +51,7 @@
 /* Begin PBXFileReference section */
 		3402286927D7C7C800741FBB /* nutrition.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = nutrition.entitlements; sourceTree = "<group>"; };
 		3402286B27D7C7C800741FBB /* HealthKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = HealthKit.framework; path = System/Library/Frameworks/HealthKit.framework; sourceTree = SDKROOT; };
-		3402286D27D8298E00741FBB /* MyGauge.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyGauge.swift; sourceTree = "<group>"; };
+		3402286D27D8298E00741FBB /* Dashboard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Dashboard.swift; sourceTree = "<group>"; };
 		341B4DBC27EE029D00B68819 /* Int.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Int.swift; sourceTree = "<group>"; };
 		341B4DBE27EE02A600B68819 /* String.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = String.swift; sourceTree = "<group>"; };
 		342B9C2227F3B985000D7EB7 /* DismissKeyboard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DismissKeyboard.swift; sourceTree = "<group>"; };
@@ -206,9 +206,9 @@
 		34DC9A3827E8D8E40082D62E /* ViewPrimitives */ = {
 			isa = PBXGroup;
 			children = (
+				3402286D27D8298E00741FBB /* Dashboard.swift */,
 				34DC9A3927E8D99B0082D62E /* CheckboxToggle.swift */,
 				345F5F0927E0EF1400129BAC /* IngredientRow.swift */,
-				3402286D27D8298E00741FBB /* MyGauge.swift */,
 				349EE57527CBF3600072255A /* NameValue.swift */,
 				342B9C2227F3B985000D7EB7 /* DismissKeyboard.swift */,
 			);
@@ -297,7 +297,7 @@
 				349EE57C27CC823B0072255A /* ProfileEdit.swift in Sources */,
 				344D200C27CE345B00343108 /* Adjustment.swift in Sources */,
 				34F8003B27DBFAD1002F1380 /* Macros.swift in Sources */,
-				3402286E27D8298E00741FBB /* MyGauge.swift in Sources */,
+				3402286E27D8298E00741FBB /* Dashboard.swift in Sources */,
 				342CD48F27E25539008703C2 /* View.swift in Sources */,
 				342CD49527E25611008703C2 /* Formatter.swift in Sources */,
 				349EE57227CAB4760072255A /* Ingredient.swift in Sources */,
