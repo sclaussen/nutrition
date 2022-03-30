@@ -309,8 +309,12 @@ struct MealList: View {
             }
 
             print("HealthKit successfully authorized.")
-            getBodyMass()
-            getBodyFatPercentage()
+            if profileMgr.profile.bodyMassFromHealthKit {
+                getBodyMass()
+            }
+            if profileMgr.profile.bodyFatPercentageFromHealthKit {
+                getBodyFatPercentage()
+            }
             getActiveEnergyBurned()
         }
     }
@@ -395,6 +399,7 @@ struct MealList: View {
             print("Active energy burned (health kit): \(activeCaloriesBurned)")
             print("Active energy burned (profile): \(profileMgr.profile.activeCaloriesBurned)")
 
+            // TODO: Update once the health kit active calories algorithm is demystified
             // if activeCaloriesBurned != profileMgr.profile.activeCaloriesBurned {
             //     print("Updating active energy burned...")
             //     profileMgr.setActiveEnergyBurned(activeCaloriesBurned: activeCaloriesBurned)

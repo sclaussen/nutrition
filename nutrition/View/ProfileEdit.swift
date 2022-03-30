@@ -13,8 +13,16 @@ struct ProfileEdit: View {
                 NameValue("Gender", $profileMgr.profile.gender, options: Gender.allCases, control: .picker)
                 NameValue("Height", $profileMgr.profile.height, .inch, edit: true)
                 NameValue("Net Carbs Maximum", description: "daily consumption maximum (carbs - fiber)", $profileMgr.profile.netCarbsMaximum, edit: true)
-                NameValue("Weight", description: "body mass (from apple health kit)", $profileMgr.profile.bodyMass, .pound, precision: 1)
-                NameValue("Body Fat %", description: "from apple health kit", $profileMgr.profile.bodyFatPercentage, .percentage, precision: 1)
+            }
+            Section(header: Text("Daily Metrics")) {
+                NameValue("Weight from Health Kit", description: "source daily weight updates from apple health kit", $profileMgr.profile.bodyMassFromHealthKit, control: .toggle)
+                if !profileMgr.profile.bodyMassFromHealthKit {
+                    NameValue("Weight", description: "body mass", $profileMgr.profile.bodyMass, .pound, precision: 1, edit: true)
+                }
+                NameValue("Body Fat % from Health Kit", description: "source daily body fat % updates from apple health kit", $profileMgr.profile.bodyFatPercentageFromHealthKit, control: .toggle)
+                if !profileMgr.profile.bodyFatPercentageFromHealthKit {
+                    NameValue("Body Fat %", description: "from apple health kit", $profileMgr.profile.bodyFatPercentage, .percentage, precision: 1, edit: true)
+                }
             }
             Section {
                 NameValue("Age", $profileMgr.profile.age, .year, precision: 1)

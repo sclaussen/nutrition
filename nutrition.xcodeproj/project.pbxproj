@@ -29,6 +29,7 @@
 		345F5F0A27E0EF1400129BAC /* IngredientRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 345F5F0927E0EF1400129BAC /* IngredientRow.swift */; };
 		346CA59827F0F176002B41FB /* Bool.swift in Sources */ = {isa = PBXBuildFile; fileRef = 346CA59727F0F176002B41FB /* Bool.swift */; };
 		346CA59A27F0FF5D002B41FB /* Date.swift in Sources */ = {isa = PBXBuildFile; fileRef = 346CA59927F0FF5D002B41FB /* Date.swift */; };
+		347638D527F4AE53008DF99C /* CheckmarkToggleStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 347638D427F4AE53008DF99C /* CheckmarkToggleStyle.swift */; };
 		347A335627DA925C005E3F33 /* Unit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 347A335527DA925C005E3F33 /* Unit.swift */; };
 		347A335827DAA1FE005E3F33 /* IngredientAdd.swift in Sources */ = {isa = PBXBuildFile; fileRef = 347A335727DAA1FE005E3F33 /* IngredientAdd.swift */; };
 		349EE53127C99AC30072255A /* app.swift in Sources */ = {isa = PBXBuildFile; fileRef = 349EE53027C99AC30072255A /* app.swift */; };
@@ -71,6 +72,7 @@
 		345F5F0927E0EF1400129BAC /* IngredientRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IngredientRow.swift; sourceTree = "<group>"; };
 		346CA59727F0F176002B41FB /* Bool.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Bool.swift; sourceTree = "<group>"; };
 		346CA59927F0FF5D002B41FB /* Date.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Date.swift; sourceTree = "<group>"; };
+		347638D427F4AE53008DF99C /* CheckmarkToggleStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckmarkToggleStyle.swift; sourceTree = "<group>"; };
 		347A335527DA925C005E3F33 /* Unit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Unit.swift; sourceTree = "<group>"; };
 		347A335727DAA1FE005E3F33 /* IngredientAdd.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IngredientAdd.swift; sourceTree = "<group>"; };
 		349EE52D27C99AC30072255A /* Nutrition.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Nutrition.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -121,6 +123,8 @@
 				342CD49427E25611008703C2 /* Formatter.swift */,
 				349EE57327CAE2DA0072255A /* Optional.swift */,
 				342CD48E27E25539008703C2 /* View.swift */,
+				34B7171527D1B9EB00322B18 /* ViewModifiers.swift */,
+				347638D427F4AE53008DF99C /* CheckmarkToggleStyle.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -152,7 +156,6 @@
 				34DC9A3827E8D8E40082D62E /* ViewPrimitives */,
 				349EE54C27C9FC6C0072255A /* Model */,
 				342CD48D27E25389008703C2 /* Extensions */,
-				349EE54F27CA8EE40072255A /* Utility */,
 				349EE53627C99AC40072255A /* Preview Content */,
 			);
 			path = nutrition;
@@ -195,17 +198,9 @@
 				349EE57727CC10E60072255A /* Profile.swift */,
 				344D201327CEB36700343108 /* Gender.swift */,
 				347A335527DA925C005E3F33 /* Unit.swift */,
+				342CD49827E26F3C008703C2 /* HealthStore.swift */,
 			);
 			path = Model;
-			sourceTree = "<group>";
-		};
-		349EE54F27CA8EE40072255A /* Utility */ = {
-			isa = PBXGroup;
-			children = (
-				342CD49827E26F3C008703C2 /* HealthStore.swift */,
-				34B7171527D1B9EB00322B18 /* ViewModifiers.swift */,
-			);
-			path = Utility;
 			sourceTree = "<group>";
 		};
 		34DC9A3827E8D8E40082D62E /* ViewPrimitives */ = {
@@ -311,6 +306,7 @@
 				34B7171627D1B9EB00322B18 /* ViewModifiers.swift in Sources */,
 				342CD49327E255B1008703C2 /* Float.swift in Sources */,
 				344D200227CDC53800343108 /* MealConfigure.swift in Sources */,
+				347638D527F4AE53008DF99C /* CheckmarkToggleStyle.swift in Sources */,
 				344D201227CE361B00343108 /* AdjustmentAdd.swift in Sources */,
 				349EE54B27C9A6B10072255A /* IngredientEdit.swift in Sources */,
 				341B4DBD27EE029D00B68819 /* Int.swift in Sources */,

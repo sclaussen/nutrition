@@ -11,7 +11,6 @@ struct CheckboxToggle: View {
     }
 }
 
-
 struct CheckboxToggleStyle: ToggleStyle {
     func makeBody(configuration: Configuration) -> some View {
         Image(systemName: configuration.isOn ? "checkmark.square" : "square")

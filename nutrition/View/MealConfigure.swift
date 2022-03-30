@@ -19,8 +19,12 @@ struct MealConfigure: View {
             Section {
                 NameValue("Active Calories Burned", description: "daily calories burned due to exercise/movement", $profileMgr.profile.activeCaloriesBurned, .calorie, edit: true)
                   .focused($focusedField, equals: .activeCaloriesBurned)
-                // NameValue("Weight", $profileMgr.profile.bodyMass, .pound, precision: 1)
-                // NameValue("Body Fat %", $profileMgr.profile.bodyFatPercentage, .percentage, precision: 1)
+                if !profileMgr.profile.bodyMassFromHealthKit {
+                    NameValue("Weight", $profileMgr.profile.bodyMass, .pound, precision: 1, edit: true)
+                }
+                if !profileMgr.profile.bodyFatPercentageFromHealthKit {
+                    NameValue("Body Fat %", $profileMgr.profile.bodyFatPercentage, .percentage, precision: 1, edit: true)
+                }
             }
             Section {
                 NameValue("Meat", description: "main course", $profileMgr.profile.meat, options: ingredientMgr.getAllMeatNames(), control: .picker)
