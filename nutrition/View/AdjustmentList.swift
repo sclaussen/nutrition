@@ -19,7 +19,7 @@ struct AdjustmentList: View {
                                                  name: adjustment.name,
                                                  group: adjustment.group,
                                                  amount: adjustment.amount,
-                                                 consumptionUnit: adjustment.consumptionUnit)
+                                                 consumptionUnit: getConsumptionUnit(adjustment.name))
                                })
                   .foregroundColor(adjustment.active ? Color("Black") : Color("Red"))
                   .swipeActions(edge: .leading) {
@@ -75,6 +75,10 @@ struct AdjustmentList: View {
 
     func deleteAction(indexSet: IndexSet) {
         adjustmentMgr.deleteSet(indexSet: indexSet)
+    }
+
+    func getConsumptionUnit(_ name: String) -> Unit {
+        return ingredientMgr.getIngredient(name: name)!.consumptionUnit
     }
 }
 

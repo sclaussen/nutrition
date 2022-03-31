@@ -130,13 +130,11 @@ struct IngredientAdd: View {
                 mealIngredientMgr.create(name: name,
                                          defaultAmount: ingredientAmount,
                                          amount: ingredientAmount,
-                                         consumptionUnit: consumptionUnit,
                                          active: false)
             }
             if adjustmentAdd {
                 adjustmentMgr.create(name: name,
                                      amount: adjustmentAmount,
-                                     consumptionUnit: consumptionUnit,
                                      active: false)
             }
             presentationMode.wrappedValue.dismiss()

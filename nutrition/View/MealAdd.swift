@@ -14,7 +14,7 @@ struct MealAdd: View {
             Section {
                 NameValue("Meal Ingredient", $name, options: ingredientMgr.getNewMeatNames(existing: mealIngredientMgr.getNames()), control: .picker)
                 if name.count > 0 {
-                    NameValue("Amount", $defaultAmount, ingredientMgr.getIngredient(name: name)!.consumptionUnit, edit: true)
+                    NameValue("Amount", $defaultAmount, getConsumptionUnit(name), edit: true)
                 }
             }
         }
@@ -46,9 +46,13 @@ struct MealAdd: View {
 
     func save() {
         withAnimation {
-            mealIngredientMgr.create(name: name, defaultAmount: defaultAmount, amount: defaultAmount, consumptionUnit: ingredientMgr.getIngredient(name: name)!.consumptionUnit)
+            mealIngredientMgr.create(name: name, defaultAmount: defaultAmount, amount: defaultAmount)
             presentationMode.wrappedValue.dismiss()
         }
+    }
+
+    func getConsumptionUnit(_ name: String) -> Unit {
+        return ingredientMgr.getIngredient(name: name)!.consumptionUnit
     }
 }
 

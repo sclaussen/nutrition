@@ -7,6 +7,8 @@ struct IngredientList: View {
     @EnvironmentObject var adjustmentMgr: AdjustmentMgr
 
     @State var showUnavailable: Bool = false
+    @State var deleteMealIngredientAlert = false
+    @State var deleteAdjustmentAlert = false
 
     var body: some View {
         List {
@@ -29,6 +31,8 @@ struct IngredientList: View {
                                })
                   .foregroundColor(ingredient.available ? Color("Black") : Color("Red"))
                   .swipeActions(edge: .leading) {
+
+                      // Availalbe/Unavailble toggle
                       Button {
                           let newIngredient = ingredientMgr.toggleAvailable(ingredient)
                           if newIngredient!.available {
@@ -40,16 +44,18 @@ struct IngredientList: View {
                           }
                       } label: {
                           if ingredient.available {
-                              Label("Deactivate", systemImage: "pause.circle")
+                              Label("Unavailable", systemImage: "pause.circle")
                           } else {
-                              Label("Activate", systemImage: "play.circle")
+                              Label("Available", systemImage: "play.circle")
                           }
                       }
                         .tint(ingredient.available ? .red : .green)
                   }
                   .swipeActions(edge: .trailing) {
+                      // Delete
                       Button(role: .destructive) {
-                          ingredientMgr.delete(ingredient)
+                          delete(ingredient)
+
                       } label: {
                           Label("Delete", systemImage: "trash.fill")
                       }
@@ -60,6 +66,12 @@ struct IngredientList: View {
               .listRowInsets(EdgeInsets(top: 8, leading: 10, bottom: 8, trailing: 10))
               .border(Color.red, width: 0)
         }
+          .alert("The meal ingredient must be deleted first.  It may be necessary to lock the meal ingredients prior to deletion so the meal ingredient is not readded as an adjustment.", isPresented: $deleteMealIngredientAlert) {
+              Button("OK", role: .cancel) { }
+          }
+          .alert("The adjustment ingredient must be deleted first.", isPresented: $deleteAdjustmentAlert) {
+              Button("OK", role: .cancel) { }
+          }
           .environment(\.defaultMinListRowHeight, 5)
           .padding([.leading, .trailing], -20)
           .toolbar {
@@ -96,8 +108,30 @@ struct IngredientList: View {
         ingredientMgr.move(from: source, to: destination)
     }
 
-    func deleteAction(indexSet: IndexSet) {
-        ingredientMgr.deleteSet(indexSet: indexSet)
+    func delete(_ ingredient: Ingredient) {
+        if let mealIngredient = mealIngredientMgr.getIngredient(name: ingredient.name) {
+            deleteMealIngredientAlert = true
+            return
+        }
+        if let adjustment = adjustmentMgr.getIngredient(name: ingredient.name) {
+            deleteAdjustmentAlert = true
+            return
+        }
+        ingredientMgr.delete(ingredient)
+    }
+
+     func deleteAction(indexSet: IndexSet) {
+         for index in indexSet {
+             let ingredient = ingredientMgr.ingredients[index]
+             if let mealIngredient = mealIngredientMgr.getIngredient(name: ingredient.name) {
+                 return
+             }
+             // if let adjustment = adjustmentMgr.getIngredient(name: ingredient.name) {
+             //     adjustmentMgr.delete(adjustment)
+             // }
+             print(ingredient.name)
+         }
+        // ingredientMgr.deleteSet(indexSet: indexSet)
     }
 }
 

@@ -9,17 +9,17 @@ class AdjustmentMgr: ObservableObject {
     }
 
     init() {
-        adjustments.append(Adjustment(name: "Mackerel", amount: 1, consumptionUnit: Unit.can, group: "fish", constraints: true, maximum: 2))
-        adjustments.append(Adjustment(name: "Sardines", amount: 1, consumptionUnit: Unit.can, group: "fish", constraints: true, maximum: 2))
-        adjustments.append(Adjustment(name: "Smoked Sardines", amount: 1, consumptionUnit: Unit.can, group: "fish", constraints: true, maximum: 2))
-        adjustments.append(Adjustment(name: "Eggs", amount: 1, consumptionUnit: Unit.egg, constraints: true, maximum: 7))
-        adjustments.append(Adjustment(name: "Extra Virgin Olive Oil", amount: 0.5, consumptionUnit: Unit.tablespoon, constraints: true, maximum: 4.5))
+        adjustments.append(Adjustment(name: "Mackerel", amount: 1, group: "fish", constraints: true, maximum: 2))
+        adjustments.append(Adjustment(name: "Sardines", amount: 1, group: "fish", constraints: true, maximum: 2))
+        adjustments.append(Adjustment(name: "Smoked Sardines", amount: 1, group: "fish", constraints: true, maximum: 2))
+        adjustments.append(Adjustment(name: "Eggs", amount: 1, constraints: true, maximum: 7))
+        adjustments.append(Adjustment(name: "Extra Virgin Olive Oil", amount: 0.5, constraints: true, maximum: 4.5))
         adjustments.append(Adjustment(name: "Broccoli", amount: 20, group: "vege", constraints: true, maximum: 300))
         adjustments.append(Adjustment(name: "Cauliflower", amount: 20, group: "vege", constraints: true, maximum: 300))
         adjustments.append(Adjustment(name: "Pumpkin Seeds", amount: 10, group: "vege"))
-        adjustments.append(Adjustment(name: "String Cheese", amount: 1, consumptionUnit: Unit.stick))
+        adjustments.append(Adjustment(name: "String Cheese", amount: 1))
         adjustments.append(Adjustment(name: "Macadamia Nuts", amount: 5))
-        adjustments.append(Adjustment(name: "Dark Chocolate (Divine)", amount: 1, consumptionUnit: Unit.piece))
+        adjustments.append(Adjustment(name: "Dark Chocolate (Divine)", amount: 1))
     }
 
     func serialize() {
@@ -41,12 +41,10 @@ class AdjustmentMgr: ObservableObject {
 
     func create(name: String,
                 amount: Float,
-                consumptionUnit: Unit,
                 group: String = "",
                 active: Bool = true) {
         let adjustment = Adjustment(name: name,
                                     amount: amount,
-                                    consumptionUnit: consumptionUnit,
                                     group: group,
                                     active: active)
         adjustments.append(adjustment)
@@ -57,6 +55,14 @@ class AdjustmentMgr: ObservableObject {
             return adjustments
         }
         return adjustments.filter({ $0.active == true })
+    }
+
+    func getIngredient(name: String) -> Adjustment? {
+        if let index = adjustments.firstIndex(where: { $0.name == name }) {
+            return adjustments[index]
+        }
+
+        return nil
     }
 
     func getNames() -> [String] {
@@ -119,7 +125,6 @@ struct Adjustment: Codable, Identifiable {
     var id: String
     var name: String
     var amount: Float
-    var consumptionUnit: Unit
 
     var group: String
 
@@ -127,11 +132,10 @@ struct Adjustment: Codable, Identifiable {
     var maximum: Float
     var active: Bool
 
-    init(id: String = UUID().uuidString, name: String, amount: Float, consumptionUnit: Unit = Unit.gram, group: String = "", constraints: Bool = false, maximum: Float = 0, active: Bool = true) {
+    init(id: String = UUID().uuidString, name: String, amount: Float, group: String = "", constraints: Bool = false, maximum: Float = 0, active: Bool = true) {
         self.id = id
         self.name = name
         self.amount = amount
-        self.consumptionUnit = consumptionUnit
         self.group = group
         self.constraints = constraints
         self.maximum = maximum
@@ -139,10 +143,10 @@ struct Adjustment: Codable, Identifiable {
     }
 
     func toggleActive() -> Adjustment {
-        return Adjustment(id: id, name: name, amount: amount, consumptionUnit: consumptionUnit, group: group, constraints: constraints, maximum: maximum, active: !active)
+        return Adjustment(id: id, name: name, amount: amount, group: group, constraints: constraints, maximum: maximum, active: !active)
     }
 
     func update(adjustment: Adjustment) -> Adjustment {
-        return Adjustment(id: adjustment.id, name: adjustment.name, amount: adjustment.amount, consumptionUnit: adjustment.consumptionUnit, group: adjustment.group, constraints: adjustment.constraints, maximum: adjustment.maximum, active: adjustment.active)
+        return Adjustment(id: adjustment.id, name: adjustment.name, amount: adjustment.amount, group: adjustment.group, constraints: adjustment.constraints, maximum: adjustment.maximum, active: adjustment.active)
     }
 }

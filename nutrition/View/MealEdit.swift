@@ -17,9 +17,9 @@ struct MealEdit: View {
         Form {
             Section {
                 NameValue("Ingredient", $mealIngredient.name)
-                NameValue("Current Amount", $mealIngredient.amount, mealIngredient.consumptionUnit, edit: true)
+                NameValue("Current Amount", $mealIngredient.amount, getConsumptionUnit(mealIngredient.name), edit: true)
                   .focused($focusedField, equals: .amount)
-                NameValue("Default Amount", $mealIngredient.defaultAmount, mealIngredient.consumptionUnit, edit: true)
+                NameValue("Default Amount", $mealIngredient.defaultAmount, getConsumptionUnit(mealIngredient.name), edit: true)
             }
         }
           .onSubmit {
@@ -64,6 +64,10 @@ struct MealEdit: View {
             mealIngredientMgr.update(mealIngredient)
             presentationMode.wrappedValue.dismiss()
         }
+    }
+
+    func getConsumptionUnit(_ name: String) -> Unit {
+        return ingredientMgr.getIngredient(name: name)!.consumptionUnit
     }
 }
 

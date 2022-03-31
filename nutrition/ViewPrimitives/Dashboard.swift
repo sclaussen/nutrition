@@ -98,6 +98,7 @@ struct Dashboard: View {
                     Spacer()
                 }
                   .border(Color.red, width: 0)
+                  .padding(.top, 5)
 
                 CalorieProgressBar(geo: geo, title: "Calories", value: calories, goal: caloriesGoal, goalUnadjusted: caloriesGoalUnadjusted)
                   .border(Color.red, width: 0)
@@ -105,7 +106,7 @@ struct Dashboard: View {
             }
               .border(Color.orange, width: 0)
         }
-          .border(Color("Blue"), width: 0)
+          .border(Color("Blue"), width: 1)
     }
 }
 
@@ -118,7 +119,7 @@ struct CalorieProgressBar: View {
     var goal: Float
     var goalUnadjusted: Float
 
-    let titleFontSize = 16.0
+    let titleFontSize = 14.0
     let calorieFontSize = 14.0
     let goalFontSize = 12.0
 
@@ -173,7 +174,7 @@ struct MyGauge: View {
     var width: CGFloat = 60.0
     var lineWidth: CGFloat = 15.0
 
-    var titleFontSize: CGFloat = 16
+    var titleFontSize: CGFloat = 14
     var valueFontSize: CGFloat = 20
     var goalFontSize: CGFloat = 12
 

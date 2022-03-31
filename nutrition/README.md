@@ -2,30 +2,30 @@
 
 ## P0
 
-- Update progress bar to what I actually care about
-- Next/Next/Next field ...
-- recursive deletes, primary/foreign key updates (eg ing.name)
+- BUG: List formatted wrong for adjustments
+- Propogation of consumption unit changes
+  - Correct use case where you want to change 1 piece = 28g to 1 gram = 1gram
 - Do not allow the meat adjustment to be edited in the edit dialog, or, allow it but update profile
-- Correct use case where you want to change 1 piece = 28g to 1 gram = 1gram
 - Add form/field validation
-- Disallow duplicate ingredients/base/adjustments
-- Fix ing/adj so they don't serialize on each character typed
 - Meat meal adjustments: Add delete capability (to both add/edit)
 - Fix issue wrt what meal adjustments are shown in IngredientAdd
+- Meat Amount default is not being used
+- BUG: Fix ing/adj so they don't serialize on each character typed
 - BUG: profile change value, then cancel, value remains...  valueString "feature"
   - Numbers Only
     https://programmingwithswift.com/numbers-only-textfield-with-swiftui/
-- Meat Amount default is not being used
-- MealIngredient header row off to the right a bit
 
 
 
 ## P1
 
+- Enable Caden profile (profiles in general)
+- BUG: onDelete brings up swipe menu now vs deleting, dig into why
+- Next/Next/Next field ...
 - Collapsible: https://betterprogramming.pub/how-to-write-a-collapsible-expandable-view-for-your-swiftui-app-d4a47fe8cb52
 - Cloud Kit Extending/Collaboration:
-  - https://swiftwithmajid.com/2022/03/29/zone-sharing-in-cloudkit/
-  - https://swiftwithmajid.com/2022/03/22/getting-started-with-cloudkit/
+  - https://swiftwithmajid.com/2022/03/29/zone-sharing-in-cloudkit
+  - https://swiftwithmajid.com/2022/03/22/getting-started-with-cloudkit
 - Consider changing consumption unit to preparation unit
 - Re-add the grams/100 to the IngredientEdit view
 - Variable picker style type
@@ -38,7 +38,6 @@
 - Display brand on hover?
 - Add $/gram
 - Add vitamins/minerals
-- Enable Caden profile (profiles in general)
 - Custom tab bar
 - Custom nav bar
 - Hover effects

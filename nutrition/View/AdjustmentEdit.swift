@@ -17,13 +17,13 @@ struct AdjustmentEdit: View {
         Form {
             Section {
                 NameValue("Ingredient", $adjustment.name)
-                NameValue("Amount", description: "Amount added per adjustment", $adjustment.amount, adjustment.consumptionUnit, edit: true)
+                NameValue("Amount", description: "Amount added per adjustment", $adjustment.amount, getConsumptionUnit(adjustment.name), edit: true)
                   .focused($focusedField, equals: .amount)
             }
             Section {
                 NameValue("Constraints", $adjustment.constraints, control: .toggle)
                 if adjustment.constraints {
-                    NameValue("Maximum", description: "Maximum auto-added to meal", $adjustment.maximum, adjustment.consumptionUnit, edit: true)
+                    NameValue("Maximum", description: "Maximum auto-added to meal", $adjustment.maximum, getConsumptionUnit(adjustment.name), edit: true)
                 }
             }
             Section {
@@ -68,6 +68,10 @@ struct AdjustmentEdit: View {
             adjustmentMgr.update(adjustment)
             presentationMode.wrappedValue.dismiss()
         }
+    }
+
+    func getConsumptionUnit(_ name: String) -> Unit {
+        return ingredientMgr.getIngredient(name: name)!.consumptionUnit
     }
 }
 

@@ -38,7 +38,7 @@ struct MealList: View {
                                                  netcarbs: mealIngredient.netcarbs,
                                                  protein: mealIngredient.protein,
                                                  amount: mealIngredient.amount,
-                                                 consumptionUnit: mealIngredient.consumptionUnit)
+                                                 consumptionUnit: getConsumptionUnit(mealIngredient.name))
                                })
                   .foregroundColor(!mealIngredient.active ? Color.red :
                                      (mealIngredient.compensationExists || (mealIngredient.defaultAmount != mealIngredient.amount)) ? Color("Blue") :
@@ -189,7 +189,7 @@ struct MealList: View {
 
         print("\nAdding Meat")
         if profileMgr.profile.meat != "None" {
-            mealIngredientMgr.adjust(name: profileMgr.profile.meat, amount: profileMgr.profile.meatAmount, consumptionUnit: .gram)
+            mealIngredientMgr.adjust(name: profileMgr.profile.meat, amount: profileMgr.profile.meatAmount)
         }
 
         print("\nApplying Meat Adjustments...")
@@ -207,7 +207,7 @@ struct MealList: View {
         for mealIngredient in mealIngredientMgr.get() {
             let ingredient = ingredientMgr.getIngredient(name: mealIngredient.name)!
             for meatAdjustment in ingredient.mealAdjustments {
-                mealIngredientMgr.adjust(name: meatAdjustment.name, amount: meatAdjustment.amount, consumptionUnit: meatAdjustment.consumptionUnit)
+                mealIngredientMgr.adjust(name: meatAdjustment.name, amount: meatAdjustment.amount)
             }
         }
     }
@@ -277,7 +277,7 @@ struct MealList: View {
         }
 
         addMacros(adjustment.name, Double(adjustment.amount), true)
-        mealIngredientMgr.adjust(name: adjustment.name, amount: adjustment.amount, consumptionUnit: adjustment.consumptionUnit)
+        mealIngredientMgr.adjust(name: adjustment.name, amount: adjustment.amount)
         return true
     }
 
@@ -407,6 +407,10 @@ struct MealList: View {
             //     profileMgr.setActiveEnergyBurned(activeCaloriesBurned: activeCaloriesBurned)
             // }
         }
+    }
+
+    func getConsumptionUnit(_ name: String) -> Unit {
+        return ingredientMgr.getIngredient(name: name)!.consumptionUnit
     }
 }
 

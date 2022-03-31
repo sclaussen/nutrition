@@ -17,7 +17,7 @@ struct AdjustmentAdd: View {
             Section {
                 NameValue("Ingredient", $name, options: ingredientMgr.getNewMeatNames(existing: adjustmentMgr.getNames()), control: .picker)
                 if name.count > 0 {
-                    NameValue("Amount", $amount, ingredientMgr.getIngredient(name: name)!.consumptionUnit, edit: true)
+                    NameValue("Amount", $amount, getConsumptionUnit(name), edit: true)
                 }
             }
             if name.count > 0 {
@@ -62,9 +62,13 @@ struct AdjustmentAdd: View {
 
     func save() {
         withAnimation {
-            adjustmentMgr.create(name: name, amount: amount, consumptionUnit: ingredientMgr.getIngredient(name: name)!.consumptionUnit, group: group, active: true)
+            adjustmentMgr.create(name: name, amount: amount, group: group, active: true)
             presentationMode.wrappedValue.dismiss()
         }
+    }
+
+    func getConsumptionUnit(_ name: String) -> Unit {
+        return ingredientMgr.getIngredient(name: name)!.consumptionUnit
     }
 }
 
