@@ -2,11 +2,9 @@
 
 ## P0
 
-- BUG: List formatted wrong for adjustments
 - Add form/field validation
 - Meat meal adjustments: Add delete capability (to both add/edit)
 - Fix issue wrt what meal adjustments are shown in IngredientAdd
-- Meat Amount default is not being used
 - BUG: Fix ing/adj so they don't serialize on each character typed
 - BUG: profile change value, then cancel, value remains...  valueString "feature"
   - Numbers Only

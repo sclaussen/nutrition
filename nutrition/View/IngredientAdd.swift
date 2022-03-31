@@ -130,6 +130,7 @@ struct IngredientAdd: View {
             }
             if adjustmentAdd {
                 adjustmentMgr.create(name: name,
+
                                      amount: adjustmentAmount,
                                      active: false)
             }
