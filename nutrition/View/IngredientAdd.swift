@@ -23,7 +23,6 @@ struct IngredientAdd: View {
     @State var consumptionGrams: Float = 1.0
 
     @State var meat: Bool = false
-    @State var meatAmount: Float = 200
     @State var adjustmentCount = 0
     @State var mealAdjustments: [MealAdjustment] = []
 
@@ -57,9 +56,6 @@ struct IngredientAdd: View {
             }
             Section {
                 NameValue("Meat", description: "main course", $meat, control: .toggle)
-                if meat {
-                    NameValue("Meat Amount", $meatAmount, edit: true)
-                }
             }
 
             //            if meat {
@@ -125,7 +121,7 @@ struct IngredientAdd: View {
 
     func save() {
         withAnimation {
-            ingredientMgr.create(name: name, productBrand: productBrand, servingSize: servingSize, calories: calories, fat: fat, fiber: fiber, netCarbs: netCarbs, protein: protein, consumptionUnit: consumptionUnit, consumptionGrams: consumptionGrams, meat: meat, meatAmount: meatAmount, mealAdjustments: mealAdjustments, available: true, verified: "")
+            ingredientMgr.create(name: name, productBrand: productBrand, servingSize: servingSize, calories: calories, fat: fat, fiber: fiber, netCarbs: netCarbs, protein: protein, consumptionUnit: consumptionUnit, consumptionGrams: consumptionGrams, meat: meat, meatAmount: 0, mealAdjustments: mealAdjustments, available: true, verified: "")
             if ingredientAdd {
                 mealIngredientMgr.create(name: name,
                                          defaultAmount: ingredientAmount,

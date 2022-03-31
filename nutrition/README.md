@@ -3,9 +3,6 @@
 ## P0
 
 - BUG: List formatted wrong for adjustments
-- Propogation of consumption unit changes
-  - Correct use case where you want to change 1 piece = 28g to 1 gram = 1gram
-- Do not allow the meat adjustment to be edited in the edit dialog, or, allow it but update profile
 - Add form/field validation
 - Meat meal adjustments: Add delete capability (to both add/edit)
 - Fix issue wrt what meal adjustments are shown in IngredientAdd
