@@ -50,7 +50,7 @@ class IngredientMgr: ObservableObject {
         ingredients.append(Ingredient(name: "Extra Virgin Olive Oil", servingSize: 14, calories: 120, fat: 14, fiber: 0, netCarbs: 0, protein: 0, consumptionUnit: Unit.tablespoon, consumptionGrams: 14, meat: false, verified: "3/16/22"))
         ingredients.append(Ingredient(name: "Fish Oil", servingSize: 4.667, calories: 40, fat: 4.5, fiber: 0, netCarbs: 0, protein: 0, consumptionUnit: Unit.tablespoon, consumptionGrams: 14, meat: false, verified: "3/16/22"))
         ingredients.append(Ingredient(name: "String Cheese", servingSize: 28, calories: 80, fat: 6, fiber: 0, netCarbs: 0, protein: 7, consumptionUnit: Unit.stick, consumptionGrams: 28, meat: false, verified: "3/16/22"))
-        ingredients.append(Ingredient(name: "Dubliner Cheese", servingSize: 28, calories: 110, fat: 9, fiber: 0, netCarbs: 0, protein: 7, consumptionUnit: Unit.slice, consumptionGrams: 28, meat: false, verified: "3/16/22"))
+        ingredients.append(Ingredient(name: "Dubliner Cheese", servingSize: 28, calories: 110, fat: 9, fiber: 0, netCarbs: 0, protein: 7, consumptionUnit: Unit.gram, consumptionGrams: 1, meat: false, verified: "3/16/22"))
         ingredients.append(Ingredient(name: "Cheddar Cheese", servingSize: 28, calories: 110, fat: 9, fiber: 0, netCarbs: 1, protein: 7, consumptionUnit: Unit.slice, consumptionGrams: 9.33, meat: false, verified: "3/16/22"))
         ingredients.append(Ingredient(name: "Keto Bite (Mint)", servingSize: 25, calories: 140, fat: 12, fiber: 4, netCarbs: 1, protein: 6, consumptionUnit: Unit.whole, consumptionGrams: 9.33, meat: false, verified: "3/16/22"))
         ingredients.append(Ingredient(name: "Keto Bite (Macadamia)", servingSize: 25, calories: 140, fat: 11, fiber: 6, netCarbs: 0, protein: 6, consumptionUnit: Unit.whole, consumptionGrams: 9.33, meat: false, verified: "3/16/22"))
@@ -78,7 +78,7 @@ class IngredientMgr: ObservableObject {
         self.ingredients = savedItems
     }
 
-    func create(name: String, productBrand: String = "", productCost: Float = 0, productGrams:Float = 0, servingSize: Float, calories: Float, fat: Float, fiber: Float, netCarbs: Float, protein: Float, consumptionUnit: Unit, consumptionGrams: Float, meat: Bool, meatAmount: Float, mealAdjustments: [MealAdjustment], available: Bool, verified: String) {
+    func create(name: String, productBrand: String = "", productCost: Double = 0, productGrams:Double = 0, servingSize: Double, calories: Double, fat: Double, fiber: Double, netCarbs: Double, protein: Double, consumptionUnit: Unit, consumptionGrams: Double, meat: Bool, meatAmount: Double, mealAdjustments: [MealAdjustment], available: Bool, verified: String) {
         let ingredient = Ingredient(name: name, productBrand: productBrand, productCost: productCost, productGrams: productGrams, servingSize: servingSize, calories: calories, fat: fat, fiber: fiber, netCarbs: netCarbs, protein: protein, consumptionUnit: consumptionUnit, consumptionGrams: consumptionGrams, meat: meat, meatAmount: meatAmount, mealAdjustments: mealAdjustments, available: available, verified: verified)
         ingredients.append(ingredient)
     }
@@ -173,10 +173,10 @@ struct MealAdjustment: Codable, Identifiable {
     var id: String
 
     var name: String
-    var amount: Float
+    var amount: Double
     var consumptionUnit: Unit
 
-    init(id: String = UUID().uuidString, name: String, amount: Float, consumptionUnit: Unit = Unit.gram) {
+    init(id: String = UUID().uuidString, name: String, amount: Double, consumptionUnit: Unit = Unit.gram) {
         self.id = id
         self.name = name
         self.amount = amount
@@ -190,29 +190,29 @@ struct Ingredient: Codable, Identifiable {
     var name: String
 
     var productBrand: String
-    var productCost: Float
-    var productGrams: Float
+    var productCost: Double
+    var productGrams: Double
 
-    var servingSize: Float
-    var calories: Float
+    var servingSize: Double
+    var calories: Double
 
-    var fat: Float
-    var fiber: Float
-    var netCarbs: Float
-    var protein: Float
+    var fat: Double
+    var fiber: Double
+    var netCarbs: Double
+    var protein: Double
 
     var consumptionUnit: Unit
-    var consumptionGrams: Float
+    var consumptionGrams: Double
 
     var meat: Bool
-    var meatAmount: Float
+    var meatAmount: Double
     var mealAdjustments: [MealAdjustment]
 
     var available: Bool
 
     var verified: String
 
-    init(id: String = UUID().uuidString, name: String, productBrand: String = "", productCost: Float = 0, productGrams: Float = 0, servingSize: Float, calories: Float, fat: Float, fiber: Float, netCarbs: Float, protein: Float, consumptionUnit: Unit = Unit.gram, consumptionGrams: Float, meat: Bool = false, meatAmount: Float = 200, mealAdjustments: [MealAdjustment] = [], available: Bool = true, verified: String = "") {
+    init(id: String = UUID().uuidString, name: String, productBrand: String = "", productCost: Double = 0, productGrams: Double = 0, servingSize: Double, calories: Double, fat: Double, fiber: Double, netCarbs: Double, protein: Double, consumptionUnit: Unit = Unit.gram, consumptionGrams: Double, meat: Bool = false, meatAmount: Double = 200, mealAdjustments: [MealAdjustment] = [], available: Bool = true, verified: String = "") {
         self.id = id
 
         self.name = name
@@ -240,7 +240,7 @@ struct Ingredient: Codable, Identifiable {
         self.verified = verified
     }
 
-    var calories100: Float {
+    var calories100: Double {
         set {
         }
         get {
@@ -248,7 +248,7 @@ struct Ingredient: Codable, Identifiable {
         }
     }
 
-    var fat100: Float {
+    var fat100: Double {
         set {
         }
         get {
@@ -256,7 +256,7 @@ struct Ingredient: Codable, Identifiable {
         }
     }
 
-    var fiber100: Float {
+    var fiber100: Double {
         set {
         }
         get {
@@ -264,7 +264,7 @@ struct Ingredient: Codable, Identifiable {
         }
     }
 
-    var netCarbs100: Float {
+    var netCarbs100: Double {
         set {
         }
         get {
@@ -272,7 +272,7 @@ struct Ingredient: Codable, Identifiable {
         }
     }
 
-    var protein100: Float {
+    var protein100: Double {
         set {
         }
         get {

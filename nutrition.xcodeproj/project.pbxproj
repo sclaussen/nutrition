@@ -45,6 +45,9 @@
 		349EE57C27CC823B0072255A /* ProfileEdit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 349EE57B27CC823B0072255A /* ProfileEdit.swift */; };
 		34B7171627D1B9EB00322B18 /* ViewModifiers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34B7171527D1B9EB00322B18 /* ViewModifiers.swift */; };
 		34DC9A3A27E8D99B0082D62E /* CheckboxToggle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34DC9A3927E8D99B0082D62E /* CheckboxToggle.swift */; };
+		34DE41FD27F64CFE0078448F /* Gauge.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34DE41FC27F64CFE0078448F /* Gauge.swift */; };
+		34DE41FF27F64D1E0078448F /* Bar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34DE41FE27F64D1E0078448F /* Bar.swift */; };
+		34DE420127F654B20078448F /* Double.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34DE420027F654B20078448F /* Double.swift */; };
 		34F8003B27DBFAD1002F1380 /* Macros.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34F8003A27DBFAD1002F1380 /* Macros.swift */; };
 /* End PBXBuildFile section */
 
@@ -89,6 +92,9 @@
 		349EE57B27CC823B0072255A /* ProfileEdit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileEdit.swift; sourceTree = "<group>"; };
 		34B7171527D1B9EB00322B18 /* ViewModifiers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewModifiers.swift; sourceTree = "<group>"; };
 		34DC9A3927E8D99B0082D62E /* CheckboxToggle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckboxToggle.swift; sourceTree = "<group>"; };
+		34DE41FC27F64CFE0078448F /* Gauge.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Gauge.swift; sourceTree = "<group>"; };
+		34DE41FE27F64D1E0078448F /* Bar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Bar.swift; sourceTree = "<group>"; };
+		34DE420027F654B20078448F /* Double.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Double.swift; sourceTree = "<group>"; };
 		34F8003A27DBFAD1002F1380 /* Macros.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Macros.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -115,6 +121,7 @@
 		342CD48D27E25389008703C2 /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
+				34DE420027F654B20078448F /* Double.swift */,
 				341B4DBE27EE02A600B68819 /* String.swift */,
 				342CD49227E255B1008703C2 /* Float.swift */,
 				341B4DBC27EE029D00B68819 /* Int.swift */,
@@ -211,6 +218,8 @@
 				345F5F0927E0EF1400129BAC /* IngredientRow.swift */,
 				349EE57527CBF3600072255A /* NameValue.swift */,
 				342B9C2227F3B985000D7EB7 /* DismissKeyboard.swift */,
+				34DE41FC27F64CFE0078448F /* Gauge.swift */,
+				34DE41FE27F64D1E0078448F /* Bar.swift */,
 			);
 			path = ViewPrimitives;
 			sourceTree = "<group>";
@@ -289,6 +298,7 @@
 				344D200E27CE35F100343108 /* AdjustmentList.swift in Sources */,
 				344D200A27CE2B6300343108 /* MealEdit.swift in Sources */,
 				347A335627DA925C005E3F33 /* Unit.swift in Sources */,
+				34DE420127F654B20078448F /* Double.swift in Sources */,
 				342B9C2327F3B985000D7EB7 /* DismissKeyboard.swift in Sources */,
 				349EE54427C9A3690072255A /* IngredientList.swift in Sources */,
 				342CD49927E26F3C008703C2 /* HealthStore.swift in Sources */,
@@ -304,6 +314,7 @@
 				349EE53327C99AC30072255A /* Tabs.swift in Sources */,
 				345F5F0A27E0EF1400129BAC /* IngredientRow.swift in Sources */,
 				34B7171627D1B9EB00322B18 /* ViewModifiers.swift in Sources */,
+				34DE41FF27F64D1E0078448F /* Bar.swift in Sources */,
 				342CD49327E255B1008703C2 /* Float.swift in Sources */,
 				344D200227CDC53800343108 /* MealConfigure.swift in Sources */,
 				347638D527F4AE53008DF99C /* CheckmarkToggleStyle.swift in Sources */,
@@ -311,6 +322,7 @@
 				349EE54B27C9A6B10072255A /* IngredientEdit.swift in Sources */,
 				341B4DBD27EE029D00B68819 /* Int.swift in Sources */,
 				344D201027CE360C00343108 /* AdjustmentEdit.swift in Sources */,
+				34DE41FD27F64CFE0078448F /* Gauge.swift in Sources */,
 				349EE53127C99AC30072255A /* app.swift in Sources */,
 				34DC9A3A27E8D99B0082D62E /* CheckboxToggle.swift in Sources */,
 				349EE57627CBF3600072255A /* NameValue.swift in Sources */,
@@ -462,6 +474,7 @@
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 15.3;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -494,6 +507,7 @@
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 15.3;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",

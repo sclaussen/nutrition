@@ -139,7 +139,6 @@ struct NameValue<T: NVValueTypeProtocol>: View {
                           .labelsHidden()
                           .foregroundColor(Color("Blue"))
                           .colorMultiply(Color("Blue"))
-                        //colorInvert()
                     }
 
                     // Unit
@@ -189,7 +188,7 @@ struct NameValue<T: NVValueTypeProtocol>: View {
         if type(of: value.wrappedValue) == Int.self {
             return .int
         }
-        if type(of: value.wrappedValue) == Float.self {
+        if type(of: value.wrappedValue) == Double.self {
             return .float
         }
         if type(of: value.wrappedValue) == Bool.self {
@@ -271,7 +270,7 @@ struct NVTextField<T: NVValueTypeProtocol>: View {
                   }
               } else if valueType == .float {
                   print("\nConvering float")
-                  if let convertedValue = Float(newValue) {
+                  if let convertedValue = Double(newValue) {
                       value = convertedValue as! T
                       valueString = value.string(precision)
                       print(valueString)

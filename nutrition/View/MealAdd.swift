@@ -7,7 +7,7 @@ struct MealAdd: View {
     @EnvironmentObject var ingredientMgr: IngredientMgr
 
     @State var name: String = ""
-    @State var defaultAmount: Float = 0
+    @State var defaultAmount: Double = 0
 
     var body: some View {
         Form {

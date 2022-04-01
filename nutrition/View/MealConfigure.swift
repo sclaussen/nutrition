@@ -31,19 +31,9 @@ struct MealConfigure: View {
             }
             Section {
                 NameValue("Meat", description: "main course", $profileMgr.profile.meat, options: ingredientMgr.getAllMeatNames(), control: .picker)
-//                  .onChange(of: $profileMgr.profile.meat) { (newValue) in
-//                      print("Meat changed", newValue)
-//                  }
                 if profileMgr.profile.meat != "None" {
                     NameValue("Meat Weight", $profileMgr.profile.meatAmount, edit: true)
                 }
-                //                    ForEach(ingredientMgr.getIngredient(name: $profileMgr.profile.meat), id: \.self) { ingredient in
-                //                        print(ingredient.name)
-                //                        // Section(header: Text("Base Meal Adjustment #" + String(index + 1))) {
-                //                        //     NameValue("Ingredient", $ingredient.mealAdjustments[index].name)
-                //                        //     NameValue("Amount", $ingredient.mealAdjustments[index].amount, ingredientMgr.getIngredient(name: ingredient.mealAdjustments[index].name)!.consumptionUnit, negative: true, edit: true)
-                //                        // }
-                //                    }
             }
         }
           .padding([.leading, .trailing], -20)

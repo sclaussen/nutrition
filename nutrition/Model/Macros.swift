@@ -8,31 +8,31 @@ class MacrosMgr: ObservableObject {
         macros = Macros()
     }
 
-    func setGoals(caloriesGoalUnadjusted: Float, caloriesGoal: Float, fatGoal: Float, fiberMinimum: Float, netCarbsMaximum: Float, proteinGoal: Float) {
+    func setGoals(caloriesGoalUnadjusted: Double, caloriesGoal: Double, fatGoal: Double, fiberMinimum: Double, netCarbsMaximum: Double, proteinGoal: Double) {
         self.macros = macros.setGoals(caloriesGoalUnadjusted: caloriesGoalUnadjusted, caloriesGoal: caloriesGoal, fatGoal: fatGoal, fiberMinimum: fiberMinimum, netCarbsMaximum: netCarbsMaximum, proteinGoal: proteinGoal)
     }
 
-    func addMacros(name: String, calories: Float, fat: Float, fiber: Float, netCarbs: Float, protein: Float) {
+    func addMacros(name: String, calories: Double, fat: Double, fiber: Double, netCarbs: Double, protein: Double) {
         self.macros = macros.addMacros(calories: calories, fat: fat, fiber: fiber, netCarbs: netCarbs, protein: protein)
     }
 }
 
 struct Macros {
-    var caloriesGoalUnadjusted: Float
+    var caloriesGoalUnadjusted: Double
 
-    var caloriesGoal: Float
-    var fatGoal: Float
-    var fiberMinimum: Float
-    var netCarbsMaximum: Float
-    var proteinGoal: Float
+    var caloriesGoal: Double
+    var fatGoal: Double
+    var fiberMinimum: Double
+    var netCarbsMaximum: Double
+    var proteinGoal: Double
 
-    var calories: Float
-    var fat: Float
-    var fiber: Float
-    var netCarbs: Float
-    var protein: Float
+    var calories: Double
+    var fat: Double
+    var fiber: Double
+    var netCarbs: Double
+    var protein: Double
 
-    init(caloriesGoalUnadjusted: Float = 0, caloriesGoal: Float = 0, fatGoal: Float = 0, fiberMinimum: Float = 0, netCarbsMaximum: Float = 0, proteinGoal: Float = 0, calories: Float = 0, fat: Float = 0, fiber: Float = 0, netCarbs: Float = 0, protein: Float = 0) {
+    init(caloriesGoalUnadjusted: Double = 0, caloriesGoal: Double = 0, fatGoal: Double = 0, fiberMinimum: Double = 0, netCarbsMaximum: Double = 0, proteinGoal: Double = 0, calories: Double = 0, fat: Double = 0, fiber: Double = 0, netCarbs: Double = 0, protein: Double = 0) {
         self.caloriesGoalUnadjusted = caloriesGoalUnadjusted
 
         self.caloriesGoal = caloriesGoal
@@ -48,11 +48,11 @@ struct Macros {
         self.protein = protein
     }
 
-    func setGoals(caloriesGoalUnadjusted: Float, caloriesGoal: Float, fatGoal: Float, fiberMinimum: Float, netCarbsMaximum: Float, proteinGoal: Float) -> Macros {
+    func setGoals(caloriesGoalUnadjusted: Double, caloriesGoal: Double, fatGoal: Double, fiberMinimum: Double, netCarbsMaximum: Double, proteinGoal: Double) -> Macros {
         return Macros(caloriesGoalUnadjusted: caloriesGoalUnadjusted, caloriesGoal: caloriesGoal, fatGoal: fatGoal, fiberMinimum: fiberMinimum, netCarbsMaximum: netCarbsMaximum, proteinGoal: proteinGoal)
     }
 
-    func addMacros(calories: Float, fat: Float, fiber: Float, netCarbs: Float, protein: Float) -> Macros {
+    func addMacros(calories: Double, fat: Double, fiber: Double, netCarbs: Double, protein: Double) -> Macros {
         return Macros(caloriesGoalUnadjusted: caloriesGoalUnadjusted, caloriesGoal: caloriesGoal, fatGoal: fatGoal, fiberMinimum: fiberMinimum, netCarbsMaximum: netCarbsMaximum, proteinGoal: proteinGoal, calories: self.calories + calories, fat: self.fat + fat, fiber: self.fiber + fiber, netCarbs: self.netCarbs + netCarbs, protein: self.protein + protein)
     }
 

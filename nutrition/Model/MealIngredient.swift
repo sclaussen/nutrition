@@ -30,7 +30,7 @@ class MealIngredientMgr: ObservableObject {
 
         mealIngredients.append(MealIngredient(name: "String Cheese", defaultAmount: 1, amount: 1, active: false))
         mealIngredients.append(MealIngredient(name: "Cheddar Cheese", defaultAmount: 1, amount: 1, active: false))
-        mealIngredients.append(MealIngredient(name: "Dubliner Cheese", defaultAmount: 1, amount: 1, active: false))
+        mealIngredients.append(MealIngredient(name: "Dubliner Cheese", defaultAmount: 30, amount: 30, active: false))
         mealIngredients.append(MealIngredient(name: "Macadamia Nuts", defaultAmount: 1, amount: 1, active: false))
         mealIngredients.append(MealIngredient(name: "Keto Mint Ice Cream", defaultAmount: 30, amount: 30, active: false))
     }
@@ -53,11 +53,11 @@ class MealIngredientMgr: ObservableObject {
     }
 
     func create(name: String,
-                defaultAmount: Float,
-                amount: Float,
+                defaultAmount: Double,
+                amount: Double,
                 compensationExists: Bool = false,
                 compensationCreated: Bool = false,
-                compensationInitialAmount: Float = 0,
+                compensationInitialAmount: Double = 0,
                 compensationInitialState: Bool = true,
                 active: Bool = true) {
 
@@ -128,13 +128,13 @@ class MealIngredientMgr: ObservableObject {
         return inactiveIngredients.count > 0
     }
 
-    func addMacros(name: String, calories: Float, fat: Float, fiber: Float, netcarbs: Float, protein: Float) {
+    func addMacros(name: String, calories: Double, fat: Double, fiber: Double, netcarbs: Double, protein: Double) {
         if let index = mealIngredients.firstIndex(where: { $0.name == name }) {
             mealIngredients[index] = mealIngredients[index].addMacros(calories: calories, fat: fat, fiber: fiber, netcarbs: netcarbs, protein: protein)
         }
     }
 
-    func adjust(name: String, amount: Float) {
+    func adjust(name: String, amount: Double) {
         if let index = mealIngredients.firstIndex(where: { $0.name == name && !$0.active }) {
             mealIngredients[index] = mealIngredients[index].adjust(amount: amount, active: false)
         } else if let index = mealIngredients.firstIndex(where: { $0.name == name }) {
@@ -201,34 +201,34 @@ struct MealIngredient: Codable, Identifiable {
 
     var name: String
 
-    var defaultAmount: Float
-    var amount: Float
+    var defaultAmount: Double
+    var amount: Double
 
-    var calories: Float
-    var fat: Float
-    var fiber: Float
-    var netcarbs: Float
-    var protein: Float
+    var calories: Double
+    var fat: Double
+    var fiber: Double
+    var netcarbs: Double
+    var protein: Double
 
     var compensationExists: Bool
     var compensationCreated: Bool
-    var compensationInitialAmount: Float
+    var compensationInitialAmount: Double
     var compensationInitialState: Bool
 
     var active: Bool
 
     init(id: String = UUID().uuidString,
          name: String,
-         defaultAmount: Float,
-         amount: Float,
-         calories: Float = 0,
-         fat: Float = 0,
-         fiber: Float = 0,
-         netcarbs: Float = 0,
-         protein: Float = 0,
+         defaultAmount: Double,
+         amount: Double,
+         calories: Double = 0,
+         fat: Double = 0,
+         fiber: Double = 0,
+         netcarbs: Double = 0,
+         protein: Double = 0,
          compensationExists: Bool = false,
          compensationCreated: Bool = false,
-         compensationInitialAmount: Float = 0,
+         compensationInitialAmount: Double = 0,
          compensationInitialState: Bool = true,
          active: Bool = true) {
 
@@ -261,11 +261,11 @@ struct MealIngredient: Codable, Identifiable {
         return MealIngredient(id: id, name: name, defaultAmount: defaultAmount, amount: amount, calories: 0, fat: 0, fiber: 0, netcarbs: 0, protein: 0, compensationExists: compensationExists, compensationCreated: compensationCreated, compensationInitialAmount: compensationInitialAmount, compensationInitialState: compensationInitialState, active: active);
     }
 
-    func addMacros(calories: Float, fat: Float, fiber: Float, netcarbs: Float, protein: Float) -> MealIngredient {
+    func addMacros(calories: Double, fat: Double, fiber: Double, netcarbs: Double, protein: Double) -> MealIngredient {
         return MealIngredient(id: id, name: name, defaultAmount: defaultAmount, amount: amount, calories: self.calories + calories, fat: self.fat + fat, fiber: self.fiber + fiber, netcarbs: self.netcarbs + netcarbs, protein: self.protein + protein, compensationExists: compensationExists, compensationCreated: compensationCreated, compensationInitialAmount: compensationInitialAmount, compensationInitialState: compensationInitialState, active: active);
     }
 
-    func adjust(amount: Float, active: Bool = true) -> MealIngredient {
+    func adjust(amount: Double, active: Bool = true) -> MealIngredient {
         if !compensationExists && !active {
             print("  Adjusting (activating - and storing compensation) " + name + " \(amount)")
             return MealIngredient(id: self.id, name: self.name, defaultAmount: self.defaultAmount, amount: amount, calories: calories, fat: fat, fiber: fiber, netcarbs: netcarbs, protein: protein, compensationExists: true, compensationCreated: false, compensationInitialAmount: self.amount, compensationInitialState: self.active, active: true)

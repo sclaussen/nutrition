@@ -9,28 +9,28 @@ struct IngredientAdd: View {
     @State var name: String = ""
 
     @State var productBrand: String = ""
-    @State var productCost: Float = 0
-    @State var productGrams: Float = 0
+    @State var productCost: Double = 0
+    @State var productGrams: Double = 0
 
-    @State var servingSize: Float = 0
-    @State var calories: Float = 0
-    @State var fat: Float = 0
-    @State var fiber: Float = 0
-    @State var netCarbs: Float = 0
-    @State var protein: Float = 0
+    @State var servingSize: Double = 0
+    @State var calories: Double = 0
+    @State var fat: Double = 0
+    @State var fiber: Double = 0
+    @State var netCarbs: Double = 0
+    @State var protein: Double = 0
 
     @State var consumptionUnit: Unit = .gram
-    @State var consumptionGrams: Float = 1.0
+    @State var consumptionGrams: Double = 1.0
 
     @State var meat: Bool = false
     @State var adjustmentCount = 0
     @State var mealAdjustments: [MealAdjustment] = []
 
     @State var ingredientAdd: Bool = false
-    @State var ingredientAmount: Float = 0
+    @State var ingredientAmount: Double = 0
 
     @State var adjustmentAdd: Bool = false
-    @State var adjustmentAmount: Float = 0
+    @State var adjustmentAmount: Double = 0
 
     var body: some View {
         Form {

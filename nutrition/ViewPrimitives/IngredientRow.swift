@@ -7,31 +7,31 @@ struct IngredientRowHeader: View {
     var showAmount: Bool = true
 
     // TODO: Figure out why these percentages vary from the data rows
-    var nameWidthPercentage: Float = 0.38
-    var macroWidthPercentage: Float = 0.058
-    var choiceGroupWidthPercentage: Float = 0.34
-    var amountWidthPercentage: Float = 0.1
-    var unitWidthPercentage: Float = 0.15
+    var nameWidthPercentage: Double = 0.38
+    var macroWidthPercentage: Double = 0.058
+    var choiceGroupWidthPercentage: Double = 0.34
+    var amountWidthPercentage: Double = 0.1
+    var unitWidthPercentage: Double = 0.15
 
     var body: some View {
         GeometryReader { geo in
             HStack(spacing: 5) {
-                Text("Ingredient").font(.caption).foregroundColor(Color("Blue")).frame(width: CGFloat(nameWidthPercentage) * geo.size.width, alignment: .leading).border(Color("Red"), width: 1)
+                Text("Ingredient").font(.caption).foregroundColor(Color("Blue")).frame(width: nameWidthPercentage * geo.size.width, alignment: .leading).border(Color("Red"), width: 0)
 
                 if showMacros {
-                    Text("Cal").font(.caption2).foregroundColor(Color("Blue")).frame(width: CGFloat(macroWidthPercentage) * geo.size.width, alignment: .trailing).border(Color("Red"), width: 1)
-                    Text("Fat").font(.caption2).foregroundColor(Color("Blue")).frame(width: CGFloat(macroWidthPercentage) * geo.size.width, alignment: .trailing).border(Color("Red"), width: 1)
-                    Text("Fbr").font(.caption2).foregroundColor(Color("Blue")).frame(width: CGFloat(macroWidthPercentage) * geo.size.width, alignment: .trailing).border(Color("Red"), width: 1)
-                    Text("Ncb").font(.caption2).foregroundColor(Color("Blue")).frame(width: CGFloat(macroWidthPercentage) * geo.size.width, alignment: .trailing).border(Color("Red"), width: 1)
-                    Text("Pro").font(.caption2).foregroundColor(Color("Blue")).frame(width: CGFloat(macroWidthPercentage) * geo.size.width, alignment: .trailing).border(Color("Red"), width: 1)
+                    Text("Cal").font(.caption2).foregroundColor(Color("Blue")).frame(width: macroWidthPercentage * geo.size.width, alignment: .trailing).border(Color("Red"), width: 0)
+                    Text("Fat").font(.caption2).foregroundColor(Color("Blue")).frame(width: macroWidthPercentage * geo.size.width, alignment: .trailing).border(Color("Red"), width: 0)
+                    Text("Fbr").font(.caption2).foregroundColor(Color("Blue")).frame(width: macroWidthPercentage * geo.size.width, alignment: .trailing).border(Color("Red"), width: 0)
+                    Text("Ncb").font(.caption2).foregroundColor(Color("Blue")).frame(width: macroWidthPercentage * geo.size.width, alignment: .trailing).border(Color("Red"), width: 0)
+                    Text("Pro").font(.caption2).foregroundColor(Color("Blue")).frame(width: macroWidthPercentage * geo.size.width, alignment: .trailing).border(Color("Red"), width: 0)
                 }
 
                 if showGroup {
-                    Text("Group").font(.caption).foregroundColor(Color("Blue")).frame(width: CGFloat(choiceGroupWidthPercentage) * geo.size.width, alignment: .center).border(Color("Red"), width: 1)
+                    Text("Group").font(.caption).foregroundColor(Color("Blue")).frame(width: choiceGroupWidthPercentage * geo.size.width, alignment: .center).border(Color("Red"), width: 0)
                 }
 
                 if showAmount {
-                    Text("Amount").font(.caption).foregroundColor(Color("Blue")).frame(width: CGFloat((amountWidthPercentage + unitWidthPercentage)) * geo.size.width, alignment: .center).border(Color("Red"), width: 1)
+                    Text("Amount").font(.caption).foregroundColor(Color("Blue")).frame(width: (amountWidthPercentage + unitWidthPercentage) * geo.size.width, alignment: .center).border(Color("Red"), width: 0)
                 }
             }
         }
@@ -44,44 +44,44 @@ struct IngredientRow: View {
     var showGroup: Bool = false
     var showAmount: Bool = true
 
-    var nameWidthPercentage: Float = 0.395
-    var macroWidthPercentage: Float = 0.062
-    var choiceGroupWidthPercentage: Float = 0.36
-    var amountWidthPercentage: Float = 0.1
-    var unitWidthPercentage: Float = 0.15
+    var nameWidthPercentage: Double = 0.395
+    var macroWidthPercentage: Double = 0.062
+    var choiceGroupWidthPercentage: Double = 0.36
+    var amountWidthPercentage: Double = 0.1
+    var unitWidthPercentage: Double = 0.15
 
     var name: String
-    var calories: Float = 0
-    var fat: Float = 0
-    var fiber: Float = 0
-    var netcarbs: Float = 0
-    var protein: Float = 0
+    var calories: Double = 0
+    var fat: Double = 0
+    var fiber: Double = 0
+    var netcarbs: Double = 0
+    var protein: Double = 0
     var group: String = ""
-    var amount: Float = 0
+    var amount: Double = 0
     var consumptionUnit: Unit = Unit.gram
 
     var body: some View {
         GeometryReader { geo in
             HStack(spacing: 5) {
-                Text(name).font(.caption).frame(width: CGFloat(nameWidthPercentage) * geo.size.width, alignment: .leading).border(Color("Red"), width: 1)
+                Text(name).font(.callout).frame(width: nameWidthPercentage * geo.size.width, alignment: .leading).border(Color("Red"), width: 0)
 
                 if showMacros {
-                    Text("\(calories.string(1))").font(.caption2).frame(width: CGFloat(macroWidthPercentage) * geo.size.width, alignment: .trailing).border(Color("Red"), width: 1)
-                    Text("\(fat.string(1))").font(.caption2).frame(width: CGFloat(macroWidthPercentage) * geo.size.width, alignment: .trailing).border(Color("Red"), width: 1)
-                    Text("\(fiber.string(1))").font(.caption2).frame(width: CGFloat(macroWidthPercentage) * geo.size.width, alignment: .trailing).border(Color("Red"), width: 1)
-                    Text("\(netcarbs.string(1))").font(.caption2).frame(width: CGFloat(macroWidthPercentage) * geo.size.width, alignment: .trailing).border(Color("Red"), width: 1)
-                    Text("\(protein.string(1))").font(.caption2).frame(width: CGFloat(macroWidthPercentage) * geo.size.width, alignment: .trailing).border(Color("Red"), width: 1)
+                    Text("\(calories.string(0))").font(.caption2).frame(width: macroWidthPercentage * geo.size.width, alignment: .trailing).border(Color("Red"), width: 0)
+                    Text("\(fat.string(0))").font(.caption2).frame(width: macroWidthPercentage * geo.size.width, alignment: .trailing).border(Color("Red"), width: 0)
+                    Text("\(fiber.string(0))").font(.caption2).frame(width: macroWidthPercentage * geo.size.width, alignment: .trailing).border(Color("Red"), width: 0)
+                    Text("\(netcarbs.string(0))").font(.caption2).frame(width: macroWidthPercentage * geo.size.width, alignment: .trailing).border(Color("Red"), width: 0)
+                    Text("\(protein.string(0))").font(.caption2).frame(width: macroWidthPercentage * geo.size.width, alignment: .trailing).border(Color("Red"), width: 0)
                 }
 
                 if showGroup {
-                    Text("\(group)").font(.caption).frame(width: CGFloat(choiceGroupWidthPercentage) * geo.size.width, alignment: .center).border(Color("Red"), width: 1)
+                    Text("\(group)").font(.caption).frame(width: choiceGroupWidthPercentage * geo.size.width, alignment: .center).border(Color("Red"), width: 0)
                 }
 
                 if showAmount {
-                    Text("\(amount.string(1))").font(.caption).frame(width: CGFloat(amountWidthPercentage) * geo.size.width, alignment: .trailing).border(Color("Red"), width: 1)
-                    Text(amount == 1 ? consumptionUnit.singularForm : consumptionUnit.pluralForm).font(.caption2).frame(width: CGFloat(unitWidthPercentage) * geo.size.width, alignment: .leading).border(Color("Red"), width: 1)
+                    Text("\(amount.string(0))").font(.callout).frame(width: amountWidthPercentage * geo.size.width, alignment: .trailing).border(Color("Red"), width: 0)
+                    Text(amount == 1 ? consumptionUnit.singularForm : consumptionUnit.pluralForm).font(.caption).frame(width: unitWidthPercentage * geo.size.width, alignment: .leading).border(Color("Red"), width: 0)
                 }
-            }.frame(height: 8)
+            }.frame(height: 9)
         }
     }
 }

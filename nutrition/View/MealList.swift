@@ -16,10 +16,24 @@ struct MealList: View {
 
     var body: some View {
         List {
-
-            Dashboard(profileMgr.profile, macrosMgr.macros)
+            Dashboard(bodyMass: profileMgr.profile.bodyMass,
+                      bodyFatPercentage: profileMgr.profile.bodyFatPercentage,
+                      activeCaloriesBurned: profileMgr.profile.activeCaloriesBurned,
+                      calorieDeficit: profileMgr.profile.calorieDeficit,
+                      proteinRatio: profileMgr.profile.proteinRatio,
+                      caloriesGoalUnadjusted: profileMgr.profile.caloriesGoalUnadjusted,
+                      caloriesGoal: profileMgr.profile.caloriesGoal,
+                      calories: macrosMgr.macros.calories,
+                      fatGoal: profileMgr.profile.fatGoal,
+                      fiberMinimum: profileMgr.profile.fiberMinimum,
+                      netCarbsMaximum: profileMgr.profile.netCarbsMaximum,
+                      proteinGoal: profileMgr.profile.proteinGoal,
+                      fat: macrosMgr.macros.fat,
+                      fiber: macrosMgr.macros.fiber,
+                      netCarbs: macrosMgr.macros.netCarbs,
+                      protein: macrosMgr.macros.protein)
               .listRowSeparator(.hidden)
-              .frame(height: 185)
+              .frame(height: 230)
               .listRowInsets(EdgeInsets(top: 0, leading: 10, bottom: 0, trailing: 10))
               .border(Color.green, width: 0)
 
@@ -97,15 +111,20 @@ struct MealList: View {
 
                       // Active/Inactive Toggle
                       Button {
-                          showInactive.toggle()
+                          withAnimation(.easeInOut) {
+                              showInactive.toggle()
+                          }
                       } label: {
                           Image(systemName: !mealIngredientMgr.inactiveIngredientsExist() ? "" : showInactive ? "eye" : "eye.slash")
                       }
                         .frame(width: 40)
                         .foregroundColor(Color("Blue"))
 
+
                       // Locked Toggle
                       Button {
+                          withAnimation {
+
                           locked.toggle()
                           if !locked {
                               for mealIngredient in mealIngredientMgr.get() {
@@ -114,6 +133,7 @@ struct MealList: View {
                                   }
                               }
                               generateMeal()
+                          }
                           }
                       } label: {
                           Image(systemName: locked ? "lock" : "lock.open")
@@ -270,9 +290,9 @@ struct MealList: View {
         let netCarbs: Double = Double(ingredient.netCarbs * servings)
         let protein: Double = Double(ingredient.protein * servings)
 
-        if macrosMgr.macros.fatGoal < macrosMgr.macros.fat + Float(fat) ||
-             macrosMgr.macros.netCarbsMaximum < macrosMgr.macros.netCarbs + Float(netCarbs) ||
-             macrosMgr.macros.proteinGoal < macrosMgr.macros.protein + Float(protein) {
+        if macrosMgr.macros.fatGoal < macrosMgr.macros.fat + fat ||
+             macrosMgr.macros.netCarbsMaximum < macrosMgr.macros.netCarbs + netCarbs ||
+             macrosMgr.macros.proteinGoal < macrosMgr.macros.protein + protein {
             return false
         }
 
@@ -283,7 +303,7 @@ struct MealList: View {
 
     func addMacros(_ name: String, _ amount: Double, _ active: Bool) {
         let ingredient = ingredientMgr.getIngredient(name: name)!
-        let servings = (Float(amount) * ingredient.consumptionGrams) / ingredient.servingSize
+        let servings = (amount * ingredient.consumptionGrams) / ingredient.servingSize
 
         let calories: Double = Double(ingredient.calories * servings)
         let fat: Double = Double(ingredient.fat * servings)
@@ -291,10 +311,10 @@ struct MealList: View {
         let netcarbs: Double = Double(ingredient.netCarbs * servings)
         let protein: Double = Double(ingredient.protein * servings)
 
-        mealIngredientMgr.addMacros(name: name, calories: Float(calories), fat: Float(fat), fiber: Float(fiber), netcarbs: Float(netcarbs), protein: Float(protein))
+        mealIngredientMgr.addMacros(name: name, calories: calories, fat: fat, fiber: fiber, netcarbs: netcarbs, protein: protein)
 
         if active {
-            macrosMgr.addMacros(name: name, calories: Float(calories), fat: Float(fat), fiber: Float(fiber), netCarbs: Float(netcarbs), protein: Float(protein))
+            macrosMgr.addMacros(name: name, calories: calories, fat: fat, fiber: fiber, netCarbs: netcarbs, protein: protein)
         }
     }
 
@@ -342,7 +362,7 @@ struct MealList: View {
 
             if bodyMass != Double(profileMgr.profile.bodyMass) {
                 print("Updating body mass...")
-                profileMgr.setBodyMass(bodyMass: Float(bodyMass))
+                profileMgr.setBodyMass(bodyMass: bodyMass)
             }
         }
     }
@@ -368,7 +388,7 @@ struct MealList: View {
 
             if bodyFatPercentage != Double(profileMgr.profile.bodyFatPercentage) {
                 print("Updating body fat percentage...")
-                profileMgr.setBodyFatPercentage(bodyFatPercentage: Float(bodyFatPercentage))
+                profileMgr.setBodyFatPercentage(bodyFatPercentage: bodyFatPercentage)
             }
         }
     }

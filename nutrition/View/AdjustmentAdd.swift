@@ -7,9 +7,9 @@ struct AdjustmentAdd: View {
     @EnvironmentObject var ingredientMgr: IngredientMgr
 
     @State var name: String = ""
-    @State var amount: Float = 0
+    @State var amount: Double = 0
     @State var constraints: Bool = false
-    @State var maximum: Float = 0
+    @State var maximum: Double = 0
     @State var group: String = ""
 
     var body: some View {

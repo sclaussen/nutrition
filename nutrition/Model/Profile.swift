@@ -26,18 +26,18 @@ class ProfileMgr: ObservableObject {
         }
     }
 
-    func setBodyMass(bodyMass: Float) {
+    func setBodyMass(bodyMass: Double) {
         self.profile = profile.setBodyMass(bodyMass: bodyMass)
         serialize()
     }
 
-    func setBodyFatPercentage(bodyFatPercentage: Float) {
+    func setBodyFatPercentage(bodyFatPercentage: Double) {
         self.profile = profile.setBodyFatPercentage(bodyFatPercentage: bodyFatPercentage)
         serialize()
     }
 
     // TODO: Update once the health kit active calories algorithm is demystified
-    // func setActiveCaloriesBurned(activeCaloriesBurned: Float) {
+    // func setActiveCaloriesBurned(activeCaloriesBurned: Double) {
     //     self.profile = profile.setActiveCaloriesBurned(activeCaloriesBurned: activeCaloriesBurned)
     //     serialize()
     // }
@@ -54,38 +54,38 @@ struct Profile: Codable {
     var gender: Gender
     var height: Int
     var bodyMassFromHealthKit: Bool
-    var bodyMass: Float
+    var bodyMass: Double
     var bodyFatPercentageFromHealthKit: Bool
-    var bodyFatPercentage: Float
-    var activeCaloriesBurned: Float
-    var proteinRatio: Float
+    var bodyFatPercentage: Double
+    var activeCaloriesBurned: Double
+    var proteinRatio: Double
     var calorieDeficit: Int
-    var netCarbsMaximum: Float
+    var netCarbsMaximum: Double
     var meat: String
-    var meatAmount: Float
+    var meatAmount: Double
 
-    func setBodyMass(bodyMass: Float) -> Profile {
+    func setBodyMass(bodyMass: Double) -> Profile {
         return Profile(dateOfBirth: self.dateOfBirth, gender: self.gender, height: self.height, bodyMassFromHealthKit: self.bodyMassFromHealthKit, bodyMass: bodyMass, bodyFatPercentageFromHealthKit: self.bodyFatPercentageFromHealthKit, bodyFatPercentage: self.bodyFatPercentage, activeCaloriesBurned: self.activeCaloriesBurned, proteinRatio: self.proteinRatio, calorieDeficit: self.calorieDeficit, netCarbsMaximum: self.netCarbsMaximum, meat: self.meat, meatAmount: self.meatAmount)
     }
 
-    func setBodyFatPercentage(bodyFatPercentage: Float) -> Profile {
+    func setBodyFatPercentage(bodyFatPercentage: Double) -> Profile {
         return Profile(dateOfBirth: self.dateOfBirth, gender: self.gender, height: self.height, bodyMassFromHealthKit: self.bodyMassFromHealthKit, bodyMass: self.bodyMass, bodyFatPercentageFromHealthKit: self.bodyFatPercentageFromHealthKit, bodyFatPercentage: bodyFatPercentage, activeCaloriesBurned: self.activeCaloriesBurned, proteinRatio: self.proteinRatio, calorieDeficit: self.calorieDeficit, netCarbsMaximum: self.netCarbsMaximum, meat: self.meat, meatAmount: self.meatAmount)
     }
 
     // TODO: Update once the health kit active calories algorithm is demystified
-    // func setActiveCaloriesBurned(activeCaloriesBurned: Float) -> Profile {
+    // func setActiveCaloriesBurned(activeCaloriesBurned: Double) -> Profile {
     //     return Profile(dateOfBirth: self.dateOfBirth, gender: self.gender, height: self.height, bodyMassFromHealthKit: self.bodyMassFromHealthKit, bodyMass: self.bodyMass, bodyFatPercentageFromHealthKit: self.bodyFatPercentageFromHealthKit, bodyFatPercentage: self.bodyFatPercentage, activeCaloriesBurned: activeCaloriesBurned, proteinRatio: self.proteinRatio, calorieDeficit: self.calorieDeficit, netCarbsMaximum: self.netCarbsMaximum, meat: self.meat, meatAmount: self.meatAmount)
     // }
 
-    var age: Float {
+    var age: Double {
         set {
         }
         get {
-            return Float(Calendar.current.dateComponents([.month], from: self.dateOfBirth, to: Date()).month ?? 0) / 12.0
+            return Double(Calendar.current.dateComponents([.month], from: self.dateOfBirth, to: Date()).month ?? 0) / 12.0
         }
     }
 
-    var bodyMassKg: Float {
+    var bodyMassKg: Double {
         set {
         }
         get {
@@ -93,23 +93,23 @@ struct Profile: Codable {
         }
     }
 
-    var heightCm: Float {
+    var heightCm: Double {
         set {
         }
         get {
-            Float(self.height) * 2.54
+            Double(self.height) * 2.54
         }
     }
 
-    var bodyMassIndex: Float {
+    var bodyMassIndex: Double {
         set {
         }
         get {
-            (self.bodyMass / Float(self.height * self.height)) * 703
+            (self.bodyMass / Double(self.height * self.height)) * 703
         }
     }
 
-    var fatMass: Float {
+    var fatMass: Double {
         set {
         }
         get {
@@ -117,7 +117,7 @@ struct Profile: Codable {
         }
     }
 
-    var leanBodyMass: Float {
+    var leanBodyMass: Double {
         set {
         }
         get {
@@ -125,7 +125,7 @@ struct Profile: Codable {
         }
     }
 
-    var caloriesBaseMetabolicRate: Float {
+    var caloriesBaseMetabolicRate: Double {
         set {
         }
         get {
@@ -133,7 +133,7 @@ struct Profile: Codable {
         }
     }
 
-    var caloriesResting: Float {
+    var caloriesResting: Double {
         set {
         }
         get {
@@ -141,15 +141,15 @@ struct Profile: Codable {
         }
     }
 
-    var caloriesGoalUnadjusted: Float {
+    var caloriesGoalUnadjusted: Double {
         set {
         }
         get {
-            self.caloriesResting + Float(self.activeCaloriesBurned)
+            self.caloriesResting + Double(self.activeCaloriesBurned)
         }
     }
 
-    var fatGoalUnadjusted: Float {
+    var fatGoalUnadjusted: Double {
         set {
         }
         get {
@@ -157,7 +157,7 @@ struct Profile: Codable {
         }
     }
 
-    var fiberMinimumUnadjusted: Float {
+    var fiberMinimumUnadjusted: Double {
         set {
         }
         get {
@@ -165,7 +165,7 @@ struct Profile: Codable {
         }
     }
 
-    var proteinGoalUnadjusted: Float {
+    var proteinGoalUnadjusted: Double {
         set {
         }
         get {
@@ -173,7 +173,7 @@ struct Profile: Codable {
         }
     }
 
-    var fatGoalPercentageUnadjusted: Float {
+    var fatGoalPercentageUnadjusted: Double {
         set {
         }
         get {
@@ -181,7 +181,7 @@ struct Profile: Codable {
         }
     }
 
-    var netCarbsMaximumPercentageUnadjusted: Float {
+    var netCarbsMaximumPercentageUnadjusted: Double {
         set {
         }
         get {
@@ -189,7 +189,7 @@ struct Profile: Codable {
         }
     }
 
-    var proteinGoalPercentageUnadjusted: Float {
+    var proteinGoalPercentageUnadjusted: Double {
         set {
         }
         get {
@@ -197,15 +197,15 @@ struct Profile: Codable {
         }
     }
 
-    var caloriesGoal: Float {
+    var caloriesGoal: Double {
         set {
         }
         get {
-            self.caloriesGoalUnadjusted - (self.caloriesGoalUnadjusted * (Float(self.calorieDeficit) / 100))
+            self.caloriesGoalUnadjusted - (self.caloriesGoalUnadjusted * (Double(self.calorieDeficit) / 100))
         }
     }
 
-    var fiberMinimum: Float {
+    var fiberMinimum: Double {
         set {
         }
         get {
@@ -213,7 +213,7 @@ struct Profile: Codable {
         }
     }
 
-    var proteinGoal: Float {
+    var proteinGoal: Double {
         set {
         }
         get {
@@ -221,7 +221,7 @@ struct Profile: Codable {
         }
     }
 
-    var fatGoal: Float {
+    var fatGoal: Double {
         set {
         }
         get {
@@ -229,7 +229,7 @@ struct Profile: Codable {
         }
     }
 
-    var fatGoalPercentage: Float {
+    var fatGoalPercentage: Double {
         set {
         }
         get {
@@ -237,7 +237,7 @@ struct Profile: Codable {
         }
     }
 
-    var netCarbsMaximumPercentage: Float {
+    var netCarbsMaximumPercentage: Double {
         set {
         }
         get {
@@ -245,7 +245,7 @@ struct Profile: Codable {
         }
     }
 
-    var proteinGoalPercentage: Float {
+    var proteinGoalPercentage: Double {
         set {
         }
         get {
@@ -253,7 +253,7 @@ struct Profile: Codable {
         }
     }
 
-    var waterLiters: Float {
+    var waterLiters: Double {
         set {
         }
         get {
