@@ -20,7 +20,7 @@ enum NVControl {
 
 enum NVValueType {
     case int
-    case float
+    case double
     case bool
     case date
     case string
@@ -189,7 +189,7 @@ struct NameValue<T: NVValueTypeProtocol>: View {
             return .int
         }
         if type(of: value.wrappedValue) == Double.self {
-            return .float
+            return .double
         }
         if type(of: value.wrappedValue) == Bool.self {
             return .bool
@@ -204,7 +204,7 @@ struct NameValue<T: NVValueTypeProtocol>: View {
         if valueType == .int {
             return negative ? .default : .numberPad
         }
-        if valueType == .float {
+        if valueType == .double {
             return negative ? .default : .decimalPad
         }
         return .default
@@ -223,9 +223,6 @@ struct NVTextField<T: NVValueTypeProtocol>: View {
 
     @State var valueString: String
 
-    // @State var refreshMe: Bool = false // this is a hack to refresh the view
-
-
     init(geo: GeometryProxy, name: String, description: String, value: Binding<T>, unit: Unit, precision: Int, valueType: NVValueType, keyboard: UIKeyboardType) {
         self.geo = geo
         self.name = name
@@ -236,7 +233,7 @@ struct NVTextField<T: NVValueTypeProtocol>: View {
         self.valueType = valueType
         self.keyboard = keyboard
 
-        self._valueString = State(initialValue: value.wrappedValue.string(precision))
+         self._valueString = State(initialValue: value.wrappedValue.string(precision))
 
         if name == "Weight" {
             print("\nReloading weight!!!\n")
@@ -245,45 +242,38 @@ struct NVTextField<T: NVValueTypeProtocol>: View {
 
     var body: some View {
 
-        // TEXTFIELD control for text values (EDIT)
-        TextField(description.count > 0 ? description : name, text: $valueString)
-          .value(geo, valueString.count > 7, unit)
-          .autocapitalization(UITextAutocapitalizationType.words)
-          .foregroundColor(Color("Blue"))
-        // .foregroundColor(self.refreshMe ? Color("Blue") : Color("Blue"))
-          .keyboardType(keyboard)
-          .onReceive(NotificationCenter.default.publisher(for: UITextField.textDidBeginEditingNotification)) { obj in
-              if let textEdit = obj.object as? UITextField {
-                  textEdit.selectedTextRange = textEdit.textRange(from: textEdit.beginningOfDocument, to: textEdit.endOfDocument)
-              }
-          }
-          .onChange(of: valueString) { (newValue) in
-              print(valueType)
-              if valueType == .int {
-                  print("\nConvering int")
-                  if let convertedValue = Int(newValue) {
-                      value = convertedValue as! T
-                      valueString = value.string(precision)
-                      print(valueString)
-                  } else {
-                      print("Error...")
-                  }
-              } else if valueType == .float {
-                  print("\nConvering float")
-                  if let convertedValue = Double(newValue) {
-                      value = convertedValue as! T
-                      valueString = value.string(precision)
-                      print(valueString)
-                  } else {
-                      print("Error...")
-                  }
-              } else {
-                  print("\nConvering string")
-                  value = newValue as! T
-                  valueString = value.string(precision)
-                  print(valueString)
-              }
-              // self.refreshMe = !self.refreshMe
-          }
+         // TEXTFIELD control for text values (EDIT)
+         TextField(description.count > 0 ? description : name, text: $valueString)
+           .value(geo, valueString.count > 7, unit)
+           .autocapitalization(UITextAutocapitalizationType.words)
+           .foregroundColor(Color("Blue"))
+           .keyboardType(keyboard)
+           .onChange(of: valueString) { (newValue) in
+               print(valueType)
+               if valueType == .int {
+                   print("\nConvering int")
+                   if let convertedValue = Int(newValue) {
+                       value = convertedValue as! T
+                       valueString = value.string(precision)
+                       print(valueString)
+                   } else {
+                       print("Error...")
+                   }
+               } else if valueType == .double {
+                   print("\nConvering double")
+                   if let convertedValue = Double(newValue) {
+                       value = convertedValue as! T
+                       valueString = value.string(precision)
+                       print(valueString)
+                   } else {
+                       print("Error...")
+                   }
+               } else {
+                   print("\nConvering string")
+                   value = newValue as! T
+                   valueString = value.string(precision)
+                   print(valueString)
+               }
+           }
     }
 }

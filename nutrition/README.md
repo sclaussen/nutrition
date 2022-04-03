@@ -2,7 +2,9 @@
 
 ## P0
 
+- Serialization MVVM sample project
 - BUG: profile change value, then cancel, value remains...  valueString "feature"
+  - https://gist.github.com/darrarski/065520cc7095a7e0e33e72373feab3ac
   - Numbers Only
     https://programmingwithswift.com/numbers-only-textfield-with-swiftui
 - Re-enable ingredient search bar

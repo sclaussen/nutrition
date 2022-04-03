@@ -6,6 +6,10 @@ extension Double: NVValueTypeProtocol {
         return (self * divisor).rounded() / divisor
     }
 
+    func singular() -> Bool {
+        return self.round(0) == 1.0
+    }
+
     func string(_ precision: Int = -1) -> String {
         if precision == -1 {
             return self.description
@@ -16,10 +20,6 @@ extension Double: NVValueTypeProtocol {
         Formatter.number.roundingMode = .halfEven
         Formatter.number.numberStyle = .decimal
         return Formatter.number.string(for: self) ?? ""
-    }
-
-    func singular() -> Bool {
-        return self.round(0) == 1.0
     }
 
     var displayName: String {

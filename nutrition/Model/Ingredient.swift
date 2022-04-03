@@ -15,7 +15,8 @@ class IngredientMgr: ObservableObject {
         ingredients.append(Ingredient(name: "Chicken", servingSize: 100, calories: 115, fat: 2.7, fiber: 0, netCarbs: 0, protein: 22, consumptionUnit: Unit.gram, consumptionGrams: 1, meat: true, meatAmount: 250))
         ingredients.append(Ingredient(name: "Beef", servingSize: 100, calories: 214, fat: 15.2, fiber: 0, netCarbs: 0, protein: 19, consumptionUnit: Unit.gram, consumptionGrams: 1, meat: true, meatAmount: 150,
                                       mealAdjustments: [ MealAdjustment(name: "Eggs", amount: -1, consumptionUnit: Unit.egg),
-                                                         MealAdjustment(name: "Extra Virgin Olive Oil", amount: -1, consumptionUnit: Unit.tablespoon) ]))
+                                                         MealAdjustment(name: "Extra Virgin Olive Oil", amount: -1, consumptionUnit: Unit.tablespoon),
+                                                         MealAdjustment(name: "Collared Greens", amount: 20, consumptionUnit: Unit.gram) ]))
         ingredients.append(Ingredient(name: "Bison", servingSize: 112, calories: 160, fat: 8, fiber: 0, netCarbs: 0, protein: 23, consumptionUnit: Unit.gram, consumptionGrams: 1, meat: true, meatAmount: 150,
                                       mealAdjustments: [ MealAdjustment(name: "Eggs", amount: -1, consumptionUnit: Unit.egg),
                                                          MealAdjustment(name: "Extra Virgin Olive Oil", amount: -1, consumptionUnit: Unit.tablespoon) ]))
@@ -78,8 +79,82 @@ class IngredientMgr: ObservableObject {
         self.ingredients = savedItems
     }
 
-    func create(name: String, productBrand: String = "", productCost: Double = 0, productGrams:Double = 0, servingSize: Double, calories: Double, fat: Double, fiber: Double, netCarbs: Double, protein: Double, consumptionUnit: Unit, consumptionGrams: Double, meat: Bool, meatAmount: Double, mealAdjustments: [MealAdjustment], available: Bool, verified: String) {
-        let ingredient = Ingredient(name: name, productBrand: productBrand, productCost: productCost, productGrams: productGrams, servingSize: servingSize, calories: calories, fat: fat, fiber: fiber, netCarbs: netCarbs, protein: protein, consumptionUnit: consumptionUnit, consumptionGrams: consumptionGrams, meat: meat, meatAmount: meatAmount, mealAdjustments: mealAdjustments, available: available, verified: verified)
+    func create(name: String,
+                productBrand: String = "",
+                productCost: Double = 0,
+                productGrams:Double = 0,
+                servingSize: Double,
+                calories: Double,
+                fat: Double,
+                fiber: Double,
+                netCarbs: Double,
+                protein: Double,
+                consumptionUnit: Unit,
+                consumptionGrams: Double,
+                meat: Bool,
+                meatAmount: Double,
+                mealAdjustments: [MealAdjustment],
+                omega3: Double = 0,
+                vitaminD: Double = 0,
+                calcium: Double = 0,
+                iron: Double = 0,
+                potassium: Double = 0,
+                vitaminA: Double = 0,
+                vitaminC: Double = 0,
+                vitaminE: Double = 0,
+                vitaminK: Double = 0,
+                thiamin: Double = 0,
+                niacin: Double = 0,
+                vitaminB6: Double = 0,
+                folate: Double = 0,
+                vitaminB12: Double = 0,
+                pantothenicAcid: Double = 0,
+                phosphorus: Double = 0,
+                magnesium: Double = 0,
+                zinc: Double = 0,
+                selenium: Double = 0,
+                copper: Double = 0,
+                manganese: Double = 0,
+                available: Bool,
+                verified: String) {
+        let ingredient = Ingredient(name: name,
+                                    productBrand: productBrand,
+                                    productCost: productCost,
+                                    productGrams: productGrams,
+                                    servingSize: servingSize,
+                                    calories: calories,
+                                    fat: fat,
+                                    fiber: fiber,
+                                    netCarbs: netCarbs,
+                                    protein: protein,
+                                    consumptionUnit: consumptionUnit,
+                                    consumptionGrams: consumptionGrams,
+                                    meat: meat,
+                                    meatAmount: meatAmount,
+                                    mealAdjustments: mealAdjustments,
+                                    omega3: omega3,
+                                    vitaminD: vitaminD,
+                                    calcium: calcium,
+                                    iron: iron,
+                                    potassium: potassium,
+                                    vitaminA: vitaminA,
+                                    vitaminC: vitaminC,
+                                    vitaminE: vitaminE,
+                                    vitaminK: vitaminK,
+                                    thiamin: thiamin,
+                                    niacin: niacin,
+                                    vitaminB6: vitaminB6,
+                                    folate: folate,
+                                    vitaminB12: vitaminB12,
+                                    pantothenicAcid: pantothenicAcid,
+                                    phosphorus: phosphorus,
+                                    magnesium: magnesium,
+                                    zinc: zinc,
+                                    selenium: selenium,
+                                    copper: copper,
+                                    manganese: manganese,
+                                    available: available,
+                                    verified: verified)
         ingredients.append(ingredient)
     }
 
@@ -212,7 +287,68 @@ struct Ingredient: Codable, Identifiable {
 
     var verified: String
 
-    init(id: String = UUID().uuidString, name: String, productBrand: String = "", productCost: Double = 0, productGrams: Double = 0, servingSize: Double, calories: Double, fat: Double, fiber: Double, netCarbs: Double, protein: Double, consumptionUnit: Unit = Unit.gram, consumptionGrams: Double, meat: Bool = false, meatAmount: Double = 200, mealAdjustments: [MealAdjustment] = [], available: Bool = true, verified: String = "") {
+    var omega3: Double
+    var vitaminD: Double
+    var calcium: Double
+    var iron: Double
+    var potassium: Double
+    var vitaminA: Double
+    var vitaminC: Double
+    var vitaminE: Double
+    var vitaminK: Double
+    var thiamin: Double
+    var niacin: Double
+    var vitaminB6: Double
+    var folate: Double
+    var vitaminB12: Double
+    var pantothenicAcid: Double
+    var phosphorus: Double
+    var magnesium: Double
+    var zinc: Double
+    var selenium: Double
+    var copper: Double
+    var manganese: Double
+
+    init(id: String = UUID().uuidString,
+         name: String,
+         productBrand: String = "",
+         productCost: Double = 0,
+         productGrams: Double = 0,
+         servingSize: Double,
+         calories: Double,
+         fat: Double,
+         fiber: Double,
+         netCarbs: Double,
+         protein: Double,
+         consumptionUnit: Unit = Unit.gram,
+         consumptionGrams: Double,
+         meat: Bool = false,
+         meatAmount: Double = 200,
+         mealAdjustments: [MealAdjustment] = [],
+         omega3: Double = 0,
+         vitaminD: Double = 0,
+         calcium: Double = 0,
+         iron: Double = 0,
+         potassium: Double = 0,
+         vitaminA: Double = 0,
+         vitaminC: Double = 0,
+         vitaminE: Double = 0,
+         vitaminK: Double = 0,
+         thiamin: Double = 0,
+         niacin: Double = 0,
+         vitaminB6: Double = 0,
+         folate: Double = 0,
+         vitaminB12: Double = 0,
+         pantothenicAcid: Double = 0,
+         phosphorus: Double = 0,
+         magnesium: Double = 0,
+         zinc: Double = 0,
+         selenium: Double = 0,
+         copper: Double = 0,
+         manganese: Double = 0,
+         available: Bool = true,
+         verified: String = "") {
+
         self.id = id
 
         self.name = name
@@ -234,6 +370,28 @@ struct Ingredient: Codable, Identifiable {
         self.meat = meat
         self.meatAmount = meatAmount
         self.mealAdjustments = mealAdjustments
+
+        self.omega3 = omega3
+        self.vitaminD = vitaminD
+        self.calcium = calcium
+        self.iron = iron
+        self.potassium = potassium
+        self.vitaminA = vitaminA
+        self.vitaminC = vitaminC
+        self.vitaminE = vitaminE
+        self.vitaminK = vitaminK
+        self.thiamin = thiamin
+        self.niacin = niacin
+        self.vitaminB6 = vitaminB6
+        self.folate = folate
+        self.vitaminB12 = vitaminB12
+        self.pantothenicAcid = pantothenicAcid
+        self.phosphorus = phosphorus
+        self.magnesium = magnesium
+        self.zinc = zinc
+        self.selenium = selenium
+        self.copper = copper
+        self.manganese = manganese
 
         self.available = available
 
@@ -281,10 +439,85 @@ struct Ingredient: Codable, Identifiable {
     }
 
     func toggleAvailable() -> Ingredient {
-        return Ingredient(id: id, name: name, productBrand: productBrand, productCost: productCost, productGrams: productGrams, servingSize: servingSize, calories: calories, fat: fat, fiber: fiber, netCarbs: netCarbs, protein: protein, consumptionUnit: consumptionUnit, consumptionGrams: consumptionGrams, meat: meat, mealAdjustments: mealAdjustments, available: !available, verified: verified)
+        return Ingredient(id: id,
+                          name: name,
+                          productBrand: productBrand,
+                          productCost: productCost,
+                          productGrams: productGrams,
+                          servingSize: servingSize,
+                          calories: calories,
+                          fat: fat,
+                          fiber: fiber,
+                          netCarbs: netCarbs,
+                          protein: protein,
+                          consumptionUnit: consumptionUnit,
+                          consumptionGrams: consumptionGrams,
+                          meat: meat,
+                          mealAdjustments: mealAdjustments,
+                          omega3: omega3,
+                          vitaminD: vitaminD,
+                          calcium: calcium,
+                          iron: iron,
+                          potassium: potassium,
+                          vitaminA: vitaminA,
+                          vitaminC: vitaminC,
+                          vitaminE: vitaminE,
+                          vitaminK: vitaminK,
+                          thiamin: thiamin,
+                          niacin: niacin,
+                          vitaminB6: vitaminB6,
+                          folate: folate,
+                          vitaminB12: vitaminB12,
+                          pantothenicAcid: pantothenicAcid,
+                          phosphorus: phosphorus,
+                          magnesium: magnesium,
+                          zinc: zinc,
+                          selenium: selenium,
+                          copper: copper,
+                          manganese: manganese,
+                          available: !available,
+                          verified: verified)
     }
 
     func update(ingredient: Ingredient) -> Ingredient {
-        return Ingredient(id: ingredient.id, name: ingredient.name, productBrand: ingredient.productBrand, productCost: ingredient.productCost, productGrams: ingredient.productGrams, servingSize: ingredient.servingSize, calories: ingredient.calories, fat: ingredient.fat, fiber: ingredient.fiber, netCarbs: ingredient.netCarbs, protein: ingredient.protein, consumptionUnit: ingredient.consumptionUnit, consumptionGrams: ingredient.consumptionGrams, meat: ingredient.meat, meatAmount: ingredient.meatAmount, mealAdjustments: ingredient.mealAdjustments, available: ingredient.available, verified: verified)
+        return Ingredient(id: ingredient.id,
+                          name: ingredient.name,
+                          productBrand: ingredient.productBrand,
+                          productCost: ingredient.productCost,
+                          productGrams: ingredient.productGrams,
+                          servingSize: ingredient.servingSize,
+                          calories: ingredient.calories,
+                          fat: ingredient.fat,
+                          fiber: ingredient.fiber,
+                          netCarbs: ingredient.netCarbs,
+                          protein: ingredient.protein,
+                          consumptionUnit: ingredient.consumptionUnit,
+                          consumptionGrams: ingredient.consumptionGrams,
+                          meat: ingredient.meat,
+                          meatAmount: ingredient.meatAmount,
+                          mealAdjustments: ingredient.mealAdjustments,
+                          omega3: ingredient.omega3,
+                          vitaminD: ingredient.vitaminD,
+                          calcium: ingredient.calcium,
+                          iron: ingredient.iron,
+                          potassium: ingredient.potassium,
+                          vitaminA: ingredient.vitaminA,
+                          vitaminC: ingredient.vitaminC,
+                          vitaminE: ingredient.vitaminE,
+                          vitaminK: ingredient.vitaminK,
+                          thiamin: ingredient.thiamin,
+                          niacin: ingredient.niacin,
+                          vitaminB6: ingredient.vitaminB6,
+                          folate: ingredient.folate,
+                          vitaminB12: ingredient.vitaminB12,
+                          pantothenicAcid: ingredient.pantothenicAcid,
+                          phosphorus: ingredient.phosphorus,
+                          magnesium: ingredient.magnesium,
+                          zinc: ingredient.zinc,
+                          selenium: ingredient.selenium,
+                          copper: ingredient.copper,
+                          manganese: ingredient.manganese,
+                          available: ingredient.available,
+                          verified: verified)
     }
 }

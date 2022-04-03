@@ -33,22 +33,36 @@ struct IngredientEdit: View {
                 NameValue("Meat", $ingredient.meat, control: .toggle)
             }
 
-            if ingredient.meat {
-                ForEach(0..<ingredient.mealAdjustments.count, id: \.self) { index in
-                    Section(header: Text("Base Meal Adjustment #" + String(index + 1))) {
-                        NameValue("Ingredient", $ingredient.mealAdjustments[index].name, options: ingredientMgr.getNewMeatNames(existing: []), control: .picker)
-                        if ingredient.mealAdjustments[index].name.count > 0 {
-                            NameValue("Amount", $ingredient.mealAdjustments[index].amount, ingredientMgr.getIngredient(name: ingredient.mealAdjustments[index].name)!.consumptionUnit, negative: true, edit: true)
-                        }
-                    }
-                }
-                Button {
-                    let mealAdustment: MealAdjustment = MealAdjustment(name: "", amount: 0.0, consumptionUnit: .none)
-                    ingredient.mealAdjustments.append(mealAdustment)
-                } label: {
-                    Label("Add a Base Meal Adjustment (Optional)", systemImage: "plus.circle")
-                }
-            }
+            // if ingredient.meat {
+            //     ForEach(0..<ingredient.mealAdjustments.count, id: \.self) { index in
+            //         Section(header: HStack {
+            //                     Text("Base Meal Adjustment #" + String(index + 1))
+            //                     Spacer()
+            //                     Button {
+            //                         print("Delete Button")
+            //                     } label: {
+            //                         Label("Delete")
+            //                     }
+            //                 }) {
+            //             NameValue("Ingredient", $ingredient.mealAdjustments[index].name, options: ingredientMgr.getNewMeatNames(existing: []), control: .picker)
+            //               // .overlay(ZStack {
+            //               //              Image(systemName: "xmark")
+            //               //                .foregroundColor(Color("Red"))
+            //               //          }
+            //               //            .font(.headline)
+            //               //         , alignment: .trailing)
+            //             if ingredient.mealAdjustments[index].name.count > 0 {
+            //                 NameValue("Amount", $ingredient.mealAdjustments[index].amount, ingredientMgr.getIngredient(name: ingredient.mealAdjustments[index].name)!.consumptionUnit, negative: true, edit: true)
+            //             }
+            //         }
+            //     }
+            //     Button {
+            //         let mealAdustment: MealAdjustment = MealAdjustment(name: "", amount: 0.0, consumptionUnit: .none)
+            //         ingredient.mealAdjustments.append(mealAdustment)
+            //     } label: {
+            //         Label("Add a Base Meal Adjustment (Optional)", systemImage: "plus.circle")
+            //     }
+//            }
 
             // Section {
             //     NameValue("Calories (per 100g)", $ingredient.calories100)
