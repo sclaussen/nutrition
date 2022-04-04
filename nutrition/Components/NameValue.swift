@@ -1,24 +1,24 @@
 import SwiftUI
 
-protocol NVValueTypeProtocol: Codable, Hashable, CaseIterable where AllCases: RandomAccessCollection {
-    func string(_ max: Int) -> String
+protocol ValueType: Codable, Hashable, CaseIterable where AllCases: RandomAccessCollection {
+    func formattedString(_ max: Int) -> String
     func singular() -> Bool
 }
 
-extension NVValueTypeProtocol {
-    func string(_ max: Int = -1) -> String {
-        return string(max)
-    }
-}
+//extension ValueType {
+//    func formattedString(_ max: Int = -1) -> String {
+//        return formattedString(max)
+//    }
+//}
 
-enum NVControl {
+enum Control {
     case text
     case toggle
     case date
     case picker
 }
 
-enum NVValueType {
+enum ScalerType {
     case int
     case double
     case bool
@@ -26,18 +26,19 @@ enum NVValueType {
     case string
 }
 
-struct NameValue<T: NVValueTypeProtocol>: View {
+struct NameValue<T: ValueType>: View {
     var name: String
     var description: String
     @Binding var value: T
     var unit: Unit
     var precision: Int
     var options: [T]
-    var control: NVControl
+    var control: Control
+    var validator: Bool
     var edit: Bool
 
     var keyboard: UIKeyboardType = .default
-    var valueType: NVValueType = .string
+    var valueScalerType: ScalerType = .string
     var wideValue: Bool = false
 
 
@@ -48,7 +49,8 @@ struct NameValue<T: NVValueTypeProtocol>: View {
          precision: Int = 0,
          negative: Bool = false,
          options: [T] = [],
-         control: NVControl = .text,
+         control: Control = .text,
+         validator: Bool = true,
          edit: Bool = false) {
 
         self.name = name
@@ -59,18 +61,17 @@ struct NameValue<T: NVValueTypeProtocol>: View {
         self.unit = (control == .text && type(of: value.wrappedValue) != String.self) ? unit : .none
         self.options = options
         self.control = control
+        self.validator = validator
         self.edit = (control == .text) ? edit : true
 
-        self.valueType = getValueType(value)
-        self.keyboard = getKeyboard(valueType, negative)
+        self.valueScalerType = getValueScalerType(value.wrappedValue)
+        self.keyboard = getKeyboard(valueScalerType, negative)
 
-        self.wideValue = control == .text && $value.wrappedValue.string(precision).count > 7
+        self.wideValue = control == .text && $value.wrappedValue.formattedString(precision).count > 7
     }
 
     var body: some View {
         GeometryReader { geo in
-            // VStack(alignment: .leading, spacing: 0) {
-            //     HStack(alignment: .bottom, spacing: 0) {
             VStack(spacing: 0) {
 
                 HStack(spacing: 0) {
@@ -87,7 +88,7 @@ struct NameValue<T: NVValueTypeProtocol>: View {
                     if control == .text {
                         if !edit {
                             // TEXT control for text values (VIEW)
-                            Text(value.string(precision))
+                            Text(value.formattedString(precision))
                               .value(geo, wideValue, unit)
                               .foregroundColor(Color("Black"))
                               .if (!description.isEmpty) { view in
@@ -101,7 +102,8 @@ struct NameValue<T: NVValueTypeProtocol>: View {
                                         value: _value,
                                         unit: unit,
                                         precision: precision,
-                                        valueType: valueType,
+                                        validator: validator,
+                                        valueScalerType: valueScalerType,
                                         keyboard: keyboard)
                               .if (!description.isEmpty) { view in
                                   view.offset(x: -2)
@@ -121,7 +123,7 @@ struct NameValue<T: NVValueTypeProtocol>: View {
                     if control == .picker {
                         Picker("", selection: $value) {
                             ForEach(options, id: \.self) {
-                                Text($0.string()).tag($0)
+                                Text($0.formattedString(-1)).tag($0)
                                   .value(geo, false, .none)
                                   .accentColor(Color("Blue"))
                             }
@@ -184,96 +186,152 @@ struct NameValue<T: NVValueTypeProtocol>: View {
         }
     }
 
-    func getValueType(_ value: Binding<T>) -> NVValueType {
-        if type(of: value.wrappedValue) == Int.self {
+    func getValueScalerType(_ value: Any) -> ScalerType {
+        if type(of: value) == Int.self {
             return .int
         }
-        if type(of: value.wrappedValue) == Double.self {
+        if type(of: value) == Double.self {
             return .double
         }
-        if type(of: value.wrappedValue) == Bool.self {
+        if type(of: value) == Bool.self {
             return .bool
         }
-        if type(of: value.wrappedValue) == Date.self {
+        if type(of: value) == Date.self {
             return .date
         }
         return .string
     }
 
-    func getKeyboard(_ valueType: NVValueType, _ negative: Bool) -> UIKeyboardType {
-        if valueType == .int {
+    func getKeyboard(_ valueScalerType: ScalerType, _ negative: Bool) -> UIKeyboardType {
+        if valueScalerType == .int {
             return negative ? .default : .numberPad
         }
-        if valueType == .double {
+        if valueScalerType == .double {
             return negative ? .default : .decimalPad
         }
         return .default
     }
 }
 
-struct NVTextField<T: NVValueTypeProtocol>: View {
+struct NVTextField<T: ValueType>: View {
+    @State var isEditing: Bool = false
+    @State var editingString: String = ""
+
     var geo: GeometryProxy
     var name: String
     var description: String
     @Binding var value: T
     var unit: Unit
     var precision: Int
-    var valueType: NVValueType
+    var validator: Bool
+    var valueScalerType: ScalerType
     var keyboard: UIKeyboardType
 
     @State var valueString: String
 
-    init(geo: GeometryProxy, name: String, description: String, value: Binding<T>, unit: Unit, precision: Int, valueType: NVValueType, keyboard: UIKeyboardType) {
+    init(geo: GeometryProxy, name: String, description: String, value: Binding<T>, unit: Unit, precision: Int, validator: Bool, valueScalerType: ScalerType, keyboard: UIKeyboardType) {
         self.geo = geo
         self.name = name
         self.description = description
         self._value = value
         self.unit = unit
         self.precision = precision
-        self.valueType = valueType
         self.keyboard = keyboard
+        self.valueScalerType = valueScalerType
+        self.validator = validator
 
-         self._valueString = State(initialValue: value.wrappedValue.string(precision))
-
-        if name == "Weight" {
-            print("\nReloading weight!!!\n")
-        }
+        self._valueString = State(initialValue: value.wrappedValue.formattedString(precision))
     }
 
     var body: some View {
 
-         // TEXTFIELD control for text values (EDIT)
-         TextField(description.count > 0 ? description : name, text: $valueString)
-           .value(geo, valueString.count > 7, unit)
-           .autocapitalization(UITextAutocapitalizationType.words)
-           .foregroundColor(Color("Blue"))
-           .keyboardType(keyboard)
-           .onChange(of: valueString) { (newValue) in
-               print(valueType)
-               if valueType == .int {
-                   print("\nConvering int")
-                   if let convertedValue = Int(newValue) {
-                       value = convertedValue as! T
-                       valueString = value.string(precision)
-                       print(valueString)
-                   } else {
-                       print("Error...")
-                   }
-               } else if valueType == .double {
-                   print("\nConvering double")
-                   if let convertedValue = Double(newValue) {
-                       value = convertedValue as! T
-                       valueString = value.string(precision)
-                       print(valueString)
-                   } else {
-                       print("Error...")
-                   }
-               } else {
-                   print("\nConvering string")
-                   value = newValue as! T
-                   valueString = value.string(precision)
-                   print(valueString)
-               }
-           }
+        // TextField(name, text: Binding(get: {
+        //     if isEditing {
+        //         return editingString
+        //     }
+        //     return $value.wrappedValue.formattedString(precision)
+        // },
+        //                               set: { string in
+        //     editingString = string
+        //     if valueScalerType == .double {
+        //         if let string = Double(string) {
+        //             $value.wrappedValue = string as! T
+        //         }
+        //     } else if valueScalerType == .int {
+        //         if let string = Int(string) {
+        //             $value.wrappedValue = string as! T
+        //         }
+        //     } else {
+        //         $value.wrappedValue = string as! T
+        //     }
+
+        //     print("\nSet:")
+        //     print("editingString", editingString)
+        //     print("value.wrappedValue", $value.wrappedValue)
+        // }),
+        //           onEditingChanged: { isEditing in
+        //               self.isEditing = isEditing
+        //     editingString = $value.wrappedValue.formattedString(precision)
+        //               print("\nonEditingChanged:")
+        //               print("editingString", editingString)
+        //     print("value.wrappedValue", $value.wrappedValue)
+        //           })
+        //   .overlay(ZStack {
+        //                image(systemname: "xmark")
+        //                  .foregroundcolor(.red)
+        //                  .opacity(validator ? 0.0 : 0.8)
+        //                image(systemname: "checkmark")
+        //                  .foregroundcolor(.green)
+        //                  .opacity(validator ? 0.8 : 0.0)
+        //            }
+        //              .font(.title)
+        //              .padding(.trailing)
+        //           , alignment: .trailing)
+        //   .onsubmit {
+        //       print("\nonsubmit:")
+        //       print($value.wrappedvalue)
+        //   }
+
+        // TEXTFIELD control for text values (EDIT)
+        TextField(description.count > 0 ? description : name, text: $valueString
+//                  onEditingChanged: { isEditing in
+//                      self.isEditing = isEditing
+//            editingString = $value.wrappedValue.formattedString(precision)
+//                      print("\nonEditingChanged:")
+//                      print("editingString", editingString)
+//            print("value.wrappedValue", $value.wrappedValue)
+//                  })
+                  )
+          .value(geo, valueString.count > 7, unit)
+          .autocapitalization(UITextAutocapitalizationType.words)
+          .foregroundColor(Color("Blue"))
+          .keyboardType(keyboard)
+          .onChange(of: valueString) { (newValue) in
+              print(valueScalerType)
+              if valueScalerType == .int {
+                  print("\nConvering int")
+                  if let convertedValue = Int(newValue) {
+                      value = convertedValue as! T
+                      valueString = value.formattedString(precision)
+                      print(valueString)
+                  } else {
+                      print("Error...")
+                  }
+              } else if valueScalerType == .double {
+                  print("\nConvering double")
+                  if let convertedValue = Double(newValue) {
+                      value = convertedValue as! T
+                      valueString = value.formattedString(precision)
+                      print(valueString)
+                  } else {
+                      print("Error...")
+                  }
+              } else {
+                  print("\nConvering string")
+                  value = newValue as! T
+                  valueString = value.formattedString(precision)
+                  print(valueString)
+              }
+          }
     }
 }

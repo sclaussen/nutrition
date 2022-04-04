@@ -1,6 +1,6 @@
 import Foundation
 
-enum Unit: NVValueTypeProtocol {
+enum Unit: ValueType {
     case none
 
     case bar
@@ -23,10 +23,6 @@ enum Unit: NVValueTypeProtocol {
     case percentage
     case pound
     case year
-
-    var displayName: String {
-        String(describing: self).capitalized
-    }
 
     var singularForm: String {
         switch self {
@@ -97,8 +93,8 @@ enum Unit: NVValueTypeProtocol {
         return options
     }
 
-    func string(_ precision: Int) -> String {
-        return self.displayName
+    func formattedString(_ precision: Int) -> String {
+        return String(describing: self).capitalized
     }
 
     func singular() -> Bool {

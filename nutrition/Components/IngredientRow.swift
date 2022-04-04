@@ -66,11 +66,11 @@ struct IngredientRow: View {
                 Text(name).font(.callout).frame(width: nameWidthPercentage * geo.size.width, alignment: .leading).border(Color("Red"), width: 0)
 
                 if showMacros {
-                    Text("\(calories.string(0))").font(.caption2).frame(width: macroWidthPercentage * geo.size.width, alignment: .trailing).border(Color("Red"), width: 0)
-                    Text("\(fat.string(0))").font(.caption2).frame(width: macroWidthPercentage * geo.size.width, alignment: .trailing).border(Color("Red"), width: 0)
-                    Text("\(fiber.string(0))").font(.caption2).frame(width: macroWidthPercentage * geo.size.width, alignment: .trailing).border(Color("Red"), width: 0)
-                    Text("\(netcarbs.string(0))").font(.caption2).frame(width: macroWidthPercentage * geo.size.width, alignment: .trailing).border(Color("Red"), width: 0)
-                    Text("\(protein.string(0))").font(.caption2).frame(width: macroWidthPercentage * geo.size.width, alignment: .trailing).border(Color("Red"), width: 0)
+                    Text("\(calories.formattedString(0))").font(.caption2).frame(width: macroWidthPercentage * geo.size.width, alignment: .trailing).border(Color("Red"), width: 0)
+                    Text("\(fat.formattedString(0))").font(.caption2).frame(width: macroWidthPercentage * geo.size.width, alignment: .trailing).border(Color("Red"), width: 0)
+                    Text("\(fiber.formattedString(0))").font(.caption2).frame(width: macroWidthPercentage * geo.size.width, alignment: .trailing).border(Color("Red"), width: 0)
+                    Text("\(netcarbs.formattedString(0))").font(.caption2).frame(width: macroWidthPercentage * geo.size.width, alignment: .trailing).border(Color("Red"), width: 0)
+                    Text("\(protein.formattedString(0))").font(.caption2).frame(width: macroWidthPercentage * geo.size.width, alignment: .trailing).border(Color("Red"), width: 0)
                 }
 
                 if showGroup {
@@ -78,7 +78,7 @@ struct IngredientRow: View {
                 }
 
                 if showAmount {
-                    Text("\(amount.string(0))").font(.callout).frame(width: amountWidthPercentage * geo.size.width, alignment: .trailing).border(Color("Red"), width: 0)
+                    Text("\(amount.formattedString(0))").font(.callout).frame(width: amountWidthPercentage * geo.size.width, alignment: .trailing).border(Color("Red"), width: 0)
                     Text(amount == 1 ? consumptionUnit.singularForm : consumptionUnit.pluralForm).font(.caption).frame(width: unitWidthPercentage * geo.size.width, alignment: .leading).border(Color("Red"), width: 0)
                 }
             }.frame(height: 9)
