@@ -74,11 +74,11 @@ struct CalorieProgressBar: View {
 
     var body: some View {
         let percentage = value / goal * 100
-        var progressBarColor = Color.yellow
+        var progressBarColor = Color.theme.yellow
         if percentage > 90 && percentage < 110 {
-            progressBarColor = Color.green
+            progressBarColor = Color.theme.green
         } else if percentage >= 110 {
-            progressBarColor = Color.red
+            progressBarColor = Color.theme.red
         }
 
         let topLeftAnnotation = "Deficit"
@@ -99,10 +99,10 @@ struct CalorieProgressBar: View {
             ZStack(alignment: .leading) {
                 Rectangle()
                   .frame(width: screenWidth * 0.90, height: 12)
-                  .foregroundColor(Color.black.opacity(0.5))
+                  .foregroundColor(Color.theme.progressLineBackground.opacity(0.5))
                 Rectangle()
                   .frame(width: min((value / goal) * screenWidth * 0.90, screenWidth * 0.90), height: 12, alignment: .leading)
-                  .foregroundColor(progressBarColor.opacity(0.9))
+                  .foregroundColor(Color.theme.progressBarColor)
             }.cornerRadius(50)
             HStack {
                 Text(bottomLeftAnnotation).font(.system(size: goalFontSize)).frame(alignment: .leading).padding([.leading, .trailing], screenWidth * 0.03)
@@ -139,30 +139,30 @@ struct MyGauge: View {
             progressBar = 0.75
         }
 
-        var progressBarColor = Color.yellow
+        var progressBarColor = Color.theme.yellow
         switch (gaugeType) {
         case GaugeType.FYI:
-            progressBarColor = Color.green
+            progressBarColor = Color.theme.green
             break
         case GaugeType.Ceiling:
             if value > goal {
-                progressBarColor = Color.red
+                progressBarColor = Color.theme.red
             } else {
-                progressBarColor = Color.green
+                progressBarColor = Color.theme.green
             }
             break
         case GaugeType.Floor:
             if value >= goal {
-                progressBarColor = Color.green
+                progressBarColor = Color.theme.green
             } else if abs(((goal - value) / goal) * 100) > 10 {
-                progressBarColor = Color.red
+                progressBarColor = Color.theme.red
             }
             break
         case GaugeType.Goal:
             if abs(((goal - value) / goal) * 100) < 5 {
-                progressBarColor = Color.green
+                progressBarColor = Color.theme.green
             } else if abs(((goal - value) / goal) * 100) > 10 {
-                progressBarColor = Color.red
+                progressBarColor = Color.theme.red
             }
             break
         }
@@ -175,7 +175,7 @@ struct MyGauge: View {
                 Circle()
                   .rotation(Angle(degrees: 135.0))
                   .trim(from: 0.0, to: 0.75)
-                  .stroke(Color.black.opacity(0.5), lineWidth: lineWidth)
+                  .stroke(Color.theme.progressLineBackground.opacity(0.5), lineWidth: lineWidth)
                   .frame(width: width, height: width)
 
                 Circle()
@@ -184,7 +184,7 @@ struct MyGauge: View {
                   .stroke(progressBarColor.opacity(0.9), lineWidth: lineWidth)
                   .frame(width: width, height: width)
 
-                Text("\(value.fractionDigits(max: precision))").font(.system(size: valueFontSize)).bold().foregroundColor(.blue)
+                Text("\(value.fractionDigits(max: precision))").font(.system(size: valueFontSize)).bold().foregroundColor(Color.theme.blue)
                 Text(String(Int(goal))).font(.system(size: goalFontSize)).offset(y: goalOffset)
             }.cornerRadius(50)
         }

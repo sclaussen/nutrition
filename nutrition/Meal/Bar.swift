@@ -23,7 +23,7 @@ struct Bar: View {
     var geo: GeometryProxy
 
     init(title: String,
-         titleFontColor: Color = Color.black,
+         titleFontColor: Color = Color.theme.blackWhite,
          titleFontSize: Double = 14,
          _ actual: Double,
          _ goal: Double,
@@ -32,13 +32,13 @@ struct Bar: View {
          bottomLeftAnnotation: String = "",
          bottomCenterAnnotation: String = "",
          bottomRightAnnotation: String = "",
-         annotationFontColor: Color = Color.blue,
+         annotationFontColor: Color = Color.theme.blueYellow,
          annotationFontSize: Double = 12,
          progressLineHeight: Double = 10,
-         progressLineBackground: Color = Color.black.opacity(0.2),
-         progressLineNormal: Color = Color.green,
-         progressLineWarning: Color = Color.yellow,
-         progressLineError: Color = Color.red,
+         progressLineBackground: Color = Color.theme.blackWhite.opacity(0.2),
+         progressLineNormal: Color = Color.theme.green,
+         progressLineWarning: Color = Color.theme.yellow,
+         progressLineError: Color = Color.theme.red,
          warningThreshold: Double = 10,
          errorThreshold: Double = 20,
          geo: GeometryProxy) {

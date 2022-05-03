@@ -79,7 +79,7 @@ struct NameValue<T: ValueType>: View {
                     // Name
                     Text(name)
                       .name(geo, wideValue)
-                      .foregroundColor(Color("Black"))
+                      .foregroundColor(Color.theme.blackWhite)
                       .if (!description.isEmpty) { view in
                           view.offset(x: -2, y: -7)
                       }
@@ -90,7 +90,7 @@ struct NameValue<T: ValueType>: View {
                             // TEXT control for text values (VIEW)
                             Text(value.formattedString(precision))
                               .value(geo, wideValue, unit)
-                              .foregroundColor(Color("Black"))
+                              .foregroundColor(Color.theme.blackWhite)
                               .if (!description.isEmpty) { view in
                                   view.offset(x: -2)
                               }
@@ -115,7 +115,7 @@ struct NameValue<T: ValueType>: View {
                     if control == .toggle {
                         Toggle("", isOn: Binding(get: { $value.wrappedValue as! Bool }, set: { $value.wrappedValue = $0 as! T }))
                           .value(geo, false, .none)
-                          .foregroundColor(Color("Blue"))
+                          .foregroundColor(Color.theme.blueYellow)
                           .toggleStyle(CheckmarkToggleStyle())
                     }
 
@@ -125,13 +125,13 @@ struct NameValue<T: ValueType>: View {
                             ForEach(options, id: \.self) {
                                 Text($0.formattedString(-1)).tag($0)
                                   .value(geo, false, .none)
-                                  .accentColor(Color("Blue"))
+                                  .accentColor(Color.theme.blueYellow)
                             }
                         }
                           .value(geo, false, .none)
                           .labelsHidden()
                           .pickerStyle(MenuPickerStyle())
-                          .accentColor(Color("Blue"))
+                          .accentColor(Color.theme.blueYellow)
                     }
 
                     // DATE control for date values (EDIT)
@@ -139,8 +139,8 @@ struct NameValue<T: ValueType>: View {
                         DatePicker("", selection: Binding(get: { $value.wrappedValue as! Date }, set: { $value.wrappedValue = $0 as! T }), in: ...Date(), displayedComponents: [.date])
                           .value(geo, false, .none)
                           .labelsHidden()
-                          .foregroundColor(Color("Blue"))
-                          .colorMultiply(Color("Blue"))
+                          .foregroundColor(Color.theme.blueYellow)
+                          .colorMultiply(Color.theme.blueYellow)
                     }
 
                     // Unit
@@ -149,10 +149,10 @@ struct NameValue<T: ValueType>: View {
                             AnyView(Text(unit.singularForm)
                                       .unit(geo)
                                       .if (edit) { view in
-                                          view.foregroundColor(Color("BlueLight"))
+                                          view.foregroundColor(Color.theme.blueYellowSecondary)
                                       }
                                       .if (!edit) { view in
-                                          view.foregroundColor(Color("BlackLight"))
+                                          view.foregroundColor(Color.theme.blackWhiteSecondary)
                                       }
                                       .if (!description.isEmpty) { view in
                                           view.offset(x: -2)
@@ -162,14 +162,24 @@ struct NameValue<T: ValueType>: View {
                             AnyView(Text(unit.pluralForm)
                                       .unit(geo)
                                       .if (edit) { view in
-                                          view.foregroundColor(Color("BlueLight"))
+                                          view.foregroundColor(Color.theme.blueYellowSecondary)
                                       }
                                       .if (!edit) { view in
-                                          view.foregroundColor(Color("BlackLight"))
+                                          view.foregroundColor(Color.theme.blackWhiteSecondary)
                                       }
                                       .if (!description.isEmpty) { view in
                                           view.offset(x: -2)
                                       }
+                            // .overlay(ZStack {
+                            //     Image(systemName: "xmark")
+                            //         .foregroundColor(.red)
+                            //         .opacity(validator ? 0.0 : 0.8)
+                            //     Image(systemName: "checkmark")
+                            //         .foregroundColor(.green)
+                            //         .opacity(validator ? 0.8 : 0.0)
+                            // }                            .font(.title)
+                            //     .padding(.trailing)
+                            //          , alignment: .trailing)
                             )
                         }
                     }
@@ -179,7 +189,7 @@ struct NameValue<T: ValueType>: View {
                 if !description.isEmpty {
                     AnyView(Text(description)
                               .description(geo)
-                              .foregroundColor(Color("BlackLight"))
+                              .foregroundColor(Color.theme.blackWhiteSecondary)
                               .offset(y: -13))
                 }
             }
@@ -245,93 +255,49 @@ struct NVTextField<T: ValueType>: View {
 
     var body: some View {
 
-        // TextField(name, text: Binding(get: {
-        //     if isEditing {
-        //         return editingString
-        //     }
-        //     return $value.wrappedValue.formattedString(precision)
-        // },
-        //                               set: { string in
-        //     editingString = string
-        //     if valueScalerType == .double {
-        //         if let string = Double(string) {
-        //             $value.wrappedValue = string as! T
-        //         }
-        //     } else if valueScalerType == .int {
-        //         if let string = Int(string) {
-        //             $value.wrappedValue = string as! T
-        //         }
-        //     } else {
-        //         $value.wrappedValue = string as! T
-        //     }
+        TextField(name, text: Binding(get: {
+            if isEditing {
+                return editingString
+            }
+            return $value.wrappedValue.formattedString(precision)
+        },
+                                      set: { string in
+            editingString = string
+            if valueScalerType == .double {
+                if let string = Double(string) {
+                    $value.wrappedValue = string as! T
+                }
+            } else if valueScalerType == .int {
+                if let string = Int(string) {
+                    $value.wrappedValue = string as! T
+                }
+            } else {
+                $value.wrappedValue = string as! T
+            }
 
-        //     print("\nSet:")
-        //     print("editingString", editingString)
-        //     print("value.wrappedValue", $value.wrappedValue)
-        // }),
-        //           onEditingChanged: { isEditing in
-        //               self.isEditing = isEditing
-        //     editingString = $value.wrappedValue.formattedString(precision)
-        //               print("\nonEditingChanged:")
-        //               print("editingString", editingString)
-        //     print("value.wrappedValue", $value.wrappedValue)
-        //           })
-        //   .overlay(ZStack {
-        //                image(systemname: "xmark")
-        //                  .foregroundcolor(.red)
-        //                  .opacity(validator ? 0.0 : 0.8)
-        //                image(systemname: "checkmark")
-        //                  .foregroundcolor(.green)
-        //                  .opacity(validator ? 0.8 : 0.0)
-        //            }
-        //              .font(.title)
-        //              .padding(.trailing)
-        //           , alignment: .trailing)
-        //   .onsubmit {
-        //       print("\nonsubmit:")
-        //       print($value.wrappedvalue)
-        //   }
-
-        // TEXTFIELD control for text values (EDIT)
-        TextField(description.count > 0 ? description : name, text: $valueString
-//                  onEditingChanged: { isEditing in
-//                      self.isEditing = isEditing
-//            editingString = $value.wrappedValue.formattedString(precision)
-//                      print("\nonEditingChanged:")
-//                      print("editingString", editingString)
-//            print("value.wrappedValue", $value.wrappedValue)
-//                  })
-                  )
+            print("\nSet:")
+            print("editingString", editingString)
+            print("value.wrappedValue", $value.wrappedValue)
+        }),
+                  onEditingChanged: { isEditing in
+                      self.isEditing = isEditing
+                      editingString = $value.wrappedValue.formattedString(precision)
+                      print("\nonEditingChanged:")
+                      print("editingString", editingString)
+                      print("value.wrappedValue", $value.wrappedValue)
+                  })
           .value(geo, valueString.count > 7, unit)
-          .autocapitalization(UITextAutocapitalizationType.words)
-          .foregroundColor(Color("Blue"))
-          .keyboardType(keyboard)
-          .onChange(of: valueString) { (newValue) in
-              print(valueScalerType)
-              if valueScalerType == .int {
-                  print("\nConvering int")
-                  if let convertedValue = Int(newValue) {
-                      value = convertedValue as! T
-                      valueString = value.formattedString(precision)
-                      print(valueString)
-                  } else {
-                      print("Error...")
-                  }
-              } else if valueScalerType == .double {
-                  print("\nConvering double")
-                  if let convertedValue = Double(newValue) {
-                      value = convertedValue as! T
-                      valueString = value.formattedString(precision)
-                      print(valueString)
-                  } else {
-                      print("Error...")
-                  }
-              } else {
-                  print("\nConvering string")
-                  value = newValue as! T
-                  valueString = value.formattedString(precision)
-                  print(valueString)
+          .onReceive(NotificationCenter.default.publisher(for: UITextField.textDidBeginEditingNotification)) { obj in
+              if let textEdit = obj.object as? UITextField {
+                  textEdit.selectedTextRange = textEdit.textRange(from: textEdit.beginningOfDocument, to: textEdit.endOfDocument)
               }
+          }
+          .autocapitalization(UITextAutocapitalizationType.words)
+          .foregroundColor(Color.theme.blueYellow)
+          .keyboardType(keyboard)
+          .onSubmit {
+              print("\nonSubmit:")
+              print($value.wrappedValue)
           }
     }
 }

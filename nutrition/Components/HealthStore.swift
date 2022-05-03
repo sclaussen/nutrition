@@ -61,8 +61,8 @@ struct HealthStore {
 
         let formatter = DateFormatter()
         formatter.dateStyle = .short
-        print("Start date: \(formatter.string(from: startDate))")
-        print("End   date: \(formatter.string(from: endDate))")
+        // print("Start date: \(formatter.string(from: startDate))")
+        // print("End   date: \(formatter.string(from: endDate))")
 
         // 1. Use HKQuery to load the most recent samples.
         let mostRecentPredicate = HKQuery.predicateForSamples(withStart: startDate, end: endDate, options: .strictEndDate)

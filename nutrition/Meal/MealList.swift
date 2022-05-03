@@ -14,6 +14,14 @@ struct MealList: View {
     @State var amount: Double = 0
     @State var mealConfigureActive = false
 
+    // Use cases:
+    // - Deactivate a meal ingredient because it's out that will be auto-adjusted
+    // - Change the default value of a meal ingredient staple - would like an auto-reset to the default value once meal is done
+    // - Add meal ingredient when locked vs not locked
+    //
+    // Actions:
+    // - Unlocking will compensate any auto-adjusted ingredient and reset the value of any manually updated amount
+    // - Manually updating amount removes the pending compensation if it exists
     var body: some View {
         List {
             Dashboard(bodyMass: profileMgr.profile.bodyMass,
@@ -35,11 +43,11 @@ struct MealList: View {
               .listRowSeparator(.hidden)
               .frame(height: 230)
               .listRowInsets(EdgeInsets(top: 0, leading: 10, bottom: 0, trailing: 10))
-              .border(Color.green, width: 0)
+              .border(Color.theme.green, width: 0)
 
             IngredientRowHeader(showMacros: true)
               .listRowInsets(EdgeInsets(top: 8, leading: 10, bottom: 8, trailing: 10))
-              .border(Color.green, width: 0)
+              .border(Color.theme.green, width: 0)
 
             ForEach(mealIngredientMgr.get(includeInactive: showInactive)) { mealIngredient in
                 NavigationLink(destination: MealEdit(mealIngredient: mealIngredient),
@@ -54,10 +62,14 @@ struct MealList: View {
                                                  amount: mealIngredient.amount,
                                                  consumptionUnit: getConsumptionUnit(mealIngredient.name))
                                })
-                  .foregroundColor(!mealIngredient.active ? Color.red :
-                                     (mealIngredient.compensationExists || (mealIngredient.defaultAmount != mealIngredient.amount)) ? Color("Blue") :
-                                     Color("Black"))
+                  .foregroundColor(!mealIngredient.active ? Color.theme.red :
+                                     (mealIngredient.compensationExists || (mealIngredient.defaultAmount != mealIngredient.amount)) ? Color.theme.blueYellow :
+                                     Color.theme.blackWhite)
                   .swipeActions(edge: .trailing) {
+
+
+
+                      // Activate/Deactivate meal ingredient
                       Button {
                           if mealIngredient.active || ingredientMgr.getIngredient(name: mealIngredient.name)!.available {
                               let newMealIngredient = mealIngredientMgr.toggleActive(mealIngredient)
@@ -67,15 +79,8 @@ struct MealList: View {
                       } label: {
                           Label("", systemImage: !ingredientMgr.getIngredient(name: mealIngredient.name)!.available ? "circle.slash" : mealIngredient.active ? "pause.circle" : "play.circle")
                       }
-                        .tint(!ingredientMgr.getIngredient(name: mealIngredient.name)!.available ? .gray : mealIngredient.active ? .red : .green)
+                        .tint(!ingredientMgr.getIngredient(name: mealIngredient.name)!.available ? Color.theme.blackWhiteSecondary : mealIngredient.active ? Color.theme.red : Color.theme.green)
 
-
-                      // Button {
-                      //     print("Logic")
-                      // } label: {
-                      //     Label("", systemImage: !ingredientMgr.getIngredient(name: mealIngredient.name)!.available ? "circle.slash" : mealIngredient.active ? "pause.circle" : "play.circle")
-                      // }
-                      //   .tint(!ingredientMgr.getIngredient(name: mealIngredient.name)!.available ? .gray : mealIngredient.active ? .red : .green)
 
 
                       // TODO: Do not apply a delete to an adjustment item (or it'll just get re-added during generateMeal)
@@ -89,7 +94,7 @@ struct MealList: View {
             }
               .onMove(perform: moveAction)
               .onDelete(perform: deleteAction)
-              .border(Color.green, width: 0)
+              .border(Color.theme.green, width: 0)
               .listRowInsets(EdgeInsets(top: 8, leading: 10, bottom: 8, trailing: 10))
         }
           .refreshable {
@@ -104,7 +109,7 @@ struct MealList: View {
           .toolbar {
               ToolbarItem(placement: .navigation) {
                   EditButton()
-                    .foregroundColor(Color("Blue"))
+                    .foregroundColor(Color.theme.blueYellow)
               }
               ToolbarItem(placement: .principal) {
                   HStack {
@@ -118,44 +123,40 @@ struct MealList: View {
                           Image(systemName: !mealIngredientMgr.inactiveIngredientsExist() ? "" : showInactive ? "eye" : "eye.slash")
                       }
                         .frame(width: 40)
-                        .foregroundColor(Color("Blue"))
+                        .foregroundColor(Color.theme.blueYellow)
 
 
                       // Locked Toggle
                       Button {
                           withAnimation {
-
-                          locked.toggle()
-                          if !locked {
-                              for mealIngredient in mealIngredientMgr.get() {
-                                  if !mealIngredient.compensationExists {
-                                      mealIngredientMgr.resetAmount(name: mealIngredient.name)
-                                  }
+                              locked.toggle()
+                              if !locked {
+                                  mealIngredientMgr.rollbackAll()
+                                  mealIngredientMgr.resetAmountAll()
+                                  generateMeal()
                               }
-                              generateMeal()
-                          }
                           }
                       } label: {
                           Image(systemName: locked ? "lock" : "lock.open")
                       }
                         .frame(width: 40)
-                        .foregroundColor(Color("Blue"))
+                        .foregroundColor(Color.theme.blueYellow)
+
 
                       // Meal Configure
                       Button {
                           mealConfigureActive.toggle()
                           NavigationLink("Add", destination: MealAdd())
-                            .foregroundColor(Color("Blue"))
                       } label: {
-                          Image(systemName: locked ? "" : "gear")
+                          Image(systemName: "gear")
                       }
                         .frame(width: 40)
-                        .foregroundColor(Color("Blue"))
+                        .foregroundColor(Color.theme.blueYellow)
                   }
               }
               ToolbarItem(placement: .primaryAction) {
                   NavigationLink("Add", destination: MealAdd())
-                    .foregroundColor(Color("Blue"))
+                    .foregroundColor(Color.theme.blueYellow)
               }
           }
           .onAppear {
@@ -178,47 +179,40 @@ struct MealList: View {
 
 
     func generateMeal() {
-        getHealthKitData()
 
         print("\n\n\nGENERATE MEAL\n================================================================================\n")
 
+        // Attempt to retrieve the body weight and body fat percentage
+        // from Health Kit and update the profile if new values are
+        // available.
+        getHealthKitData()
+
         if locked {
-            mealIngredientMgr.resetMacros()
-            macrosMgr.setGoals(caloriesGoalUnadjusted: profileMgr.profile.caloriesGoalUnadjusted, caloriesGoal: profileMgr.profile.caloriesGoal, fatGoal: profileMgr.profile.fatGoal, fiberMinimum: profileMgr.profile.fiberMinimum, netCarbsMaximum: profileMgr.profile.netCarbsMaximum, proteinGoal: profileMgr.profile.proteinGoal)
+            macrosMgr.setMacroGoals(caloriesGoalUnadjusted: profileMgr.profile.caloriesGoalUnadjusted, caloriesGoal: profileMgr.profile.caloriesGoal, fatGoal: profileMgr.profile.fatGoal, fiberMinimum: profileMgr.profile.fiberMinimum, netCarbsMaximum: profileMgr.profile.netCarbsMaximum, proteinGoal: profileMgr.profile.proteinGoal)
+            mealIngredientMgr.setMacroActualsToZero()
             for mealIngredient in mealIngredientMgr.get(includeInactive: true) {
-                addMacros(mealIngredient.name, Double(mealIngredient.amount), mealIngredient.active)
+                setMacroActuals(mealIngredient.name, Double(mealIngredient.amount), mealIngredient.active)
             }
-            // mealIngredientMgr.p()
             return
         }
 
-        print("Old ingredients")
-        // mealIngredientMgr.p()
-
-        print("Rolling back")
+        print("\nRolling back")
         mealIngredientMgr.rollbackAll()
+        macrosMgr.setMacroGoals(caloriesGoalUnadjusted: profileMgr.profile.caloriesGoalUnadjusted, caloriesGoal: profileMgr.profile.caloriesGoal, fatGoal: profileMgr.profile.fatGoal, fiberMinimum: profileMgr.profile.fiberMinimum, netCarbsMaximum: profileMgr.profile.netCarbsMaximum, proteinGoal: profileMgr.profile.proteinGoal)
+        mealIngredientMgr.setMacroActualsToZero()
 
-        print("\nResetting meal ingredient macros")
-        mealIngredientMgr.resetMacros()
-
-        print("\nSetting macro goals")
-        macrosMgr.setGoals(caloriesGoalUnadjusted: profileMgr.profile.caloriesGoalUnadjusted, caloriesGoal: profileMgr.profile.caloriesGoal, fatGoal: profileMgr.profile.fatGoal, fiberMinimum: profileMgr.profile.fiberMinimum, netCarbsMaximum: profileMgr.profile.netCarbsMaximum, proteinGoal: profileMgr.profile.proteinGoal)
-
-        print("\nBase ingredients")
-        // mealIngredientMgr.p()
-
-        print("\nAdding Meat")
         if profileMgr.profile.meat != "None" {
-            mealIngredientMgr.adjust(name: profileMgr.profile.meat, amount: profileMgr.profile.meatAmount)
+            print("\nAdding Meat")
+            mealIngredientMgr.autoAdjustAmount(name: profileMgr.profile.meat, amount: profileMgr.profile.meatAmount)
+            print("\nApplying Meat Adjustments...")
+            applyMealAdjustmentsToMealIngredients()
         }
-
-        print("\nApplying Meat Adjustments...")
-        applyMealAdjustmentsToMealIngredients()
 
         for mealIngredient in mealIngredientMgr.get(includeInactive: true) {
-            addMacros(mealIngredient.name, Double(mealIngredient.amount), mealIngredient.active)
+            setMacroActuals(mealIngredient.name, Double(mealIngredient.amount), mealIngredient.active)
         }
 
+        print("\nAdding Adjustments")
         while tryAddingAdjustments() {
         }
     }
@@ -227,13 +221,12 @@ struct MealList: View {
         for mealIngredient in mealIngredientMgr.get() {
             let ingredient = ingredientMgr.getIngredient(name: mealIngredient.name)!
             for meatAdjustment in ingredient.mealAdjustments {
-                mealIngredientMgr.adjust(name: meatAdjustment.name, amount: meatAdjustment.amount)
+                mealIngredientMgr.autoAdjustAmount(name: meatAdjustment.name, amount: meatAdjustment.amount)
             }
         }
     }
 
     func tryAddingAdjustments() -> Bool {
-        // print("\nTrying...")
         for adjustment in getRandomizedOrder() {
             if tryAddingAdjustment(adjustment) {
                 return true
@@ -272,8 +265,6 @@ struct MealList: View {
 
     func tryAddingAdjustment(_ adjustment: Adjustment) -> Bool {
 
-        // print("  Trying \(adjustment.name) \(adjustment.amount) \(adjustment.active)...")
-
         // Determine if adding the adjustment would break the constraints
         let mealIngredient = mealIngredientMgr.getIngredient(name: adjustment.name)
         if mealIngredient != nil && adjustment.constraints {
@@ -296,12 +287,12 @@ struct MealList: View {
             return false
         }
 
-        addMacros(adjustment.name, Double(adjustment.amount), true)
-        mealIngredientMgr.adjust(name: adjustment.name, amount: adjustment.amount)
+        setMacroActuals(adjustment.name, Double(adjustment.amount), true)
+        mealIngredientMgr.autoAdjustAmount(name: adjustment.name, amount: adjustment.amount)
         return true
     }
 
-    func addMacros(_ name: String, _ amount: Double, _ active: Bool) {
+    func setMacroActuals(_ name: String, _ amount: Double, _ active: Bool) {
         let ingredient = ingredientMgr.getIngredient(name: name)!
         let servings = (amount * ingredient.consumptionGrams) / ingredient.servingSize
 
@@ -311,10 +302,12 @@ struct MealList: View {
         let netcarbs: Double = Double(ingredient.netCarbs * servings)
         let protein: Double = Double(ingredient.protein * servings)
 
-        mealIngredientMgr.addMacros(name: name, calories: calories, fat: fat, fiber: fiber, netcarbs: netcarbs, protein: protein)
+        // Update the macro values on the meal ingredient
+        mealIngredientMgr.setMacroActuals(name: name, calories: calories, fat: fat, fiber: fiber, netcarbs: netcarbs, protein: protein)
 
+        // Add the meal ingredient's macro values to the overall meal actuals
         if active {
-            macrosMgr.addMacros(name: name, calories: calories, fat: fat, fiber: fiber, netCarbs: netcarbs, protein: protein)
+            macrosMgr.addMacroActuals(name: name, calories: calories, fat: fat, fiber: fiber, netCarbs: netcarbs, protein: protein)
         }
     }
 
@@ -330,7 +323,7 @@ struct MealList: View {
                 return
             }
 
-            print("HealthKit successfully authorized.")
+            // print("HealthKit successfully authorized.")
             if profileMgr.profile.bodyMassFromHealthKit {
                 getBodyMass()
             }
@@ -342,7 +335,7 @@ struct MealList: View {
     }
 
     func getBodyMass() {
-        print("Getting body mass")
+        // print("Getting body mass")
         guard let sampleType = HKSampleType.quantityType(forIdentifier: .bodyMass) else {
             print("Body Mass sample type is no longer available in HealthKit")
             return
@@ -368,7 +361,7 @@ struct MealList: View {
     }
 
     func getBodyFatPercentage() {
-        print("Getting body fat percentage")
+        // print("Getting body fat percentage")
         guard let sampleType = HKSampleType.quantityType(forIdentifier: .bodyFatPercentage) else {
             print("Body Fat Percentage sample type is no longer available in HealthKit")
             return
@@ -394,7 +387,7 @@ struct MealList: View {
     }
 
     func getActiveEnergyBurned () {
-        print("Getting active energy burned")
+        // print("Getting active energy burned")
         guard let sampleType = HKSampleType.quantityType(forIdentifier: .activeEnergyBurned) else {
             print("Active Energy Burned sample type is no longer available in HealthKit")
             return

@@ -1,7 +1,6 @@
 import SwiftUI
 
 struct IngredientRowHeader: View {
-
     var showMacros: Bool = false
     var showGroup: Bool = false
     var showAmount: Bool = true
@@ -16,22 +15,22 @@ struct IngredientRowHeader: View {
     var body: some View {
         GeometryReader { geo in
             HStack(spacing: 5) {
-                Text("Ingredient").font(.caption).foregroundColor(Color("Blue")).frame(width: nameWidthPercentage * geo.size.width, alignment: .leading).border(Color("Red"), width: 0)
+                Text("Ingredient").font(.caption).foregroundColor(Color.theme.blueYellow).frame(width: nameWidthPercentage * geo.size.width, alignment: .leading).border(Color.theme.red, width: 0)
 
                 if showMacros {
-                    Text("Cal").font(.caption2).foregroundColor(Color("Blue")).frame(width: macroWidthPercentage * geo.size.width, alignment: .trailing).border(Color("Red"), width: 0)
-                    Text("Fat").font(.caption2).foregroundColor(Color("Blue")).frame(width: macroWidthPercentage * geo.size.width, alignment: .trailing).border(Color("Red"), width: 0)
-                    Text("Fbr").font(.caption2).foregroundColor(Color("Blue")).frame(width: macroWidthPercentage * geo.size.width, alignment: .trailing).border(Color("Red"), width: 0)
-                    Text("Ncb").font(.caption2).foregroundColor(Color("Blue")).frame(width: macroWidthPercentage * geo.size.width, alignment: .trailing).border(Color("Red"), width: 0)
-                    Text("Pro").font(.caption2).foregroundColor(Color("Blue")).frame(width: macroWidthPercentage * geo.size.width, alignment: .trailing).border(Color("Red"), width: 0)
+                    Text("Cal").font(.caption2).foregroundColor(Color.theme.blueYellow).frame(width: macroWidthPercentage * geo.size.width, alignment: .trailing).border(Color.theme.red, width: 0)
+                    Text("Fat").font(.caption2).foregroundColor(Color.theme.blueYellow).frame(width: macroWidthPercentage * geo.size.width, alignment: .trailing).border(Color.theme.red, width: 0)
+                    Text("Fbr").font(.caption2).foregroundColor(Color.theme.blueYellow).frame(width: macroWidthPercentage * geo.size.width, alignment: .trailing).border(Color.theme.red, width: 0)
+                    Text("Ncb").font(.caption2).foregroundColor(Color.theme.blueYellow).frame(width: macroWidthPercentage * geo.size.width, alignment: .trailing).border(Color.theme.red, width: 0)
+                    Text("Pro").font(.caption2).foregroundColor(Color.theme.blueYellow).frame(width: macroWidthPercentage * geo.size.width, alignment: .trailing).border(Color.theme.red, width: 0)
                 }
 
                 if showGroup {
-                    Text("Group").font(.caption).foregroundColor(Color("Blue")).frame(width: choiceGroupWidthPercentage * geo.size.width, alignment: .center).border(Color("Red"), width: 0)
+                    Text("Group").font(.caption).foregroundColor(Color.theme.blueYellow).frame(width: choiceGroupWidthPercentage * geo.size.width, alignment: .center).border(Color.theme.red, width: 0)
                 }
 
                 if showAmount {
-                    Text("Amount").font(.caption).foregroundColor(Color("Blue")).frame(width: (amountWidthPercentage + unitWidthPercentage) * geo.size.width, alignment: .center).border(Color("Red"), width: 0)
+                    Text("Amount").font(.caption).foregroundColor(Color.theme.blueYellow).frame(width: (amountWidthPercentage + unitWidthPercentage) * geo.size.width, alignment: .center).border(Color.theme.red, width: 0)
                 }
             }
         }
@@ -39,7 +38,6 @@ struct IngredientRowHeader: View {
 }
 
 struct IngredientRow: View {
-
     var showMacros: Bool = false
     var showGroup: Bool = false
     var showAmount: Bool = true
@@ -63,23 +61,23 @@ struct IngredientRow: View {
     var body: some View {
         GeometryReader { geo in
             HStack(spacing: 5) {
-                Text(name).font(.callout).frame(width: nameWidthPercentage * geo.size.width, alignment: .leading).border(Color("Red"), width: 0)
+                Text(name).font(.callout).frame(width: nameWidthPercentage * geo.size.width, alignment: .leading).border(Color.theme.red, width: 0)
 
                 if showMacros {
-                    Text("\(calories.formattedString(0))").font(.caption2).frame(width: macroWidthPercentage * geo.size.width, alignment: .trailing).border(Color("Red"), width: 0)
-                    Text("\(fat.formattedString(0))").font(.caption2).frame(width: macroWidthPercentage * geo.size.width, alignment: .trailing).border(Color("Red"), width: 0)
-                    Text("\(fiber.formattedString(0))").font(.caption2).frame(width: macroWidthPercentage * geo.size.width, alignment: .trailing).border(Color("Red"), width: 0)
-                    Text("\(netcarbs.formattedString(0))").font(.caption2).frame(width: macroWidthPercentage * geo.size.width, alignment: .trailing).border(Color("Red"), width: 0)
-                    Text("\(protein.formattedString(0))").font(.caption2).frame(width: macroWidthPercentage * geo.size.width, alignment: .trailing).border(Color("Red"), width: 0)
+                    Text("\(calories.formattedString(0))").font(.caption2).frame(width: macroWidthPercentage * geo.size.width, alignment: .trailing).border(Color.theme.red, width: 0)
+                    Text("\(fat.formattedString(0))").font(.caption2).frame(width: macroWidthPercentage * geo.size.width, alignment: .trailing).border(Color.theme.red, width: 0)
+                    Text("\(fiber.formattedString(0))").font(.caption2).frame(width: macroWidthPercentage * geo.size.width, alignment: .trailing).border(Color.theme.red, width: 0)
+                    Text("\(netcarbs.formattedString(0))").font(.caption2).frame(width: macroWidthPercentage * geo.size.width, alignment: .trailing).border(Color.theme.red, width: 0)
+                    Text("\(protein.formattedString(0))").font(.caption2).frame(width: macroWidthPercentage * geo.size.width, alignment: .trailing).border(Color.theme.red, width: 0)
                 }
 
                 if showGroup {
-                    Text("\(group)").font(.caption).frame(width: choiceGroupWidthPercentage * geo.size.width, alignment: .center).border(Color("Red"), width: 0)
+                    Text("\(group)").font(.caption).frame(width: choiceGroupWidthPercentage * geo.size.width, alignment: .center).border(Color.theme.red, width: 0)
                 }
 
                 if showAmount {
-                    Text("\(amount.formattedString(0))").font(.callout).frame(width: amountWidthPercentage * geo.size.width, alignment: .trailing).border(Color("Red"), width: 0)
-                    Text(amount == 1 ? consumptionUnit.singularForm : consumptionUnit.pluralForm).font(.caption).frame(width: unitWidthPercentage * geo.size.width, alignment: .leading).border(Color("Red"), width: 0)
+                    Text("\(amount.formattedString(0))").font(.callout).frame(width: amountWidthPercentage * geo.size.width, alignment: .trailing).border(Color.theme.red, width: 0)
+                    Text(amount == 1 ? consumptionUnit.singularForm : consumptionUnit.pluralForm).font(.caption).frame(width: unitWidthPercentage * geo.size.width, alignment: .leading).border(Color.theme.red, width: 0)
                 }
             }.frame(height: 9)
         }

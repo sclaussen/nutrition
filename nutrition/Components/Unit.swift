@@ -4,12 +4,14 @@ enum Unit: ValueType {
     case none
 
     case bar
-    case piece
     case can
     case egg
     case gram
+    case internationalUnit
+    case microgram
+    case milligram
+    case piece
     case slice
-    case stick
     case tablespoon
     case whole
 
@@ -29,12 +31,14 @@ enum Unit: ValueType {
         case .none: return ""
 
         case .bar: return "bar"
-        case .piece: return "piece"
         case .can: return "can"
         case .egg: return "egg"
         case .gram: return "gram"
+        case .internationalUnit: return "IU"
+        case .microgram: return "mg"
+        case .milligram: return "ug"
+        case .piece: return "piece"
         case .slice: return "slice"
-        case .stick: return "stick"
         case .tablespoon: return "tbsp"
         case .whole: return "whole"
 
@@ -53,18 +57,19 @@ enum Unit: ValueType {
 
     var pluralForm: String {
         switch self {
-
         case .none: return ""
 
-        case .gram: return "grams"
-        case .tablespoon: return "tbsps"
-        case .egg: return "eggs"
-        case .slice: return "slices"
         case .bar: return "bars"
-        case .whole: return "whole"
         case .can: return "cans"
-        case .stick: return "sticks"
+        case .egg: return "eggs"
+        case .gram: return "grams"
+        case .internationalUnit: return "IUs"
+        case .microgram: return "mgs"
+        case .milligram: return "ugs"
         case .piece: return "pieces"
+        case .slice: return "slices"
+        case .tablespoon: return "tbsps"
+        case .whole: return "whole"
 
         case .calorie: return "cals"
         case .centimeter: return "cm"
@@ -87,7 +92,6 @@ enum Unit: ValueType {
         options.append(gram)
         options.append(piece)
         options.append(slice)
-        options.append(stick)
         options.append(tablespoon)
         options.append(whole)
         return options

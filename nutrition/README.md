@@ -2,33 +2,39 @@
 
 ## P0
 
-- Serialization MVVM sample project
-- BUG: profile change value, then cancel, value remains...  valueString "feature"
-  - https://gist.github.com/darrarski/065520cc7095a7e0e33e72373feab3ac
-  - Numbers Only
-    https://programmingwithswift.com/numbers-only-textfield-with-swiftui
-- Re-enable ingredient search bar
-- Add form/field validation
+- EAN scanner / API using crypto pattern
+- Ingredient search bar using crypto pattern
+  curl https://world.openfoodfacts.org/api/v0/product/0099482402891.json
+- Checkmark visual indicator that save was successful using crypto pattern
+- NavBar appearance in app.swift using crypto pattern
+- Swipe menu from menuItem page that supports Unavailable
+
+- Save buttons only appear when data's been modified
+
 - Meat meal adjustments: Add delete capability (to both add/edit)
 - Fix issue wrt what meal adjustments are shown in IngredientAdd
 - BUG: Fix ing/adj so they don't serialize on each character typed
 - BUG: Disallow a duplicate named ingredient
+- Serialization MVVM sample project
+- Add form/field validation
+  - How to validate at add time given publisher is on the View Model?
+- Edit/move and Edit/delete doesn't work
+  - BUG: onDelete brings up swipe menu now vs deleting, dig into why
 
 
 
 ## P1
 
+- Change toggle bg color to yellow/...
+- Animate gauges
 - Inactive -> active, when locked, should add compensation
-- Add curves to dashboard gauges
 - Enable Caden profile (profiles in general)
-- BUG: onDelete brings up swipe menu now vs deleting, dig into why
 - Next/Next/Next field ...
 - Collapsible: https://betterprogramming.pub/how-to-write-a-collapsible-expandable-view-for-your-swiftui-app-d4a47fe8cb52
-- Cloud Kit Extending/Collaboration:
+- Cloud Kit Extending/Collaboration (for logging):
   - https://swiftwithmajid.com/2022/03/29/zone-sharing-in-cloudkit
   - https://swiftwithmajid.com/2022/03/22/getting-started-with-cloudkit
 - Consider changing consumption unit to preparation unit
-- Re-add the grams/100 to the IngredientEdit view
 - Variable picker style type
 - Add health zones
 - Allow meal ingredient update to hit return and go back to meal list
@@ -60,6 +66,7 @@ https://www.hackingwithswift.com/quick-start/swiftui/how-to-detect-shake-gesture
 
 ## P2
 
+- Filter out invalid characters
 - Make progressbar generic
 - Fix date picker so it sizes properly
 - Splash screen
@@ -76,8 +83,13 @@ https://www.hackingwithswift.com/quick-start/swiftui/how-to-detect-shake-gesture
 
 ## P4
 
+- Shake gesture - not availabel yet in the SwifUI framework
+  https://www.hackingwithswift.com/quick-start/swiftui/how-to-detect-shake-gestures
 - Fix all previews
 - DatePicker/Sheet https://github.com/shaotaoliu/SwiftUI.DatePickerTextField/tree/main/DatePickerTextField
 - Add No Item views
 - Logging
 - export/import yaml/json
+
+
+## APIs/DBs

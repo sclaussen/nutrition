@@ -55,7 +55,7 @@ struct Tabs: View {
             }.tag("Profile")
               .navigationViewStyle(StackNavigationViewStyle())
         }
-          .accentColor(Color("Blue"))
+          .accentColor(Color.theme.blueYellow)
     }
 }
 

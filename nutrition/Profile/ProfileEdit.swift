@@ -17,18 +17,18 @@ struct ProfileEdit: View {
                 NameValue("Caloric Deficit", description: "percentage to adjust daily caloric and macro goals", $profileMgr.profile.calorieDeficit, .percentage, edit: true)
             }
             Section(header: Text("Daily Metrics")) {
-                NameValue("Weight from Health Kit", description: "source daily weight updates from apple health kit", $profileMgr.profile.bodyMassFromHealthKit, control: .toggle)
+                NameValue("Weight from Health App", description: "source daily weight updates from apple health app", $profileMgr.profile.bodyMassFromHealthKit, control: .toggle)
                 if !profileMgr.profile.bodyMassFromHealthKit {
                     NameValue("Weight", description: "body mass", $profileMgr.profile.bodyMass, .pound, precision: 1, edit: true)
                 }
-                NameValue("Body Fat % from Health Kit", description: "source daily body fat % updates from apple health kit", $profileMgr.profile.bodyFatPercentageFromHealthKit, control: .toggle)
+                NameValue("Body Fat % from Health App", description: "source daily body fat % updates from apple health app", $profileMgr.profile.bodyFatPercentageFromHealthKit, control: .toggle)
                 if !profileMgr.profile.bodyFatPercentageFromHealthKit {
-                    NameValue("Body Fat %", description: "from apple health kit", $profileMgr.profile.bodyFatPercentage, .percentage, precision: 1, edit: true)
+                    NameValue("Body Fat %", description: "from apple health app", $profileMgr.profile.bodyFatPercentage, .percentage, precision: 1, edit: true)
                 }
             }
             Section(header: Text("Derived Profile Data")) {
                 NameValue("Age", $profileMgr.profile.age, .year, precision: 1)
-                NameValue("Weight", description: "body mass (from health kit)", $profileMgr.profile.bodyMassKg, .kilogram)
+                NameValue("Weight", description: "body mass (from health app)", $profileMgr.profile.bodyMassKg, .kilogram)
                 NameValue("Height", $profileMgr.profile.heightCm, .centimeter)
                 NameValue("Body Mass Index", description: "normal <25, fat >25, obese >30", $profileMgr.profile.bodyMassIndex, precision: 1)
                 NameValue("Lean Body Mass", description: "non-fat body mass", $profileMgr.profile.leanBodyMass, .pound)
@@ -70,18 +70,18 @@ struct ProfileEdit: View {
           .toolbar {
               ToolbarItem(placement: .navigation) {
                   Button("Cancel", action: cancel)
-                    .foregroundColor(Color("Blue"))
+                    .foregroundColor(Color.theme.blueYellow)
               }
               ToolbarItem(placement: .primaryAction) {
                   Button("Save", action: save)
-                    .foregroundColor(Color("Blue"))
+                    .foregroundColor(Color.theme.blueYellow)
               }
               ToolbarItemGroup(placement: .keyboard) {
                   HStack {
                       DismissKeyboard()
                       Spacer()
                       Button("Save", action: save)
-                        .foregroundColor(Color("Blue"))
+                        .foregroundColor(Color.theme.blueYellow)
                   }
               }
           }

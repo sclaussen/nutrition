@@ -22,9 +22,11 @@
 		344D201227CE361B00343108 /* AdjustmentAdd.swift in Sources */ = {isa = PBXBuildFile; fileRef = 344D201127CE361B00343108 /* AdjustmentAdd.swift */; };
 		344D201427CEB36700343108 /* Gender.swift in Sources */ = {isa = PBXBuildFile; fileRef = 344D201327CEB36700343108 /* Gender.swift */; };
 		345F5F0A27E0EF1400129BAC /* IngredientRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 345F5F0927E0EF1400129BAC /* IngredientRow.swift */; };
-		347638D527F4AE53008DF99C /* CheckmarkToggleStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 347638D427F4AE53008DF99C /* CheckmarkToggleStyle.swift */; };
 		347A335627DA925C005E3F33 /* Unit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 347A335527DA925C005E3F33 /* Unit.swift */; };
 		347A335827DAA1FE005E3F33 /* IngredientAdd.swift in Sources */ = {isa = PBXBuildFile; fileRef = 347A335727DAA1FE005E3F33 /* IngredientAdd.swift */; };
+		3485E52128024984004022E9 /* Color.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3485E52028024984004022E9 /* Color.swift */; };
+		3485E52328033B75004022E9 /* CheckmarkToggleStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3485E52228033B75004022E9 /* CheckmarkToggleStyle.swift */; };
+		348E4C46280F879600EFBB96 /* TextFieldObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 348E4C45280F879600EFBB96 /* TextFieldObserver.swift */; };
 		349EE53127C99AC30072255A /* app.swift in Sources */ = {isa = PBXBuildFile; fileRef = 349EE53027C99AC30072255A /* app.swift */; };
 		349EE53327C99AC30072255A /* Tabs.swift in Sources */ = {isa = PBXBuildFile; fileRef = 349EE53227C99AC30072255A /* Tabs.swift */; };
 		349EE53527C99AC40072255A /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 349EE53427C99AC40072255A /* Assets.xcassets */; };
@@ -59,9 +61,11 @@
 		344D201127CE361B00343108 /* AdjustmentAdd.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdjustmentAdd.swift; sourceTree = "<group>"; };
 		344D201327CEB36700343108 /* Gender.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Gender.swift; sourceTree = "<group>"; };
 		345F5F0927E0EF1400129BAC /* IngredientRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IngredientRow.swift; sourceTree = "<group>"; };
-		347638D427F4AE53008DF99C /* CheckmarkToggleStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckmarkToggleStyle.swift; sourceTree = "<group>"; };
 		347A335527DA925C005E3F33 /* Unit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Unit.swift; sourceTree = "<group>"; };
 		347A335727DAA1FE005E3F33 /* IngredientAdd.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IngredientAdd.swift; sourceTree = "<group>"; };
+		3485E52028024984004022E9 /* Color.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Color.swift; sourceTree = "<group>"; };
+		3485E52228033B75004022E9 /* CheckmarkToggleStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckmarkToggleStyle.swift; sourceTree = "<group>"; };
+		348E4C45280F879600EFBB96 /* TextFieldObserver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextFieldObserver.swift; sourceTree = "<group>"; };
 		349EE52D27C99AC30072255A /* Nutrition.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Nutrition.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		349EE53027C99AC30072255A /* app.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = app.swift; sourceTree = "<group>"; };
 		349EE53227C99AC30072255A /* Tabs.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tabs.swift; sourceTree = "<group>"; };
@@ -105,7 +109,8 @@
 			children = (
 				34DE420027F654B20078448F /* Scalers.swift */,
 				342CD48E27E25539008703C2 /* View.swift */,
-				347638D427F4AE53008DF99C /* CheckmarkToggleStyle.swift */,
+				3485E52028024984004022E9 /* Color.swift */,
+				348E4C45280F879600EFBB96 /* TextFieldObserver.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -161,6 +166,7 @@
 				345F5F0927E0EF1400129BAC /* IngredientRow.swift */,
 				347A335527DA925C005E3F33 /* Unit.swift */,
 				342CD49827E26F3C008703C2 /* HealthStore.swift */,
+				3485E52228033B75004022E9 /* CheckmarkToggleStyle.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -286,11 +292,14 @@
 				344D200827CE2B4E00343108 /* MealAdd.swift in Sources */,
 				344D200E27CE35F100343108 /* AdjustmentList.swift in Sources */,
 				344D200A27CE2B6300343108 /* MealEdit.swift in Sources */,
+				348E4C46280F879600EFBB96 /* TextFieldObserver.swift in Sources */,
 				347A335627DA925C005E3F33 /* Unit.swift in Sources */,
 				34DE420127F654B20078448F /* Scalers.swift in Sources */,
 				349EE54427C9A3690072255A /* IngredientList.swift in Sources */,
 				342CD49927E26F3C008703C2 /* HealthStore.swift in Sources */,
 				342F816927D42D1600B16B9E /* MealIngredient.swift in Sources */,
+				3485E52128024984004022E9 /* Color.swift in Sources */,
+				3485E52328033B75004022E9 /* CheckmarkToggleStyle.swift in Sources */,
 				344D201427CEB36700343108 /* Gender.swift in Sources */,
 				349EE57C27CC823B0072255A /* ProfileEdit.swift in Sources */,
 				344D200C27CE345B00343108 /* Adjustment.swift in Sources */,
@@ -302,7 +311,6 @@
 				345F5F0A27E0EF1400129BAC /* IngredientRow.swift in Sources */,
 				34DE41FF27F64D1E0078448F /* Bar.swift in Sources */,
 				344D200227CDC53800343108 /* MealConfigure.swift in Sources */,
-				347638D527F4AE53008DF99C /* CheckmarkToggleStyle.swift in Sources */,
 				344D201227CE361B00343108 /* AdjustmentAdd.swift in Sources */,
 				349EE54B27C9A6B10072255A /* IngredientEdit.swift in Sources */,
 				344D201027CE360C00343108 /* AdjustmentEdit.swift in Sources */,

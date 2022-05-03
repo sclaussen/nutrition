@@ -35,7 +35,7 @@ struct Gauge: View {
     var type: GaugeType
 
     init(title: String = "",
-         titleFontColor: Color = Color.black,
+         titleFontColor: Color = Color.theme.blackWhite,
          titleFontSize: Double = 14,
          _ actual: Double,
          actualFontSize: Double = 19,
@@ -43,17 +43,17 @@ struct Gauge: View {
          _ goal: Double = 0,
          goalFontSize: Double = 12,
          goalPrecision: Int = 0,
-         annotationFontColor: Color = Color.blue,
+         annotationFontColor: Color = Color.theme.blueYellow,
          unit: String = "",
          unitFontSize: Double = 10,
          startHour: Double = 7.5,
          endHour: Double = 4.5,
          side: Double = 60.0,
          progressLineWidth: Double = 10.0,
-         progressLineBackground: Color = Color.black.opacity(0.2),
-         progressLineNormal: Color = Color.green,
-         progressLineWarning: Color = Color.yellow,
-         progressLineError: Color = Color.red,
+         progressLineBackground: Color = Color.theme.progressLineBackground,
+         progressLineNormal: Color = Color.theme.green,
+         progressLineWarning: Color = Color.theme.yellow,
+         progressLineError: Color = Color.theme.red,
          warningThreshold: Double = 5,
          errorThreshold: Double = 10,
          type: GaugeType = GaugeType.goal,
@@ -89,7 +89,7 @@ struct Gauge: View {
             self.startHour = 6
             self.endHour = 6
             self.progressLineWidth = self.progressLineWidth / 2.2
-            self.progressLineNormal = Color.blue
+            self.progressLineNormal = Color.theme.blue
         } else {
             self.titleOffset = 0 - (side / 2 + side * 0.21)
             self.actualOffset = 0 - side * 0.1

@@ -11,6 +11,19 @@ struct CheckboxToggle: View {
     }
 }
 
+struct CheckboxToggle_Previews: PreviewProvider {
+    @State static var status: Bool = true
+    static var previews: some View {
+        Group {
+            CheckboxToggle(text: "Checkbox", status: $status)
+              .previewLayout(.sizeThatFits)
+            CheckboxToggle(text: "Checkbox", status: $status)
+              .previewLayout(.sizeThatFits)
+              .preferredColorScheme(.dark)
+        }
+    }
+}
+
 struct CheckboxToggleStyle: ToggleStyle {
     func makeBody(configuration: Configuration) -> some View {
         Image(systemName: configuration.isOn ? "checkmark.square" : "square")
@@ -19,3 +32,4 @@ struct CheckboxToggleStyle: ToggleStyle {
           .onTapGesture { configuration.isOn.toggle() }
     }
 }
+

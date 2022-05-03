@@ -29,7 +29,7 @@ extension View {
     //             .padding()
     //             .if(shouldApplyBackground) { view in
     //                 // We only apply this background color if shouldApplyBackground is true
-    //                 view.background(Color.red)
+    //                 view.background(Color.theme.red)
     //             }
     //     }
     // }
@@ -49,7 +49,7 @@ struct DismissKeyboard: View {
         } label: {
             Label("Keyboard Down", systemImage: "keyboard.chevron.compact.down")
         }
-          .foregroundColor(Color("Blue"))
+          .foregroundColor(Color.theme.blueYellow)
     }
 }
 
@@ -63,7 +63,7 @@ struct NameViewModifier: ViewModifier {
           .lineLimit(1)
           .font(.callout)
           .frame(minWidth: width, minHeight: 32, alignment: .leading)
-          .border(Color.red, width: 0)
+          .border(Color.theme.red, width: 0)
     }
 }
 
@@ -81,7 +81,7 @@ struct ValueViewModifier: ViewModifier {
           .font(.callout)
           .multilineTextAlignment(.trailing)
           .frame(minWidth: width, minHeight: 32, alignment: .trailing)
-          .border(Color.red, width: 0)
+          .border(Color.theme.red, width: 0)
     }
 }
 
@@ -93,7 +93,7 @@ struct UnitViewModifier: ViewModifier {
           .lineLimit(1)
           .font(.caption2)
           .frame(minWidth: geo.size.width * 0.10, minHeight: 32, alignment: .leading)
-          .border(Color.red, width: 0)
+          .border(Color.theme.red, width: 0)
           .offset(x: 4, y: 2)
     }
 }
@@ -106,7 +106,7 @@ struct DescriptionViewModifier: ViewModifier {
           .lineLimit(1)
           .font(.caption2)
           .frame(minWidth: geo.size.width * 1 + 5, minHeight: 10, alignment: .leading)
-          .border(Color.red, width: 0)
+          .border(Color.theme.red, width: 0)
     }
 }
 

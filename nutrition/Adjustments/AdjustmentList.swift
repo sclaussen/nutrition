@@ -21,7 +21,7 @@ struct AdjustmentList: View {
                                                  amount: adjustment.amount,
                                                  consumptionUnit: getConsumptionUnit(adjustment.name))
                                })
-                  .foregroundColor(adjustment.active ? Color("Black") : Color("Red"))
+                  .foregroundColor(adjustment.active ? Color.theme.blackWhite : Color.theme.red)
                   .swipeActions(edge: .leading) {
                       Button {
                           if adjustment.active || ingredientMgr.getIngredient(name: adjustment.name)!.available {
@@ -31,7 +31,7 @@ struct AdjustmentList: View {
                       } label: {
                           Label("", systemImage: !ingredientMgr.getIngredient(name: adjustment.name)!.available ? "circle.slash" : adjustment.active ? "pause.circle" : "play.circle")
                       }
-                        .tint(!ingredientMgr.getIngredient(name: adjustment.name)!.available ? .gray : adjustment.active ? .red : .green)
+                        .tint(!ingredientMgr.getIngredient(name: adjustment.name)!.available ? Color.theme.blackWhiteSecondary : adjustment.active ? Color.theme.red : Color.theme.green)
                   }
                   .swipeActions(edge: .trailing) {
                       Button(role: .destructive) {
@@ -44,14 +44,14 @@ struct AdjustmentList: View {
               .onMove(perform: moveAction)
               .onDelete(perform: deleteAction)
               .listRowInsets(EdgeInsets(top: 10, leading: 10, bottom: 10, trailing: 10))
-              .border(Color.red, width: 0)
+              .border(Color.theme.red, width: 0)
         }
           .environment(\.defaultMinListRowHeight, 5)
           .padding([.leading, .trailing], -20)
           .toolbar {
               ToolbarItem(placement: .navigation) {
                   EditButton()
-                    .foregroundColor(Color("Blue"))
+                    .foregroundColor(Color.theme.blueYellow)
               }
               ToolbarItem(placement: .principal) {
                   Button {
@@ -60,11 +60,11 @@ struct AdjustmentList: View {
                   } label: {
                       Image(systemName: !adjustmentMgr.inactiveIngredientsExist() ? "" : showInactive ? "eye" : "eye.slash")
                   }
-                    .foregroundColor(Color("Blue"))
+                    .foregroundColor(Color.theme.blueYellow)
               }
               ToolbarItem(placement: .primaryAction) {
                   NavigationLink("Add", destination: AdjustmentAdd())
-                    .foregroundColor(Color("Blue"))
+                    .foregroundColor(Color.theme.blueYellow)
               }
           }
     }

@@ -1,0 +1,1651 @@
+- name: Coconut Oil
+  url-retail: https://www.wholefoodsmarket.com/product/365-by-whole-foods-market-organic-coconut-oil-expeller-expressed-14-fl-oz-b074h5bv9y
+  url-nutrition:
+  company: 365
+  product: Organic Coconut Oil - Expeller Expressed
+  cost: 5.69
+  grams: 392
+  servingSize: 14
+  calories: 130
+  fat: 14
+  fiber: 0
+  netCarbs: 0
+  protein: 0
+  consumptionUnit: Unit.tablespoon
+  consumptionGrams: 14
+  meat: false
+  omega3: 0
+  zinc: 0
+  vitaminK: 0
+  vitaminE: 0
+  vitaminD: 0
+  vitaminC: 0
+  vitaminB6: 0
+  vitaminB12: 0
+  vitaminA: 0
+  thiamin: 0
+  selenium: 0
+  riboflavin: 0
+  potassium: 0
+  phosphorus: 0
+  pantothenicAcid: 0
+  niacin: 0
+  manganese: 0
+  magnesium: 0
+  iron: 0
+  folicAcid: 0
+  folate: 0
+  copper: 0
+  calcium: 0
+  verified: 4/5/22
+- name: Avocado Oil
+  url-retail:
+  url-nutrition:
+  company:
+  product:
+  cost:
+  grams:
+  servingSize: 14
+  calories: 120
+  fat: 14
+  fiber: 0
+  netCarbs: 0
+  protein: 0
+  consumptionUnit: Unit.tablespoon
+  consumptionGrams: 14
+  meat: false
+  omega3: 0
+  zinc: 0
+  vitaminK: 0
+  vitaminE: 0
+  vitaminD: 0
+  vitaminC: 0
+  vitaminB6: 0
+  vitaminB12: 0
+  vitaminA: 0
+  thiamin: 0
+  selenium: 0
+  riboflavin: 0
+  potassium: 0
+  phosphorus: 0
+  pantothenicAcid: 0
+  niacin: 0
+  manganese: 0
+  magnesium: 0
+  iron: 0
+  folicAcid: 0
+  folate: 0
+  copper: 0
+  calcium: 0
+  verified: 3/16/22
+- name: Pumpkin Seeds
+  url-retail: https://www.wholefoodsmarket.com/product/365-everyday-value-organic-pumpkin-seeds-8-ounce-b07gl6jlzy
+  url-nutrition:
+  company: 365
+  product: Organic Pumpkin Seeds
+  cost: 4.79
+  grams: 224
+  servingSize: 28
+  calories: 160
+  fat: 14
+  fiber: 2
+  netCarbs: 1
+  protein: 8
+  consumptionUnit: Unit.gram
+  consumptionGrams: 1
+  meat: false
+  omega3: 0
+  zinc: 0
+  vitaminK: 0
+  vitaminE: 0
+  vitaminD: 0
+  vitaminC: 0
+  vitaminB6: 0
+  vitaminB12: 0
+  vitaminA: 0
+  thiamin: 0
+  selenium: 0
+  riboflavin: 0
+  potassium: 0
+  phosphorus: 0
+  pantothenicAcid: 0
+  niacin: 0
+  manganese: 0
+  magnesium: 0
+  iron: 0
+  folicAcid: 0
+  folate: 0
+  copper: 0
+  calcium: 0
+  verified: 3/16/22
+- name: Chicken
+  url-retail:
+  url-nutrition:
+  company:
+  product:
+  cost:
+  grams:
+  servingSize: 100
+  calories: 115
+  fat: 2.7
+  fiber: 0
+  netCarbs: 0
+  protein: 22
+  consumptionUnit: Unit.gram
+  consumptionGrams: 1
+  meat: true
+  meatAmount: 250
+  omega3: 0
+  zinc: 0
+  vitaminK: 0
+  vitaminE: 0
+  vitaminD: 0
+  vitaminC: 0
+  vitaminB6: 0
+  vitaminB12: 0
+  vitaminA: 0
+  thiamin: 0
+  selenium: 0
+  riboflavin: 0
+  potassium: 0
+  phosphorus: 0
+  pantothenicAcid: 0
+  niacin: 0
+  manganese: 0
+  magnesium: 0
+  iron: 0
+  folicAcid: 0
+  folate: 0
+  copper: 0
+  calcium: 0
+- name: Beef
+  url-retail:
+  url-nutrition:
+  company:
+  product:
+  cost:
+  grams:
+  servingSize: 100
+  calories: 214
+  fat: 15.2
+  fiber: 0
+  netCarbs: 0
+  protein: 19
+  consumptionUnit: Unit.gram
+  consumptionGrams: 1
+  meat: true
+  meatAmount: 150,
+  mealAdjustments:
+    - name: Eggs, amount: -1, consumptionUnit: Unit.egg
+    - name: Extra Virgin Olive Oil, amount: -1, consumptionUnit: Unit.tablespoon
+    - name: Collared Greens, amount: 20, consumptionUnit: Unit.gram
+  omega3: 0
+  zinc: 0
+  vitaminK: 0
+  vitaminE: 0
+  vitaminD: 0
+  vitaminC: 0
+  vitaminB6: 0
+  vitaminB12: 0
+  vitaminA: 0
+  thiamin: 0
+  selenium: 0
+  riboflavin: 0
+  potassium: 0
+  phosphorus: 0
+  pantothenicAcid: 0
+  niacin: 0
+  manganese: 0
+  magnesium: 0
+  iron: 0
+  folicAcid: 0
+  folate: 0
+  copper: 0
+  calcium: 0
+- name: Bison
+  url-retail:
+  url-nutrition:
+  company:
+  product:
+  cost:
+  grams:
+  servingSize: 112
+  calories: 160
+  fat: 8
+  fiber: 0
+  netCarbs: 0
+  protein: 23
+  consumptionUnit: Unit.gram
+  consumptionGrams: 1
+  meat: true
+  meatAmount: 150,
+  mealAdjustments:
+    - name: Eggs, amount: -1, consumptionUnit: Unit.egg
+    - name: Extra Virgin Olive Oil, amount: -1, consumptionUnit: Unit.tablespoon
+  omega3: 0
+  zinc: 0
+  vitaminK: 0
+  vitaminE: 0
+  vitaminD: 0
+  vitaminC: 0
+  vitaminB6: 0
+  vitaminB12: 0
+  vitaminA: 0
+  thiamin: 0
+  selenium: 0
+  riboflavin: 0
+  potassium: 0
+  phosphorus: 0
+  pantothenicAcid: 0
+  niacin: 0
+  manganese: 0
+  magnesium: 0
+  iron: 0
+  folicAcid: 0
+  folate: 0
+  copper: 0
+  calcium: 0
+- name: Lamb
+  url-retail:
+  url-nutrition:
+  company:
+  product:
+  cost:
+  grams:
+  servingSize: 85
+  calories: 253
+  fat: 22
+  fiber: 0
+  netCarbs: 0.19
+  protein: 13.09
+  consumptionUnit: Unit.gram
+  consumptionGrams: 1
+  meat: true
+  meatAmount: 150,
+  mealAdjustments:
+    - name: Eggs, amount: -1, consumptionUnit: Unit.egg
+    - name: Extra Virgin Olive Oil, amount: -1, consumptionUnit: Unit.tablespoon
+  omega3: 0
+  zinc: 0
+  vitaminK: 0
+  vitaminE: 0
+  vitaminD: 0
+  vitaminC: 0
+  vitaminB6: 0
+  vitaminB12: 0
+  vitaminA: 0
+  thiamin: 0
+  selenium: 0
+  riboflavin: 0
+  potassium: 0
+  phosphorus: 0
+  pantothenicAcid: 0
+  niacin: 0
+  manganese: 0
+  magnesium: 0
+  iron: 0
+  folicAcid: 0
+  folate: 0
+  copper: 0
+  calcium: 0
+- name: Pork Chop
+  url-retail:
+  url-nutrition:
+  company:
+  product:
+  cost:
+  grams:
+  servingSize: 113
+  calories: 220
+  fat: 11
+  fiber: 0
+  netCarbs: 0
+  protein: 30
+  consumptionUnit: Unit.gram
+  consumptionGrams: 1, meat: true,
+  mealAdjustments:
+    - name: Eggs, amount: -1, consumptionUnit: Unit.egg
+    - name: Extra Virgin Olive Oil, amount: -1, consumptionUnit: Unit.tablespoon
+  omega3: 0
+  zinc: 0
+  vitaminK: 0
+  vitaminE: 0
+  vitaminD: 0
+  vitaminC: 0
+  vitaminB6: 0
+  vitaminB12: 0
+  vitaminA: 0
+  thiamin: 0
+  selenium: 0
+  riboflavin: 0
+  potassium: 0
+  phosphorus: 0
+  pantothenicAcid: 0
+  niacin: 0
+  manganese: 0
+  magnesium: 0
+  iron: 0
+  folicAcid: 0
+  folate: 0
+  copper: 0
+  calcium: 0
+- name: Salmon
+  url-retail:
+  url-nutrition:
+  company:
+  product:
+  cost:
+  grams:
+  servingSize: 112
+  calories: 150
+  fat: 5
+  fiber: 0
+  netCarbs: 0
+  protein: 25
+  consumptionUnit: Unit.gram
+  consumptionGrams: 1
+  meat: true,
+  mealAdjustments:
+    - name: Fish Oil, amount: -1, consumptionUnit: Unit.tablespoon
+  omega3: 0
+  zinc: 0
+  vitaminK: 0
+  vitaminE: 0
+  vitaminD: 0
+  vitaminC: 0
+  vitaminB6: 0
+  vitaminB12: 0
+  vitaminA: 0
+  thiamin: 0
+  selenium: 0
+  riboflavin: 0
+  potassium: 0
+  phosphorus: 0
+  pantothenicAcid: 0
+  niacin: 0
+  manganese: 0
+  magnesium: 0
+  iron: 0
+  folicAcid: 0
+  folate: 0
+  copper: 0
+  calcium: 0
+- name: Top Sirloin Cap
+  url-retail:
+  url-nutrition:
+  company:
+  product:
+  cost:
+  grams:
+  servingSize: 238
+  calories: 125
+  fat: 14
+  fiber: 0
+  netCarbs: 0
+  protein: 51
+  consumptionUnit: Unit.gram
+  consumptionGrams: 1
+  meat: true
+  available: false
+  omega3: 0
+  zinc: 0
+  vitaminK: 0
+  vitaminE: 0
+  vitaminD: 0
+  vitaminC: 0
+  vitaminB6: 0
+  vitaminB12: 0
+  vitaminA: 0
+  thiamin: 0
+  selenium: 0
+  riboflavin: 0
+  potassium: 0
+  phosphorus: 0
+  pantothenicAcid: 0
+  niacin: 0
+  manganese: 0
+  magnesium: 0
+  iron: 0
+  folicAcid: 0
+  folate: 0
+  copper: 0
+  calcium: 0
+- name: Argentine Red Shrimp
+  url-retail:
+  url-nutrition:
+  company:
+  product:
+  cost:
+  grams:
+  servingSize: 110
+  calories: 100
+  fat: 1.5
+  fiber: 0
+  netCarbs: 0
+  protein: 21
+  consumptionUnit: Unit.gram
+  consumptionGrams: 1
+  meat: true
+  meatAmount: 250
+  available: false
+  omega3: 0
+  zinc: 0
+  vitaminK: 0
+  vitaminE: 0
+  vitaminD: 0
+  vitaminC: 0
+  vitaminB6: 0
+  vitaminB12: 0
+  vitaminA: 0
+  thiamin: 0
+  selenium: 0
+  riboflavin: 0
+  potassium: 0
+  phosphorus: 0
+  pantothenicAcid: 0
+  niacin: 0
+  manganese: 0
+  magnesium: 0
+  iron: 0
+  folicAcid: 0
+  folate: 0
+  copper: 0
+  calcium: 0
+- name: Eggs
+  url-retail:
+  url-nutrition:
+  company:
+  product:
+  cost:
+  grams:
+  servingSize: 50
+  calories: 70
+  fat: 5
+  fiber: 0
+  netCarbs: 0
+  protein: 6
+  consumptionUnit: Unit.egg
+  consumptionGrams: 50
+  meat: false
+  omega3: 0
+  zinc: 0
+  vitaminK: 0
+  vitaminE: 0
+  vitaminD: 0
+  vitaminC: 0
+  vitaminB6: 0
+  vitaminB12: 0
+  vitaminA: 0
+  thiamin: 0
+  selenium: 0
+  riboflavin: 0
+  potassium: 0
+  phosphorus: 0
+  pantothenicAcid: 0
+  niacin: 0
+  manganese: 0
+  magnesium: 0
+  iron: 0
+  folicAcid: 0
+  folate: 0
+  copper: 0
+  calcium: 0
+  verified: 3/16/22
+- name: Serrano Pepper
+  url-retail:
+  url-nutrition:
+  company:
+  product:
+  cost:
+  grams:
+  servingSize: 6.1
+  calories: 2
+  fat: 0.03
+  fiber: 0.23
+  netCarbs: 0.18
+  protein: 0.11
+  consumptionUnit: Unit.gram
+  consumptionGrams: 1
+  meat: false
+  omega3: 0
+  zinc: 0
+  vitaminK: 0
+  vitaminE: 0
+  vitaminD: 0
+  vitaminC: 0
+  vitaminB6: 0
+  vitaminB12: 0
+  vitaminA: 0
+  thiamin: 0
+  selenium: 0
+  riboflavin: 0
+  potassium: 0
+  phosphorus: 0
+  pantothenicAcid: 0
+  niacin: 0
+  manganese: 0
+  magnesium: 0
+  iron: 0
+  folicAcid: 0
+  folate: 0
+  copper: 0
+  calcium: 0
+  verified: 3/16/22
+- name: Jalapeno Pepper
+  url-retail:
+  url-nutrition:
+  company:
+  product:
+  cost:
+  grams:
+  servingSize: 14
+  calories: 4
+  fat: 0.05
+  fiber: 0.39
+  netCarbs: 0.52
+  protein: 0.13
+  consumptionUnit: Unit.gram
+  consumptionGrams: 1
+  meat: false
+  available: false
+  omega3: 0
+  zinc: 0
+  vitaminK: 0
+  vitaminE: 0
+  vitaminD: 0
+  vitaminC: 0
+  vitaminB6: 0
+  vitaminB12: 0
+  vitaminA: 0
+  thiamin: 0
+  selenium: 0
+  riboflavin: 0
+  potassium: 0
+  phosphorus: 0
+  pantothenicAcid: 0
+  niacin: 0
+  manganese: 0
+  magnesium: 0
+  iron: 0
+  folicAcid: 0
+  folate: 0
+  copper: 0
+  calcium: 0
+- name: Salsa
+  url-retail:
+  url-nutrition:
+  company:
+  product:
+  cost:
+  grams:
+  servingSize: 30
+  calories: 10
+  fat: 0
+  fiber: 1
+  netCarbs: 0
+  protein: 1
+  consumptionUnit: Unit.tablespoon
+  consumptionGrams: 15
+  meat: false
+  available: false
+  omega3: 0
+  zinc: 0
+  vitaminK: 0
+  vitaminE: 0
+  vitaminD: 0
+  vitaminC: 0
+  vitaminB6: 0
+  vitaminB12: 0
+  vitaminA: 0
+  thiamin: 0
+  selenium: 0
+  riboflavin: 0
+  potassium: 0
+  phosphorus: 0
+  pantothenicAcid: 0
+  niacin: 0
+  manganese: 0
+  magnesium: 0
+  iron: 0
+  folicAcid: 0
+  folate: 0
+  copper: 0
+  calcium: 0
+  verified: 3/16/22
+- name: Arugula
+  url-retail:
+  url-nutrition: https://www.wholefoodsmarket.com/product/365-by-whole-foods-market-produce-organic-packaged-baby-arugula-b07pff27d1
+  company:
+  product:
+  cost:
+  grams:
+  servingSize: 20
+  calories: 5
+  fat: 0.13
+  fiber: 0.32
+  netCarbs: 0.41
+  protein: 0.52
+  consumptionUnit: Unit.gram
+  consumptionGrams: 1
+  meat: false
+  omega3: 0
+  zinc: 0
+  vitaminK: 0
+  vitaminE: 0
+  vitaminD: 0
+  vitaminC: 0
+  vitaminB6: 0
+  vitaminB12: 0
+  vitaminA: 0
+  thiamin: 0
+  selenium: 0
+  riboflavin: 0
+  potassium: 0
+  phosphorus: 0
+  pantothenicAcid: 0
+  niacin: 0
+  manganese: 0
+  magnesium: 0
+  iron: 0
+  folicAcid: 0
+  folate: 0
+  copper: 0
+  calcium: 0
+  verified: No nutrition on whole foods site
+- name: Spinach
+  url-retail:
+  url-nutrition: https://www.wholefoodsmarket.com/product/365-by-whole-foods-market-produce-organic-packaged-baby-spinach-b082fjnkjv
+  company:
+  product:
+  cost:
+  grams:
+  servingSize: 85
+  calories: 25
+  fat: 0.25
+  fiber: 2
+  netCarbs: 1
+  protein: 2
+  consumptionUnit: Unit.gram
+  consumptionGrams: 1
+  meat: false
+  omega3: 0
+  zinc: 0
+  vitaminK: 0
+  vitaminE: 0
+  vitaminD: 0
+  vitaminC: 0
+  vitaminB6: 0
+  vitaminB12: 0
+  vitaminA: 0
+  thiamin: 0
+  selenium: 0
+  riboflavin: 0
+  potassium: 0
+  phosphorus: 0
+  pantothenicAcid: 0
+  niacin: 0
+  manganese: 0
+  magnesium: 0
+  iron: 0
+  folicAcid: 0
+  folate: 0
+  copper: 0
+  calcium: 0
+- name: Romaine
+  url-retail:
+  url-nutrition: https://www.wholefoodsmarket.com/product/produce-organic-romaine-lettuce-b07812n26q
+  company:
+  product:
+  cost:
+  grams:
+  servingSize: 47
+  calories: 8
+  fat: 0.14
+  fiber: 0.99
+  netCarbs: 0.51
+  protein: 0.58
+  consumptionUnit: Unit.gram
+  consumptionGrams: 1
+  meat: false
+  omega3: 0
+  zinc: 0
+  vitaminK: 0
+  vitaminE: 0
+  vitaminD: 0
+  vitaminC: 0
+  vitaminB6: 0
+  vitaminB12: 0
+  vitaminA: 0
+  thiamin: 0
+  selenium: 0
+  riboflavin: 0
+  potassium: 0
+  phosphorus: 0
+  pantothenicAcid: 0
+  niacin: 0
+  manganese: 0
+  magnesium: 0
+  iron: 0
+  folicAcid: 0
+  folate: 0
+  copper: 0
+  calcium: 0
+  verified: 3/16/22
+- name: Collared Greens
+  url-retail:
+  url-nutrition:
+  company:
+  product:
+  cost:
+  grams:
+  servingSize: 36
+  calories: 12
+  fat: 0.22
+  fiber: 1.4
+  netCarbs: 0.6
+  protein: 1.09
+  consumptionUnit: Unit.gram
+  consumptionGrams: 1
+  meat: false
+  omega3: 0
+  zinc: 0
+  vitaminK: 0
+  vitaminE: 0
+  vitaminD: 0
+  vitaminC: 0
+  vitaminB6: 0
+  vitaminB12: 0
+  vitaminA: 0
+  thiamin: 0
+  selenium: 0
+  riboflavin: 0
+  potassium: 0
+  phosphorus: 0
+  pantothenicAcid: 0
+  niacin: 0
+  manganese: 0
+  magnesium: 0
+  iron: 0
+  folicAcid: 0
+  folate: 0
+  copper: 0
+  calcium: 0
+  verified: 3/16/22
+- name: Broccoli
+  url-retail:
+  url-nutrition:
+  company:
+  product:
+  cost:
+  grams:
+  servingSize: 85
+  calories: 20
+  fat: 0
+  fiber: 3
+  netCarbs: 1
+  protein: 2
+  consumptionUnit: Unit.gram
+  consumptionGrams: 1
+  meat: false
+  omega3: 0
+  zinc: 0
+  vitaminK: 0
+  vitaminE: 0
+  vitaminD: 0
+  vitaminC: 0
+  vitaminB6: 0
+  vitaminB12: 0
+  vitaminA: 0
+  thiamin: 0
+  selenium: 0
+  riboflavin: 0
+  potassium: 0
+  phosphorus: 0
+  pantothenicAcid: 0
+  niacin: 0
+  manganese: 0
+  magnesium: 0
+  iron: 0
+  folicAcid: 0
+  folate: 0
+  copper: 0
+  calcium: 0
+  verified: 3/16/22
+- name: Cauliflower
+  url-retail:
+  url-nutrition:
+  company:
+  product:
+  cost:
+  grams:
+  servingSize: 85
+  calories: 20
+  fat: 0
+  fiber: 2
+  netCarbs: 2
+  protein: 2
+  consumptionUnit: Unit.gram
+  consumptionGrams: 1
+  meat: false
+  omega3: 0
+  zinc: 0
+  vitaminK: 0
+  vitaminE: 0
+  vitaminD: 0
+  vitaminC: 0
+  vitaminB6: 0
+  vitaminB12: 0
+  vitaminA: 0
+  thiamin: 0
+  selenium: 0
+  riboflavin: 0
+  potassium: 0
+  phosphorus: 0
+  pantothenicAcid: 0
+  niacin: 0
+  manganese: 0
+  magnesium: 0
+  iron: 0
+  folicAcid: 0
+  folate: 0
+  copper: 0
+  calcium: 0
+  verified: 3/16/22
+- name: Mushrooms
+  url-retail:
+  url-nutrition:
+  company:
+  product:
+  cost:
+  grams:
+  servingSize: 35
+  calories: 8
+  fat: 0.12
+  fiber: 0.35
+  netCarbs: 0.75
+  protein: 1.081
+  consumptionUnit: Unit.gram
+  consumptionGrams: 1
+  meat: false
+  omega3: 0
+  zinc: 0
+  vitaminK: 0
+  vitaminE: 0
+  vitaminD: 0
+  vitaminC: 0
+  vitaminB6: 0
+  vitaminB12: 0
+  vitaminA: 0
+  thiamin: 0
+  selenium: 0
+  riboflavin: 0
+  potassium: 0
+  phosphorus: 0
+  pantothenicAcid: 0
+  niacin: 0
+  manganese: 0
+  magnesium: 0
+  iron: 0
+  folicAcid: 0
+  folate: 0
+  copper: 0
+  calcium: 0
+  verified: 3/16/22
+- name: Radish
+  url-retail:
+  url-nutrition: https://www.wholefoodsmarket.com/product/produce-organic-red-radish-bunch-b09qqlf423
+  company:
+  product:
+  cost:
+  grams:
+  servingSize: 58
+  calories: 9
+  fat: 0.06
+  fiber: 0.93
+  netCarbs: 1.07
+  protein: 0.39
+  consumptionUnit: Unit.gram
+  consumptionGrams: 1
+  meat: false
+  omega3: 0
+  zinc: 0
+  vitaminK: 0
+  vitaminE: 0
+  vitaminD: 0
+  vitaminC: 0
+  vitaminB6: 0
+  vitaminB12: 0
+  vitaminA: 0
+  thiamin: 0
+  selenium: 0
+  riboflavin: 0
+  potassium: 0
+  phosphorus: 0
+  pantothenicAcid: 0
+  niacin: 0
+  manganese: 0
+  magnesium: 0
+  iron: 0
+  folicAcid: 0
+  folate: 0
+  copper: 0
+  calcium: 0
+  verified: 3/16/22
+- name: Avocado
+  url-retail:
+  url-nutrition:
+  company:
+  product:
+  cost:
+  grams:
+  servingSize: 50
+  calories: 80
+  fat: 7
+  fiber: 3.4
+  netCarbs: 0.9
+  protein: 1
+  consumptionUnit: Unit.gram
+  consumptionGrams: 1
+  meat: false
+  omega3: 0
+  zinc: 0
+  vitaminK: 0
+  vitaminE: 0
+  vitaminD: 0
+  vitaminC: 0
+  vitaminB6: 0
+  vitaminB12: 0
+  vitaminA: 0
+  thiamin: 0
+  selenium: 0
+  riboflavin: 0
+  potassium: 0
+  phosphorus: 0
+  pantothenicAcid: 0
+  niacin: 0
+  manganese: 0
+  magnesium: 0
+  iron: 0
+  folicAcid: 0
+  folate: 0
+  copper: 0
+  calcium: 0
+  verified: 3/16/22
+- name: Mackerel
+  url-retail:
+  url-nutrition:
+  company:
+  product:
+  cost:
+  grams:
+  servingSize: 85
+  calories: 180
+  fat: 11
+  fiber: 0
+  netCarbs: 0
+  protein: 21
+  consumptionUnit: Unit.can
+  consumptionGrams: 85
+  meat: false
+  omega3: 0
+  zinc: 0
+  vitaminK: 0
+  vitaminE: 0
+  vitaminD: 0
+  vitaminC: 0
+  vitaminB6: 0
+  vitaminB12: 0
+  vitaminA: 0
+  thiamin: 0
+  selenium: 0
+  riboflavin: 0
+  potassium: 0
+  phosphorus: 0
+  pantothenicAcid: 0
+  niacin: 0
+  manganese: 0
+  magnesium: 0
+  iron: 0
+  folicAcid: 0
+  folate: 0
+  copper: 0
+  calcium: 0
+  verified: 3/16/22
+- name: Smoked Sardines
+  url-retail:
+  url-nutrition:
+  company:
+  product:
+  cost:
+  grams:
+  servingSize: 85
+  calories: 170
+  fat: 11
+  fiber: 0
+  netCarbs: 0
+  protein: 18
+  consumptionUnit: Unit.can
+  consumptionGrams: 85
+  meat: false
+  omega3: 0
+  zinc: 0
+  vitaminK: 0
+  vitaminE: 0
+  vitaminD: 0
+  vitaminC: 0
+  vitaminB6: 0
+  vitaminB12: 0
+  vitaminA: 0
+  thiamin: 0
+  selenium: 0
+  riboflavin: 0
+  potassium: 0
+  phosphorus: 0
+  pantothenicAcid: 0
+  niacin: 0
+  manganese: 0
+  magnesium: 0
+  iron: 0
+  folicAcid: 0
+  folate: 0
+  copper: 0
+  calcium: 0
+  verified: 3/16/22
+- name: Sardines
+  url-retail:
+  url-nutrition:
+  company:
+  product:
+  cost:
+  grams:
+  servingSize: 85
+  calories: 190
+  fat: 12
+  fiber: 0
+  netCarbs: 0
+  protein: 21
+  consumptionUnit: Unit.can
+  consumptionGrams: 85
+  meat: false
+  omega3: 0
+  zinc: 0
+  vitaminK: 0
+  vitaminE: 0
+  vitaminD: 0
+  vitaminC: 0
+  vitaminB6: 0
+  vitaminB12: 0
+  vitaminA: 0
+  thiamin: 0
+  selenium: 0
+  riboflavin: 0
+  potassium: 0
+  phosphorus: 0
+  pantothenicAcid: 0
+  niacin: 0
+  manganese: 0
+  magnesium: 0
+  iron: 0
+  folicAcid: 0
+  folate: 0
+  copper: 0
+  calcium: 0
+  verified: 3/16/22
+- name: Tuna
+  url-retail:
+  url-nutrition:
+  company:
+  product:
+  cost:
+  grams:
+  servingSize: 85
+  calories: 100
+  fat: 2.5
+  fiber: 0
+  netCarbs: 0
+  protein: 21
+  consumptionUnit: Unit.can
+  consumptionGrams: 85
+  meat: false
+  omega3: 0
+  zinc: 0
+  vitaminK: 0
+  vitaminE: 0
+  vitaminD: 0
+  vitaminC: 0
+  vitaminB6: 0
+  vitaminB12: 0
+  vitaminA: 0
+  thiamin: 0
+  selenium: 0
+  riboflavin: 0
+  potassium: 0
+  phosphorus: 0
+  pantothenicAcid: 0
+  niacin: 0
+  manganese: 0
+  magnesium: 0
+  iron: 0
+  folicAcid: 0
+  folate: 0
+  copper: 0
+  calcium: 0
+  verified: 3/16/22
+- name: Mustard
+  url-retail:
+  url-nutrition:
+  company:
+  product:
+  cost:
+  grams:
+  servingSize: 5
+  calories: 5
+  fat: 0
+  fiber: 0
+  netCarbs: 0
+  protein: 0
+  consumptionUnit: Unit.tablespoon
+  consumptionGrams: 15
+  meat: false
+  omega3: 0
+  zinc: 0
+  vitaminK: 0
+  vitaminE: 0
+  vitaminD: 0
+  vitaminC: 0
+  vitaminB6: 0
+  vitaminB12: 0
+  vitaminA: 0
+  thiamin: 0
+  selenium: 0
+  riboflavin: 0
+  potassium: 0
+  phosphorus: 0
+  pantothenicAcid: 0
+  niacin: 0
+  manganese: 0
+  magnesium: 0
+  iron: 0
+  folicAcid: 0
+  folate: 0
+  copper: 0
+  calcium: 0
+  verified: 3/16/22
+- name: Extra Virgin Olive Oil
+  url-retail:
+  url-nutrition:
+  company:
+  product:
+  cost:
+  grams:
+  servingSize: 14
+  calories: 120
+  fat: 14
+  fiber: 0
+  netCarbs: 0
+  protein: 0
+  consumptionUnit: Unit.tablespoon
+  consumptionGrams: 14
+  meat: false
+  omega3: 0
+  zinc: 0
+  vitaminK: 0
+  vitaminE: 0
+  vitaminD: 0
+  vitaminC: 0
+  vitaminB6: 0
+  vitaminB12: 0
+  vitaminA: 0
+  thiamin: 0
+  selenium: 0
+  riboflavin: 0
+  potassium: 0
+  phosphorus: 0
+  pantothenicAcid: 0
+  niacin: 0
+  manganese: 0
+  magnesium: 0
+  iron: 0
+  folicAcid: 0
+  folate: 0
+  copper: 0
+  calcium: 0
+  verified: 3/16/22
+- name: Fish Oil
+  url-retail:
+  url-nutrition:
+  company:
+  product:
+  cost:
+  grams:
+  servingSize: 4.667
+  calories: 40
+  fat: 4.5
+  fiber: 0
+  netCarbs: 0
+  protein: 0
+  consumptionUnit: Unit.tablespoon
+  consumptionGrams: 14
+  meat: false
+  omega3: 0
+  zinc: 0
+  vitaminK: 0
+  vitaminE: 0
+  vitaminD: 0
+  vitaminC: 0
+  vitaminB6: 0
+  vitaminB12: 0
+  vitaminA: 0
+  thiamin: 0
+  selenium: 0
+  riboflavin: 0
+  potassium: 0
+  phosphorus: 0
+  pantothenicAcid: 0
+  niacin: 0
+  manganese: 0
+  magnesium: 0
+  iron: 0
+  folicAcid: 0
+  folate: 0
+  copper: 0
+  calcium: 0
+  verified: 3/16/22
+- name: String Cheese
+  url-retail:
+  url-nutrition:
+  company:
+  product:
+  cost:
+  grams:
+  servingSize: 28
+  calories: 80
+  fat: 6
+  fiber: 0
+  netCarbs: 0
+  protein: 7
+  consumptionUnit: Unit.stick
+  consumptionGrams: 28
+  meat: false
+  omega3: 0
+  zinc: 0
+  vitaminK: 0
+  vitaminE: 0
+  vitaminD: 0
+  vitaminC: 0
+  vitaminB6: 0
+  vitaminB12: 0
+  vitaminA: 0
+  thiamin: 0
+  selenium: 0
+  riboflavin: 0
+  potassium: 0
+  phosphorus: 0
+  pantothenicAcid: 0
+  niacin: 0
+  manganese: 0
+  magnesium: 0
+  iron: 0
+  folicAcid: 0
+  folate: 0
+  copper: 0
+  calcium: 0
+  verified: 3/16/22
+- name: Dubliner Cheese
+  url-retail:
+  url-nutrition:
+  company:
+  product:
+  cost:
+  grams:
+  servingSize: 28
+  calories: 110
+  fat: 9
+  fiber: 0
+  netCarbs: 0
+  protein: 7
+  consumptionUnit: Unit.gram
+  consumptionGrams: 1
+  meat: false
+  omega3: 0
+  zinc: 0
+  vitaminK: 0
+  vitaminE: 0
+  vitaminD: 0
+  vitaminC: 0
+  vitaminB6: 0
+  vitaminB12: 0
+  vitaminA: 0
+  thiamin: 0
+  selenium: 0
+  riboflavin: 0
+  potassium: 0
+  phosphorus: 0
+  pantothenicAcid: 0
+  niacin: 0
+  manganese: 0
+  magnesium: 0
+  iron: 0
+  folicAcid: 0
+  folate: 0
+  copper: 0
+  calcium: 0
+  verified: 3/16/22
+- name: Cheddar Cheese
+  url-retail:
+  url-nutrition:
+  company:
+  product:
+  cost:
+  grams:
+  servingSize: 28
+  calories: 110
+  fat: 9
+  fiber: 0
+  netCarbs: 1
+  protein: 7
+  consumptionUnit: Unit.slice
+  consumptionGrams: 9.33
+  meat: false
+  omega3: 0
+  zinc: 0
+  vitaminK: 0
+  vitaminE: 0
+  vitaminD: 0
+  vitaminC: 0
+  vitaminB6: 0
+  vitaminB12: 0
+  vitaminA: 0
+  thiamin: 0
+  selenium: 0
+  riboflavin: 0
+  potassium: 0
+  phosphorus: 0
+  pantothenicAcid: 0
+  niacin: 0
+  manganese: 0
+  magnesium: 0
+  iron: 0
+  folicAcid: 0
+  folate: 0
+  copper: 0
+  calcium: 0
+  verified: 3/16/22
+- name: Keto Bite (Mint)
+  url-retail:
+  url-nutrition:
+  company:
+  product:
+  cost:
+  grams:
+  servingSize: 25
+  calories: 140
+  fat: 12
+  fiber: 4
+  netCarbs: 1
+  protein: 6
+  consumptionUnit: Unit.whole
+  consumptionGrams: 9.33
+  meat: false
+  omega3: 0
+  zinc: 0
+  vitaminK: 0
+  vitaminE: 0
+  vitaminD: 0
+  vitaminC: 0
+  vitaminB6: 0
+  vitaminB12: 0
+  vitaminA: 0
+  thiamin: 0
+  selenium: 0
+  riboflavin: 0
+  potassium: 0
+  phosphorus: 0
+  pantothenicAcid: 0
+  niacin: 0
+  manganese: 0
+  magnesium: 0
+  iron: 0
+  folicAcid: 0
+  folate: 0
+  copper: 0
+  calcium: 0
+  verified: 3/16/22
+- name: Keto Bite (Macadamia)
+  url-retail:
+  url-nutrition:
+  company:
+  product:
+  cost:
+  grams:
+  servingSize: 25
+  calories: 140
+  fat: 11
+  fiber: 6
+  netCarbs: 0
+  protein: 6
+  consumptionUnit: Unit.whole
+  consumptionGrams: 9.33
+  meat: false
+  omega3: 0
+  zinc: 0
+  vitaminK: 0
+  vitaminE: 0
+  vitaminD: 0
+  vitaminC: 0
+  vitaminB6: 0
+  vitaminB12: 0
+  vitaminA: 0
+  thiamin: 0
+  selenium: 0
+  riboflavin: 0
+  potassium: 0
+  phosphorus: 0
+  pantothenicAcid: 0
+  niacin: 0
+  manganese: 0
+  magnesium: 0
+  iron: 0
+  folicAcid: 0
+  folate: 0
+  copper: 0
+  calcium: 0
+  verified: 3/16/22
+- name: Mini Original Semisoft Cheese
+  url-retail:
+  url-nutrition:
+  company:
+  product:
+  cost:
+  grams:
+  servingSize: 21
+  calories: 70
+  fat: 6
+  fiber: 0
+  netCarbs: 0
+  protein: 5
+  consumptionUnit: Unit.gram
+  consumptionGrams: 1
+  meat: false
+  omega3: 0
+  zinc: 0
+  vitaminK: 0
+  vitaminE: 0
+  vitaminD: 0
+  vitaminC: 0
+  vitaminB6: 0
+  vitaminB12: 0
+  vitaminA: 0
+  thiamin: 0
+  selenium: 0
+  riboflavin: 0
+  potassium: 0
+  phosphorus: 0
+  pantothenicAcid: 0
+  niacin: 0
+  manganese: 0
+  magnesium: 0
+  iron: 0
+  folicAcid: 0
+  folate: 0
+  copper: 0
+  calcium: 0
+  verified: 3/16/22
+- name: Macadamia Nuts
+  url-retail:
+  url-nutrition:
+  company:
+  product:
+  cost:
+  grams:
+  servingSize: 30
+  calories: 220
+  fat: 23
+  fiber: 3
+  netCarbs: 1
+  protein: 2
+  consumptionUnit: Unit.gram
+  consumptionGrams: 1
+  meat: false
+  omega3: 0
+  zinc: 0
+  vitaminK: 0
+  vitaminE: 0
+  vitaminD: 0
+  vitaminC: 0
+  vitaminB6: 0
+  vitaminB12: 0
+  vitaminA: 0
+  thiamin: 0
+  selenium: 0
+  riboflavin: 0
+  potassium: 0
+  phosphorus: 0
+  pantothenicAcid: 0
+  niacin: 0
+  manganese: 0
+  magnesium: 0
+  iron: 0
+  folicAcid: 0
+  folate: 0
+  copper: 0
+  calcium: 0
+  verified: 3/16/22
+- name: Dark Chocolate (Divine)
+  url-retail:
+  url-nutrition:
+  company:
+  product:
+  cost:
+  grams:
+  servingSize: 28
+  calories: 180
+  fat: 14
+  fiber: 4
+  netCarbs: 6
+  protein: 3
+  consumptionUnit: Unit.piece
+  consumptionGrams: 3.5
+  meat: false
+  omega3: 0
+  zinc: 0
+  vitaminK: 0
+  vitaminE: 0
+  vitaminD: 0
+  vitaminC: 0
+  vitaminB6: 0
+  vitaminB12: 0
+  vitaminA: 0
+  thiamin: 0
+  selenium: 0
+  riboflavin: 0
+  potassium: 0
+  phosphorus: 0
+  pantothenicAcid: 0
+  niacin: 0
+  manganese: 0
+  magnesium: 0
+  iron: 0
+  folicAcid: 0
+  folate: 0
+  copper: 0
+  calcium: 0
+- name: Keto Mint Ice Cream
+  url-retail:
+  url-nutrition:
+  company:
+  product:
+  cost:
+  grams:
+  servingSize: 99
+  calories: 250
+  fat: 23
+  fiber: 4
+  netCarbs: 3
+  protein: 4
+  consumptionUnit: Unit.gram
+  consumptionGrams: 1
+  meat: false
+  omega3: 0
+  zinc: 0
+  vitaminK: 0
+  vitaminE: 0
+  vitaminD: 0
+  vitaminC: 0
+  vitaminB6: 0
+  vitaminB12: 0
+  vitaminA: 0
+  thiamin: 0
+  selenium: 0
+  riboflavin: 0
+  potassium: 0
+  phosphorus: 0
+  pantothenicAcid: 0
+  niacin: 0
+  manganese: 0
+  magnesium: 0
+  iron: 0
+  folicAcid: 0
+  folate: 0
+  copper: 0
+  calcium: 0
+  verified: 3/16/22
+- name: Dry Roasted Peanuts (unsalted)
+  url-retail:
+  url-nutrition:
+  company:
+  product:
+  cost:
+  grams:
+  servingSize: 28
+  calories: 160
+  fat: 14
+  fiber: 2
+  netCarbs: 4
+  protein: 7
+  consumptionUnit: Unit.gram
+  consumptionGrams: 1
+  meat: false
+  omega3: 0
+  zinc: 0
+  vitaminK: 0
+  vitaminE: 0
+  vitaminD: 0
+  vitaminC: 0
+  vitaminB6: 0
+  vitaminB12: 0
+  vitaminA: 0
+  thiamin: 0
+  selenium: 0
+  riboflavin: 0
+  potassium: 0
+  phosphorus: 0
+  pantothenicAcid: 0
+  niacin: 0
+  manganese: 0
+  magnesium: 0
+  iron: 0
+  folicAcid: 0
+  folate: 0
+  copper: 0
+  calcium: 0

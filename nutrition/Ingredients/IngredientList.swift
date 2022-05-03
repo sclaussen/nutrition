@@ -29,10 +29,10 @@ struct IngredientList: View {
                                                  amount: 100.0 / ingredient.consumptionGrams,
                                                  consumptionUnit: ingredient.consumptionUnit)
                                })
-                  .foregroundColor(ingredient.available ? Color("Black") : Color("Red"))
+                  .foregroundColor(ingredient.available ? Color.theme.blackWhite : Color.theme.red)
                   .swipeActions(edge: .leading) {
 
-                      // Availalbe/Unavailble toggle
+                      // Availalbe/Unavailable toggle
                       Button {
                           let newIngredient = ingredientMgr.toggleAvailable(ingredient)
                           if newIngredient!.available {
@@ -64,7 +64,7 @@ struct IngredientList: View {
               .onMove(perform: moveAction)
               .onDelete(perform: deleteAction)
               .listRowInsets(EdgeInsets(top: 8, leading: 10, bottom: 8, trailing: 10))
-              .border(Color.red, width: 0)
+              .border(Color.theme.red, width: 0)
         }
           .alert("The meal ingredient must be deleted first.  It may be necessary to lock the meal ingredients prior to deletion so the meal ingredient is not readded as an adjustment.", isPresented: $deleteMealIngredientAlert) {
               Button("OK", role: .cancel) { }
@@ -77,7 +77,7 @@ struct IngredientList: View {
           .toolbar {
               ToolbarItem(placement: .navigation) {
                   EditButton()
-                    .foregroundColor(Color("Blue"))
+                    .foregroundColor(Color.theme.blueYellow)
               }
               ToolbarItem(placement: .principal) {
                   Button {
@@ -86,11 +86,11 @@ struct IngredientList: View {
                   } label: {
                       Image(systemName: !ingredientMgr.unavailableIngredientsExist() ? "" : showUnavailable ? "eye" : "eye.slash")
                   }
-                    .foregroundColor(Color("Blue"))
+                    .foregroundColor(Color.theme.blueYellow)
               }
               ToolbarItem(placement: .primaryAction) {
                   NavigationLink("Add", destination: IngredientAdd())
-                    .foregroundColor(Color("Blue"))
+                    .foregroundColor(Color.theme.blueYellow)
               }
           }
     }

@@ -31,18 +31,18 @@ struct MealEdit: View {
           .toolbar {
               ToolbarItem(placement: .navigation) {
                   Button("Cancel", action: cancel)
-                    .foregroundColor(Color("Blue"))
+                    .foregroundColor(Color.theme.blueYellow)
               }
               ToolbarItem(placement: .primaryAction) {
                   Button("Save", action: save)
-                    .foregroundColor(Color("Blue"))
+                    .foregroundColor(Color.theme.blueYellow)
               }
               ToolbarItemGroup(placement: .keyboard) {
                   HStack {
                       DismissKeyboard()
                       Spacer()
                       Button("Save", action: save)
-                        .foregroundColor(Color("Blue"))
+                        .foregroundColor(Color.theme.blueYellow)
                   }
               }
           }
