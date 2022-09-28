@@ -110,7 +110,6 @@ struct IngredientAdd: View {
                                  verified: "")
             if ingredientAdd {
                 mealIngredientMgr.create(name: name,
-                                         defaultAmount: ingredientAmount,
                                          amount: ingredientAmount,
                                          active: false)
             }
@@ -165,25 +164,25 @@ extension IngredientAdd {
                 NameValue("Meat", description: "main course", $meat, control: .toggle)
             }
 
-            if meat {
-                ForEach(0..<adjustmentCount, id: \.self) { index in
-                    Section(header: Text("Base Meal Adjustment #" + String(index + 1))) {
-                        // TODO: Update this to exclude existing meal adjustments, or, should this be fetching all ingredients (which is what it appears to do...)?
-                        NameValue("Ingredient", $mealAdjustments[index].name, options: ingredientMgr.getNewMeatNames(existing: []), control: .picker)
-                        if mealAdjustments[index].name.count > 0 {
-                            NameValue("Amount", $mealAdjustments[index].amount, ingredientMgr.getIngredient(name: mealAdjustments[index].name)!.consumptionUnit, negative: true, edit: true)
-                        }
-                    }
-                }
-
-                Button {
-                    adjustmentCount += 1
-                    let meadAdustment: MealAdjustment = MealAdjustment(name: "", amount: 0.0, consumptionUnit: .none)
-                    mealAdjustments.append(meadAdustment)
-                } label: {
-                    Label("New Meal Ingredient Adjustment", systemImage: "plus.circle")
-                }
-            }
+//            if meat {
+//                ForEach(0..<adjustmentCount, id: \.self) { index in
+//                    Section(header: Text("Base Meal Adjustment #" + String(index + 1))) {
+//                        // TODO: Update this to exclude existing meal adjustments, or, should this be fetching all ingredients (which is what it appears to do...)?
+//                        NameValue("Ingredient", $mealAdjustments[index].name, options: ingredientMgr.getNewMeatNames(existing: []), control: .picker)
+//                        if mealAdjustments[index].name.count > 0 {
+//                            NameValue("Amount", $mealAdjustments[index].amount, ingredientMgr.getIngredient(name: mealAdjustments[index].name)!.consumptionUnit, negative: true, edit: true)
+//                        }
+//                    }
+//                }
+//
+//                Button {
+//                    adjustmentCount += 1
+//                    let meadAdustment: MealAdjustment = MealAdjustment(name: "", amount: 0.0, consumptionUnit: .none)
+//                    mealAdjustments.append(meadAdustment)
+//                } label: {
+//                    Label("New Meal Ingredient Adjustment", systemImage: "plus.circle")
+//                }
+//            }
         }
     }
 

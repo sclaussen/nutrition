@@ -8,8 +8,15 @@ class MacrosMgr: ObservableObject {
         macros = Macros()
     }
 
-    func setMacroGoals(caloriesGoalUnadjusted: Double, caloriesGoal: Double, fatGoal: Double, fiberMinimum: Double, netCarbsMaximum: Double, proteinGoal: Double) {
-        self.macros = macros.setMacroGoals(caloriesGoalUnadjusted: caloriesGoalUnadjusted, caloriesGoal: caloriesGoal, fatGoal: fatGoal, fiberMinimum: fiberMinimum, netCarbsMaximum: netCarbsMaximum, proteinGoal: proteinGoal)
+    func setDailyMacroGoals(caloriesGoalUnadjusted: Double, caloriesGoal: Double, fatGoal: Double, fiberMinimum: Double, netCarbsMaximum: Double, proteinGoal: Double) {
+        print("Setting macro goals")
+        self.macros = macros.setDailyMacroGoals(caloriesGoalUnadjusted: caloriesGoalUnadjusted, caloriesGoal: caloriesGoal, fatGoal: fatGoal, fiberMinimum: fiberMinimum, netCarbsMaximum: netCarbsMaximum, proteinGoal: proteinGoal)
+        print("  caloriesGoal: \(caloriesGoal)")
+        print("  fatGoal: \(fatGoal)")
+        print("  fiberMinimum: \(fiberMinimum)")
+        print("  netCarbsMaximum: \(netCarbsMaximum)")
+        print("  proteinGoal: \(proteinGoal)")
+        print("")
     }
 
     func addMacroActuals(name: String, calories: Double, fat: Double, fiber: Double, netCarbs: Double, protein: Double) {
@@ -48,7 +55,7 @@ struct Macros {
         self.protein = protein
     }
 
-    func setMacroGoals(caloriesGoalUnadjusted: Double, caloriesGoal: Double, fatGoal: Double, fiberMinimum: Double, netCarbsMaximum: Double, proteinGoal: Double) -> Macros {
+    func setDailyMacroGoals(caloriesGoalUnadjusted: Double, caloriesGoal: Double, fatGoal: Double, fiberMinimum: Double, netCarbsMaximum: Double, proteinGoal: Double) -> Macros {
         return Macros(caloriesGoalUnadjusted: caloriesGoalUnadjusted, caloriesGoal: caloriesGoal, fatGoal: fatGoal, fiberMinimum: fiberMinimum, netCarbsMaximum: netCarbsMaximum, proteinGoal: proteinGoal)
     }
 

@@ -275,16 +275,16 @@ struct NVTextField<T: ValueType>: View {
                 $value.wrappedValue = string as! T
             }
 
-            print("\nSet:")
-            print("editingString", editingString)
-            print("value.wrappedValue", $value.wrappedValue)
+            // print("\nSet:")
+            // print("editingString", editingString)
+            // print("value.wrappedValue", $value.wrappedValue)
         }),
                   onEditingChanged: { isEditing in
                       self.isEditing = isEditing
                       editingString = $value.wrappedValue.formattedString(precision)
-                      print("\nonEditingChanged:")
-                      print("editingString", editingString)
-                      print("value.wrappedValue", $value.wrappedValue)
+                      // print("\nonEditingChanged:")
+                      // print("editingString", editingString)
+                      // print("value.wrappedValue", $value.wrappedValue)
                   })
           .value(geo, valueString.count > 7, unit)
           .onReceive(NotificationCenter.default.publisher(for: UITextField.textDidBeginEditingNotification)) { obj in
@@ -296,7 +296,7 @@ struct NVTextField<T: ValueType>: View {
           .foregroundColor(Color.theme.blueYellow)
           .keyboardType(keyboard)
           .onSubmit {
-              print("\nonSubmit:")
+              // print("\nonSubmit:")
               print($value.wrappedValue)
           }
     }

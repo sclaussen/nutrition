@@ -1,4 +1,34 @@
+# Code Overview
+
+nutrition/app.swift
+
+
+
 # Features
+
+## Current P0
+
+- Reset everything
+  - Delete meal ingredient meat(s)
+  - Undo auto adjustments
+  - Undo manual adjustments
+
+- Configure screen
+  - Update active calories
+  - Choose meat and grams
+
+- Auto
+  - results in comp create/etc
+  - reset to default values on each pull down?
+
+- Allow some ingredients to be set manually
+  - Results in a manual override on the ingredient
+  - Swipe to remove manual override (returns to default value)
+
+
+- Change meal/amount while in lock
+
+
 
 ## P0
 

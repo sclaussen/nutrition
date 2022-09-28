@@ -19,7 +19,7 @@ struct MealEdit: View {
                 NameValue("Ingredient", $mealIngredient.name)
                 NameValue("Current Amount", $mealIngredient.amount, getConsumptionUnit(mealIngredient.name), edit: true)
                   .focused($focusedField, equals: .amount)
-                NameValue("Default Amount", $mealIngredient.defaultAmount, getConsumptionUnit(mealIngredient.name), edit: true)
+                // NameValue("Default Amount", $mealIngredient.defaultAmount, getConsumptionUnit(mealIngredient.name), edit: true)
             }
         }
           .onSubmit {
@@ -61,18 +61,18 @@ struct MealEdit: View {
 
     func save() {
         withAnimation {
-            mealIngredientMgr.update(mealIngredient)
+            mealIngredientMgr.manualAdjustment(name: mealIngredient.name, amount: mealIngredient.amount)
             presentationMode.wrappedValue.dismiss()
         }
     }
 
     func getConsumptionUnit(_ name: String) -> Unit {
-        return ingredientMgr.getIngredient(name: name)!.consumptionUnit
+        return ingredientMgr.getByName(name: name)!.consumptionUnit
     }
 }
 
 struct BaseUpdate_Previews: PreviewProvider {
-    @State static var base = MealIngredient(name: "Arugula", defaultAmount: 145.0, amount: 145.0)
+    @State static var base = MealIngredient(name: "Arugula", originalAmount: 145.0, amount: 145.0)
 
     static var previews: some View {
         NavigationView {

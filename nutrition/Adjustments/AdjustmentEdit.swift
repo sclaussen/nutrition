@@ -71,7 +71,7 @@ struct AdjustmentEdit: View {
     }
 
     func getConsumptionUnit(_ name: String) -> Unit {
-        return ingredientMgr.getIngredient(name: name)!.consumptionUnit
+        return ingredientMgr.getByName(name: name)!.consumptionUnit
     }
 }
 

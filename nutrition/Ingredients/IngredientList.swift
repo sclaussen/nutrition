@@ -32,7 +32,7 @@ struct IngredientList: View {
                   .foregroundColor(ingredient.available ? Color.theme.blackWhite : Color.theme.red)
                   .swipeActions(edge: .leading) {
 
-                      // Availalbe/Unavailable toggle
+                      // Available/Unavailable toggle
                       Button {
                           let newIngredient = ingredientMgr.toggleAvailable(ingredient)
                           if newIngredient!.available {
@@ -96,7 +96,7 @@ struct IngredientList: View {
     }
 
     func getIngredientList() -> [Ingredient] {
-        let ingredients = ingredientMgr.get(includeUnavailable: showUnavailable)
+        let ingredients = ingredientMgr.getAll(includeUnavailable: showUnavailable)
         return ingredients
         //        if searchingFor.isEmpty {
         //            return ingredients
@@ -109,11 +109,11 @@ struct IngredientList: View {
     }
 
     func delete(_ ingredient: Ingredient) {
-        if let mealIngredient = mealIngredientMgr.getIngredient(name: ingredient.name) {
+        if let mealIngredient = mealIngredientMgr.getByName(name: ingredient.name) {
             deleteMealIngredientAlert = true
             return
         }
-        if let adjustment = adjustmentMgr.getIngredient(name: ingredient.name) {
+        if let adjustment = adjustmentMgr.getByName(name: ingredient.name) {
             deleteAdjustmentAlert = true
             return
         }
@@ -123,7 +123,7 @@ struct IngredientList: View {
      func deleteAction(indexSet: IndexSet) {
          for index in indexSet {
              let ingredient = ingredientMgr.ingredients[index]
-             if let mealIngredient = mealIngredientMgr.getIngredient(name: ingredient.name) {
+             if let mealIngredient = mealIngredientMgr.getByName(name: ingredient.name) {
                  return
              }
              // if let adjustment = adjustmentMgr.getIngredient(name: ingredient.name) {

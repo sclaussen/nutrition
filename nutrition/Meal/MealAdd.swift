@@ -12,7 +12,14 @@ struct MealAdd: View {
     var body: some View {
         Form {
             Section {
-                NameValue("Meal Ingredient", $name, options: ingredientMgr.getNewMeatNames(existing: mealIngredientMgr.getNames()), control: .picker)
+                // Return a list of sorted ingredients that are not:
+                // 1. already part of the meal ingredients list
+                // 2. that are not categorized as meats
+                NameValue("Meal Ingredient", $name, options: ingredientMgr.getNewMealIngredientNames(existingMealIngredientNames: mealIngredientMgr.getNames()), control: .picker)
+
+                // If an ingredient has been selected, the name string
+                // will have > 0 characters, in which case present the
+                // "Amount" name/value widget.
                 if name.count > 0 {
                     NameValue("Amount", $defaultAmount, getConsumptionUnit(name), edit: true)
                 }
@@ -46,13 +53,13 @@ struct MealAdd: View {
 
     func save() {
         withAnimation {
-            mealIngredientMgr.create(name: name, defaultAmount: defaultAmount, amount: defaultAmount)
+            mealIngredientMgr.create(name: name, amount: defaultAmount)
             presentationMode.wrappedValue.dismiss()
         }
     }
 
     func getConsumptionUnit(_ name: String) -> Unit {
-        return ingredientMgr.getIngredient(name: name)!.consumptionUnit
+        return ingredientMgr.getByName(name: name)!.consumptionUnit
     }
 }
 

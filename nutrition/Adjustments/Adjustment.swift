@@ -2,31 +2,34 @@ import Foundation
 
 class AdjustmentMgr: ObservableObject {
 
+
     @Published var adjustments: [Adjustment] = [] {
         didSet {
             serialize()
         }
     }
 
+
     init() {
-        adjustments.append(Adjustment(name: "Mackerel", amount: 1, group: "fish", constraints: true, maximum: 2))
         adjustments.append(Adjustment(name: "Sardines", amount: 1, group: "fish", constraints: true, maximum: 2))
+        adjustments.append(Adjustment(name: "Mackerel", amount: 1, group: "fish", constraints: true, maximum: 2))
         adjustments.append(Adjustment(name: "Smoked Sardines", amount: 1, group: "fish", constraints: true, maximum: 2))
         adjustments.append(Adjustment(name: "Eggs", amount: 1, constraints: true, maximum: 7))
-        adjustments.append(Adjustment(name: "Extra Virgin Olive Oil", amount: 0.5, constraints: true, maximum: 5))
-        adjustments.append(Adjustment(name: "Broccoli", amount: 20, group: "vege", constraints: true, maximum: 300))
-        adjustments.append(Adjustment(name: "Cauliflower", amount: 20, group: "vege", constraints: true, maximum: 300))
-        adjustments.append(Adjustment(name: "Pumpkin Seeds", amount: 10, group: "vege"))
+        adjustments.append(Adjustment(name: "Broccoli", amount: 10, group: "vege", constraints: true, maximum: 250))
+        adjustments.append(Adjustment(name: "Cauliflower", amount: 10, group: "vege", constraints: true, maximum: 120))
+        adjustments.append(Adjustment(name: "Pumpkin Seeds", amount: 5, group: "vege"))
         adjustments.append(Adjustment(name: "String Cheese", amount: 1))
+        adjustments.append(Adjustment(name: "Extra Virgin Olive Oil", amount: 1, constraints: true, maximum: 5))
         adjustments.append(Adjustment(name: "Macadamia Nuts", amount: 5, active: false))
-        adjustments.append(Adjustment(name: "Dark Chocolate (Divine)", amount: 1))
     }
+
 
     func serialize() {
         if let encodedData = try? JSONEncoder().encode(adjustments) {
             UserDefaults.standard.set(encodedData, forKey: "adjustment")
         }
     }
+
 
     func deserialize() {
         guard
@@ -39,6 +42,7 @@ class AdjustmentMgr: ObservableObject {
         self.adjustments = savedItems
     }
 
+
     func create(name: String,
                 amount: Double,
                 group: String = "",
@@ -50,14 +54,16 @@ class AdjustmentMgr: ObservableObject {
         adjustments.append(adjustment)
     }
 
-    func get(includeInactive: Bool = false) -> [Adjustment] {
+
+    func getAll(includeInactive: Bool = false) -> [Adjustment] {
         if includeInactive {
             return adjustments
         }
         return adjustments.filter({ $0.active == true })
     }
 
-    func getIngredient(name: String) -> Adjustment? {
+
+    func getByName(name: String) -> Adjustment? {
         if let index = adjustments.firstIndex(where: { $0.name == name }) {
             return adjustments[index]
         }
@@ -65,15 +71,18 @@ class AdjustmentMgr: ObservableObject {
         return nil
     }
 
+
     func getNames() -> [String] {
         return adjustments.map { $0.name }
     }
+
 
     func update(_ adjustment: Adjustment) {
         if let index = adjustments.firstIndex(where: { $0.id == adjustment.id }) {
             adjustments[index] = adjustment.update(adjustment: adjustment)
         }
     }
+
 
     func activate(_ name: String) {
         if let index = adjustments.firstIndex(where: { $0.name == name }) {
@@ -84,6 +93,7 @@ class AdjustmentMgr: ObservableObject {
         }
     }
 
+
     func deactivate(_ name: String) {
         if let index = adjustments.firstIndex(where: { $0.name == name }) {
             if adjustments[index].active {
@@ -93,10 +103,12 @@ class AdjustmentMgr: ObservableObject {
         }
     }
 
+
     func inactiveIngredientsExist() -> Bool {
         let inactiveIngredients = adjustments.filter({ $0.active == false })
         return inactiveIngredients.count > 0
     }
+
 
     func toggleActive(_ adjustment: Adjustment) -> Adjustment? {
         if let index = adjustments.firstIndex(where: { $0.id == adjustment.id }) {
@@ -106,13 +118,16 @@ class AdjustmentMgr: ObservableObject {
         return nil
     }
 
+
     func move(from: IndexSet, to: Int) {
         adjustments.move(fromOffsets: from, toOffset: to)
     }
 
+
     func deleteSet(indexSet: IndexSet) {
         adjustments.remove(atOffsets: indexSet)
     }
+
 
     func delete(_ adjustment: Adjustment) {
         if let index = adjustments.firstIndex(where: { $0.id == adjustment.id }) {
@@ -132,6 +147,7 @@ struct Adjustment: Codable, Identifiable {
     var maximum: Double
     var active: Bool
 
+
     init(id: String = UUID().uuidString, name: String, amount: Double, group: String = "", constraints: Bool = false, maximum: Double = 0, active: Bool = true) {
         self.id = id
         self.name = name
@@ -142,9 +158,11 @@ struct Adjustment: Codable, Identifiable {
         self.active = active
     }
 
+
     func toggleActive() -> Adjustment {
         return Adjustment(id: id, name: name, amount: amount, group: group, constraints: constraints, maximum: maximum, active: !active)
     }
+
 
     func update(adjustment: Adjustment) -> Adjustment {
         return Adjustment(id: adjustment.id, name: adjustment.name, amount: adjustment.amount, group: adjustment.group, constraints: adjustment.constraints, maximum: adjustment.maximum, active: adjustment.active)

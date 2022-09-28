@@ -6,10 +6,12 @@ extension Color {
 }
 
 struct ColorTheme {
+    let automatic = Color("Automatic")
     let blackWhite = Color("BlackWhite")
     let blackWhiteSecondary = Color("BlackWhiteSecondary")
     let blueYellow = Color("BlueYellow")
     let blueYellowSecondary = Color("BlueYellowSecondary")
+    let manual = Color("Manual")
     let progressLineBackground = Color("ProgressLineBackground")
     let black = Color("Black")
     let blue = Color("Blue")

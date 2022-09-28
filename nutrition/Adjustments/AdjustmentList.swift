@@ -12,7 +12,7 @@ struct AdjustmentList: View {
             IngredientRowHeader(showGroup: true)
               .listRowInsets(EdgeInsets(top: 10, leading: 10, bottom: 10, trailing: 10))
 
-            ForEach(adjustmentMgr.get(includeInactive: showInactive)) { adjustment in
+            ForEach(adjustmentMgr.getAll(includeInactive: showInactive)) { adjustment in
                 NavigationLink(destination: AdjustmentEdit(adjustment: adjustment),
                                label: {
                                    IngredientRow(showGroup: true,
@@ -24,14 +24,14 @@ struct AdjustmentList: View {
                   .foregroundColor(adjustment.active ? Color.theme.blackWhite : Color.theme.red)
                   .swipeActions(edge: .leading) {
                       Button {
-                          if adjustment.active || ingredientMgr.getIngredient(name: adjustment.name)!.available {
+                          if adjustment.active || ingredientMgr.getByName(name: adjustment.name)!.available {
                               let newAdjustment = adjustmentMgr.toggleActive(adjustment)
                               print("  \(newAdjustment!.name) active: \(newAdjustment!.active)")
                           }
                       } label: {
-                          Label("", systemImage: !ingredientMgr.getIngredient(name: adjustment.name)!.available ? "circle.slash" : adjustment.active ? "pause.circle" : "play.circle")
+                          Label("", systemImage: !ingredientMgr.getByName(name: adjustment.name)!.available ? "circle.slash" : adjustment.active ? "pause.circle" : "play.circle")
                       }
-                        .tint(!ingredientMgr.getIngredient(name: adjustment.name)!.available ? Color.theme.blackWhiteSecondary : adjustment.active ? Color.theme.red : Color.theme.green)
+                        .tint(!ingredientMgr.getByName(name: adjustment.name)!.available ? Color.theme.blackWhiteSecondary : adjustment.active ? Color.theme.red : Color.theme.green)
                   }
                   .swipeActions(edge: .trailing) {
                       Button(role: .destructive) {
@@ -78,7 +78,7 @@ struct AdjustmentList: View {
     }
 
     func getConsumptionUnit(_ name: String) -> Unit {
-        return ingredientMgr.getIngredient(name: name)!.consumptionUnit
+        return ingredientMgr.getByName(name: name)!.consumptionUnit
     }
 }
 

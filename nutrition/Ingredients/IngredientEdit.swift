@@ -91,23 +91,23 @@ extension IngredientEdit {
                 NameValue("Meat", description: "main course", $ingredient.meat, control: .toggle)
             }
 
-            if ingredient.meat {
-                ForEach(0..<ingredient.mealAdjustments.count, id: \.self) { index in
-                    Section(header: Text("Base Meal Adjustment #" + String(index + 1))) {
-                        NameValue("Ingredient", $ingredient.mealAdjustments[index].name, options: ingredientMgr.getNewMeatNames(existing: []), control: .picker)
-                        if ingredient.mealAdjustments[index].name.count > 0 {
-                            NameValue("Amount", $ingredient.mealAdjustments[index].amount, ingredientMgr.getIngredient(name: ingredient.mealAdjustments[index].name)!.consumptionUnit, negative: true, edit: true)
-                        }
-                    }
-                }
-
-                Button {
-                    let mealAdustment: MealAdjustment = MealAdjustment(name: "", amount: 0.0, consumptionUnit: .none)
-                    ingredient.mealAdjustments.append(mealAdustment)
-                } label: {
-                    Label("Add a Base Meal Adjustment (Optional)", systemImage: "plus.circle")
-                }
-            }
+//            if ingredient.meat {
+//                ForEach(0..<ingredient.mealAdjustments.count, id: \.self) { index in
+//                    Section(header: Text("Base Meal Adjustment #" + String(index + 1))) {
+//                        NameValue("Ingredient", $ingredient.mealAdjustments[index].name, options: ingredientMgr.getNewMeatNames(existing: []), control: .picker)
+//                        if ingredient.mealAdjustments[index].name.count > 0 {
+//                            NameValue("Amount", $ingredient.mealAdjustments[index].amount, ingredientMgr.getIngredient(name: ingredient.mealAdjustments[index].name)!.consumptionUnit, negative: true, edit: true)
+//                        }
+//                    }
+//                }
+//
+//                Button {
+//                    let mealAdustment: MealAdjustment = MealAdjustment(name: "", amount: 0.0, consumptionUnit: .none)
+//                    ingredient.mealAdjustments.append(mealAdustment)
+//                } label: {
+//                    Label("Add a Base Meal Adjustment (Optional)", systemImage: "plus.circle")
+//                }
+//            }
         }
     }
 

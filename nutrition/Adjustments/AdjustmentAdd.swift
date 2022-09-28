@@ -15,22 +15,22 @@ struct AdjustmentAdd: View {
     var body: some View {
         Form {
             Section {
-                NameValue("Ingredient", $name, options: ingredientMgr.getNewMeatNames(existing: adjustmentMgr.getNames()), control: .picker)
+                NameValue("Ingredient", $name, options: ingredientMgr.getNewMealIngredientNames(existingMealIngredientNames: adjustmentMgr.getNames()), control: .picker)
                 if name.count > 0 {
                     NameValue("Amount", $amount, getConsumptionUnit(name), edit: true)
                 }
             }
-            if name.count > 0 {
-                Section {
-                    NameValue("Constraints", $constraints, control: .toggle)
-                    if constraints {
-                        NameValue("Maximum", $maximum, edit: true)
-                    }
-                }
-                Section {
-                    NameValue("Choice Group", $group, edit: true)
-                }
-            }
+            //            if name.count > 0 {
+            //                Section {
+            //                    NameValue("Constraints", $constraints, control: .toggle)
+            //                    if constraints {
+            //                        NameValue("Maximum", $maximum, edit: true)
+            //                    }
+            //                }
+            //                Section {
+            //                    NameValue("Choice Group", $group, edit: true)
+            //                }
+            //            }
         }
           .padding([.leading, .trailing], -20)
           .navigationBarBackButtonHidden(true)
@@ -68,7 +68,7 @@ struct AdjustmentAdd: View {
     }
 
     func getConsumptionUnit(_ name: String) -> Unit {
-        return ingredientMgr.getIngredient(name: name)!.consumptionUnit
+        return ingredientMgr.getByName(name: name)!.consumptionUnit
     }
 }
 

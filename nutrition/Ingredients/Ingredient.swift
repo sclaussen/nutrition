@@ -1,11 +1,14 @@
 import Foundation
 
 class IngredientMgr: ObservableObject {
+
+
     @Published var ingredients: [Ingredient] = [] {
         didSet {
             serialize()
         }
     }
+
 
     init() {
         ingredients.append(Ingredient(name: "Coconut Oil",
@@ -18,10 +21,10 @@ class IngredientMgr: ObservableObject {
                                       consumptionUnit: Unit.tablespoon,
                                       consumptionGrams: 14,
                                       meat: false,
-                                      verified: "3/16/22"))
+                                      verified: "9/1/22"))
         ingredients.append(Ingredient(name: "Avocado Oil",
                                       servingSize: 14,
-                                      calories: 120,
+                                      calories: 130,
                                       fat: 14,
                                       fiber: 0,
                                       netCarbs: 0,
@@ -29,7 +32,7 @@ class IngredientMgr: ObservableObject {
                                       consumptionUnit: Unit.tablespoon,
                                       consumptionGrams: 14,
                                       meat: false,
-                                      verified: "3/16/22"))
+                                      verified: "9/1/22"))
         ingredients.append(Ingredient(name: "Pumpkin Seeds",
                                       servingSize: 28,
                                       calories: 160,
@@ -40,7 +43,7 @@ class IngredientMgr: ObservableObject {
                                       consumptionUnit: Unit.gram,
                                       consumptionGrams: 1,
                                       meat: false,
-                                      verified: "3/16/22"))
+                                      verified: "9/1/22"))
         ingredients.append(Ingredient(name: "Chicken",
                                       servingSize: 100,
                                       calories: 115,
@@ -51,7 +54,7 @@ class IngredientMgr: ObservableObject {
                                       consumptionUnit: Unit.gram,
                                       consumptionGrams: 1,
                                       meat: true,
-                                      meatAmount: 250))
+                                      meatAmount: 240))
         ingredients.append(Ingredient(name: "Beef",
                                       servingSize: 100,
                                       calories: 214,
@@ -63,10 +66,8 @@ class IngredientMgr: ObservableObject {
                                       consumptionGrams: 1,
                                       meat: true,
                                       meatAmount: 150,
-                                      mealAdjustments: [ MealAdjustment(name: "Eggs", amount: -1, consumptionUnit: Unit.egg),
-                                                         MealAdjustment(name: "Extra Virgin Olive Oil", amount: -1, consumptionUnit: Unit.tablespoon),
-                                                         MealAdjustment(name: "Pumpkin Seeds", amount: -15, consumptionUnit: Unit.gram),
-                                                         MealAdjustment(name: "Collared Greens", amount: 20, consumptionUnit: Unit.gram) ]))
+                                      mealAdjustments: [ MealAdjustment(name: "Eggs", amount: -2, consumptionUnit: Unit.egg),
+                                                         MealAdjustment(name: "Pumpkin Seeds", amount: -15, consumptionUnit: Unit.gram) ]))
         ingredients.append(Ingredient(name: "Bison",
                                       servingSize: 112,
                                       calories: 160,
@@ -78,8 +79,8 @@ class IngredientMgr: ObservableObject {
                                       consumptionGrams: 1,
                                       meat: true,
                                       meatAmount: 150,
-                                      mealAdjustments: [ MealAdjustment(name: "Eggs", amount: -1, consumptionUnit: Unit.egg),
-                                                         MealAdjustment(name: "Extra Virgin Olive Oil", amount: -1, consumptionUnit: Unit.tablespoon) ]))
+                                      mealAdjustments: [ MealAdjustment(name: "Eggs", amount: -2, consumptionUnit: Unit.egg),
+                                                         MealAdjustment(name: "Pumpkin Seeds", amount: -15, consumptionUnit: Unit.gram) ]))
         ingredients.append(Ingredient(name: "Lamb",
                                       servingSize: 85,
                                       calories: 253,
@@ -91,8 +92,8 @@ class IngredientMgr: ObservableObject {
                                       consumptionGrams: 1,
                                       meat: true,
                                       meatAmount: 150,
-                                      mealAdjustments: [ MealAdjustment(name: "Eggs", amount: -1, consumptionUnit: Unit.egg),
-                                                         MealAdjustment(name: "Extra Virgin Olive Oil", amount: -1, consumptionUnit: Unit.tablespoon) ], available: false))
+                                      mealAdjustments: [ MealAdjustment(name: "Eggs", amount: -2, consumptionUnit: Unit.egg),
+                                                         MealAdjustment(name: "Pumpkin Seeds", amount: -15, consumptionUnit: Unit.gram) ]))
         ingredients.append(Ingredient(name: "Pork Chop",
                                       servingSize: 113,
                                       calories: 220,
@@ -103,9 +104,9 @@ class IngredientMgr: ObservableObject {
                                       consumptionUnit: Unit.gram,
                                       consumptionGrams: 1,
                                       meat: true,
-                                      meatAmount: 200,
-                                      mealAdjustments: [ MealAdjustment(name: "Eggs", amount: -1, consumptionUnit: Unit.egg),
-                                                         MealAdjustment(name: "Extra Virgin Olive Oil", amount: -1, consumptionUnit: Unit.tablespoon) ]))
+                                      meatAmount: 240,
+                                      mealAdjustments: [ MealAdjustment(name: "Eggs", amount: -2, consumptionUnit: Unit.egg),
+                                                         MealAdjustment(name: "Pumpkin Seeds", amount: -15, consumptionUnit: Unit.gram) ]))
         ingredients.append(Ingredient(name: "Salmon",
                                       servingSize: 112,
                                       calories: 150,
@@ -139,7 +140,8 @@ class IngredientMgr: ObservableObject {
                                       consumptionUnit: Unit.gram,
                                       consumptionGrams: 1,
                                       meat: true,
-                                      meatAmount: 250, available: false))
+                                      meatAmount: 250,
+                                      available: false))
         ingredients.append(Ingredient(name: "Eggs",
                                       servingSize: 50,
                                       calories: 70,
@@ -150,7 +152,7 @@ class IngredientMgr: ObservableObject {
                                       consumptionUnit: Unit.egg,
                                       consumptionGrams: 50,
                                       meat: false,
-                                      verified: "3/16/22"))
+                                      verified: "9/1/22"))
         ingredients.append(Ingredient(name: "Serrano Pepper",
                                       servingSize: 6.1,
                                       calories: 2,
@@ -158,6 +160,17 @@ class IngredientMgr: ObservableObject {
                                       fiber: 0.23,
                                       netCarbs: 0.18,
                                       protein: 0.11,
+                                      consumptionUnit: Unit.gram,
+                                      consumptionGrams: 1,
+                                      meat: false,
+                                      verified: "3/16/22"))
+        ingredients.append(Ingredient(name: "Flackers (SS)",
+                                      servingSize: 30,
+                                      calories: 160,
+                                      fat: 12,
+                                      fiber: 9,
+                                      netCarbs: 1,
+                                      protein: 6,
                                       consumptionUnit: Unit.gram,
                                       consumptionGrams: 1,
                                       meat: false,
@@ -173,17 +186,17 @@ class IngredientMgr: ObservableObject {
                                       consumptionGrams: 1,
                                       meat: false,
                                       available: false))
-        ingredients.append(Ingredient(name: "Salsa",
-                                      servingSize: 30,
-                                      calories: 10,
-                                      fat: 0,
-                                      fiber: 1,
-                                      netCarbs: 0,
-                                      protein: 1,
-                                      consumptionUnit: Unit.tablespoon,
-                                      consumptionGrams: 15,
-                                      meat: false,
-                                      available: false, verified: "3/16/22"))
+        // ingredients.append(Ingredient(name: "Salsa",
+        //                               servingSize: 30,
+        //                               calories: 10,
+        //                               fat: 0,
+        //                               fiber: 1,
+        //                               netCarbs: 0,
+        //                               protein: 1,
+        //                               consumptionUnit: Unit.tablespoon,
+        //                               consumptionGrams: 15,
+        //                               meat: false,
+        //                               available: false, verified: "3/16/22"))
         ingredients.append(Ingredient(name: "Arugula",
                                       servingSize: 20,
                                       calories: 5,
@@ -237,7 +250,7 @@ class IngredientMgr: ObservableObject {
                                       consumptionUnit: Unit.gram,
                                       consumptionGrams: 1,
                                       meat: false,
-                                      verified: "3/16/22"))
+                                      verified: "9/1/22"))
         ingredients.append(Ingredient(name: "Cauliflower",
                                       servingSize: 85,
                                       calories: 20,
@@ -248,7 +261,7 @@ class IngredientMgr: ObservableObject {
                                       consumptionUnit: Unit.gram,
                                       consumptionGrams: 1,
                                       meat: false,
-                                      verified: "3/16/22"))
+                                      verified: "9/1/22"))
         ingredients.append(Ingredient(name: "Mushrooms",
                                       servingSize: 35,
                                       calories: 8,
@@ -259,7 +272,7 @@ class IngredientMgr: ObservableObject {
                                       consumptionUnit: Unit.gram,
                                       consumptionGrams: 1,
                                       meat: false,
-                                      verified: "3/16/22"))
+                                      verified: "9/1/22"))
         ingredients.append(Ingredient(name: "Radish",
                                       servingSize: 58,
                                       calories: 9,
@@ -270,7 +283,7 @@ class IngredientMgr: ObservableObject {
                                       consumptionUnit: Unit.gram,
                                       consumptionGrams: 1,
                                       meat: false,
-                                      verified: "3/16/22"))
+                                      verified: "9/1/22"))
         ingredients.append(Ingredient(name: "Avocado",
                                       servingSize: 50,
                                       calories: 80,
@@ -281,7 +294,7 @@ class IngredientMgr: ObservableObject {
                                       consumptionUnit: Unit.gram,
                                       consumptionGrams: 1,
                                       meat: false,
-                                      verified: "3/16/22"))
+                                      verified: "9/1/22"))
         ingredients.append(Ingredient(name: "Mackerel",
                                       servingSize: 85,
                                       calories: 180,
@@ -326,6 +339,17 @@ class IngredientMgr: ObservableObject {
                                       consumptionGrams: 85,
                                       meat: false,
                                       verified: "3/16/22"))
+        ingredients.append(Ingredient(name: "Macadamia Nuts",
+                                      servingSize: 30,
+                                      calories: 220,
+                                      fat: 23,
+                                      fiber: 3,
+                                      netCarbs: 1,
+                                      protein: 2,
+                                      consumptionUnit: Unit.gram,
+                                      consumptionGrams: 1,
+                                      meat: false,
+                                      verified: "3/16/22"))
         ingredients.append(Ingredient(name: "Walnuts",
                                       servingSize: 28,
                                       calories: 190,
@@ -346,6 +370,17 @@ class IngredientMgr: ObservableObject {
                                       consumptionUnit: Unit.gram,
                                       consumptionGrams: 1,
                                       meat: false))
+        ingredients.append(Ingredient(name: "Peanuts",
+                                      servingSize: 28,
+                                      calories: 160,
+                                      fat: 14,
+                                      fiber: 2,
+                                      netCarbs: 4,
+                                      protein: 7,
+                                      consumptionUnit: Unit.gram,
+                                      consumptionGrams: 1,
+                                      meat: false,
+                                      verified: "9/1/22"))
         ingredients.append(Ingredient(name: "Mustard",
                                       servingSize: 5,
                                       calories: 5,
@@ -389,7 +424,7 @@ class IngredientMgr: ObservableObject {
                                       consumptionUnit: Unit.piece,
                                       consumptionGrams: 28,
                                       meat: false,
-                                      verified: "3/16/22"))
+                                      verified: "9/1/22"))
         ingredients.append(Ingredient(name: "Dubliner Cheese",
                                       servingSize: 28,
                                       calories: 110,
@@ -401,6 +436,17 @@ class IngredientMgr: ObservableObject {
                                       consumptionGrams: 1,
                                       meat: false,
                                       verified: "3/16/22"))
+        ingredients.append(Ingredient(name: "Emmi Roth",
+                                      servingSize: 28,
+                                      calories: 110,
+                                      fat: 9,
+                                      fiber: 0,
+                                      netCarbs: 0,
+                                      protein: 8,
+                                      consumptionUnit: Unit.gram,
+                                      consumptionGrams: 1,
+                                      meat: false,
+                                      verified: "9/1/22"))
         ingredients.append(Ingredient(name: "Cheddar Cheese",
                                       servingSize: 28,
                                       calories: 110,
@@ -445,17 +491,6 @@ class IngredientMgr: ObservableObject {
                                       consumptionGrams: 1,
                                       meat: false,
                                       verified: "3/16/22"))
-        ingredients.append(Ingredient(name: "Macadamia Nuts",
-                                      servingSize: 30,
-                                      calories: 220,
-                                      fat: 23,
-                                      fiber: 3,
-                                      netCarbs: 1,
-                                      protein: 2,
-                                      consumptionUnit: Unit.gram,
-                                      consumptionGrams: 1,
-                                      meat: false,
-                                      verified: "3/16/22"))
         ingredients.append(Ingredient(name: "Dark Chocolate (Divine)",
                                       servingSize: 28,
                                       calories: 180,
@@ -477,24 +512,15 @@ class IngredientMgr: ObservableObject {
                                       consumptionGrams: 1,
                                       meat: false,
                                       verified: "3/16/22"))
-        ingredients.append(Ingredient(name: "Dry Roasted Peanuts (unsalted)",
-                                      servingSize: 28,
-                                      calories: 160,
-                                      fat: 14,
-                                      fiber: 2,
-                                      netCarbs: 4,
-                                      protein: 7,
-                                      consumptionUnit: Unit.gram,
-                                      consumptionGrams: 1,
-                                      meat: false,
-                                      verified: "3/16/22"))
     }
+
 
     func serialize() {
         if let encodedData = try? JSONEncoder().encode(ingredients) {
             UserDefaults.standard.set(encodedData, forKey: "ingredient")
         }
     }
+
 
     func deserialize() {
         guard
@@ -506,6 +532,7 @@ class IngredientMgr: ObservableObject {
 
         self.ingredients = savedItems
     }
+
 
     func create(name: String,
                 brand: String = "",
@@ -622,12 +649,43 @@ class IngredientMgr: ObservableObject {
         self.ingredients.append(ingredient)
     }
 
-    func get(includeUnavailable: Bool = false) -> [Ingredient] {
+
+    func getAll(includeUnavailable: Bool = false) -> [Ingredient] {
         if includeUnavailable {
             return ingredients.sorted(by: { $0.name < $1.name })
         }
         return ingredients.filter({ $0.available == true }).sorted(by: { $0.name < $1.name })
     }
+
+    // Return an array of sorted ingredients that are not:
+    // 1. already part of the meal ingredients list
+    // 2. that are not categorized as meats
+    //
+    // This list is used by the Meal Add and the Adjustment Add
+    // dialogs to add a new ingredient to a meal that isn't already
+    // part of the meal ingredient set or to add a new adjustment
+    // ingredient to the adjustments list.
+
+    func getNewMealIngredientNames(existingMealIngredientNames: [String]) -> [String] {
+        let existingMealIngredientNamesSet = Set(existingMealIngredientNames)
+        let meatNamesSet = Set(getAllMeatNames())
+
+        // Remove the existing meal ingredients and meats leaving the
+        // set of ingredient names to potentially add
+        var ingredientNamesSet = Set(ingredients.map { $0.name })
+        ingredientNamesSet.subtract(existingMealIngredientNamesSet)
+        ingredientNamesSet.subtract(meatNamesSet)
+
+        // Convert the set to an array, sort, and return
+        var pickerOptions = [String](ingredientNamesSet)
+        pickerOptions.sort()
+        return pickerOptions
+    }
+
+    // Returns an array of of ingredients that are categorized as
+    // meats (ingredient.meat = true) in addition to 'None'.  This
+    // list is used by the Meal Configure dialog to configure the meat
+    // for the meal (or 'None' if there's no meat).
 
     func getAllMeatNames() -> [String] {
         let meats = ingredients.filter({ $0.meat == true })
@@ -639,16 +697,6 @@ class IngredientMgr: ObservableObject {
         return meatNames
     }
 
-    func getNewMeatNames(existing: [String]) -> [String] {
-        let existingSet = Set(existing)
-        var ingredientsSet = Set(ingredients.map { $0.name })
-        let meatOptionSet = Set(getAllMeatNames())
-        ingredientsSet.subtract(existingSet)
-        ingredientsSet.subtract(meatOptionSet)
-        var pickerOptions = [String](ingredientsSet)
-        pickerOptions.sort()
-        return pickerOptions
-    }
 
     func getNamesSorted() -> [String] {
         let sorted = ingredients.sorted{ (ing1, ing2) -> Bool in
@@ -657,7 +705,8 @@ class IngredientMgr: ObservableObject {
         return sorted.map { $0.name }
     }
 
-    func getIngredient(name: String) -> Ingredient? {
+
+    func getByName(name: String) -> Ingredient? {
         if let index = ingredients.firstIndex(where: { $0.name == name }) {
             return ingredients[index]
         }
@@ -665,11 +714,13 @@ class IngredientMgr: ObservableObject {
         return nil
     }
 
+
     func update(_ ingredient: Ingredient) {
         if let index = ingredients.firstIndex(where: { $0.id == ingredient.id }) {
             ingredients[index] = ingredient.update(ingredient: ingredient)
         }
     }
+
 
     func available(_ name: String) {
         if let index = ingredients.firstIndex(where: { $0.name == name }) {
@@ -679,10 +730,12 @@ class IngredientMgr: ObservableObject {
         }
     }
 
+
     func unavailableIngredientsExist() -> Bool {
         let unavailableIngredients = ingredients.filter({ $0.available == false })
         return unavailableIngredients.count > 0
     }
+
 
     func toggleAvailable(_ ingredient: Ingredient) -> Ingredient? {
         if let index = ingredients.firstIndex(where: { $0.id == ingredient.id }) {
@@ -693,13 +746,16 @@ class IngredientMgr: ObservableObject {
         return nil
     }
 
+
     func move(from: IndexSet, to: Int) {
         ingredients.move(fromOffsets: from, toOffset: to)
     }
 
+
     func deleteSet(indexSet: IndexSet) {
         ingredients.remove(atOffsets: indexSet)
     }
+
 
     func delete(_ ingredient: Ingredient) {
         if let index = ingredients.firstIndex(where: { $0.id == ingredient.id }) {
@@ -969,6 +1025,7 @@ struct Ingredient: Codable, Identifiable {
         }
     }
 
+
     func toggleAvailable() -> Ingredient {
         return Ingredient(id: id,
                           name: name,
@@ -1027,6 +1084,7 @@ struct Ingredient: Codable, Identifiable {
                           available: !available,
                           verified: verified)
     }
+
 
     func update(ingredient: Ingredient) -> Ingredient {
         return Ingredient(id: ingredient.id,
