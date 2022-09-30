@@ -14,11 +14,11 @@ class AdjustmentMgr: ObservableObject {
         adjustments.append(Adjustment(name: "Sardines", amount: 1, group: "fish", constraints: true, maximum: 2))
         adjustments.append(Adjustment(name: "Mackerel", amount: 1, group: "fish", constraints: true, maximum: 2))
         adjustments.append(Adjustment(name: "Smoked Sardines", amount: 1, group: "fish", constraints: true, maximum: 2))
+        adjustments.append(Adjustment(name: "String Cheese", amount: 1, constraints: true, maximum: 2))
         adjustments.append(Adjustment(name: "Eggs", amount: 1, constraints: true, maximum: 7))
         adjustments.append(Adjustment(name: "Broccoli", amount: 10, group: "vege", constraints: true, maximum: 250))
         adjustments.append(Adjustment(name: "Cauliflower", amount: 10, group: "vege", constraints: true, maximum: 120))
         adjustments.append(Adjustment(name: "Pumpkin Seeds", amount: 5, group: "vege"))
-        adjustments.append(Adjustment(name: "String Cheese", amount: 1))
         adjustments.append(Adjustment(name: "Extra Virgin Olive Oil", amount: 1, constraints: true, maximum: 5))
         adjustments.append(Adjustment(name: "Macadamia Nuts", amount: 5, active: false))
     }

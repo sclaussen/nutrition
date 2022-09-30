@@ -1,7 +1,11 @@
 import Foundation
 
+
 class ProfileMgr: ObservableObject {
+
+
     @Published var profile: Profile
+
 
     init() {
         if let json = UserDefaults.standard.data(forKey: "profile"),
@@ -19,6 +23,7 @@ class ProfileMgr: ObservableObject {
         self.profile = Profile(dateOfBirth: Calendar.current.date(from: components)!, gender: Gender.male, height: 72, bodyMassFromHealthKit: true, bodyMass: 184, bodyFatPercentageFromHealthKit: true, bodyFatPercentage: 20, activeCaloriesBurned: 600, proteinRatio: 0.85, calorieDeficit: 20, netCarbsMaximum: 20, meat: "Chicken", meatAmount: 200)
     }
 
+
     func cancel() {
         if let json = UserDefaults.standard.data(forKey: "profile"),
            let profile = try? JSONDecoder().decode(Profile.self, from: json) {
@@ -26,21 +31,31 @@ class ProfileMgr: ObservableObject {
         }
     }
 
+
     func setBodyMass(bodyMass: Double) {
         self.profile = profile.setBodyMass(bodyMass: bodyMass)
         serialize()
     }
+
 
     func setBodyFatPercentage(bodyFatPercentage: Double) {
         self.profile = profile.setBodyFatPercentage(bodyFatPercentage: bodyFatPercentage)
         serialize()
     }
 
+
+    func setMeatAndAmount(meat: String, meatAmount: Double) {
+        self.profile = profile.setMeatAndAmount(meat: meat, meatAmount: meatAmount)
+        serialize()
+    }
+
+
     // TODO: Update once the health kit active calories algorithm is demystified
     // func setActiveCaloriesBurned(activeCaloriesBurned: Double) {
     //     self.profile = profile.setActiveCaloriesBurned(activeCaloriesBurned: activeCaloriesBurned)
     //     serialize()
     // }
+
 
     func serialize() {
         if let json = try? JSONEncoder().encode(profile) {
@@ -64,13 +79,21 @@ struct Profile: Codable {
     var meat: String
     var meatAmount: Double
 
+
     func setBodyMass(bodyMass: Double) -> Profile {
         return Profile(dateOfBirth: self.dateOfBirth, gender: self.gender, height: self.height, bodyMassFromHealthKit: self.bodyMassFromHealthKit, bodyMass: bodyMass, bodyFatPercentageFromHealthKit: self.bodyFatPercentageFromHealthKit, bodyFatPercentage: self.bodyFatPercentage, activeCaloriesBurned: self.activeCaloriesBurned, proteinRatio: self.proteinRatio, calorieDeficit: self.calorieDeficit, netCarbsMaximum: self.netCarbsMaximum, meat: self.meat, meatAmount: self.meatAmount)
     }
 
+
     func setBodyFatPercentage(bodyFatPercentage: Double) -> Profile {
         return Profile(dateOfBirth: self.dateOfBirth, gender: self.gender, height: self.height, bodyMassFromHealthKit: self.bodyMassFromHealthKit, bodyMass: self.bodyMass, bodyFatPercentageFromHealthKit: self.bodyFatPercentageFromHealthKit, bodyFatPercentage: bodyFatPercentage, activeCaloriesBurned: self.activeCaloriesBurned, proteinRatio: self.proteinRatio, calorieDeficit: self.calorieDeficit, netCarbsMaximum: self.netCarbsMaximum, meat: self.meat, meatAmount: self.meatAmount)
     }
+
+
+    func setMeatAndAmount(meat: String, meatAmount: Double) -> Profile {
+        return Profile(dateOfBirth: self.dateOfBirth, gender: self.gender, height: self.height, bodyMassFromHealthKit: self.bodyMassFromHealthKit, bodyMass: self.bodyMass, bodyFatPercentageFromHealthKit: self.bodyFatPercentageFromHealthKit, bodyFatPercentage: bodyFatPercentage, activeCaloriesBurned: self.activeCaloriesBurned, proteinRatio: self.proteinRatio, calorieDeficit: self.calorieDeficit, netCarbsMaximum: self.netCarbsMaximum, meat: meat, meatAmount: meatAmount)
+    }
+
 
     // TODO: Update once the health kit active calories algorithm is demystified
     // func setActiveCaloriesBurned(activeCaloriesBurned: Double) -> Profile {

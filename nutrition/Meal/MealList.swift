@@ -67,13 +67,15 @@ struct MealList: View {
 
                   .swipeActions(edge: .leading) {
                       Button {
-                          if mealIngredient.active {
+                          if mealIngredient.active && mealIngredient.adjustment == Constants.Manual {
                               mealIngredientMgr.undoManualAdjustment(name: mealIngredient.name)
                               print("  Undoing manual adjustment for: \(mealIngredient.name)")
+                          } else {
+                              mealIngredientMgr.manualAdjustment(name: mealIngredient.name, amount: mealIngredient.amount)
                           }
                           generateMeal()
                       } label: {
-                          Label("", systemImage: "arrow.uturn.backward.circle")
+                          Label("", systemImage: (mealIngredient.active && mealIngredient.adjustment == Constants.Manual) ? "lock.open" : "lock")
                       }
 //                      .tint((!mealIngredientMgr.getByName(name: mealIngredient.name)!.adjustment) == Constants.Manual ? Color.theme.blackWhiteSecondary : Color.theme.red)
                   }
@@ -150,7 +152,9 @@ struct MealList: View {
                               generateMeal()
                           }
                       } label: {
-                          Image(systemName: "arrow.uturn.backward.circle")
+                          Image(systemName: "arrow.uturn.backward")
+                          // Image(systemName: "arrow.3.trianglepath")
+                          // Image(systemName: "arrow.triangle.2.circlepath")
                       }
                         .frame(width: 40)
                         .foregroundColor(Color.theme.blueYellow)

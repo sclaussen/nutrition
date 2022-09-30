@@ -57,6 +57,7 @@ class MealIngredientMgr: ObservableObject {
         mealIngredients.append(MealIngredient(name: "Mackerel", amount: 1, active: false))
         mealIngredients.append(MealIngredient(name: "Sardines", amount: 1, active: false))
         mealIngredients.append(MealIngredient(name: "Smoked Sardines", amount: 1, active: false))
+        mealIngredients.append(MealIngredient(name: "String Cheese", amount: 1, active: false))
 
         mealIngredients.append(MealIngredient(name: "Eggs", amount: 5))
         mealIngredients.append(MealIngredient(name: "Broccoli", amount: 200))
@@ -77,7 +78,6 @@ class MealIngredientMgr: ObservableObject {
         mealIngredients.append(MealIngredient(name: "Peanuts", amount: 20, active: false))
         mealIngredients.append(MealIngredient(name: "Macadamia Nuts", amount: 20, active: false))
         mealIngredients.append(MealIngredient(name: "Flackers (SS)", amount: 30, active: false))
-        mealIngredients.append(MealIngredient(name: "String Cheese", amount: 1, active: false))
         mealIngredients.append(MealIngredient(name: "Cheddar Cheese", amount: 1, active: false))
         // mealIngredients.append(MealIngredient(name: "Dubliner Cheese", amount: 30, active: false))
         // mealIngredients.append(MealIngredient(name: "Emmi Roth", amount: 30, active: false))

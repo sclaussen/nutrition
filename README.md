@@ -8,15 +8,6 @@ nutrition/app.swift
 
 ## Current P0
 
-- Reset everything
-  - Delete meal ingredient meat(s)
-  - Undo auto adjustments
-  - Undo manual adjustments
-
-- Configure screen
-  - Update active calories
-  - Choose meat and grams
-
 - Auto
   - results in comp create/etc
   - reset to default values on each pull down?
