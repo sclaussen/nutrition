@@ -6,9 +6,10 @@ struct ProfileEdit: View {
     @EnvironmentObject var profileMgr: ProfileMgr
     @Binding var tab: String
 
+
     var body: some View {
         Form {
-            Section(header: Text("Profile Data")) {
+            Section(header: Text("Base")) {
                 NameValue("Date of Birth", $profileMgr.profile.dateOfBirth, control: .date)
                 NameValue("Gender", $profileMgr.profile.gender, options: Gender.allCases, control: .picker)
                 NameValue("Height", $profileMgr.profile.height, .inch, edit: true)
@@ -27,6 +28,7 @@ struct ProfileEdit: View {
                 }
             }
             Section(header: Text("Derived Profile Data")) {
+                NavigationLink("Vitamins and Minerals", destination: VitaminMineralList)
                 NameValue("Age", $profileMgr.profile.age, .year, precision: 1)
                 NameValue("Weight", description: "body mass (from health app)", $profileMgr.profile.bodyMassKg, .kilogram)
                 NameValue("Height", $profileMgr.profile.heightCm, .centimeter)
@@ -34,6 +36,7 @@ struct ProfileEdit: View {
                 NameValue("Lean Body Mass", description: "non-fat body mass", $profileMgr.profile.leanBodyMass, .pound)
                 NameValue("Fat Mass", description: "weight * body fat percentage", $profileMgr.profile.fatMass, .pound)
                 NameValue("Water", description: "daily consumption minimum, weight/2 * ~.03", $profileMgr.profile.waterLiters, .liter, precision: 1)
+
             }
             Section(header: Text("Gross (without the caloric deficit)")) {
                 Group {
@@ -87,12 +90,14 @@ struct ProfileEdit: View {
           }
     }
 
+
     func cancel() {
         withAnimation {
             profileMgr.cancel()
             tab = "Meal"
         }
     }
+
 
     func save() {
         withAnimation {

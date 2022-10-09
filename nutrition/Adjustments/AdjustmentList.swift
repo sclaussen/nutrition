@@ -1,11 +1,13 @@
 import SwiftUI
 
+
 struct AdjustmentList: View {
 
     @EnvironmentObject var ingredientMgr: IngredientMgr
     @EnvironmentObject var adjustmentMgr: AdjustmentMgr
 
     @State var showInactive: Bool = false
+
 
     var body: some View {
         List {
@@ -69,18 +71,22 @@ struct AdjustmentList: View {
           }
     }
 
+
     func moveAction(from source: IndexSet, to destination: Int) {
         adjustmentMgr.move(from: source, to: destination)
     }
+
 
     func deleteAction(indexSet: IndexSet) {
         adjustmentMgr.deleteSet(indexSet: indexSet)
     }
 
+
     func getConsumptionUnit(_ name: String) -> Unit {
         return ingredientMgr.getByName(name: name)!.consumptionUnit
     }
 }
+
 
 struct AdjustmentList_Previews: PreviewProvider {
     static var previews: some View {

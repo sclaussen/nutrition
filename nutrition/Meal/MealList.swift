@@ -16,7 +16,6 @@ struct MealList: View {
 
     // Use cases:
     // - Deactivate a meal ingredient because it's out that will be auto-adjusted
-    // - Change the default value of a meal ingredient staple - would like an auto-reset to the default value once meal is done
     //
     // Actions:
     // - Manually updating amount removes the pending compensation if it exists
@@ -218,7 +217,7 @@ struct MealList: View {
             let ingredient = ingredientMgr.getByName(name: profileMgr.profile.meat)!
             for mealAdjustment in ingredient.mealAdjustments {
                 let mealIngredient = mealIngredientMgr.getByName(name: mealAdjustment.name)!
-                if mealIngredient != nil && mealIngredient.active {
+                if mealIngredient.active {
                     mealIngredientMgr.automaticAdjustment(name: mealAdjustment.name, amount: mealAdjustment.amount)
                 }
             }
@@ -266,7 +265,7 @@ struct MealList: View {
     // g
     //
     // Will produce the following order of adjustments where the items
-    // inside the [] are return in a randomized order that may change
+    // inside the [] are returned in a randomized order that may change
     // on each invocation of the algorithm:
     //
     // [a d f]* b [c e]* g

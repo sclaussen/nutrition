@@ -1,15 +1,19 @@
 import SwiftUI
 
+
+// TODO: Add why ValueType and its interfaces are important
 protocol ValueType: Codable, Hashable, CaseIterable where AllCases: RandomAccessCollection {
     func formattedString(_ max: Int) -> String
     func singular() -> Bool
 }
+
 
 //extension ValueType {
 //    func formattedString(_ max: Int = -1) -> String {
 //        return formattedString(max)
 //    }
 //}
+
 
 enum Control {
     case text
@@ -18,6 +22,7 @@ enum Control {
     case picker
 }
 
+
 enum ScalerType {
     case int
     case double
@@ -25,6 +30,7 @@ enum ScalerType {
     case date
     case string
 }
+
 
 struct NameValue<T: ValueType>: View {
     var name: String
@@ -196,6 +202,7 @@ struct NameValue<T: ValueType>: View {
         }
     }
 
+
     func getValueScalerType(_ value: Any) -> ScalerType {
         if type(of: value) == Int.self {
             return .int
@@ -212,6 +219,7 @@ struct NameValue<T: ValueType>: View {
         return .string
     }
 
+
     func getKeyboard(_ valueScalerType: ScalerType, _ negative: Bool) -> UIKeyboardType {
         if valueScalerType == .int {
             return negative ? .default : .numberPad
@@ -222,6 +230,7 @@ struct NameValue<T: ValueType>: View {
         return .default
     }
 }
+
 
 struct NVTextField<T: ValueType>: View {
     @State var isEditing: Bool = false
@@ -239,6 +248,7 @@ struct NVTextField<T: ValueType>: View {
 
     @State var valueString: String
 
+
     init(geo: GeometryProxy, name: String, description: String, value: Binding<T>, unit: Unit, precision: Int, validator: Bool, valueScalerType: ScalerType, keyboard: UIKeyboardType) {
         self.geo = geo
         self.name = name
@@ -252,6 +262,7 @@ struct NVTextField<T: ValueType>: View {
 
         self._valueString = State(initialValue: value.wrappedValue.formattedString(precision))
     }
+
 
     var body: some View {
 

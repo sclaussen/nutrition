@@ -1,5 +1,6 @@
 import SwiftUI
 
+
 struct AdjustmentAdd: View {
 
     @Environment(\.presentationMode) var presentationMode
@@ -11,6 +12,7 @@ struct AdjustmentAdd: View {
     @State var constraints: Bool = false
     @State var maximum: Double = 0
     @State var group: String = ""
+
 
     var body: some View {
         Form {
@@ -54,11 +56,13 @@ struct AdjustmentAdd: View {
           }
     }
 
+
     func cancel() {
         withAnimation {
             self.presentationMode.wrappedValue.dismiss()
         }
     }
+
 
     func save() {
         withAnimation {
@@ -67,12 +71,15 @@ struct AdjustmentAdd: View {
         }
     }
 
+
     func getConsumptionUnit(_ name: String) -> Unit {
         return ingredientMgr.getByName(name: name)!.consumptionUnit
     }
 }
 
+
 struct AdjustmentCreate_Previews: PreviewProvider {
+
     static var previews: some View {
         NavigationView {
             AdjustmentAdd()

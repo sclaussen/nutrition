@@ -26,6 +26,7 @@ enum Unit: ValueType {
     case pound
     case year
 
+
     var singularForm: String {
         switch self {
         case .none: return ""
@@ -54,6 +55,7 @@ enum Unit: ValueType {
         case .year: return "yr"
         }
     }
+
 
     var pluralForm: String {
         switch self {
@@ -84,6 +86,7 @@ enum Unit: ValueType {
         }
     }
 
+
     static func ingredientOptions() -> [Unit] {
         var options: [Unit] = []
         options.append(bar)
@@ -97,9 +100,11 @@ enum Unit: ValueType {
         return options
     }
 
+
     func formattedString(_ precision: Int) -> String {
         return String(describing: self).capitalized
     }
+
 
     func singular() -> Bool {
         return true

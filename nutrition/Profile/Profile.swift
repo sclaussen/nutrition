@@ -64,6 +64,7 @@ class ProfileMgr: ObservableObject {
     }
 }
 
+
 struct Profile: Codable {
     var dateOfBirth: Date
     var gender: Gender
@@ -100,6 +101,7 @@ struct Profile: Codable {
     //     return Profile(dateOfBirth: self.dateOfBirth, gender: self.gender, height: self.height, bodyMassFromHealthKit: self.bodyMassFromHealthKit, bodyMass: self.bodyMass, bodyFatPercentageFromHealthKit: self.bodyFatPercentageFromHealthKit, bodyFatPercentage: self.bodyFatPercentage, activeCaloriesBurned: activeCaloriesBurned, proteinRatio: self.proteinRatio, calorieDeficit: self.calorieDeficit, netCarbsMaximum: self.netCarbsMaximum, meat: self.meat, meatAmount: self.meatAmount)
     // }
 
+
     var age: Double {
         set {
         }
@@ -107,6 +109,7 @@ struct Profile: Codable {
             return Double(Calendar.current.dateComponents([.month], from: self.dateOfBirth, to: Date()).month ?? 0) / 12.0
         }
     }
+
 
     var bodyMassKg: Double {
         set {
@@ -116,6 +119,7 @@ struct Profile: Codable {
         }
     }
 
+
     var heightCm: Double {
         set {
         }
@@ -123,6 +127,7 @@ struct Profile: Codable {
             Double(self.height) * 2.54
         }
     }
+
 
     var bodyMassIndex: Double {
         set {
@@ -132,6 +137,7 @@ struct Profile: Codable {
         }
     }
 
+
     var fatMass: Double {
         set {
         }
@@ -139,6 +145,7 @@ struct Profile: Codable {
             (self.bodyMass * (self.bodyFatPercentage / 100)).round(1)
         }
     }
+
 
     var leanBodyMass: Double {
         set {
@@ -148,6 +155,7 @@ struct Profile: Codable {
         }
     }
 
+
     var caloriesBaseMetabolicRate: Double {
         set {
         }
@@ -155,6 +163,7 @@ struct Profile: Codable {
             return gender == Gender.male ? (self.bodyMassKg * 9.99) + (self.heightCm * 6.25) - (self.age * 4.92 + 5) : (self.bodyMassKg * 9.99) + (self.heightCm * 6.25) - (self.age * 4.92 - 161)
         }
     }
+
 
     var caloriesResting: Double {
         set {
@@ -164,6 +173,7 @@ struct Profile: Codable {
         }
     }
 
+
     var caloriesGoalUnadjusted: Double {
         set {
         }
@@ -171,6 +181,7 @@ struct Profile: Codable {
             self.caloriesResting + Double(self.activeCaloriesBurned)
         }
     }
+
 
     var fatGoalUnadjusted: Double {
         set {
@@ -180,6 +191,7 @@ struct Profile: Codable {
         }
     }
 
+
     var fiberMinimumUnadjusted: Double {
         set {
         }
@@ -187,6 +199,7 @@ struct Profile: Codable {
             (self.caloriesGoalUnadjusted / 1000) * 14
         }
     }
+
 
     var proteinGoalUnadjusted: Double {
         set {
@@ -196,6 +209,7 @@ struct Profile: Codable {
         }
     }
 
+
     var fatGoalPercentageUnadjusted: Double {
         set {
         }
@@ -203,6 +217,7 @@ struct Profile: Codable {
             ((self.fatGoalUnadjusted * 9) / self.caloriesGoalUnadjusted) * 100
         }
     }
+
 
     var netCarbsMaximumPercentageUnadjusted: Double {
         set {
@@ -212,6 +227,7 @@ struct Profile: Codable {
         }
     }
 
+
     var proteinGoalPercentageUnadjusted: Double {
         set {
         }
@@ -219,6 +235,7 @@ struct Profile: Codable {
             ((self.proteinGoalUnadjusted * 4) / self.caloriesGoalUnadjusted) * 100
         }
     }
+
 
     var caloriesGoal: Double {
         set {
@@ -228,6 +245,7 @@ struct Profile: Codable {
         }
     }
 
+
     var fiberMinimum: Double {
         set {
         }
@@ -235,6 +253,7 @@ struct Profile: Codable {
             (self.caloriesGoal / 1000) * 14
         }
     }
+
 
     var proteinGoal: Double {
         set {
@@ -244,6 +263,7 @@ struct Profile: Codable {
         }
     }
 
+
     var fatGoal: Double {
         set {
         }
@@ -251,6 +271,7 @@ struct Profile: Codable {
             (self.caloriesGoal - ((self.proteinGoal + self.netCarbsMaximum) * 4)) / 9
         }
     }
+
 
     var fatGoalPercentage: Double {
         set {
@@ -260,6 +281,7 @@ struct Profile: Codable {
         }
     }
 
+
     var netCarbsMaximumPercentage: Double {
         set {
         }
@@ -268,6 +290,7 @@ struct Profile: Codable {
         }
     }
 
+
     var proteinGoalPercentage: Double {
         set {
         }
@@ -275,6 +298,7 @@ struct Profile: Codable {
             ((self.proteinGoal * 4) / self.caloriesGoal) * 100
         }
     }
+
 
     var waterLiters: Double {
         set {

@@ -1,5 +1,6 @@
 import SwiftUI
 
+
 struct AdjustmentEdit: View {
 
     enum Field: Hashable {
@@ -12,6 +13,7 @@ struct AdjustmentEdit: View {
     @FocusState private var focusedField: Field?
 
     @State var adjustment: Adjustment
+
 
     var body: some View {
         Form {
@@ -57,11 +59,13 @@ struct AdjustmentEdit: View {
           }
     }
 
+
     func cancel() {
         withAnimation {
             self.presentationMode.wrappedValue.dismiss()
         }
     }
+
 
     func save() {
         withAnimation {
@@ -70,13 +74,16 @@ struct AdjustmentEdit: View {
         }
     }
 
+
     func getConsumptionUnit(_ name: String) -> Unit {
         return ingredientMgr.getByName(name: name)!.consumptionUnit
     }
 }
 
+
 struct AdjustmentUpdate_Previews: PreviewProvider {
     @State static var adjustment = Adjustment(name: "Arugula", amount: 145)
+
 
     static var previews: some View {
         NavigationView {
