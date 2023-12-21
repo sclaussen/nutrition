@@ -3,11 +3,8 @@ import Foundation
 class VitaminMineralMgr: ObservableObject {
 
 
-    @Published var vitaminMinerals: [VitaminMineral] = [] {
-        didSet {
-            serialize()
-        }
-    }
+    @Published var vitaminMinerals: [VitaminMineral] = []
+    var vitaminMineralsTmp: [VitaminMineral] = []
 
 
     init() {
@@ -19,42 +16,43 @@ class VitaminMineralMgr: ObservableObject {
                 gender: Gender)
     {
         let vitaminMineral = VitaminMineral(name: name, age: age, gender: gender)
-        self.vitaminMinerals.append(vitaminMineral)
+        vitaminMineralsTmp.append(vitaminMineral)
     }
 
 
     func getAll(age: Double, gender: Gender) -> [VitaminMineral] {
         vitaminMinerals = []
-        vitaminMinerals.append(create(VitaminMineralType.calcium, age, gender))
-        vitaminMinerals.append(create(VitaminMineralType.copper, age, gender))
-        vitaminMinerals.append(create(VitaminMineralType.folate, age, gender))
-        vitaminMinerals.append(create(VitaminMineralType.folicAcid, age, gender))
-        vitaminMinerals.append(create(VitaminMineralType.iron, age, gender))
-        vitaminMinerals.append(create(VitaminMineralType.magnesium, age, gender))
-        vitaminMinerals.append(create(VitaminMineralType.manganese, age, gender))
-        vitaminMinerals.append(create(VitaminMineralType.niacin, age, gender))
-        vitaminMinerals.append(create(VitaminMineralType.pantothenicAcid, age, gender))
-        vitaminMinerals.append(create(VitaminMineralType.phosphorus, age, gender))
-        vitaminMinerals.append(create(VitaminMineralType.potassium, age, gender))
-        vitaminMinerals.append(create(VitaminMineralType.riboflavin, age, gender))
-        vitaminMinerals.append(create(VitaminMineralType.selenium, age, gender))
-        vitaminMinerals.append(create(VitaminMineralType.thiamin, age, gender))
-        vitaminMinerals.append(create(VitaminMineralType.vitaminA, age, gender))
-        vitaminMinerals.append(create(VitaminMineralType.vitaminB12, age, gender))
-        vitaminMinerals.append(create(VitaminMineralType.vitaminB6, age, gender))
-        vitaminMinerals.append(create(VitaminMineralType.vitaminC, age, gender))
-        vitaminMinerals.append(create(VitaminMineralType.vitaminD, age, gender))
-        vitaminMinerals.append(create(VitaminMineralType.vitaminE, age, gender))
-        vitaminMinerals.append(create(VitaminMineralType.vitaminK, age, gender))
-        vitaminMinerals.append(create(VitaminMineralType.zinc, age, gender))
-        return vitaminMinerals
+        create(name: VitaminMineralType.calcium, age: age, gender: gender)
+        create(name: VitaminMineralType.copper, age: age, gender: gender)
+        create(name: VitaminMineralType.folate, age: age, gender: gender)
+        create(name: VitaminMineralType.folicAcid, age: age, gender: gender)
+        create(name: VitaminMineralType.iron, age: age, gender: gender)
+        create(name: VitaminMineralType.magnesium, age: age, gender: gender)
+        create(name: VitaminMineralType.manganese, age: age, gender: gender)
+        create(name: VitaminMineralType.niacin, age: age, gender: gender)
+        create(name: VitaminMineralType.pantothenicAcid, age: age, gender: gender)
+        create(name: VitaminMineralType.phosphorus, age: age, gender: gender)
+        create(name: VitaminMineralType.potassium, age: age, gender: gender)
+        create(name: VitaminMineralType.riboflavin, age: age, gender: gender)
+        create(name: VitaminMineralType.selenium, age: age, gender: gender)
+        create(name: VitaminMineralType.thiamin, age: age, gender: gender)
+        create(name: VitaminMineralType.vitaminA, age: age, gender: gender)
+        create(name: VitaminMineralType.vitaminB12, age: age, gender: gender)
+        create(name: VitaminMineralType.vitaminB6, age: age, gender: gender)
+        create(name: VitaminMineralType.vitaminC, age: age, gender: gender)
+        create(name: VitaminMineralType.vitaminD, age: age, gender: gender)
+        create(name: VitaminMineralType.vitaminE, age: age, gender: gender)
+        create(name: VitaminMineralType.vitaminK, age: age, gender: gender)
+        create(name: VitaminMineralType.zinc, age: age, gender: gender)
+//        vitaminMinerals = vitaminMineralsTmp
+        return vitaminMineralsTmp
     }
 }
 
 
 struct VitaminMineral: Codable, Identifiable {
-    var id: VitaminMineralType
-    var name: String
+    var id: String
+    var name: VitaminMineralType
     var age: Double
     var gender: Gender
     // var unit: Unit
@@ -69,54 +67,144 @@ struct VitaminMineral: Codable, Identifiable {
 
 
     func min() -> Double {
-        if name == VitaminMineralType.calcium return calciumMin()
-        if name == VitaminMineralType.copper return copperMin()
-        if name == VitaminMineralType.folate return folateMin()
-        if name == VitaminMineralType.folicAcid return folicAcidMin()
-        if name == VitaminMineralType.iron return ironMin()
-        if name == VitaminMineralType.magnesium return magnesiumMin()
-        if name == VitaminMineralType.manganese return manganeseMin()
-        if name == VitaminMineralType.niacin return niacinMin()
-        if name == VitaminMineralType.pantothenicAcid return pantothenicAcidMin()
-        if name == VitaminMineralType.phosphorus return phosphorusMin()
-        if name == VitaminMineralType.potassium return potassiumMin()
-        if name == VitaminMineralType.riboflavin return riboflavinMin()
-        if name == VitaminMineralType.selenium return seleniumMin()
-        if name == VitaminMineralType.thiamin return thiaminMin()
-        if name == VitaminMineralType.vitaminA return vitaminAMin()
-        if name == VitaminMineralType.vitaminB12 return vitaminB12Min()
-        if name == VitaminMineralType.vitaminB6 return vitaminB6Min()
-        if name == VitaminMineralType.vitaminC return vitaminCMin()
-        if name == VitaminMineralType.vitaminD return vitaminDMin()
-        if name == VitaminMineralType.vitaminE return vitaminEMin()
-        if name == VitaminMineralType.vitaminK return vitaminKMin()
-        if name == VitaminMineralType.zinc return zincMin()
+        if name == VitaminMineralType.calcium {
+            return calciumMin
+        }
+        if name == VitaminMineralType.copper {
+            return copperMin
+        }
+        if name == VitaminMineralType.folate {
+            return folateMin
+        }
+        if name == VitaminMineralType.folicAcid {
+            return folicAcidMin
+        }
+        if name == VitaminMineralType.iron {
+            return ironMin
+        }
+        if name == VitaminMineralType.magnesium {
+            return magnesiumMin
+        }
+        if name == VitaminMineralType.manganese {
+            return manganeseMin
+        }
+        if name == VitaminMineralType.niacin {
+            return niacinMin
+        }
+        if name == VitaminMineralType.pantothenicAcid {
+            return pantothenicAcidMin
+        }
+        if name == VitaminMineralType.phosphorus {
+            return phosphorusMin
+        }
+        if name == VitaminMineralType.potassium {
+            return potassiumMin
+        }
+        if name == VitaminMineralType.riboflavin {
+            return riboflavinMin
+        }
+        if name == VitaminMineralType.selenium {
+            return seleniumMin
+        }
+        if name == VitaminMineralType.thiamin {
+            return thiaminMin
+        }
+        if name == VitaminMineralType.vitaminA {
+            return vitaminAMin
+        }
+        if name == VitaminMineralType.vitaminB12 {
+            return vitaminB12Min
+        }
+        if name == VitaminMineralType.vitaminB6 {
+            return vitaminB6Min
+        }
+        if name == VitaminMineralType.vitaminC {
+            return vitaminCMin
+        }
+        if name == VitaminMineralType.vitaminD {
+            return vitaminDMin
+        }
+        if name == VitaminMineralType.vitaminE {
+            return vitaminEMin
+        }
+        if name == VitaminMineralType.vitaminK {
+            return vitaminKMin
+        }
+        if name == VitaminMineralType.zinc {
+            return zincMin
+        }
+        return 0
     }
 
 
     func max() -> Double {
-        if name == VitaminMineralType.calcium return calciumMax()
-        if name == VitaminMineralType.copper return copperMax()
-        if name == VitaminMineralType.folate return folateMax()
-        if name == VitaminMineralType.folicAcid return folicAcidMax()
-        if name == VitaminMineralType.iron return ironMax()
-        if name == VitaminMineralType.magnesium return magnesiumMax()
-        if name == VitaminMineralType.manganese return manganeseMax()
-        if name == VitaminMineralType.niacin return niacinMax()
-        if name == VitaminMineralType.pantothenicAcid return pantothenicAcidMax()
-        if name == VitaminMineralType.phosphorus return phosphorusMax()
-        if name == VitaminMineralType.potassium return potassiumMax()
-        if name == VitaminMineralType.riboflavin return riboflavinMax()
-        if name == VitaminMineralType.selenium return seleniumMax()
-        if name == VitaminMineralType.thiamin return thiaminMax()
-        if name == VitaminMineralType.vitaminA return vitaminAMax()
-        if name == VitaminMineralType.vitaminB12 return vitaminB12Max()
-        if name == VitaminMineralType.vitaminB6 return vitaminB6Max()
-        if name == VitaminMineralType.vitaminC return vitaminCMax()
-        if name == VitaminMineralType.vitaminD return vitaminDMax()
-        if name == VitaminMineralType.vitaminE return vitaminEMax()
-        if name == VitaminMineralType.vitaminK return vitaminKMax()
-        if name == VitaminMineralType.zinc return zincMax()
+        if name == VitaminMineralType.calcium {
+            return calciumMax
+        }
+        if name == VitaminMineralType.copper {
+            return copperMax
+        }
+        if name == VitaminMineralType.folate {
+            return folateMax
+        }
+        if name == VitaminMineralType.folicAcid {
+            return folicAcidMax
+        }
+        if name == VitaminMineralType.iron {
+            return ironMax
+        }
+        if name == VitaminMineralType.magnesium {
+            return magnesiumMax
+        }
+        if name == VitaminMineralType.manganese {
+            return manganeseMax
+        }
+        if name == VitaminMineralType.niacin {
+            return niacinMax
+        }
+        if name == VitaminMineralType.pantothenicAcid {
+            return pantothenicAcidMax
+        }
+        if name == VitaminMineralType.phosphorus {
+            return phosphorusMax
+        }
+        if name == VitaminMineralType.potassium {
+            return potassiumMax
+        }
+        if name == VitaminMineralType.riboflavin {
+            return riboflavinMax
+        }
+        if name == VitaminMineralType.selenium {
+            return seleniumMax
+        }
+        if name == VitaminMineralType.thiamin {
+            return thiaminMax
+        }
+        if name == VitaminMineralType.vitaminA {
+            return vitaminAMax
+        }
+        if name == VitaminMineralType.vitaminB12 {
+            return vitaminB12Max
+        }
+        if name == VitaminMineralType.vitaminB6 {
+            return vitaminB6Max
+        }
+        if name == VitaminMineralType.vitaminC {
+            return vitaminCMax
+        }
+        if name == VitaminMineralType.vitaminD {
+            return vitaminDMax
+        }
+        if name == VitaminMineralType.vitaminE {
+            return vitaminEMax
+        }
+        if name == VitaminMineralType.vitaminK {
+            return vitaminKMax
+        }
+        if name == VitaminMineralType.zinc {
+            return zincMax
+        }
+        return 0
     }
 
 

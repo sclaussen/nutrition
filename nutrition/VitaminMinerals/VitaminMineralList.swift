@@ -5,6 +5,7 @@ struct VitaminMineralList: View {
 
     @Environment(\.presentationMode) var presentationMode
     @EnvironmentObject var profileMgr: ProfileMgr
+    @EnvironmentObject var vitaminMineralMgr: VitaminMineralMgr
 
 
     var body: some View {
@@ -15,8 +16,8 @@ struct VitaminMineralList: View {
 
             ForEach(vitaminMineralMgr.getAll(age: profileMgr.profile.age, gender: profileMgr.profile.gender)) { vitaminMineral in
                 VitaminMineralRow(name: vitaminMineral.name,
-                                  min: vitaminMineral.min,
-                                  max: vitaminMineral.max,
+                                  min: vitaminMineral.min(),
+                                  max: vitaminMineral.max(),
                                   unit: Unit.gram)
             }
         }

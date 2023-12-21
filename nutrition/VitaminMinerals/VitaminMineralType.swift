@@ -26,7 +26,7 @@ enum VitaminMineralType: ValueType {
     case zinc
 
 
-    func formattedString(_ precision: Int) -> String {
+    func formattedString(_ precision: Int = 0) -> String {
         return String(describing: self).capitalized
     }
 

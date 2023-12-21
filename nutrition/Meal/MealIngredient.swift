@@ -52,7 +52,7 @@ class MealIngredientMgr: ObservableObject {
 
         mealIngredients = []
 
-        mealIngredients.append(MealIngredient(name: "Coconut Oil", amount: 1))
+        mealIngredients.append(MealIngredient(name: "Coconut Oil", amount: 0.5))
 
         mealIngredients.append(MealIngredient(name: "Mackerel", amount: 1, active: false))
         mealIngredients.append(MealIngredient(name: "Sardines", amount: 1, active: false))
@@ -60,15 +60,16 @@ class MealIngredientMgr: ObservableObject {
         mealIngredients.append(MealIngredient(name: "String Cheese", amount: 1, active: false))
 
         mealIngredients.append(MealIngredient(name: "Eggs", amount: 5))
-        mealIngredients.append(MealIngredient(name: "Broccoli", amount: 200))
+        mealIngredients.append(MealIngredient(name: "Broccoli", amount: 250))
         mealIngredients.append(MealIngredient(name: "Cauliflower", amount: 100))
-        mealIngredients.append(MealIngredient(name: "Arugula", amount: 75))
-        mealIngredients.append(MealIngredient(name: "Spinach", amount: 75))
-        mealIngredients.append(MealIngredient(name: "Romaine", amount: 500))
-        mealIngredients.append(MealIngredient(name: "Pumpkin Seeds", amount: 10))
+        mealIngredients.append(MealIngredient(name: "Arugula", amount: 70))
+        mealIngredients.append(MealIngredient(name: "Spinach", amount: 70))
+        mealIngredients.append(MealIngredient(name: "Romaine", amount: 400))
         mealIngredients.append(MealIngredient(name: "Mushrooms", amount: 100))
         mealIngredients.append(MealIngredient(name: "Radish", amount: 100))
         mealIngredients.append(MealIngredient(name: "Avocado", amount: 145))
+        mealIngredients.append(MealIngredient(name: "Pumpkin Seeds", amount: 0))
+        mealIngredients.append(MealIngredient(name: "Macadamia Nuts", amount: 0, active: false))
         mealIngredients.append(MealIngredient(name: "Mustard", amount: 4))
         mealIngredients.append(MealIngredient(name: "Fish Oil", amount: 1))
         mealIngredients.append(MealIngredient(name: "Extra Virgin Olive Oil", amount: 3))
@@ -76,7 +77,6 @@ class MealIngredientMgr: ObservableObject {
         mealIngredients.append(MealIngredient(name: "Pecans", amount: 20, active: false))
         mealIngredients.append(MealIngredient(name: "Walnuts", amount: 20, active: false))
         mealIngredients.append(MealIngredient(name: "Peanuts", amount: 20, active: false))
-        mealIngredients.append(MealIngredient(name: "Macadamia Nuts", amount: 20, active: false))
         mealIngredients.append(MealIngredient(name: "Flackers (SS)", amount: 30, active: false))
         mealIngredients.append(MealIngredient(name: "Cheddar Cheese", amount: 1, active: false))
         // mealIngredients.append(MealIngredient(name: "Dubliner Cheese", amount: 30, active: false))

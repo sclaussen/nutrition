@@ -2,11 +2,14 @@ import Foundation
 
 class MacrosMgr: ObservableObject {
 
+
     @Published var macros: Macros
+
 
     init() {
         macros = Macros()
     }
+
 
     func setDailyMacroGoals(caloriesGoalUnadjusted: Double, caloriesGoal: Double, fatGoal: Double, fiberMinimum: Double, netCarbsMaximum: Double, proteinGoal: Double) {
         print("Setting macro goals")
@@ -19,10 +22,12 @@ class MacrosMgr: ObservableObject {
         print("")
     }
 
+
     func addMacroActuals(name: String, calories: Double, fat: Double, fiber: Double, netCarbs: Double, protein: Double) {
         self.macros = macros.addMacroActuals(calories: calories, fat: fat, fiber: fiber, netCarbs: netCarbs, protein: protein)
     }
 }
+
 
 struct Macros {
     var caloriesGoalUnadjusted: Double
@@ -38,6 +43,7 @@ struct Macros {
     var fiber: Double
     var netCarbs: Double
     var protein: Double
+
 
     init(caloriesGoalUnadjusted: Double = 0, caloriesGoal: Double = 0, fatGoal: Double = 0, fiberMinimum: Double = 0, netCarbsMaximum: Double = 0, proteinGoal: Double = 0, calories: Double = 0, fat: Double = 0, fiber: Double = 0, netCarbs: Double = 0, protein: Double = 0) {
         self.caloriesGoalUnadjusted = caloriesGoalUnadjusted
@@ -55,13 +61,16 @@ struct Macros {
         self.protein = protein
     }
 
+
     func setDailyMacroGoals(caloriesGoalUnadjusted: Double, caloriesGoal: Double, fatGoal: Double, fiberMinimum: Double, netCarbsMaximum: Double, proteinGoal: Double) -> Macros {
         return Macros(caloriesGoalUnadjusted: caloriesGoalUnadjusted, caloriesGoal: caloriesGoal, fatGoal: fatGoal, fiberMinimum: fiberMinimum, netCarbsMaximum: netCarbsMaximum, proteinGoal: proteinGoal)
     }
 
+
     func addMacroActuals(calories: Double, fat: Double, fiber: Double, netCarbs: Double, protein: Double) -> Macros {
         return Macros(caloriesGoalUnadjusted: caloriesGoalUnadjusted, caloriesGoal: caloriesGoal, fatGoal: fatGoal, fiberMinimum: fiberMinimum, netCarbsMaximum: netCarbsMaximum, proteinGoal: proteinGoal, calories: self.calories + calories, fat: self.fat + fat, fiber: self.fiber + fiber, netCarbs: self.netCarbs + netCarbs, protein: self.protein + protein)
     }
+
 
     func p() {
         print(caloriesGoal)

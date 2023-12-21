@@ -42,7 +42,9 @@
 		34DE41FD27F64CFE0078448F /* Gauge.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34DE41FC27F64CFE0078448F /* Gauge.swift */; };
 		34DE41FF27F64D1E0078448F /* Bar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34DE41FE27F64D1E0078448F /* Bar.swift */; };
 		34DE420127F654B20078448F /* Scalers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34DE420027F654B20078448F /* Scalers.swift */; };
-		34E3236D28F24FE400832D9C /* VitaminMinerals in Resources */ = {isa = PBXBuildFile; fileRef = 34E3236C28F24FE300832D9C /* VitaminMinerals */; };
+		34E3237A28F2542900832D9C /* VitaminMineralList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34E3237728F2542900832D9C /* VitaminMineralList.swift */; };
+		34E3237B28F2542900832D9C /* VitaminMineralType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34E3237828F2542900832D9C /* VitaminMineralType.swift */; };
+		34E3237C28F2542900832D9C /* VitaminMineral.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34E3237928F2542900832D9C /* VitaminMineral.swift */; };
 		34F8003B27DBFAD1002F1380 /* Macros.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34F8003A27DBFAD1002F1380 /* Macros.swift */; };
 /* End PBXBuildFile section */
 
@@ -84,7 +86,9 @@
 		34DE41FC27F64CFE0078448F /* Gauge.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Gauge.swift; sourceTree = "<group>"; };
 		34DE41FE27F64D1E0078448F /* Bar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Bar.swift; sourceTree = "<group>"; };
 		34DE420027F654B20078448F /* Scalers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Scalers.swift; sourceTree = "<group>"; };
-		34E3236C28F24FE300832D9C /* VitaminMinerals */ = {isa = PBXFileReference; lastKnownFileType = folder; path = VitaminMinerals; sourceTree = "<group>"; };
+		34E3237728F2542900832D9C /* VitaminMineralList.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VitaminMineralList.swift; sourceTree = "<group>"; };
+		34E3237828F2542900832D9C /* VitaminMineralType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VitaminMineralType.swift; sourceTree = "<group>"; };
+		34E3237928F2542900832D9C /* VitaminMineral.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VitaminMineral.swift; sourceTree = "<group>"; };
 		34F8003A27DBFAD1002F1380 /* Macros.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Macros.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -146,9 +150,9 @@
 				34DE420727FA6E2F0078448F /* Adjustments */,
 				34DE420827FA6E910078448F /* Ingredients */,
 				34DE420927FA6F8F0078448F /* Profile */,
+				34E3237628F2542900832D9C /* VitaminMinerals */,
 				34DC9A3827E8D8E40082D62E /* Components */,
 				342CD48D27E25389008703C2 /* Extensions */,
-				34E3236C28F24FE300832D9C /* VitaminMinerals */,
 				349EE53627C99AC40072255A /* Preview Content */,
 			);
 			path = nutrition;
@@ -225,6 +229,16 @@
 			path = Profile;
 			sourceTree = "<group>";
 		};
+		34E3237628F2542900832D9C /* VitaminMinerals */ = {
+			isa = PBXGroup;
+			children = (
+				34E3237728F2542900832D9C /* VitaminMineralList.swift */,
+				34E3237828F2542900832D9C /* VitaminMineralType.swift */,
+				34E3237928F2542900832D9C /* VitaminMineral.swift */,
+			);
+			path = VitaminMinerals;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -285,7 +299,6 @@
 			files = (
 				349EE53827C99AC40072255A /* Preview Assets.xcassets in Resources */,
 				349EE53527C99AC40072255A /* Assets.xcassets in Resources */,
-				34E3236D28F24FE400832D9C /* VitaminMinerals in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -300,6 +313,7 @@
 				344D200E27CE35F100343108 /* AdjustmentList.swift in Sources */,
 				344D200A27CE2B6300343108 /* MealEdit.swift in Sources */,
 				348E4C46280F879600EFBB96 /* TextFieldObserver.swift in Sources */,
+				34E3237B28F2542900832D9C /* VitaminMineralType.swift in Sources */,
 				347A335627DA925C005E3F33 /* Unit.swift in Sources */,
 				34DE420127F654B20078448F /* Scalers.swift in Sources */,
 				349EE54427C9A3690072255A /* IngredientList.swift in Sources */,
@@ -314,11 +328,13 @@
 				34F8003B27DBFAD1002F1380 /* Macros.swift in Sources */,
 				3402286E27D8298E00741FBB /* Dashboard.swift in Sources */,
 				342CD48F27E25539008703C2 /* View.swift in Sources */,
+				34E3237C28F2542900832D9C /* VitaminMineral.swift in Sources */,
 				349EE57227CAB4760072255A /* Ingredient.swift in Sources */,
 				349EE53327C99AC30072255A /* Tabs.swift in Sources */,
 				345F5F0A27E0EF1400129BAC /* IngredientRow.swift in Sources */,
 				34DE41FF27F64D1E0078448F /* Bar.swift in Sources */,
 				344D200227CDC53800343108 /* MealConfigure.swift in Sources */,
+				34E3237A28F2542900832D9C /* VitaminMineralList.swift in Sources */,
 				344D201227CE361B00343108 /* AdjustmentAdd.swift in Sources */,
 				349EE54B27C9A6B10072255A /* IngredientEdit.swift in Sources */,
 				344D201027CE360C00343108 /* AdjustmentEdit.swift in Sources */,

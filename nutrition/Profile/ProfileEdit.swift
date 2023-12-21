@@ -28,7 +28,7 @@ struct ProfileEdit: View {
                 }
             }
             Section(header: Text("Derived Profile Data")) {
-                NavigationLink("Vitamins and Minerals", destination: VitaminMineralList)
+                NavigationLink("Vitamins and Minerals", destination: VitaminMineralList())
                 NameValue("Age", $profileMgr.profile.age, .year, precision: 1)
                 NameValue("Weight", description: "body mass (from health app)", $profileMgr.profile.bodyMassKg, .kilogram)
                 NameValue("Height", $profileMgr.profile.heightCm, .centimeter)
