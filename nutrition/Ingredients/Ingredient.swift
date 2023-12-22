@@ -438,6 +438,17 @@ class IngredientMgr: ObservableObject {
                                       consumptionGrams: 1,
                                       meat: false,
                                       verified: "3/16/22"))
+        ingredients.append(Ingredient(name: "Babyl Cheese",
+                                      servingSize: 21,
+                                      calories: 70,
+                                      fat: 6,
+                                      fiber: 0,
+                                      netCarbs: 0,
+                                      protein: 5,
+                                      consumptionUnit: Unit.piece,
+                                      consumptionGrams: 21,
+                                      meat: false,
+                                      verified: "12/22/23"))
         ingredients.append(Ingredient(name: "Emmi Roth",
                                       servingSize: 28,
                                       calories: 110,

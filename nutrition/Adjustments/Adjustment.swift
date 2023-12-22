@@ -19,7 +19,7 @@ class AdjustmentMgr: ObservableObject {
         adjustments.append(Adjustment(name: "Broccoli", amount: 10, group: "vegefat", constraints: true, maximum: 250))
         adjustments.append(Adjustment(name: "Cauliflower", amount: 10, group: "vegefat", constraints: true, maximum: 120))
         adjustments.append(Adjustment(name: "Extra Virgin Olive Oil", amount: 1, constraints: true, maximum: 4))
-        adjustments.append(Adjustment(name: "Macadamia Nuts", amount: 5, group: "vegefat"));
+//        adjustments.append(Adjustment(name: "Macadamia Nuts", amount: 5, group: "vegefat"));
         adjustments.append(Adjustment(name: "Pumpkin Seeds", amount: 5, group: "vegefat"));
     }
 
