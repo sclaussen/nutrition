@@ -23,7 +23,7 @@ class IngredientMgr: ObservableObject {
                                       consumptionUnit: Unit.tablespoon,
                                       consumptionGrams: 14,
                                       meat: false,
-                                      verified: "9/1/22"))
+                                      verified: "12/25/23"))
         ingredients.append(Ingredient(name: "Avocado Oil",
                                       servingSize: 14,
                                       calories: 130,
@@ -33,17 +33,6 @@ class IngredientMgr: ObservableObject {
                                       protein: 0,
                                       consumptionUnit: Unit.tablespoon,
                                       consumptionGrams: 14,
-                                      meat: false,
-                                      verified: "9/1/22"))
-        ingredients.append(Ingredient(name: "Pumpkin Seeds",
-                                      servingSize: 28,
-                                      calories: 160,
-                                      fat: 14,
-                                      fiber: 2,
-                                      netCarbs: 1,
-                                      protein: 8,
-                                      consumptionUnit: Unit.gram,
-                                      consumptionGrams: 1,
                                       meat: false,
                                       verified: "9/1/22"))
         ingredients.append(Ingredient(name: "Chicken",
@@ -151,54 +140,14 @@ class IngredientMgr: ObservableObject {
                                       fiber: 0,
                                       netCarbs: 0,
                                       protein: 6,
+                                      vitaminD: 1, // mcg
+                                      potassium: 70, // mg
+                                      iron: 0.9, // mg
+                                      calcium: 30, // mg
                                       consumptionUnit: Unit.egg,
                                       consumptionGrams: 50,
                                       meat: false,
-                                      verified: "9/1/22"))
-        ingredients.append(Ingredient(name: "Serrano Pepper",
-                                      servingSize: 6.1,
-                                      calories: 2,
-                                      fat: 0.03,
-                                      fiber: 0.23,
-                                      netCarbs: 0.18,
-                                      protein: 0.11,
-                                      consumptionUnit: Unit.gram,
-                                      consumptionGrams: 1,
-                                      meat: false,
-                                      verified: "3/16/22"))
-        ingredients.append(Ingredient(name: "Flackers (SS)",
-                                      servingSize: 30,
-                                      calories: 160,
-                                      fat: 12,
-                                      fiber: 9,
-                                      netCarbs: 1,
-                                      protein: 6,
-                                      consumptionUnit: Unit.gram,
-                                      consumptionGrams: 1,
-                                      meat: false,
-                                      verified: "3/16/22"))
-        ingredients.append(Ingredient(name: "Jalapeno Pepper",
-                                      servingSize: 14,
-                                      calories: 4,
-                                      fat: 0.05,
-                                      fiber: 0.39,
-                                      netCarbs: 0.52,
-                                      protein: 0.13,
-                                      consumptionUnit: Unit.gram,
-                                      consumptionGrams: 1,
-                                      meat: false,
-                                      available: false))
-        // ingredients.append(Ingredient(name: "Salsa",
-        //                               servingSize: 30,
-        //                               calories: 10,
-        //                               fat: 0,
-        //                               fiber: 1,
-        //                               netCarbs: 0,
-        //                               protein: 1,
-        //                               consumptionUnit: Unit.tablespoon,
-        //                               consumptionGrams: 15,
-        //                               meat: false,
-        //                               available: false, verified: "3/16/22"))
+                                      verified: "12/25/23"))
         ingredients.append(Ingredient(name: "Arugula",
                                       servingSize: 20,
                                       calories: 5,
@@ -227,17 +176,6 @@ class IngredientMgr: ObservableObject {
                                       fiber: 0.99,
                                       netCarbs: 0.51,
                                       protein: 0.58,
-                                      consumptionUnit: Unit.gram,
-                                      consumptionGrams: 1,
-                                      meat: false,
-                                      verified: "3/16/22"))
-        ingredients.append(Ingredient(name: "Collared Greens",
-                                      servingSize: 36,
-                                      calories: 12,
-                                      fat: 0.22,
-                                      fiber: 1.4,
-                                      netCarbs: 0.6,
-                                      protein: 1.09,
                                       consumptionUnit: Unit.gram,
                                       consumptionGrams: 1,
                                       meat: false,
@@ -383,6 +321,21 @@ class IngredientMgr: ObservableObject {
                                       consumptionGrams: 1,
                                       meat: false,
                                       verified: "9/1/22"))
+        ingredients.append(Ingredient(name: "Pumpkin Seeds",
+                                      servingSize: 28,
+                                      calories: 160,
+                                      fat: 14,
+                                      fiber: 2,
+                                      netCarbs: 1,
+                                      protein: 8,
+                                      zinc: 1.8, // mg
+                                      potassium: 230, // mg
+                                      magnesium: 165, // mg
+                                      iron: 2.5, // mg
+                                      consumptionUnit: Unit.gram,
+                                      consumptionGrams: 1,
+                                      meat: false,
+                                      verified: "12/25/23"))
         ingredients.append(Ingredient(name: "Mustard",
                                       servingSize: 5,
                                       calories: 5,
@@ -438,7 +391,7 @@ class IngredientMgr: ObservableObject {
                                       consumptionGrams: 1,
                                       meat: false,
                                       verified: "3/16/22"))
-        ingredients.append(Ingredient(name: "Babyl Cheese",
+        ingredients.append(Ingredient(name: "Babybel Cheese",
                                       servingSize: 21,
                                       calories: 70,
                                       fat: 6,
@@ -449,6 +402,17 @@ class IngredientMgr: ObservableObject {
                                       consumptionGrams: 21,
                                       meat: false,
                                       verified: "12/22/23"))
+        ingredients.append(Ingredient(name: "Tillamook Cheddar Cheese",
+                                      servingSize: 21,
+                                      calories: 90,
+                                      fat: 7,
+                                      fiber: 0,
+                                      netCarbs: 1,
+                                      protein: 5,
+                                      consumptionUnit: Unit.piece,
+                                      consumptionGrams: 21,
+                                      meat: false,
+                                      verified: "12/25/23"))
         ingredients.append(Ingredient(name: "Emmi Roth",
                                       servingSize: 28,
                                       calories: 110,
@@ -514,13 +478,13 @@ class IngredientMgr: ObservableObject {
                                       consumptionUnit: Unit.piece,
                                       consumptionGrams: 3.5,
                                       meat: false))
-        ingredients.append(Ingredient(name: "Keto Mint Ice Cream",
-                                      servingSize: 99,
-                                      calories: 250,
-                                      fat: 23,
-                                      fiber: 4,
-                                      netCarbs: 3,
-                                      protein: 4,
+        ingredients.append(Ingredient(name: "Flackers (SS)",
+                                      servingSize: 30,
+                                      calories: 160,
+                                      fat: 12,
+                                      fiber: 9,
+                                      netCarbs: 1,
+                                      protein: 6,
                                       consumptionUnit: Unit.gram,
                                       consumptionGrams: 1,
                                       meat: false,
@@ -572,12 +536,6 @@ class IngredientMgr: ObservableObject {
                 sugarAlcohool: Double = 0,
                 netCarbs: Double,
                 protein: Double,
-                consumptionUnit: Unit,
-                consumptionGrams: Double,
-                meat: Bool = false,
-                meatAmount: Double = 0,
-                mealAdjustments: [MealAdjustment] = [],
-                microNutrients: Bool = false,
                 omega3: Double = 0,
                 zinc: Double = 0,
                 vitaminK: Double = 0,
@@ -601,6 +559,12 @@ class IngredientMgr: ObservableObject {
                 folate: Double = 0,
                 copper: Double = 0,
                 calcium: Double = 0,
+                consumptionUnit: Unit,
+                consumptionGrams: Double,
+                meat: Bool = false,
+                meatAmount: Double = 0,
+                mealAdjustments: [MealAdjustment] = [],
+                microNutrients: Bool = false,
                 available: Bool = true,
                 verified: String = "") {
         let ingredient = Ingredient(name: name,
@@ -628,12 +592,6 @@ class IngredientMgr: ObservableObject {
                                     sugarAlcohool: sugarAlcohool,
                                     netCarbs: netCarbs,
                                     protein: protein,
-                                    consumptionUnit: consumptionUnit,
-                                    consumptionGrams: consumptionGrams,
-                                    meat: meat,
-                                    meatAmount: meatAmount,
-                                    mealAdjustments: mealAdjustments,
-                                    microNutrients: microNutrients,
                                     omega3: omega3,
                                     zinc: zinc,
                                     vitaminK: vitaminK,
@@ -657,6 +615,12 @@ class IngredientMgr: ObservableObject {
                                     folate: folate,
                                     copper: copper,
                                     calcium: calcium,
+                                    consumptionUnit: consumptionUnit,
+                                    consumptionGrams: consumptionGrams,
+                                    meat: meat,
+                                    meatAmount: meatAmount,
+                                    mealAdjustments: mealAdjustments,
+                                    microNutrients: microNutrients,
                                     available: available,
                                     verified: verified)
         self.ingredients.append(ingredient)
@@ -678,7 +642,6 @@ class IngredientMgr: ObservableObject {
     // dialogs to add a new ingredient to a meal that isn't already
     // part of the meal ingredient set or to add a new adjustment
     // ingredient to the adjustments list.
-
     func getNewMealIngredientNames(existingMealIngredientNames: [String]) -> [String] {
         let existingMealIngredientNamesSet = Set(existingMealIngredientNames)
         let meatNamesSet = Set(getAllMeatNames())
@@ -699,7 +662,6 @@ class IngredientMgr: ObservableObject {
     // meats (ingredient.meat = true) in addition to 'None'.  This
     // list is used by the Meal Configure dialog to configure the meat
     // for the meal (or 'None' if there's no meat).
-
     func getAllMeatNames() -> [String] {
         let meats = ingredients.filter({ $0.meat == true })
         var meatNames: [String] = []
@@ -829,15 +791,6 @@ struct Ingredient: Codable, Identifiable {
 
     var protein: Double
 
-    var consumptionUnit: Unit
-    var consumptionGrams: Double
-
-    var meat: Bool
-    var meatAmount: Double
-    var mealAdjustments: [MealAdjustment]
-
-    var microNutrients: Bool
-
     var omega3: Double
     var zinc: Double
     var vitaminK: Double
@@ -861,6 +814,15 @@ struct Ingredient: Codable, Identifiable {
     var folate: Double
     var copper: Double
     var calcium: Double
+
+    var consumptionUnit: Unit
+    var consumptionGrams: Double
+
+    var meat: Bool
+    var meatAmount: Double
+    var mealAdjustments: [MealAdjustment]
+
+    var microNutrients: Bool
 
     var available: Bool
 
@@ -892,12 +854,6 @@ struct Ingredient: Codable, Identifiable {
          sugarAlcohool: Double = 0,
          netCarbs: Double,
          protein: Double,
-         consumptionUnit: Unit = Unit.gram,
-         consumptionGrams: Double,
-         meat: Bool = false,
-         meatAmount: Double = 200,
-         mealAdjustments: [MealAdjustment] = [],
-         microNutrients: Bool = false,
          omega3: Double = 0,
          zinc: Double = 0,
          vitaminK: Double = 0,
@@ -921,6 +877,12 @@ struct Ingredient: Codable, Identifiable {
          folate: Double = 0,
          copper: Double = 0,
          calcium: Double = 0,
+         consumptionUnit: Unit = Unit.gram,
+         consumptionGrams: Double,
+         meat: Bool = false,
+         meatAmount: Double = 200,
+         mealAdjustments: [MealAdjustment] = [],
+         microNutrients: Bool = false,
          available: Bool = true,
          verified: String = "") {
 
@@ -960,15 +922,6 @@ struct Ingredient: Codable, Identifiable {
 
         self.protein = protein
 
-        self.consumptionUnit = consumptionUnit
-        self.consumptionGrams = consumptionGrams
-
-        self.meat = meat
-        self.meatAmount = meatAmount
-        self.mealAdjustments = mealAdjustments
-
-        self.microNutrients = microNutrients
-
         self.omega3 = omega3
         self.zinc = zinc
         self.vitaminK = vitaminK
@@ -992,6 +945,15 @@ struct Ingredient: Codable, Identifiable {
         self.folate = folate
         self.copper = copper
         self.calcium = calcium
+
+        self.consumptionUnit = consumptionUnit
+        self.consumptionGrams = consumptionGrams
+
+        self.meat = meat
+        self.meatAmount = meatAmount
+        self.mealAdjustments = mealAdjustments
+
+        self.microNutrients = microNutrients
 
         self.available = available
 
@@ -1066,11 +1028,6 @@ struct Ingredient: Codable, Identifiable {
                           sugarAlcohool: sugarAlcohool,
                           netCarbs: netCarbs,
                           protein: protein,
-                          consumptionUnit: consumptionUnit,
-                          consumptionGrams: consumptionGrams,
-                          meat: meat,
-                          mealAdjustments: mealAdjustments,
-                          microNutrients: microNutrients,
                           omega3: omega3,
                           zinc: zinc,
                           vitaminK: vitaminK,
@@ -1094,6 +1051,11 @@ struct Ingredient: Codable, Identifiable {
                           folate: folate,
                           copper: copper,
                           calcium: calcium,
+                          consumptionUnit: consumptionUnit,
+                          consumptionGrams: consumptionGrams,
+                          meat: meat,
+                          mealAdjustments: mealAdjustments,
+                          microNutrients: microNutrients,
                           available: !available,
                           verified: verified)
     }
@@ -1126,12 +1088,6 @@ struct Ingredient: Codable, Identifiable {
                           sugarAlcohool: ingredient.sugarAlcohool,
                           netCarbs: ingredient.netCarbs,
                           protein: ingredient.protein,
-                          consumptionUnit: ingredient.consumptionUnit,
-                          consumptionGrams: ingredient.consumptionGrams,
-                          meat: ingredient.meat,
-                          meatAmount: ingredient.meatAmount,
-                          mealAdjustments: ingredient.mealAdjustments,
-                          microNutrients: ingredient.microNutrients,
                           omega3: ingredient.omega3,
                           zinc: ingredient.zinc,
                           vitaminK: ingredient.vitaminK,
@@ -1155,6 +1111,12 @@ struct Ingredient: Codable, Identifiable {
                           folate: ingredient.folate,
                           copper: ingredient.copper,
                           calcium: ingredient.calcium,
+                          consumptionUnit: ingredient.consumptionUnit,
+                          consumptionGrams: ingredient.consumptionGrams,
+                          meat: ingredient.meat,
+                          meatAmount: ingredient.meatAmount,
+                          mealAdjustments: ingredient.mealAdjustments,
+                          microNutrients: ingredient.microNutrients,
                           available: ingredient.available,
                           verified: verified)
     }

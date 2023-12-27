@@ -59,7 +59,8 @@ class MealIngredientMgr: ObservableObject {
         mealIngredients.append(MealIngredient(name: "Smoked Sardines", amount: 1, active: false))
         mealIngredients.append(MealIngredient(name: "String Cheese", amount: 1, active: false))
         mealIngredients.append(MealIngredient(name: "Dubliner Cheese", amount: 30, active: false))
-        mealIngredients.append(MealIngredient(name: "Babyl Cheese", amount: 1, active: false))
+        mealIngredients.append(MealIngredient(name: "Babybel Cheese", amount: 1, active: false))
+        mealIngredients.append(MealIngredient(name: "Tillamook Cheddar Cheese", amount: 1, active: false))
 
         mealIngredients.append(MealIngredient(name: "Eggs", amount: 5))
         mealIngredients.append(MealIngredient(name: "Broccoli", amount: 250))

@@ -370,6 +370,7 @@ struct MealList: View {
 
         // Determine the number of servings consumed by taking the
         // total grams consumed divided by the grams per serving.
+        print(name);
         let ingredient = ingredientMgr.getByName(name: name)!
         let servings = (amount * ingredient.consumptionGrams) / ingredient.servingSize
 

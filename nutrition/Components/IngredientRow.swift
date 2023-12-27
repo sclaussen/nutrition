@@ -76,7 +76,7 @@ struct IngredientRow: View {
                 }
 
                 if showAmount {
-                    Text("\(amount.formattedString(0))").font(.callout).frame(width: amountWidthPercentage * geo.size.width, alignment: .trailing).border(Color.theme.red, width: 0)
+                    Text("\(amount.formattedString(1))").font(.callout).frame(width: amountWidthPercentage * geo.size.width, alignment: .trailing).border(Color.theme.red, width: 0)
                     Text(amount == 1 ? consumptionUnit.singularForm : consumptionUnit.pluralForm).font(.caption).frame(width: unitWidthPercentage * geo.size.width, alignment: .leading).border(Color.theme.red, width: 0)
                 }
             }.frame(height: 9)
