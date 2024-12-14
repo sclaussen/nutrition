@@ -11,16 +11,21 @@ class AdjustmentMgr: ObservableObject {
 
 
     init() {
-        adjustments.append(Adjustment(name: "Sardines", amount: 1, group: "fish", constraints: true, maximum: 2))
-        adjustments.append(Adjustment(name: "Mackerel", amount: 1, group: "fish", constraints: true, maximum: 2))
-        adjustments.append(Adjustment(name: "Smoked Sardines", amount: 1, group: "fish", constraints: true, maximum: 2))
-        adjustments.append(Adjustment(name: "Eggs", amount: 1, constraints: true, maximum: 7))
-        adjustments.append(Adjustment(name: "String Cheese", amount: 1, constraints: true, maximum: 3))
-        adjustments.append(Adjustment(name: "Broccoli", amount: 10, group: "vegefat", constraints: true, maximum: 250))
-        adjustments.append(Adjustment(name: "Cauliflower", amount: 10, group: "vegefat", constraints: true, maximum: 120))
-        adjustments.append(Adjustment(name: "Extra Virgin Olive Oil", amount: 1, constraints: true, maximum: 4))
-//        adjustments.append(Adjustment(name: "Macadamia Nuts", amount: 5, group: "vegefat"));
+        // adjustments.append(Adjustment(name: "Dubliner Cheese", amount: 5, constraints: true, maximum: 100))
+        // adjustments.append(Adjustment(name: "Sard (H2O)", amount: 1, group: "fish", constraints: true, maximum: 2))
+        // adjustments.append(Adjustment(name: "Sard (SB)", amount: 1, group: "fish", constraints: true, maximum: 2))
+        // adjustments.append(Adjustment(name: "Sard (LS)", amount: 1, group: "fish", constraints: true, maximum: 2))
+        // adjustments.append(Adjustment(name: "Sard (LS L)", amount: 1, group: "fish", constraints: true, maximum: 2))
+        // adjustments.append(Adjustment(name: "Mack (SB)", amount: 1, group: "fish", constraints: true, maximum: 2))
+        // adjustments.append(Adjustment(name: "Mack (Smk)", amount: 1, group: "fish", constraints: true, maximum: 2))
+        // adjustments.append(Adjustment(name: "Eggs", amount: 1, constraints: true, maximum: 7))
+
+        adjustments.append(Adjustment(name: "String Cheese", amount: 1, constraints: true, maximum: 8))
+        // adjustments.append(Adjustment(name: "Broccoli", amount: 10, group: "vegefat", constraints: true, maximum: 250))
+        // adjustments.append(Adjustment(name: "Cauliflower", amount: 10, group: "vegefat", constraints: true, maximum: 100))
+        // adjustments.append(Adjustment(name: "Extra Virgin Olive Oil", amount: 0.5, constraints: true, maximum: 2))
         adjustments.append(Adjustment(name: "Pumpkin Seeds", amount: 5, group: "vegefat"));
+        // adjustments.append(Adjustment(name: "Macadamia Nuts", amount: 5, group: "vegefat", constraints: true, maximum: 100));
     }
 
 
@@ -47,10 +52,7 @@ class AdjustmentMgr: ObservableObject {
                 amount: Double,
                 group: String = "",
                 active: Bool = true) {
-        let adjustment = Adjustment(name: name,
-                                    amount: amount,
-                                    group: group,
-                                    active: active)
+        let adjustment = Adjustment(name: name, amount: amount, group: group, active: active)
         adjustments.append(adjustment)
     }
 
@@ -135,6 +137,7 @@ class AdjustmentMgr: ObservableObject {
         }
     }
 }
+
 
 struct Adjustment: Codable, Identifiable {
     var id: String

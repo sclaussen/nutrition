@@ -52,38 +52,48 @@ class MealIngredientMgr: ObservableObject {
 
         mealIngredients = []
 
-        mealIngredients.append(MealIngredient(name: "Coconut Oil", amount: 0.5))
-
-        mealIngredients.append(MealIngredient(name: "Mackerel", amount: 1, active: false))
-        mealIngredients.append(MealIngredient(name: "Sardines", amount: 1, active: false))
-        mealIngredients.append(MealIngredient(name: "Smoked Sardines", amount: 1, active: false))
-        mealIngredients.append(MealIngredient(name: "String Cheese", amount: 1, active: false))
-        mealIngredients.append(MealIngredient(name: "Dubliner Cheese", amount: 30, active: false))
+        mealIngredients.append(MealIngredient(name: "Sard (H2O)", amount: 1, active: false))
+        mealIngredients.append(MealIngredient(name: "Sard (SB)", amount: 1, active: false))
+        mealIngredients.append(MealIngredient(name: "Sard (LS)", amount: 1, active: false))
+        mealIngredients.append(MealIngredient(name: "Sard (LS L)", amount: 1, active: false))
+        mealIngredients.append(MealIngredient(name: "Mack (SB)", amount: 1, active: false))
+        mealIngredients.append(MealIngredient(name: "Mack (Smk)", amount: 1, active: false))
         mealIngredients.append(MealIngredient(name: "Babybel Cheese", amount: 1, active: false))
         mealIngredients.append(MealIngredient(name: "Tillamook Cheddar Cheese", amount: 1, active: false))
-
-        mealIngredients.append(MealIngredient(name: "Eggs", amount: 5))
-        mealIngredients.append(MealIngredient(name: "Broccoli", amount: 250))
-        mealIngredients.append(MealIngredient(name: "Cauliflower", amount: 100))
-        mealIngredients.append(MealIngredient(name: "Arugula", amount: 0))
-        mealIngredients.append(MealIngredient(name: "Spinach", amount: 70))
-        mealIngredients.append(MealIngredient(name: "Romaine", amount: 430))
-        mealIngredients.append(MealIngredient(name: "Mushrooms", amount: 100))
-        mealIngredients.append(MealIngredient(name: "Radish", amount: 100))
-        mealIngredients.append(MealIngredient(name: "Avocado", amount: 145))
-        mealIngredients.append(MealIngredient(name: "Pumpkin Seeds", amount: 20))
         mealIngredients.append(MealIngredient(name: "Macadamia Nuts", amount: 0, active: false))
-        mealIngredients.append(MealIngredient(name: "Mustard", amount: 4))
-        mealIngredients.append(MealIngredient(name: "Fish Oil", amount: 2))
-        mealIngredients.append(MealIngredient(name: "Extra Virgin Olive Oil", amount: 1))
-
         mealIngredients.append(MealIngredient(name: "Pecans", amount: 20, active: false))
         mealIngredients.append(MealIngredient(name: "Walnuts", amount: 20, active: false))
         mealIngredients.append(MealIngredient(name: "Peanuts", amount: 20, active: false))
-        mealIngredients.append(MealIngredient(name: "Flackers (SS)", amount: 30, active: false))
-        mealIngredients.append(MealIngredient(name: "Cheddar Cheese", amount: 1, active: false))
+        mealIngredients.append(MealIngredient(name: "Dave's Bread", amount: 1, active: false))
+        mealIngredients.append(MealIngredient(name: "Dave's Bread (Thin)", amount: 1, active: false))
+        mealIngredients.append(MealIngredient(name: "Ezekiel 4:9", amount: 1, active: false))
+        mealIngredients.append(MealIngredient(name: "Sunflower Butter", amount: 1, active: false))
+        mealIngredients.append(MealIngredient(name: "Peanut Butter", amount: 1, active: false))
+        mealIngredients.append(MealIngredient(name: "Jelly", amount: 1, active: false))
+        mealIngredients.append(MealIngredient(name: "Latte (Venti Iced)", amount: 1, active: false))
+        mealIngredients.append(MealIngredient(name: "String Cheese W", amount: 1, active: false))
 
+        // mealIngredients.append(MealIngredient(name: "Dubliner Cheese", amount: 30, active: false))
+        // mealIngredients.append(MealIngredient(name: "Mitica", amount: 10, active: false))
+        // mealIngredients.append(MealIngredient(name: "Flackers (SS)", amount: 30, active: false))
+        // mealIngredients.append(MealIngredient(name: "Cheddar Cheese", amount: 1, active: false))
         // mealIngredients.append(MealIngredient(name: "Emmi Roth", amount: 30, active: false))
+
+        mealIngredients.append(MealIngredient(name: "Coconut Oil", amount: 0.5))
+        mealIngredients.append(MealIngredient(name: "Eggs", amount: 5))
+        mealIngredients.append(MealIngredient(name: "Broccoli", amount: 250))
+        mealIngredients.append(MealIngredient(name: "Cauliflower", amount: 100))
+        mealIngredients.append(MealIngredient(name: "String Cheese", amount: 5))
+        mealIngredients.append(MealIngredient(name: "Romaine", amount: 300))
+        mealIngredients.append(MealIngredient(name: "Spinach", amount: 50))
+        mealIngredients.append(MealIngredient(name: "Arugula", amount: 50))
+        mealIngredients.append(MealIngredient(name: "Mushrooms", amount: 100))
+        mealIngredients.append(MealIngredient(name: "Radish", amount: 100))
+        mealIngredients.append(MealIngredient(name: "Avocado", amount: 145))
+        mealIngredients.append(MealIngredient(name: "Pumpkin Seeds", amount: 25))
+        mealIngredients.append(MealIngredient(name: "Mustard", amount: 4))
+        mealIngredients.append(MealIngredient(name: "Fish Oil", amount: 1))
+        mealIngredients.append(MealIngredient(name: "Extra Virgin Olive Oil", amount: 2))
     }
 
 
@@ -309,12 +319,12 @@ class MealIngredientMgr: ObservableObject {
 
 
     //    func resetAmountAll() {
-//        for mealIngredient in mealIngredients {
-//            if let index = mealIngredients.firstIndex(where: { $0.name == mealIngredient.name }) {
-//                mealIngredients[index] = mealIngredients[index].resetAmountToDefaultAmount()
-//            }
-//        }
-//    }
+    //        for mealIngredient in mealIngredients {
+    //            if let index = mealIngredients.firstIndex(where: { $0.name == mealIngredient.name }) {
+    //                mealIngredients[index] = mealIngredients[index].resetAmountToDefaultAmount()
+    //            }
+    //        }
+    //    }
 }
 
 

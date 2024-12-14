@@ -5,6 +5,7 @@ enum Unit: ValueType {
 
     case bar
     case can
+    case cup
     case egg
     case gram
     case internationalUnit
@@ -33,6 +34,7 @@ enum Unit: ValueType {
 
         case .bar: return "bar"
         case .can: return "can"
+        case .cup: return "cup"
         case .egg: return "egg"
         case .gram: return "gram"
         case .internationalUnit: return "IU"
@@ -63,6 +65,7 @@ enum Unit: ValueType {
 
         case .bar: return "bars"
         case .can: return "cans"
+        case .cup: return "cups"
         case .egg: return "eggs"
         case .gram: return "grams"
         case .internationalUnit: return "IUs"
@@ -91,6 +94,7 @@ enum Unit: ValueType {
         var options: [Unit] = []
         options.append(bar)
         options.append(can)
+        options.append(cup)
         options.append(egg)
         options.append(gram)
         options.append(piece)
