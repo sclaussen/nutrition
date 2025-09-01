@@ -52,6 +52,10 @@ class MealIngredientMgr: ObservableObject {
 
         mealIngredients = []
 
+        mealIngredients.append(MealIngredient(name: "Dave's Bread W", amount: 2, active: false))
+        mealIngredients.append(MealIngredient(name: "Cheddar Cheese W", amount: 4, active: false))
+        mealIngredients.append(MealIngredient(name: "Turkey W", amount: 4, active: false))
+        mealIngredients.append(MealIngredient(name: "Hummus W", amount: 1, active: false))
         mealIngredients.append(MealIngredient(name: "Sard (H2O)", amount: 1, active: false))
         mealIngredients.append(MealIngredient(name: "Sard (SB)", amount: 1, active: false))
         mealIngredients.append(MealIngredient(name: "Sard (LS)", amount: 1, active: false))
@@ -71,9 +75,8 @@ class MealIngredientMgr: ObservableObject {
         mealIngredients.append(MealIngredient(name: "Peanut Butter", amount: 1, active: false))
         mealIngredients.append(MealIngredient(name: "Jelly", amount: 1, active: false))
         mealIngredients.append(MealIngredient(name: "Latte (Venti Iced)", amount: 1, active: false))
-        mealIngredients.append(MealIngredient(name: "String Cheese W", amount: 1, active: false))
 
-        // mealIngredients.append(MealIngredient(name: "Dubliner Cheese", amount: 30, active: false))
+        mealIngredients.append(MealIngredient(name: "Dubliner Cheese", amount: 30, active: false))
         // mealIngredients.append(MealIngredient(name: "Mitica", amount: 10, active: false))
         // mealIngredients.append(MealIngredient(name: "Flackers (SS)", amount: 30, active: false))
         // mealIngredients.append(MealIngredient(name: "Cheddar Cheese", amount: 1, active: false))
@@ -81,17 +84,18 @@ class MealIngredientMgr: ObservableObject {
 
         mealIngredients.append(MealIngredient(name: "Coconut Oil", amount: 0.5))
         mealIngredients.append(MealIngredient(name: "Eggs", amount: 5))
-        mealIngredients.append(MealIngredient(name: "Broccoli", amount: 250))
+        mealIngredients.append(MealIngredient(name: "Broccoli", amount: 150))
         mealIngredients.append(MealIngredient(name: "Cauliflower", amount: 100))
-        mealIngredients.append(MealIngredient(name: "String Cheese", amount: 5))
-        mealIngredients.append(MealIngredient(name: "Romaine", amount: 300))
+        mealIngredients.append(MealIngredient(name: "String Cheese", amount: 0))
+        mealIngredients.append(MealIngredient(name: "String Cheese W", amount: 5))
+        mealIngredients.append(MealIngredient(name: "Romaine", amount: 150))
         mealIngredients.append(MealIngredient(name: "Spinach", amount: 50))
         mealIngredients.append(MealIngredient(name: "Arugula", amount: 50))
-        mealIngredients.append(MealIngredient(name: "Mushrooms", amount: 100))
+        mealIngredients.append(MealIngredient(name: "Mushrooms", amount: 125))
         mealIngredients.append(MealIngredient(name: "Radish", amount: 100))
         mealIngredients.append(MealIngredient(name: "Avocado", amount: 145))
-        mealIngredients.append(MealIngredient(name: "Pumpkin Seeds", amount: 25))
-        mealIngredients.append(MealIngredient(name: "Mustard", amount: 4))
+        mealIngredients.append(MealIngredient(name: "Pumpkin Seeds", amount: 30))
+        mealIngredients.append(MealIngredient(name: "Mustard", amount: 3))
         mealIngredients.append(MealIngredient(name: "Fish Oil", amount: 1))
         mealIngredients.append(MealIngredient(name: "Extra Virgin Olive Oil", amount: 2))
     }
