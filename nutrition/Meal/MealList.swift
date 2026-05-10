@@ -13,6 +13,8 @@ struct MealList: View {
     @State var showInactive: Bool = false
     @State var amount: Double = 0
     @State var mealConfigureActive = false
+    @State var resetMealIngredientsAlert = false
+    @AppStorage("showMacros") private var showMacros: Bool = false
 
     // Use cases:
     // - Deactivate a meal ingredient because it's out that will be auto-adjusted
@@ -42,14 +44,14 @@ struct MealList: View {
               .listRowInsets(EdgeInsets(top: 0, leading: 10, bottom: 0, trailing: 10))
               .border(Color.theme.green, width: 0)
 
-            IngredientRowHeader(showMacros: true)
+            IngredientRowHeader(showMacros: showMacros)
               .listRowInsets(EdgeInsets(top: 8, leading: 10, bottom: 8, trailing: 10))
               .border(Color.theme.green, width: 0)
 
             ForEach(mealIngredientMgr.getActive(includeInactive: showInactive)) { mealIngredient in
                 NavigationLink(destination: MealEdit(mealIngredient: mealIngredient),
                                label: {
-                                   IngredientRow(showMacros: true,
+                                   IngredientRow(showMacros: showMacros,
                                                  name: mealIngredient.name,
                                                  calories: mealIngredient.calories,
                                                  fat: mealIngredient.fat,
@@ -132,13 +134,16 @@ struct MealList: View {
                   HStack {
 
 
-                      // Active/Inactive Toggle
-                      Button {
-                          withAnimation(.easeInOut) {
-                              showInactive.toggle()
+                      // View options menu (show inactive / show macros)
+                      Menu {
+                          Toggle(isOn: $showInactive) {
+                              Label("Show inactive", systemImage: "eye")
+                          }
+                          Toggle(isOn: $showMacros) {
+                              Label("Show macros", systemImage: "chart.bar.xaxis")
                           }
                       } label: {
-                          Image(systemName: !mealIngredientMgr.inactiveIngredientsExist() ? "" : showInactive ? "eye" : "eye.slash")
+                          Image(systemName: "slider.horizontal.3")
                       }
                         .frame(width: 40)
                         .foregroundColor(Color.theme.blueYellow)
@@ -146,10 +151,7 @@ struct MealList: View {
 
                       // Reset entire set of meal ingredients
                       Button {
-                          withAnimation {
-                              mealIngredientMgr.resetMealIngredients()
-                              generateMeal()
-                          }
+                          resetMealIngredientsAlert = true
                       } label: {
                           Image(systemName: "arrow.uturn.backward")
                           // Image(systemName: "arrow.3.trianglepath")
@@ -177,6 +179,18 @@ struct MealList: View {
           }
           .onAppear {
               generateMeal()
+          }
+          .alert("Reset Meal Ingredients?",
+                 isPresented: $resetMealIngredientsAlert) {
+              Button("Cancel", role: .cancel) { }
+              Button("Reset", role: .destructive) {
+                  withAnimation {
+                      mealIngredientMgr.resetMealIngredients()
+                      generateMeal()
+                  }
+              }
+          } message: {
+              Text("This will replace your current meal ingredient amounts with the defaults. This can't be undone.")
           }
     }
 
