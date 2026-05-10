@@ -80,13 +80,25 @@ struct IngredientList: View {
                     .foregroundColor(Color.theme.blueYellow)
               }
               ToolbarItem(placement: .principal) {
-                  Button {
-                      showUnavailable.toggle()
-                      print("  Toggling showUnavailable: \(showUnavailable) (ingredient)")
-                  } label: {
-                      Image(systemName: !ingredientMgr.unavailableIngredientsExist() ? "" : showUnavailable ? "eye" : "eye.slash")
+                  HStack {
+                      // Adjustments (formerly its own tab)
+                      NavigationLink(destination: AdjustmentList()) {
+                          Image(systemName: "slider.horizontal.below.list.bulleted")
+                      }
+                        .frame(width: 40)
+                        .foregroundColor(Color.theme.blueYellow)
+
+
+                      // Show unavailable ingredients toggle
+                      Button {
+                          showUnavailable.toggle()
+                          print("  Toggling showUnavailable: \(showUnavailable) (ingredient)")
+                      } label: {
+                          Image(systemName: !ingredientMgr.unavailableIngredientsExist() ? "" : showUnavailable ? "eye" : "eye.slash")
+                      }
+                        .frame(width: 40)
+                        .foregroundColor(Color.theme.blueYellow)
                   }
-                    .foregroundColor(Color.theme.blueYellow)
               }
               ToolbarItem(placement: .primaryAction) {
                   NavigationLink("Add", destination: IngredientAdd())

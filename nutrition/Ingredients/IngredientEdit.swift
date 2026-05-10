@@ -81,6 +81,7 @@ extension IngredientEdit {
             Section(header: Text("Preparation/Consumption Unit")) {
                 NameValue("Consumption Unit", description: "preferred meal prep/consumption unit", $ingredient.consumptionUnit, options: Unit.ingredientOptions(), control: .picker)
                 NameValue("Grams / Consumption Unit", description: "grams per each prep/consumption unit", $ingredient.consumptionGrams, edit: true)
+                NameValue("Step amount", description: "0 = auto by unit & serving size", $ingredient.stepAmount, ingredient.consumptionUnit, edit: true)
             }
         }
     }

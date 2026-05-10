@@ -24,23 +24,12 @@ struct Tabs: View {
 
 
             NavigationView {
-                AdjustmentList()
-                  .hiddenNavigationBarStyle()
-                  // .navigationTitle("Adjustments")
-            }.tabItem {
-                Image(systemName: "plus.circle")
-                Text("Adjustments")
-            }.tag("Adds")
-              .navigationViewStyle(StackNavigationViewStyle())
-
-
-            NavigationView {
                 IngredientList()
                   .hiddenNavigationBarStyle()
                   // .navigationTitle("Ingredients")
             }.tabItem {
                 Image(systemName: "cart.fill")
-                Text("Ingredients")
+                Text("Prep")
             }.tag("Ingredients")
               .navigationViewStyle(StackNavigationViewStyle())
 

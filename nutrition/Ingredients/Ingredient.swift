@@ -821,7 +821,8 @@ class IngredientMgr: ObservableObject {
                 mealAdjustments: [MealAdjustment] = [],
                 microNutrients: Bool = false,
                 available: Bool = true,
-                verified: String = "") {
+                verified: String = "",
+                stepAmount: Double = 0) {
         let ingredient = Ingredient(name: name,
                                     brand: brand,
                                     fullName: fullName,
@@ -877,7 +878,8 @@ class IngredientMgr: ObservableObject {
                                     mealAdjustments: mealAdjustments,
                                     microNutrients: microNutrients,
                                     available: available,
-                                    verified: verified)
+                                    verified: verified,
+                                    stepAmount: stepAmount)
         self.ingredients.append(ingredient)
     }
 
@@ -1083,6 +1085,8 @@ struct Ingredient: Codable, Identifiable {
 
     var verified: String
 
+    var stepAmount: Double   // 0 means "auto" — use the effectiveStep heuristic
+
     init(id: String = UUID().uuidString,
          name: String,
          brand: String = "",
@@ -1139,7 +1143,8 @@ struct Ingredient: Codable, Identifiable {
          mealAdjustments: [MealAdjustment] = [],
          microNutrients: Bool = false,
          available: Bool = true,
-         verified: String = "") {
+         verified: String = "",
+         stepAmount: Double = 0) {
 
         self.id = id
 
@@ -1213,6 +1218,70 @@ struct Ingredient: Codable, Identifiable {
         self.available = available
 
         self.verified = verified
+
+        self.stepAmount = stepAmount
+    }
+
+    init(from decoder: Decoder) throws {
+        let c = try decoder.container(keyedBy: CodingKeys.self)
+        self.id = try c.decode(String.self, forKey: .id)
+        self.name = try c.decode(String.self, forKey: .name)
+        self.brand = try c.decode(String.self, forKey: .brand)
+        self.fullName = try c.decode(String.self, forKey: .fullName)
+        self.category = try c.decode(String.self, forKey: .category)
+        self.url = try c.decode(String.self, forKey: .url)
+        self.totalCost = try c.decode(Double.self, forKey: .totalCost)
+        self.totalGrams = try c.decode(Double.self, forKey: .totalGrams)
+        self.ingredients = try c.decode([String].self, forKey: .ingredients)
+        self.allergens = try c.decode([String].self, forKey: .allergens)
+        self.servingSize = try c.decode(Double.self, forKey: .servingSize)
+        self.calories = try c.decode(Double.self, forKey: .calories)
+        self.fat = try c.decode(Double.self, forKey: .fat)
+        self.saturatedFat = try c.decode(Double.self, forKey: .saturatedFat)
+        self.transFat = try c.decode(Double.self, forKey: .transFat)
+        self.polyunsaturatedFat = try c.decode(Double.self, forKey: .polyunsaturatedFat)
+        self.monounsaturatedFat = try c.decode(Double.self, forKey: .monounsaturatedFat)
+        self.cholesterol = try c.decode(Double.self, forKey: .cholesterol)
+        self.sodium = try c.decode(Double.self, forKey: .sodium)
+        self.carbohydrates = try c.decode(Double.self, forKey: .carbohydrates)
+        self.fiber = try c.decode(Double.self, forKey: .fiber)
+        self.sugar = try c.decode(Double.self, forKey: .sugar)
+        self.addedSugar = try c.decode(Double.self, forKey: .addedSugar)
+        self.sugarAlcohool = try c.decode(Double.self, forKey: .sugarAlcohool)
+        self.netCarbs = try c.decode(Double.self, forKey: .netCarbs)
+        self.protein = try c.decode(Double.self, forKey: .protein)
+        self.omega3 = try c.decode(Double.self, forKey: .omega3)
+        self.zinc = try c.decode(Double.self, forKey: .zinc)
+        self.vitaminK = try c.decode(Double.self, forKey: .vitaminK)
+        self.vitaminE = try c.decode(Double.self, forKey: .vitaminE)
+        self.vitaminD = try c.decode(Double.self, forKey: .vitaminD)
+        self.vitaminC = try c.decode(Double.self, forKey: .vitaminC)
+        self.vitaminB6 = try c.decode(Double.self, forKey: .vitaminB6)
+        self.vitaminB12 = try c.decode(Double.self, forKey: .vitaminB12)
+        self.vitaminA = try c.decode(Double.self, forKey: .vitaminA)
+        self.thiamin = try c.decode(Double.self, forKey: .thiamin)
+        self.selenium = try c.decode(Double.self, forKey: .selenium)
+        self.riboflavin = try c.decode(Double.self, forKey: .riboflavin)
+        self.potassium = try c.decode(Double.self, forKey: .potassium)
+        self.phosphorus = try c.decode(Double.self, forKey: .phosphorus)
+        self.pantothenicAcid = try c.decode(Double.self, forKey: .pantothenicAcid)
+        self.niacin = try c.decode(Double.self, forKey: .niacin)
+        self.manganese = try c.decode(Double.self, forKey: .manganese)
+        self.magnesium = try c.decode(Double.self, forKey: .magnesium)
+        self.iron = try c.decode(Double.self, forKey: .iron)
+        self.folicAcid = try c.decode(Double.self, forKey: .folicAcid)
+        self.folate = try c.decode(Double.self, forKey: .folate)
+        self.copper = try c.decode(Double.self, forKey: .copper)
+        self.calcium = try c.decode(Double.self, forKey: .calcium)
+        self.consumptionUnit = try c.decode(Unit.self, forKey: .consumptionUnit)
+        self.consumptionGrams = try c.decode(Double.self, forKey: .consumptionGrams)
+        self.meat = try c.decode(Bool.self, forKey: .meat)
+        self.meatAmount = try c.decode(Double.self, forKey: .meatAmount)
+        self.mealAdjustments = try c.decode([MealAdjustment].self, forKey: .mealAdjustments)
+        self.microNutrients = try c.decode(Bool.self, forKey: .microNutrients)
+        self.available = try c.decode(Bool.self, forKey: .available)
+        self.verified = try c.decode(String.self, forKey: .verified)
+        self.stepAmount = try c.decodeIfPresent(Double.self, forKey: .stepAmount) ?? 0
     }
 
     var calories100: Double {
@@ -1312,7 +1381,8 @@ struct Ingredient: Codable, Identifiable {
                           mealAdjustments: mealAdjustments,
                           microNutrients: microNutrients,
                           available: !available,
-                          verified: verified)
+                          verified: verified,
+                          stepAmount: stepAmount)
     }
 
 
@@ -1373,6 +1443,7 @@ struct Ingredient: Codable, Identifiable {
                           mealAdjustments: ingredient.mealAdjustments,
                           microNutrients: ingredient.microNutrients,
                           available: ingredient.available,
-                          verified: verified)
+                          verified: verified,
+                          stepAmount: ingredient.stepAmount)
     }
 }

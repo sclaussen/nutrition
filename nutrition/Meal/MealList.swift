@@ -16,6 +16,8 @@ struct MealList: View {
     @State var resetMealIngredientsAlert = false
     @AppStorage("showMacros") private var showMacros: Bool = false
     @State private var showSummary = false
+    @State private var detailFor: MealIngredient? = nil
+    @State private var entrySheetFor: MealIngredient? = nil
 
     // Use cases:
     // - Deactivate a meal ingredient because it's out that will be auto-adjusted
@@ -51,18 +53,28 @@ struct MealList: View {
               .border(Color.theme.green, width: 0)
 
             ForEach(mealIngredientMgr.getActive(includeInactive: showInactive)) { mealIngredient in
-                NavigationLink(destination: MealEdit(mealIngredient: mealIngredient),
-                               label: {
-                                   IngredientRow(showMacros: showMacros,
-                                                 name: mealIngredient.name,
-                                                 calories: mealIngredient.calories,
-                                                 fat: mealIngredient.fat,
-                                                 fiber: mealIngredient.fiber,
-                                                 netcarbs: mealIngredient.netcarbs,
-                                                 protein: mealIngredient.protein,
-                                                 amount: mealIngredient.amount,
-                                                 consumptionUnit: getConsumptionUnit(mealIngredient.name))
-                               })
+                HStack(spacing: 5) {
+                    IngredientRow(showMacros: showMacros,
+                                  showAmount: false,
+                                  name: mealIngredient.name,
+                                  calories: mealIngredient.calories,
+                                  fat: mealIngredient.fat,
+                                  fiber: mealIngredient.fiber,
+                                  netcarbs: mealIngredient.netcarbs,
+                                  protein: mealIngredient.protein,
+                                  amount: mealIngredient.amount,
+                                  consumptionUnit: getConsumptionUnit(mealIngredient.name))
+                      .frame(maxWidth: .infinity, alignment: .leading)
+                    AmountStepper(
+                        amount: mealIngredient.amount,
+                        unit: getConsumptionUnit(mealIngredient.name),
+                        onDecrement: { stepAmount(mealIngredient, direction: -1) },
+                        onIncrement: { stepAmount(mealIngredient, direction: +1) },
+                        onPillTap:   { entrySheetFor = mealIngredient },
+                        onDetailTap: { detailFor = mealIngredient }
+                    )
+                      .fixedSize()
+                }
                   .foregroundColor(!mealIngredient.active ? Color.theme.red :
                                     (mealIngredient.adjustment == Constants.Automatic ? Color.theme.manual :
                                        (mealIngredient.adjustment == Constants.Manual ? Color.theme.automatic :
@@ -205,6 +217,54 @@ struct MealList: View {
           .sheet(isPresented: $showSummary) {
               DailySummary()
           }
+          .sheet(item: $entrySheetFor) { mi in
+              let unit = getConsumptionUnit(mi.name)
+              NumberEntrySheet(
+                  title: "\(mi.name) (\(unit.pluralForm))",
+                  initialValue: mi.amount
+              ) { newAmount in
+                  applyAmount(mi, newAmount: newAmount)
+              }
+          }
+          .background(
+              NavigationLink(
+                  destination: Group {
+                      if let mi = detailFor {
+                          MealIngredientDetail(mealIngredient: mi)
+                      }
+                  },
+                  isActive: Binding(
+                      get: { detailFor != nil },
+                      set: { if !$0 { detailFor = nil } }
+                  )
+              ) {
+                  EmptyView()
+              }
+          )
+    }
+
+
+    // Step the meal ingredient's amount by the ingredient's
+    // effective step size.  Floors at 0.
+    func stepAmount(_ mi: MealIngredient, direction: Double) {
+        guard let ingredient = ingredientMgr.getByName(name: mi.name) else { return }
+        let delta = effectiveStep(for: ingredient) * direction
+        let newAmount = max(0, mi.amount + delta)
+        applyAmount(mi, newAmount: newAmount)
+    }
+
+
+    // Apply a new amount to the meal ingredient.  Meat ingredients
+    // route through profileMgr; everything else goes through
+    // mealIngredientMgr.manualAdjustment so the change records as a
+    // manual override and survives the next generateMeal.
+    func applyAmount(_ mi: MealIngredient, newAmount: Double) {
+        if mi.meat {
+            profileMgr.setMeatAndAmount(meat: mi.name, meatAmount: newAmount)
+        } else {
+            mealIngredientMgr.manualAdjustment(name: mi.name, amount: newAmount)
+        }
+        generateMeal()
     }
 
 
