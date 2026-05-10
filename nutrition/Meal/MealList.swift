@@ -161,6 +161,14 @@ struct MealList: View {
                         .foregroundColor(Color.theme.blueYellow)
 
 
+                      // Vitamins & Minerals cumulative view
+                      NavigationLink(destination: VitaminMineralList()) {
+                          Image(systemName: "pills")
+                      }
+                        .frame(width: 40)
+                        .foregroundColor(Color.theme.blueYellow)
+
+
                       // Meal Configure
                       Button {
                           mealConfigureActive.toggle()
