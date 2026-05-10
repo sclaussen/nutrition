@@ -46,9 +46,12 @@
 		34E3237B28F2542900832D9C /* VitaminMineralType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34E3237828F2542900832D9C /* VitaminMineralType.swift */; };
 		34E3237C28F2542900832D9C /* VitaminMineral.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34E3237928F2542900832D9C /* VitaminMineral.swift */; };
 		34F8003B27DBFAD1002F1380 /* Macros.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34F8003A27DBFAD1002F1380 /* Macros.swift */; };
+		9EFED2D8597BBE4683EDBFBE /* VitaminMineralActuals.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07EB3DC95824990DAAB347D4 /* VitaminMineralActuals.swift */; };
+		C575CA58D52D8B6140F52ACE /* VitaminMineralContributors.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7C951C6CE4D00BFD5B8844A /* VitaminMineralContributors.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		07EB3DC95824990DAAB347D4 /* VitaminMineralActuals.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = VitaminMineralActuals.swift; sourceTree = "<group>"; };
 		3402286927D7C7C800741FBB /* nutrition.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = nutrition.entitlements; sourceTree = "<group>"; };
 		3402286B27D7C7C800741FBB /* HealthKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = HealthKit.framework; path = System/Library/Frameworks/HealthKit.framework; sourceTree = SDKROOT; };
 		3402286D27D8298E00741FBB /* Dashboard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Dashboard.swift; sourceTree = "<group>"; };
@@ -90,6 +93,7 @@
 		34E3237828F2542900832D9C /* VitaminMineralType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VitaminMineralType.swift; sourceTree = "<group>"; };
 		34E3237928F2542900832D9C /* VitaminMineral.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VitaminMineral.swift; sourceTree = "<group>"; };
 		34F8003A27DBFAD1002F1380 /* Macros.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Macros.swift; sourceTree = "<group>"; };
+		F7C951C6CE4D00BFD5B8844A /* VitaminMineralContributors.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = VitaminMineralContributors.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -235,6 +239,8 @@
 				34E3237728F2542900832D9C /* VitaminMineralList.swift */,
 				34E3237828F2542900832D9C /* VitaminMineralType.swift */,
 				34E3237928F2542900832D9C /* VitaminMineral.swift */,
+				07EB3DC95824990DAAB347D4 /* VitaminMineralActuals.swift */,
+				F7C951C6CE4D00BFD5B8844A /* VitaminMineralContributors.swift */,
 			);
 			path = VitaminMinerals;
 			sourceTree = "<group>";
@@ -345,6 +351,8 @@
 				349EE57827CC10E60072255A /* Profile.swift in Sources */,
 				344D200627CE299D00343108 /* MealList.swift in Sources */,
 				347A335827DAA1FE005E3F33 /* IngredientAdd.swift in Sources */,
+				9EFED2D8597BBE4683EDBFBE /* VitaminMineralActuals.swift in Sources */,
+				C575CA58D52D8B6140F52ACE /* VitaminMineralContributors.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
