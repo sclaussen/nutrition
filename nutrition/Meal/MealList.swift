@@ -15,6 +15,7 @@ struct MealList: View {
     @State var mealConfigureActive = false
     @State var resetMealIngredientsAlert = false
     @AppStorage("showMacros") private var showMacros: Bool = false
+    @State private var showSummary = false
 
     // Use cases:
     // - Deactivate a meal ingredient because it's out that will be auto-adjusted
@@ -38,7 +39,8 @@ struct MealList: View {
                       fat: macrosMgr.macros.fat,
                       fiber: macrosMgr.macros.fiber,
                       netCarbs: macrosMgr.macros.netCarbs,
-                      protein: macrosMgr.macros.protein)
+                      protein: macrosMgr.macros.protein,
+                      showSummary: $showSummary)
               .listRowSeparator(.hidden)
               .frame(height: 230)
               .listRowInsets(EdgeInsets(top: 0, leading: 10, bottom: 0, trailing: 10))
@@ -199,6 +201,9 @@ struct MealList: View {
               }
           } message: {
               Text("This will replace your current meal ingredient amounts with the defaults. This can't be undone.")
+          }
+          .sheet(isPresented: $showSummary) {
+              DailySummary()
           }
     }
 

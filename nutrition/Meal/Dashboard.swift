@@ -21,6 +21,8 @@ struct Dashboard: View {
     let netCarbs: Double
     let protein: Double
 
+    @Binding var showSummary: Bool
+
     var body: some View {
         GeometryReader { geo in
             VStack(spacing: 0) {
@@ -53,6 +55,10 @@ struct Dashboard: View {
                 Bar(title: "Calories", titleFontColor: Color.theme.blackWhite, calories, caloriesGoal, bottomCenterAnnotation: bottomCenterAnnotation, annotationFontColor: Color.theme.blueYellow, progressLineBackground: Color("ProgressLineBackground"), geo: geo)
                 Spacer()
             }
+              .contentShape(Rectangle())
+              .onLongPressGesture(minimumDuration: 0.6) {
+                  showSummary = true
+              }
         }
     }
 }
