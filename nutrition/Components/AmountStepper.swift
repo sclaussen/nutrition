@@ -59,7 +59,8 @@ struct AmountStepper: View {
             Button(action: onPillTap) {
                 Text(amountLabel)
                   .font(.callout)
-                  .frame(width: 70, alignment: .center)
+                  .lineLimit(1)
+                  .frame(width: 95, alignment: .center)
             }
               .buttonStyle(.borderless)
               .foregroundColor(Color.theme.blackWhite)
