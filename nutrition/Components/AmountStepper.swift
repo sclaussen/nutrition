@@ -47,10 +47,10 @@ struct AmountStepper: View {
 
 
     var body: some View {
-        HStack(spacing: 8) {
+        HStack(spacing: 6) {
             Button(action: onDecrement) {
                 Image(systemName: "minus.circle")
-                  .font(.title3)
+                  .font(.title2)
             }
               .buttonStyle(.borderless)
               .foregroundColor(Color.theme.blueYellow)
@@ -58,19 +58,14 @@ struct AmountStepper: View {
             Button(action: onPillTap) {
                 Text(amountLabel)
                   .font(.callout)
-                  .padding(.horizontal, 12)
-                  .padding(.vertical, 4)
-                  .overlay(
-                    Capsule().stroke(Color.theme.blueYellow, lineWidth: 1)
-                  )
+                  .frame(width: 90, alignment: .trailing)
             }
               .buttonStyle(.borderless)
               .foregroundColor(Color.theme.blackWhite)
-              .frame(minWidth: 90)
 
             Button(action: onIncrement) {
                 Image(systemName: "plus.circle")
-                  .font(.title3)
+                  .font(.title2)
             }
               .buttonStyle(.borderless)
               .foregroundColor(Color.theme.blueYellow)
@@ -81,6 +76,7 @@ struct AmountStepper: View {
             }
               .buttonStyle(.borderless)
               .foregroundColor(Color.theme.blackWhiteSecondary)
+              .padding(.leading, 14)
         }
     }
 

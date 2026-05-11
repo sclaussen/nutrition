@@ -48,7 +48,7 @@ struct MealList: View {
               .listRowInsets(EdgeInsets(top: 0, leading: 10, bottom: 0, trailing: 10))
               .border(Color.theme.green, width: 0)
 
-            IngredientRowHeader(showMacros: showMacros)
+            IngredientRowHeader(showMacros: showMacros, nameWidthPercentage: 0.65)
               .listRowInsets(EdgeInsets(top: 8, leading: 10, bottom: 8, trailing: 10))
               .border(Color.theme.green, width: 0)
 
@@ -56,6 +56,7 @@ struct MealList: View {
                 HStack(spacing: 5) {
                     IngredientRow(showMacros: showMacros,
                                   showAmount: false,
+                                  nameWidthPercentage: 0.65,
                                   name: mealIngredient.name,
                                   calories: mealIngredient.calories,
                                   fat: mealIngredient.fat,
