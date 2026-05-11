@@ -45,8 +45,8 @@ struct AmountStepper: View {
     var body: some View {
         HStack(spacing: 4) {
             Button(action: onDecrement) {
-                Image(systemName: "chevron.left")
-                  .font(.body)
+                Image(systemName: "arrowtriangle.backward.fill")
+                  .font(.footnote)
             }
               .buttonStyle(.borderless)
               .foregroundColor(Color.theme.blueYellow)
@@ -62,8 +62,8 @@ struct AmountStepper: View {
               .foregroundColor(Color.theme.blackWhite)
 
             Button(action: onIncrement) {
-                Image(systemName: "chevron.right")
-                  .font(.body)
+                Image(systemName: "arrowtriangle.forward.fill")
+                  .font(.footnote)
             }
               .buttonStyle(.borderless)
               .foregroundColor(Color.theme.blueYellow)
