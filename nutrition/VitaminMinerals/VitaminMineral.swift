@@ -11,9 +11,15 @@ class VitaminMineralMgr: ObservableObject {
     // age/gender.  Pure function — no @Published mutation, so it's
     // safe to call from a view body without triggering the
     // "Publishing changes from within view updates" SwiftUI loop.
+    //
+    // Each entry's `id` is derived from the nutrient type so that
+    // re-renders return objects with stable identity — this is what
+    // keeps NavigationLink in the list from auto-popping when its
+    // destination view (e.g., the Contributors drill-down) mutates
+    // any shared @Published state.
     func getAll(age: Double, gender: Gender) -> [VitaminMineral] {
         return vitaminMineralOrder.map { type in
-            VitaminMineral(name: type, age: age, gender: gender)
+            VitaminMineral(id: String(describing: type), name: type, age: age, gender: gender)
         }
     }
 }
