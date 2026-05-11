@@ -87,7 +87,7 @@ class MealIngredientMgr: ObservableObject {
         mealIngredients.append(MealIngredient(name: "Broccoli", amount: 150))
         mealIngredients.append(MealIngredient(name: "Cauliflower", amount: 100))
         mealIngredients.append(MealIngredient(name: "String Cheese", amount: 0))
-        mealIngredients.append(MealIngredient(name: "String Cheese W", amount: 5))
+        mealIngredients.append(MealIngredient(name: "String Cheese W", amount: 0, active: false))
         mealIngredients.append(MealIngredient(name: "Romaine", amount: 150))
         mealIngredients.append(MealIngredient(name: "Spinach", amount: 50))
         mealIngredients.append(MealIngredient(name: "Arugula", amount: 50))
