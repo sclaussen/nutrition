@@ -27,22 +27,18 @@ func effectiveStep(for ingredient: Ingredient) -> Double {
 
 
 // Inline stepper for a meal-ingredient row.  Layout:
-//     <    amount     >    🔒    ›
-//   step  manual  step  lock  detail
+//     <    amount     >    ›
+//   step  manual  step  detail
 //
-// All buttons use compact chevron / lock icons sized to keep the
-// row height close to the original ~25pt; the detail chevron at the
-// far right is rendered smaller in secondary color to differentiate
-// it from the increment chevron.
+// The lock/unlock action lives on the row itself via long-press,
+// not on this widget.
 struct AmountStepper: View {
 
     let amount: Double
     let unit: Unit
-    let isLocked: Bool
     let onDecrement: () -> Void
     let onIncrement: () -> Void
     let onPillTap: () -> Void
-    let onLockToggle: () -> Void
     let onDetailTap: () -> Void
 
 
@@ -71,14 +67,6 @@ struct AmountStepper: View {
             }
               .buttonStyle(.borderless)
               .foregroundColor(Color.theme.blueYellow)
-              .frame(width: 24)
-
-            Button(action: onLockToggle) {
-                Image(systemName: isLocked ? "lock.fill" : "lock.open")
-                  .font(.body)
-            }
-              .buttonStyle(.borderless)
-              .foregroundColor(isLocked ? Color.theme.red : Color.theme.blackWhiteSecondary)
               .frame(width: 24)
 
             Button(action: onDetailTap) {

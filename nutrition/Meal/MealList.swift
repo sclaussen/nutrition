@@ -71,15 +71,17 @@ struct MealList: View {
                     AmountStepper(
                         amount: mealIngredient.amount,
                         unit: getConsumptionUnit(mealIngredient.name),
-                        isLocked: mealIngredient.active && mealIngredient.adjustment == Constants.Manual,
-                        onDecrement:  { stepAmount(mealIngredient, direction: -1) },
-                        onIncrement:  { stepAmount(mealIngredient, direction: +1) },
-                        onPillTap:    { entrySheetFor = mealIngredient },
-                        onLockToggle: { toggleLock(mealIngredient) },
-                        onDetailTap:  { detailFor = mealIngredient }
+                        onDecrement: { stepAmount(mealIngredient, direction: -1) },
+                        onIncrement: { stepAmount(mealIngredient, direction: +1) },
+                        onPillTap:   { entrySheetFor = mealIngredient },
+                        onDetailTap: { detailFor = mealIngredient }
                     )
                       .fixedSize()
                 }
+                  .contentShape(Rectangle())
+                  .onLongPressGesture(minimumDuration: 0.6) {
+                      toggleLock(mealIngredient)
+                  }
                   .foregroundColor(!mealIngredient.active ? Color.theme.red :
                                     (mealIngredient.adjustment == Constants.Automatic ? Color.theme.manual :
                                        (mealIngredient.adjustment == Constants.Manual ? Color.theme.automatic :
@@ -284,6 +286,7 @@ struct MealList: View {
     // locked (Manual adjustment + active), generateMeal won't apply
     // auto adjustments that would change the amount.  Unlocking
     // restores the original amount and Default adjustment state.
+    // Triggered by long-press on the row.
     func toggleLock(_ mi: MealIngredient) {
         if mi.active && mi.adjustment == Constants.Manual {
             mealIngredientMgr.undoManualAdjustment(name: mi.name)
