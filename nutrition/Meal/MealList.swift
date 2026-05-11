@@ -19,6 +19,7 @@ struct MealList: View {
     @State private var showSummary = false
     @State private var detailFor: MealIngredient? = nil
     @State private var entrySheetFor: MealIngredient? = nil
+    @State private var vmListActive = false
 
     // Use cases:
     // - Deactivate a meal ingredient because it's out that will be auto-adjusted
@@ -190,8 +191,12 @@ struct MealList: View {
                         .foregroundColor(Color.theme.blueYellow)
 
 
-                      // Vitamins & Minerals cumulative view
-                      NavigationLink(destination: VitaminMineralList()) {
+                      // Vitamins & Minerals cumulative view (programmatic
+                      // NavigationLink in .background — toolbar HStacks
+                      // can swallow direct NavigationLink taps on iOS 15.3).
+                      Button {
+                          vmListActive = true
+                      } label: {
                           Image(systemName: "pills")
                       }
                         .frame(width: 40)
@@ -253,6 +258,12 @@ struct MealList: View {
                       set: { if !$0 { detailFor = nil } }
                   )
               ) {
+                  EmptyView()
+              }
+          )
+          .background(
+              NavigationLink(destination: VitaminMineralList(),
+                             isActive: $vmListActive) {
                   EmptyView()
               }
           )
