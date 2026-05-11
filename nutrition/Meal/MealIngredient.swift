@@ -253,6 +253,19 @@ class MealIngredientMgr: ObservableObject {
     }
 
 
+    // Flip the supplement flag on a meal ingredient.  When the flag
+    // is on, the row is hidden from the Meal list unless the user
+    // enables 'Show supplements' in the view-options menu.  V&M and
+    // macros aggregations still include it.
+    func toggleSupplement(_ mealIngredient: MealIngredient) -> MealIngredient? {
+        if let index = mealIngredients.firstIndex(where: { $0.id == mealIngredient.id }) {
+            mealIngredients[index] = mealIngredient.toggleSupplement()
+            return mealIngredients[index]
+        }
+        return nil
+    }
+
+
     // Explicity activate the meal ingredient
     // Invoked from IngredientList.swift when the ingredient is toggled to Available
     func activate(_ name: String) {
@@ -353,6 +366,11 @@ struct MealIngredient: Codable, Identifiable {
 
     var active: Bool
 
+    // Supplements are meal ingredients that count toward daily macro
+    // and V&M totals but are hidden from the Meal list by default
+    // (toggle in the view-options menu to show them).
+    var isSupplement: Bool
+
 
     init(id: String = UUID().uuidString,
          name: String,
@@ -366,7 +384,8 @@ struct MealIngredient: Codable, Identifiable {
          protein: Double = 0,
          adjustment: Int = Constants.Default,
          priorState: Int = Constants.Active,
-         active: Bool = true) {
+         active: Bool = true,
+         isSupplement: Bool = false) {
 
         self.id = id
 
@@ -391,21 +410,48 @@ struct MealIngredient: Codable, Identifiable {
         self.priorState = priorState
 
         self.active = active
+        self.isSupplement = isSupplement
+    }
+
+
+    // Custom Codable decoder for back-compat: old saved data won't
+    // have `isSupplement` so default to false.
+    init(from decoder: Decoder) throws {
+        let c = try decoder.container(keyedBy: CodingKeys.self)
+        self.id = try c.decode(String.self, forKey: .id)
+        self.name = try c.decode(String.self, forKey: .name)
+        self.originalAmount = try c.decode(Double.self, forKey: .originalAmount)
+        self.amount = try c.decode(Double.self, forKey: .amount)
+        self.meat = try c.decode(Bool.self, forKey: .meat)
+        self.calories = try c.decode(Double.self, forKey: .calories)
+        self.fat = try c.decode(Double.self, forKey: .fat)
+        self.fiber = try c.decode(Double.self, forKey: .fiber)
+        self.netcarbs = try c.decode(Double.self, forKey: .netcarbs)
+        self.protein = try c.decode(Double.self, forKey: .protein)
+        self.adjustment = try c.decode(Int.self, forKey: .adjustment)
+        self.priorState = try c.decode(Int.self, forKey: .priorState)
+        self.active = try c.decode(Bool.self, forKey: .active)
+        self.isSupplement = try c.decodeIfPresent(Bool.self, forKey: .isSupplement) ?? false
     }
 
 
     func toggleActive() -> MealIngredient {
-        return MealIngredient(id: id, name: name, originalAmount: originalAmount, amount: amount, meat: meat, calories: calories, fat: fat, fiber: fiber, netcarbs: netcarbs, protein: protein, adjustment: adjustment, priorState: priorState, active: !active);
+        return MealIngredient(id: id, name: name, originalAmount: originalAmount, amount: amount, meat: meat, calories: calories, fat: fat, fiber: fiber, netcarbs: netcarbs, protein: protein, adjustment: adjustment, priorState: priorState, active: !active, isSupplement: isSupplement);
+    }
+
+
+    func toggleSupplement() -> MealIngredient {
+        return MealIngredient(id: id, name: name, originalAmount: originalAmount, amount: amount, meat: meat, calories: calories, fat: fat, fiber: fiber, netcarbs: netcarbs, protein: protein, adjustment: adjustment, priorState: priorState, active: active, isSupplement: !isSupplement);
     }
 
 
     func setMacroActualsToZero() -> MealIngredient {
-        return MealIngredient(id: id, name: name, originalAmount: originalAmount, amount: amount, meat: meat, calories: 0, fat: 0, fiber: 0, netcarbs: 0, protein: 0, adjustment: adjustment, priorState: priorState, active: active);
+        return MealIngredient(id: id, name: name, originalAmount: originalAmount, amount: amount, meat: meat, calories: 0, fat: 0, fiber: 0, netcarbs: 0, protein: 0, adjustment: adjustment, priorState: priorState, active: active, isSupplement: isSupplement);
     }
 
 
     func setMacroActuals(calories: Double, fat: Double, fiber: Double, netcarbs: Double, protein: Double) -> MealIngredient {
-        return MealIngredient(id: id, name: name, originalAmount: originalAmount, amount: amount, meat: meat, calories: self.calories + calories, fat: self.fat + fat, fiber: self.fiber + fiber, netcarbs: self.netcarbs + netcarbs, protein: self.protein + protein, adjustment: adjustment, priorState: priorState, active: active);
+        return MealIngredient(id: id, name: name, originalAmount: originalAmount, amount: amount, meat: meat, calories: self.calories + calories, fat: self.fat + fat, fiber: self.fiber + fiber, netcarbs: self.netcarbs + netcarbs, protein: self.protein + protein, adjustment: adjustment, priorState: priorState, active: active, isSupplement: isSupplement);
     }
 
 
@@ -418,7 +464,7 @@ struct MealIngredient: Codable, Identifiable {
         // amount: amount
         // priorState: self.active
         // active: true
-        return MealIngredient(id: self.id, name: self.name, originalAmount: self.originalAmount, amount: amount, meat: self.meat, calories: self.calories, fat: self.fat, fiber: self.fiber, netcarbs: self.netcarbs, protein: self.protein, adjustment: Constants.Manual, priorState: self.active ? Constants.Active : Constants.Inactive, active: true);
+        return MealIngredient(id: self.id, name: self.name, originalAmount: self.originalAmount, amount: amount, meat: self.meat, calories: self.calories, fat: self.fat, fiber: self.fiber, netcarbs: self.netcarbs, protein: self.protein, adjustment: Constants.Manual, priorState: self.active ? Constants.Active : Constants.Inactive, active: true, isSupplement: self.isSupplement);
     }
 
 
@@ -438,7 +484,7 @@ struct MealIngredient: Codable, Identifiable {
             // priorState: self.active
             // active: true
             print("  Automatic adjustment of \(self.name) to \(amount) (and activating ingredient) (original amount \(originalAmount))")
-            return MealIngredient(id: self.id, name: self.name, originalAmount: self.originalAmount, amount: amount, meat: self.meat, calories: self.calories, fat: self.fat, fiber: self.fiber, netcarbs: self.netcarbs, protein: self.protein, adjustment: Constants.Automatic, priorState: self.active ? Constants.Active : Constants.Inactive, active: true)
+            return MealIngredient(id: self.id, name: self.name, originalAmount: self.originalAmount, amount: amount, meat: self.meat, calories: self.calories, fat: self.fat, fiber: self.fiber, netcarbs: self.netcarbs, protein: self.protein, adjustment: Constants.Automatic, priorState: self.active ? Constants.Active : Constants.Inactive, active: true, isSupplement: self.isSupplement)
         }
 
         if adjustment == Constants.Default && active {
@@ -447,12 +493,12 @@ struct MealIngredient: Codable, Identifiable {
             // priorState: self.active
             // active: true
             print("  Automatic adjustment of \(self.name) by \(amount) to \(self.amount + amount) (initial adjustment) (original amount \(originalAmount))")
-            return MealIngredient(id: self.id, name: self.name, originalAmount: self.originalAmount, amount: self.amount + amount, meat: self.meat, calories: self.calories, fat: self.fat, fiber: self.fiber, netcarbs: self.netcarbs, protein: self.protein, adjustment: Constants.Automatic, priorState: self.active ? Constants.Active : Constants.Inactive, active: true)
+            return MealIngredient(id: self.id, name: self.name, originalAmount: self.originalAmount, amount: self.amount + amount, meat: self.meat, calories: self.calories, fat: self.fat, fiber: self.fiber, netcarbs: self.netcarbs, protein: self.protein, adjustment: Constants.Automatic, priorState: self.active ? Constants.Active : Constants.Inactive, active: true, isSupplement: self.isSupplement)
         }
 
         print("  Automatic adjustment of \(self.name) by \(amount) to \(self.amount + amount) (delta adjustment) (original amount \(originalAmount))")
         // amount: += amount
-        return MealIngredient(id: self.id, name: self.name, originalAmount: self.originalAmount, amount: self.amount + amount, meat: self.meat, calories: self.calories, fat: self.fat, fiber: self.fiber, netcarbs: self.netcarbs, protein: self.protein, adjustment: self.adjustment, priorState: self.priorState, active: self.active)
+        return MealIngredient(id: self.id, name: self.name, originalAmount: self.originalAmount, amount: self.amount + amount, meat: self.meat, calories: self.calories, fat: self.fat, fiber: self.fiber, netcarbs: self.netcarbs, protein: self.protein, adjustment: self.adjustment, priorState: self.priorState, active: self.active, isSupplement: self.isSupplement)
     }
 
 
@@ -463,12 +509,12 @@ struct MealIngredient: Codable, Identifiable {
         // adjustment: Default
         // priorState: Default
         // active: self.priorState
-        return MealIngredient(id: self.id, name: self.name, originalAmount: self.originalAmount, amount: self.originalAmount, meat: self.meat, calories: calories, fat: fat, fiber: fiber, netcarbs: netcarbs, protein: protein, adjustment: Constants.Default, priorState: Constants.Default, active: self.priorState == Constants.Active)
+        return MealIngredient(id: self.id, name: self.name, originalAmount: self.originalAmount, amount: self.originalAmount, meat: self.meat, calories: calories, fat: fat, fiber: fiber, netcarbs: netcarbs, protein: protein, adjustment: Constants.Default, priorState: Constants.Default, active: self.priorState == Constants.Active, isSupplement: self.isSupplement)
     }
 
 
     func update(mealIngredient: MealIngredient) -> MealIngredient {
         print("  Update \(mealIngredient.name)")
-        return MealIngredient(id: mealIngredient.id, name: mealIngredient.name, originalAmount: mealIngredient.originalAmount, amount: mealIngredient.amount, meat: mealIngredient.meat, calories: mealIngredient.calories, fat: mealIngredient.fat, fiber: mealIngredient.fiber, netcarbs: mealIngredient.netcarbs, protein: mealIngredient.protein, adjustment: mealIngredient.adjustment, priorState: mealIngredient.priorState, active: mealIngredient.active);
+        return MealIngredient(id: mealIngredient.id, name: mealIngredient.name, originalAmount: mealIngredient.originalAmount, amount: mealIngredient.amount, meat: mealIngredient.meat, calories: mealIngredient.calories, fat: mealIngredient.fat, fiber: mealIngredient.fiber, netcarbs: mealIngredient.netcarbs, protein: mealIngredient.protein, adjustment: mealIngredient.adjustment, priorState: mealIngredient.priorState, active: mealIngredient.active, isSupplement: mealIngredient.isSupplement);
     }
 }

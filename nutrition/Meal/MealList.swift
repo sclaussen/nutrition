@@ -15,6 +15,7 @@ struct MealList: View {
     @State var mealConfigureActive = false
     @State var resetMealIngredientsAlert = false
     @AppStorage("showMacros") private var showMacros: Bool = false
+    @AppStorage("showSupplements") private var showSupplements: Bool = false
     @State private var showSummary = false
     @State private var detailFor: MealIngredient? = nil
     @State private var entrySheetFor: MealIngredient? = nil
@@ -52,7 +53,7 @@ struct MealList: View {
               .listRowInsets(EdgeInsets(top: 8, leading: 10, bottom: 8, trailing: 10))
               .border(Color.theme.green, width: 0)
 
-            ForEach(mealIngredientMgr.getActive(includeInactive: showInactive)) { mealIngredient in
+            ForEach(mealIngredientMgr.getActive(includeInactive: showInactive).filter { showSupplements || !$0.isSupplement }) { mealIngredient in
                 HStack(spacing: 5) {
                     IngredientRow(showMacros: showMacros,
                                   showAmount: false,
@@ -113,6 +114,16 @@ struct MealList: View {
                         .tint(!ingredientMgr.getByName(name: mealIngredient.name)!.available ? Color.theme.blackWhiteSecondary : mealIngredient.active ? Color.theme.red : Color.theme.green)
 
 
+                      // Toggle supplement flag
+                      Button {
+                          _ = mealIngredientMgr.toggleSupplement(mealIngredient)
+                          generateMeal()
+                      } label: {
+                          Label("", systemImage: mealIngredient.isSupplement ? "pills.fill" : "pills")
+                      }
+                        .tint(Color.theme.blueYellow)
+
+
                       // TODO: Do not allow a meal ingredient that is
                       // one of the ingredients in the adjustment list
                       // to be deleted because it'll just get re-added
@@ -149,13 +160,16 @@ struct MealList: View {
                   HStack {
 
 
-                      // View options menu (show inactive / show macros)
+                      // View options menu (show inactive / macros / supplements)
                       Menu {
                           Toggle(isOn: $showInactive) {
                               Label("Show inactive", systemImage: "eye")
                           }
                           Toggle(isOn: $showMacros) {
                               Label("Show macros", systemImage: "chart.bar.xaxis")
+                          }
+                          Toggle(isOn: $showSupplements) {
+                              Label("Show supplements", systemImage: "pills")
                           }
                       } label: {
                           Image(systemName: "slider.horizontal.3")
