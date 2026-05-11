@@ -3,49 +3,18 @@ import Foundation
 class VitaminMineralMgr: ObservableObject {
 
 
-    @Published var vitaminMinerals: [VitaminMineral] = []
-    var vitaminMineralsTmp: [VitaminMineral] = []
-
-
     init() {
     }
 
 
-    func create(name: VitaminMineralType,
-                age: Double,
-                gender: Gender)
-    {
-        let vitaminMineral = VitaminMineral(name: name, age: age, gender: gender)
-        vitaminMineralsTmp.append(vitaminMineral)
-    }
-
-
+    // Returns the list of vitamin/mineral entries for the given
+    // age/gender.  Pure function — no @Published mutation, so it's
+    // safe to call from a view body without triggering the
+    // "Publishing changes from within view updates" SwiftUI loop.
     func getAll(age: Double, gender: Gender) -> [VitaminMineral] {
-        vitaminMinerals = []
-        create(name: VitaminMineralType.calcium, age: age, gender: gender)
-        create(name: VitaminMineralType.copper, age: age, gender: gender)
-        create(name: VitaminMineralType.folate, age: age, gender: gender)
-        create(name: VitaminMineralType.folicAcid, age: age, gender: gender)
-        create(name: VitaminMineralType.iron, age: age, gender: gender)
-        create(name: VitaminMineralType.magnesium, age: age, gender: gender)
-        create(name: VitaminMineralType.manganese, age: age, gender: gender)
-        create(name: VitaminMineralType.niacin, age: age, gender: gender)
-        create(name: VitaminMineralType.pantothenicAcid, age: age, gender: gender)
-        create(name: VitaminMineralType.phosphorus, age: age, gender: gender)
-        create(name: VitaminMineralType.potassium, age: age, gender: gender)
-        create(name: VitaminMineralType.riboflavin, age: age, gender: gender)
-        create(name: VitaminMineralType.selenium, age: age, gender: gender)
-        create(name: VitaminMineralType.thiamin, age: age, gender: gender)
-        create(name: VitaminMineralType.vitaminA, age: age, gender: gender)
-        create(name: VitaminMineralType.vitaminB12, age: age, gender: gender)
-        create(name: VitaminMineralType.vitaminB6, age: age, gender: gender)
-        create(name: VitaminMineralType.vitaminC, age: age, gender: gender)
-        create(name: VitaminMineralType.vitaminD, age: age, gender: gender)
-        create(name: VitaminMineralType.vitaminE, age: age, gender: gender)
-        create(name: VitaminMineralType.vitaminK, age: age, gender: gender)
-        create(name: VitaminMineralType.zinc, age: age, gender: gender)
-//        vitaminMinerals = vitaminMineralsTmp
-        return vitaminMineralsTmp
+        return vitaminMineralOrder.map { type in
+            VitaminMineral(name: type, age: age, gender: gender)
+        }
     }
 }
 
