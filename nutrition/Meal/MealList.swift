@@ -71,10 +71,12 @@ struct MealList: View {
                     AmountStepper(
                         amount: mealIngredient.amount,
                         unit: getConsumptionUnit(mealIngredient.name),
-                        onDecrement: { stepAmount(mealIngredient, direction: -1) },
-                        onIncrement: { stepAmount(mealIngredient, direction: +1) },
-                        onPillTap:   { entrySheetFor = mealIngredient },
-                        onDetailTap: { detailFor = mealIngredient }
+                        isLocked: mealIngredient.active && mealIngredient.adjustment == Constants.Manual,
+                        onDecrement:  { stepAmount(mealIngredient, direction: -1) },
+                        onIncrement:  { stepAmount(mealIngredient, direction: +1) },
+                        onPillTap:    { entrySheetFor = mealIngredient },
+                        onLockToggle: { toggleLock(mealIngredient) },
+                        onDetailTap:  { detailFor = mealIngredient }
                     )
                       .fixedSize()
                 }
@@ -82,22 +84,6 @@ struct MealList: View {
                                     (mealIngredient.adjustment == Constants.Automatic ? Color.theme.manual :
                                        (mealIngredient.adjustment == Constants.Manual ? Color.theme.automatic :
                                           Color.theme.blackWhite)))
-
-                  .swipeActions(edge: .leading) {
-                      Button {
-                          if mealIngredient.active && mealIngredient.adjustment == Constants.Manual {
-                              mealIngredientMgr.undoManualAdjustment(name: mealIngredient.name)
-                              print("  Undoing manual adjustment for: \(mealIngredient.name)")
-                          } else {
-                              mealIngredientMgr.manualAdjustment(name: mealIngredient.name, amount: mealIngredient.amount)
-                          }
-                          generateMeal()
-                      } label: {
-                          Label("", systemImage: (mealIngredient.active && mealIngredient.adjustment == Constants.Manual) ? "lock.open" : "lock")
-                      }
-//                      .tint((!mealIngredientMgr.getByName(name: mealIngredient.name)!.adjustment) == Constants.Manual ? Color.theme.blackWhiteSecondary : Color.theme.red)
-                  }
-
 
                   .swipeActions(edge: .trailing) {
 
@@ -289,6 +275,20 @@ struct MealList: View {
             profileMgr.setMeatAndAmount(meat: mi.name, meatAmount: newAmount)
         } else {
             mealIngredientMgr.manualAdjustment(name: mi.name, amount: newAmount)
+        }
+        generateMeal()
+    }
+
+
+    // Toggle the manual-adjustment lock on a meal ingredient.  When
+    // locked (Manual adjustment + active), generateMeal won't apply
+    // auto adjustments that would change the amount.  Unlocking
+    // restores the original amount and Default adjustment state.
+    func toggleLock(_ mi: MealIngredient) {
+        if mi.active && mi.adjustment == Constants.Manual {
+            mealIngredientMgr.undoManualAdjustment(name: mi.name)
+        } else {
+            mealIngredientMgr.manualAdjustment(name: mi.name, amount: mi.amount)
         }
         generateMeal()
     }

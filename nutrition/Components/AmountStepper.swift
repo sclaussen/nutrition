@@ -1,7 +1,7 @@
 import SwiftUI
 
 
-// Returns the step size to use when the user taps `(-)` or `(+)` on
+// Returns the step size to use when the user taps `<` or `>` on
 // a meal-ingredient row.  If the ingredient has a user-set
 // `stepAmount > 0`, that wins.  Otherwise, fall back to a heuristic:
 //   - piece/egg/can/whole/slice/cup  -> 1
@@ -26,57 +26,67 @@ func effectiveStep(for ingredient: Ingredient) -> Double {
 }
 
 
-// Inline stepper for a meal-ingredient row:
-//     (-)   <pill: amount unit>   (+)   ›
-// The pill is the manual-entry affordance (caller decides what to
-// do on tap — typically present a NumberEntrySheet).  The chevron
-// is the navigation affordance to MealIngredientDetail.
+// Inline stepper for a meal-ingredient row.  Layout:
+//     <    amount     >    🔒    ›
+//   step  manual  step  lock  detail
 //
-// The stepper is stateless: it just calls back to the caller, who
-// owns the meal-ingredient state and decides how to apply changes
-// (manualAdjustment for regular ingredients, setMeatAndAmount for
-// the meat).
+// All buttons use compact chevron / lock icons sized to keep the
+// row height close to the original ~25pt; the detail chevron at the
+// far right is rendered smaller in secondary color to differentiate
+// it from the increment chevron.
 struct AmountStepper: View {
 
     let amount: Double
     let unit: Unit
+    let isLocked: Bool
     let onDecrement: () -> Void
     let onIncrement: () -> Void
     let onPillTap: () -> Void
+    let onLockToggle: () -> Void
     let onDetailTap: () -> Void
 
 
     var body: some View {
-        HStack(spacing: 6) {
+        HStack(spacing: 4) {
             Button(action: onDecrement) {
-                Image(systemName: "minus.circle")
-                  .font(.title2)
+                Image(systemName: "chevron.left")
+                  .font(.body)
             }
               .buttonStyle(.borderless)
               .foregroundColor(Color.theme.blueYellow)
+              .frame(width: 24)
 
             Button(action: onPillTap) {
                 Text(amountLabel)
                   .font(.callout)
-                  .frame(width: 90, alignment: .trailing)
+                  .frame(width: 70, alignment: .center)
             }
               .buttonStyle(.borderless)
               .foregroundColor(Color.theme.blackWhite)
 
             Button(action: onIncrement) {
-                Image(systemName: "plus.circle")
-                  .font(.title2)
+                Image(systemName: "chevron.right")
+                  .font(.body)
             }
               .buttonStyle(.borderless)
               .foregroundColor(Color.theme.blueYellow)
+              .frame(width: 24)
+
+            Button(action: onLockToggle) {
+                Image(systemName: isLocked ? "lock.fill" : "lock.open")
+                  .font(.body)
+            }
+              .buttonStyle(.borderless)
+              .foregroundColor(isLocked ? Color.theme.red : Color.theme.blackWhiteSecondary)
+              .frame(width: 24)
 
             Button(action: onDetailTap) {
                 Image(systemName: "chevron.right")
-                  .font(.caption)
+                  .font(.caption2)
             }
               .buttonStyle(.borderless)
               .foregroundColor(Color.theme.blackWhiteSecondary)
-              .padding(.leading, 14)
+              .frame(width: 18)
         }
     }
 
