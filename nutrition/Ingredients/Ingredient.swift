@@ -1015,6 +1015,89 @@ class IngredientMgr: ObservableObject {
                                       consumptionGrams: 21,
                                       meat: false,
                                       verified: "7/3/2025"))
+
+
+        // ----- Supplements -----
+        // Each is Unit.piece with servingSize 1 so a meal-ingredient
+        // amount of N pieces yields N servings (and N times the V&M
+        // values below).  Macros are 0.
+
+        ingredients.append(Ingredient(name: "Vitamin D3 (1000 IU)",
+                                      servingSize: 1,
+                                      calories: 0,
+                                      fat: 0,
+                                      fiber: 0,
+                                      netCarbs: 0,
+                                      protein: 0,
+                                      vitaminD: 25,
+                                      consumptionUnit: Unit.piece,
+                                      consumptionGrams: 1,
+                                      meat: false,
+                                      verified: "5/10/2026"))
+
+        ingredients.append(Ingredient(name: "Magnesium (200 mg)",
+                                      servingSize: 1,
+                                      calories: 0,
+                                      fat: 0,
+                                      fiber: 0,
+                                      netCarbs: 0,
+                                      protein: 0,
+                                      magnesium: 200,
+                                      consumptionUnit: Unit.piece,
+                                      consumptionGrams: 1,
+                                      meat: false,
+                                      verified: "5/10/2026"))
+
+        ingredients.append(Ingredient(name: "B-Complex",
+                                      servingSize: 1,
+                                      calories: 0,
+                                      fat: 0,
+                                      fiber: 0,
+                                      netCarbs: 0,
+                                      protein: 0,
+                                      vitaminB6: 25,
+                                      vitaminB12: 100,
+                                      thiamin: 25,
+                                      riboflavin: 25,
+                                      pantothenicAcid: 25,
+                                      niacin: 50,
+                                      folate: 400,
+                                      consumptionUnit: Unit.piece,
+                                      consumptionGrams: 1,
+                                      meat: false,
+                                      verified: "5/10/2026"))
+
+        ingredients.append(Ingredient(name: "Multivitamin",
+                                      servingSize: 1,
+                                      calories: 0,
+                                      fat: 0,
+                                      fiber: 0,
+                                      netCarbs: 0,
+                                      protein: 0,
+                                      zinc: 11,
+                                      vitaminK: 30,
+                                      vitaminE: 15,
+                                      vitaminD: 25,
+                                      vitaminC: 60,
+                                      vitaminB6: 1.7,
+                                      vitaminB12: 6,
+                                      vitaminA: 600,
+                                      thiamin: 1.2,
+                                      selenium: 55,
+                                      riboflavin: 1.3,
+                                      phosphorus: 100,
+                                      pantothenicAcid: 5,
+                                      niacin: 16,
+                                      manganese: 2.3,
+                                      magnesium: 50,
+                                      iron: 18,
+                                      folate: 400,
+                                      copper: 0.9,
+                                      calcium: 200,
+                                      consumptionUnit: Unit.piece,
+                                      consumptionGrams: 1,
+                                      meat: false,
+                                      verified: "5/10/2026"))
     }
 
 

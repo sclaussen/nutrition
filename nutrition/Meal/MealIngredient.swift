@@ -98,6 +98,14 @@ class MealIngredientMgr: ObservableObject {
         mealIngredients.append(MealIngredient(name: "Mustard", amount: 3))
         mealIngredients.append(MealIngredient(name: "Fish Oil", amount: 1))
         mealIngredients.append(MealIngredient(name: "Extra Virgin Olive Oil", amount: 2))
+
+        // Supplements — hidden from the meal list by default, but
+        // active and counted toward daily V&M (and macros).  Toggle
+        // 'Show supplements' in the view-options menu to see them.
+        mealIngredients.append(MealIngredient(name: "Vitamin D3 (1000 IU)", amount: 1, isSupplement: true))
+        mealIngredients.append(MealIngredient(name: "Magnesium (200 mg)",   amount: 1, isSupplement: true))
+        mealIngredients.append(MealIngredient(name: "B-Complex",            amount: 1, isSupplement: true))
+        mealIngredients.append(MealIngredient(name: "Multivitamin",         amount: 1, isSupplement: true))
     }
 
 
