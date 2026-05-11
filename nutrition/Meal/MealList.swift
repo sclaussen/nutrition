@@ -71,6 +71,7 @@ struct MealList: View {
                     AmountStepper(
                         amount: mealIngredient.amount,
                         unit: getConsumptionUnit(mealIngredient.name),
+                        isLocked: mealIngredient.active && mealIngredient.adjustment == Constants.Manual,
                         onDecrement: { stepAmount(mealIngredient, direction: -1) },
                         onIncrement: { stepAmount(mealIngredient, direction: +1) },
                         onPillTap:   { entrySheetFor = mealIngredient },
@@ -84,7 +85,7 @@ struct MealList: View {
                   }
                   .foregroundColor(!mealIngredient.active ? Color.theme.red :
                                     (mealIngredient.adjustment == Constants.Automatic ? Color.theme.manual :
-                                       (mealIngredient.adjustment == Constants.Manual ? Color.theme.automatic :
+                                       (mealIngredient.adjustment == Constants.Manual ? Color.theme.blueYellow :
                                           Color.theme.blackWhite)))
 
                   .swipeActions(edge: .trailing) {

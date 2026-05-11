@@ -36,6 +36,7 @@ struct AmountStepper: View {
 
     let amount: Double
     let unit: Unit
+    let isLocked: Bool
     let onDecrement: () -> Void
     let onIncrement: () -> Void
     let onPillTap: () -> Void
@@ -49,7 +50,7 @@ struct AmountStepper: View {
                   .font(.footnote)
             }
               .buttonStyle(.borderless)
-              .foregroundColor(Color.theme.blueYellow)
+              .foregroundColor(triangleColor)
               .frame(width: 24)
 
             Button(action: onPillTap) {
@@ -59,14 +60,14 @@ struct AmountStepper: View {
                   .frame(width: 95, alignment: .center)
             }
               .buttonStyle(.borderless)
-              .foregroundColor(Color.theme.blackWhite)
+              .foregroundColor(isLocked ? Color.theme.blueYellow : Color.theme.blackWhite)
 
             Button(action: onIncrement) {
                 Image(systemName: "arrowtriangle.forward.fill")
                   .font(.footnote)
             }
               .buttonStyle(.borderless)
-              .foregroundColor(Color.theme.blueYellow)
+              .foregroundColor(triangleColor)
               .frame(width: 24)
 
             Button(action: onDetailTap) {
@@ -88,5 +89,12 @@ struct AmountStepper: View {
             formatted = String(format: "%.1f", amount)
         }
         return "\(formatted) \(unit.pluralForm)"
+    }
+
+
+    // Triangles read as grey/secondary by default; blue when this
+    // row is locked, matching the amount pill color.
+    private var triangleColor: Color {
+        isLocked ? Color.theme.blueYellow : Color.theme.blackWhiteSecondary
     }
 }
