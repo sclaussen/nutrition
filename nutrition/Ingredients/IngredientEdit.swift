@@ -4,16 +4,24 @@ struct IngredientEdit: View {
 
     @Environment(\.presentationMode) var presentationMode
     @EnvironmentObject var ingredientMgr: IngredientMgr
+    @EnvironmentObject var adjustmentMgr: AdjustmentMgr
 
     @State var ingredient: Ingredient
+    @State private var showAutoAdjust: Bool = false
 
     var body: some View {
         Form {
             mainSections
             meatSection
+            supplementSection
+            autoAdjustSection
             vitaminAndMineralsSection
             per100GramsSection
         }
+          .sheet(isPresented: $showAutoAdjust) {
+              AutoAdjustEditor(ingredient: ingredient)
+                .environmentObject(adjustmentMgr)
+          }
           .padding([.leading, .trailing], -20)
           .navigationBarBackButtonHidden(true)
           .toolbar {
@@ -86,6 +94,35 @@ extension IngredientEdit {
         }
     }
 
+    private var supplementSection: some View {
+        Section {
+            NameValue("Supplement", description: "hidden in meal list by default",
+                      $ingredient.supplement, control: .toggle)
+        }
+    }
+
+    // Auto-adjust rule for this ingredient. Tapping opens
+    // AutoAdjustEditor (inlined at the bottom of this file). When a
+    // rule already exists, the label shows the per-cycle amount; when
+    // none exists, the label invites the user to configure one.
+    private var autoAdjustSection: some View {
+        Section {
+            Button {
+                showAutoAdjust = true
+            } label: {
+                if let rule = adjustmentMgr.getByName(name: ingredient.name) {
+                    Label("Auto-adjust: +\(Int(rule.amount)) per cycle",
+                          systemImage: "gearshape.fill")
+                      .foregroundColor(Color.theme.blueYellow)
+                } else {
+                    Label("Configure auto-adjust\u{2026}",
+                          systemImage: "gearshape")
+                      .foregroundColor(Color.theme.blueYellow)
+                }
+            }
+        }
+    }
+
     private var meatSection: some View {
         Group {
             Section {
@@ -131,37 +168,159 @@ extension IngredientEdit {
     }
 
     private var vitaminAndMineralsSection: some View {
+        // V&M fields are always visible — the previous "Add vitamins
+        // and minerals" toggle hid them by default, which made it
+        // hard to discover that V&M data could be entered at all.
+        // Now they show inline; leave a field blank to record nothing.
         Section(header: Text("Vitamins and Minerals")) {
-            NameValue("Add vitamins and minerals", $ingredient.microNutrients, control: .toggle)
-            if ingredient.microNutrients {
-                Group {
-                    NameValue("Omega-3", $ingredient.omega3, edit: true)
-                    NameValue("Vitamin D", $ingredient.vitaminD, edit: true)
-                    NameValue("Calcium", $ingredient.calcium, edit: true)
-                    NameValue("Iron", $ingredient.iron, edit: true)
-                    NameValue("Potassium", $ingredient.potassium, edit: true)
-                    NameValue("Vitamin A", $ingredient.vitaminA, edit: true)
-                    NameValue("Vitamin C", $ingredient.vitaminC, edit: true)
-                    NameValue("Vitamin E", $ingredient.vitaminE, edit: true)
-                    NameValue("Vitamin K", $ingredient.vitaminK, edit: true)
-                    NameValue("Thiamin", $ingredient.thiamin, edit: true)
-                }
-                Group {
-                    NameValue("Vitamin B6", $ingredient.vitaminB6, edit: true)
-                    NameValue("Folate", $ingredient.folate, edit: true)
-                    NameValue("Vitamin B12", $ingredient.vitaminB12, edit: true)
-                    NameValue("Pantothenic Acid", $ingredient.pantothenicAcid, edit: true)
-                    NameValue("Phosphorus", $ingredient.phosphorus, edit: true)
-                    NameValue("Magnesium", $ingredient.magnesium, edit: true)
-                    NameValue("Zinc", $ingredient.zinc, edit: true)
-                    NameValue("Selenium", $ingredient.selenium, edit: true)
-                    NameValue("Copper", $ingredient.copper, edit: true)
-                    NameValue("Manganese", $ingredient.manganese, edit: true)
-                }
-                Group {
-                    NameValue("Niacin", $ingredient.niacin, edit: true)
-                }
+            Group {
+                NameValue("Omega-3", $ingredient.omega3, edit: true)
+                NameValue("Vitamin D", $ingredient.vitaminD, edit: true)
+                NameValue("Calcium", $ingredient.calcium, edit: true)
+                NameValue("Iron", $ingredient.iron, edit: true)
+                NameValue("Potassium", $ingredient.potassium, edit: true)
+                NameValue("Vitamin A", $ingredient.vitaminA, edit: true)
+                NameValue("Vitamin C", $ingredient.vitaminC, edit: true)
+                NameValue("Vitamin E", $ingredient.vitaminE, edit: true)
+                NameValue("Vitamin K", $ingredient.vitaminK, edit: true)
+                NameValue("Thiamin", $ingredient.thiamin, edit: true)
+            }
+            Group {
+                NameValue("Vitamin B6", $ingredient.vitaminB6, edit: true)
+                NameValue("Folate", $ingredient.folate, edit: true)
+                NameValue("Vitamin B12", $ingredient.vitaminB12, edit: true)
+                NameValue("Pantothenic Acid", $ingredient.pantothenicAcid, edit: true)
+                NameValue("Phosphorus", $ingredient.phosphorus, edit: true)
+                NameValue("Magnesium", $ingredient.magnesium, edit: true)
+                NameValue("Zinc", $ingredient.zinc, edit: true)
+                NameValue("Selenium", $ingredient.selenium, edit: true)
+                NameValue("Copper", $ingredient.copper, edit: true)
+                NameValue("Manganese", $ingredient.manganese, edit: true)
+            }
+            Group {
+                NameValue("Niacin", $ingredient.niacin, edit: true)
+                NameValue("Riboflavin", $ingredient.riboflavin, edit: true)
             }
         }
+    }
+}
+
+
+// =============================================================
+// AutoAdjustEditor — moved here from IngredientList.swift so it
+// stays in the same compile unit as the screen that presents it
+// (IngredientEdit now hosts the gear button + sheet).
+// =============================================================
+//
+// Sheet for configuring (or disabling) the auto-adjust rule for one
+// ingredient. Maps directly to AdjustmentMgr's `setAuto` / `clearAuto`.
+struct AutoAdjustEditor: View {
+
+    @Environment(\.presentationMode) var presentationMode
+    @EnvironmentObject var adjustmentMgr: AdjustmentMgr
+
+    let ingredient: Ingredient
+
+    @State private var amountText: String = ""
+    @State private var maxText: String = ""
+    @State private var hasRule: Bool = false
+
+
+    var body: some View {
+        NavigationView {
+            Form {
+                Section {
+                    HStack {
+                        Text("Add per cycle")
+                          .font(.callout)
+                        Spacer()
+                        TextField("amount", text: $amountText)
+                          .keyboardType(.decimalPad)
+                          .multilineTextAlignment(.trailing)
+                          .frame(maxWidth: 100)
+                        Text(unitLabel)
+                          .font(.caption)
+                          .foregroundColor(Color.theme.blackWhiteSecondary)
+                    }
+                    HStack {
+                        Text("Max (optional)")
+                          .font(.callout)
+                        Spacer()
+                        TextField("none", text: $maxText)
+                          .keyboardType(.decimalPad)
+                          .multilineTextAlignment(.trailing)
+                          .frame(maxWidth: 100)
+                        Text(unitLabel)
+                          .font(.caption)
+                          .foregroundColor(Color.theme.blackWhiteSecondary)
+                    }
+                } footer: {
+                    Text("Generate-meal will add this amount per pass to \(ingredient.name) until the max (if set) is hit, macro goals are reached, or the ingredient is locked to Manual/Done.")
+                      .font(.caption2)
+                }
+
+                if hasRule {
+                    Section {
+                        Button(role: .destructive) {
+                            adjustmentMgr.clearAuto(name: ingredient.name)
+                            presentationMode.wrappedValue.dismiss()
+                        } label: {
+                            Label("Disable auto-adjust", systemImage: "trash")
+                        }
+                    }
+                }
+            }
+              .navigationTitle("Auto-adjust: \(ingredient.name)")
+              .navigationBarTitleDisplayMode(.inline)
+              .toolbar {
+                  ToolbarItem(placement: .navigation) {
+                      Button("Cancel") {
+                          presentationMode.wrappedValue.dismiss()
+                      }
+                        .foregroundColor(Color.theme.blueYellow)
+                  }
+                  ToolbarItem(placement: .primaryAction) {
+                      Button("Save") {
+                          save()
+                      }
+                        .foregroundColor(Color.theme.blueYellow)
+                        .disabled(Double(amountText) == nil)
+                  }
+              }
+              .onAppear {
+                  if let rule = adjustmentMgr.getByName(name: ingredient.name) {
+                      hasRule = true
+                      amountText = formatNumber(rule.amount)
+                      maxText = rule.constraints ? formatNumber(rule.maximum) : ""
+                  }
+              }
+        }
+    }
+
+
+    private func save() {
+        guard let amount = Double(amountText) else { return }
+        // Empty maxText = no cap.
+        let maximum: Double? = {
+            let trimmed = maxText.trimmingCharacters(in: .whitespaces)
+            return trimmed.isEmpty ? nil : Double(trimmed)
+        }()
+        adjustmentMgr.setAuto(name: ingredient.name, amount: amount, maximum: maximum)
+        presentationMode.wrappedValue.dismiss()
+    }
+
+
+    // "grams" / "tablespoons" / "pieces" — matches the units the
+    // meal-list stepper shows so the user sees the same vocabulary.
+    private var unitLabel: String {
+        ingredient.consumptionUnit.pluralForm
+    }
+
+
+    private func formatNumber(_ value: Double) -> String {
+        if value == value.rounded() {
+            return String(Int(value))
+        }
+        return String(value)
     }
 }

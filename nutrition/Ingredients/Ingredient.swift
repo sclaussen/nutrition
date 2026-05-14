@@ -194,7 +194,8 @@ class IngredientMgr: ObservableObject {
                                       consumptionUnit: Unit.gram,
                                       consumptionGrams: 1,
                                       meat: false,
-                                      verified: "No nutrition on whole foods site"))
+                                      verified: "No nutrition on whole foods site",
+                                      stepAmount: 5))
         ingredients.append(Ingredient(name: "Spinach",
                                       servingSize: 85,
                                       calories: 25,
@@ -214,7 +215,8 @@ class IngredientMgr: ObservableObject {
                                       calcium: 84,
                                       consumptionUnit: Unit.gram,
                                       consumptionGrams: 1,
-                                      meat: false))
+                                      meat: false,
+                                      stepAmount: 5))
         ingredients.append(Ingredient(name: "Romaine",
                                       servingSize: 47,
                                       calories: 8,
@@ -232,7 +234,8 @@ class IngredientMgr: ObservableObject {
                                       consumptionUnit: Unit.gram,
                                       consumptionGrams: 1,
                                       meat: false,
-                                      verified: "3/16/22"))
+                                      verified: "3/16/22",
+                                      stepAmount: 5))
         ingredients.append(Ingredient(name: "Broccoli",
                                       servingSize: 85,
                                       calories: 20,
@@ -251,7 +254,8 @@ class IngredientMgr: ObservableObject {
                                       consumptionUnit: Unit.gram,
                                       consumptionGrams: 1,
                                       meat: false,
-                                      verified: "9/1/22"))
+                                      verified: "9/1/22",
+                                      stepAmount: 5))
         ingredients.append(Ingredient(name: "Cauliflower",
                                       servingSize: 85,
                                       calories: 20,
@@ -269,7 +273,8 @@ class IngredientMgr: ObservableObject {
                                       consumptionUnit: Unit.gram,
                                       consumptionGrams: 1,
                                       meat: false,
-                                      verified: "9/1/22"))
+                                      verified: "9/1/22",
+                                      stepAmount: 5))
         ingredients.append(Ingredient(name: "Mushrooms",
                                       servingSize: 35,
                                       calories: 8,
@@ -286,7 +291,8 @@ class IngredientMgr: ObservableObject {
                                       consumptionUnit: Unit.gram,
                                       consumptionGrams: 1,
                                       meat: false,
-                                      verified: "9/1/22"))
+                                      verified: "9/1/22",
+                                      stepAmount: 5))
         ingredients.append(Ingredient(name: "Radish",
                                       servingSize: 58,
                                       calories: 9,
@@ -300,7 +306,8 @@ class IngredientMgr: ObservableObject {
                                       consumptionUnit: Unit.gram,
                                       consumptionGrams: 1,
                                       meat: false,
-                                      verified: "9/1/22"))
+                                      verified: "9/1/22",
+                                      stepAmount: 5))
         ingredients.append(Ingredient(name: "Avocado",
                                       servingSize: 50,
                                       calories: 80,
@@ -318,7 +325,60 @@ class IngredientMgr: ObservableObject {
                                       consumptionUnit: Unit.gram,
                                       consumptionGrams: 1,
                                       meat: false,
-                                      verified: "9/1/22"))
+                                      verified: "9/1/22",
+                                      stepAmount: 5))
+
+        // USDA per 100 g.  Step 25 g — a typical handful is ~75–100 g.
+        // Copper stored in mg (matches our convention — see
+        // VitaminMineralActuals.swift, which converts to mcg).
+        ingredients.append(Ingredient(name: "Blueberries",
+                                      servingSize: 100,
+                                      calories: 57,
+                                      fat: 0.33,
+                                      fiber: 2.4,
+                                      netCarbs: 12.1,
+                                      protein: 0.74,
+                                      vitaminK: 19.3,
+                                      vitaminE: 0.57,
+                                      vitaminC: 9.7,
+                                      vitaminB6: 0.05,
+                                      potassium: 77,
+                                      manganese: 0.34,
+                                      magnesium: 6,
+                                      iron: 0.28,
+                                      folate: 6,
+                                      copper: 0.057,
+                                      calcium: 6,
+                                      consumptionUnit: Unit.gram,
+                                      consumptionGrams: 1,
+                                      meat: false,
+                                      verified: "5/11/2026",
+                                      stepAmount: 25))
+
+        ingredients.append(Ingredient(name: "Blackberries",
+                                      servingSize: 100,
+                                      calories: 43,
+                                      fat: 0.49,
+                                      fiber: 5.3,
+                                      netCarbs: 4.3,
+                                      protein: 1.39,
+                                      vitaminK: 19.8,
+                                      vitaminE: 1.17,
+                                      vitaminC: 21,
+                                      vitaminA: 11,
+                                      potassium: 162,
+                                      niacin: 0.65,
+                                      manganese: 0.65,
+                                      magnesium: 20,
+                                      iron: 0.62,
+                                      folate: 25,
+                                      copper: 0.165,
+                                      calcium: 29,
+                                      consumptionUnit: Unit.gram,
+                                      consumptionGrams: 1,
+                                      meat: false,
+                                      verified: "5/11/2026",
+                                      stepAmount: 25))
         ingredients.append(Ingredient(name: "Sard (H2O)",
                                       servingSize: 85,
                                       calories: 140,
@@ -590,6 +650,22 @@ class IngredientMgr: ObservableObject {
                                       consumptionGrams: 1,
                                       meat: false,
                                       verified: "3/16/22"))
+        ingredients.append(Ingredient(name: "Manchego Cheese",
+                                      servingSize: 28,
+                                      calories: 110,
+                                      fat: 9,
+                                      fiber: 0,
+                                      netCarbs: 0,
+                                      protein: 7,
+                                      zinc: 1,
+                                      vitaminB12: 0.4,
+                                      vitaminA: 80,
+                                      phosphorus: 150,
+                                      calcium: 200,
+                                      consumptionUnit: Unit.gram,
+                                      consumptionGrams: 1,
+                                      meat: false,
+                                      verified: "5/12/26"))
         ingredients.append(Ingredient(name: "Babybel Cheese",
                                       servingSize: 21,
                                       calories: 70,
@@ -1030,73 +1106,135 @@ class IngredientMgr: ObservableObject {
                                       netCarbs: 0,
                                       protein: 0,
                                       vitaminD: 25,
-                                      consumptionUnit: Unit.piece,
+                                      consumptionUnit: Unit.pill,
                                       consumptionGrams: 1,
                                       meat: false,
+                                      supplement: true,
                                       verified: "5/10/2026"))
 
-        ingredients.append(Ingredient(name: "Magnesium (200 mg)",
+        // SlowMag — magnesium chloride + calcium, taken with the meal.
+        // Per-tablet values (manufacturer label, 2-tablet serving / 2):
+        //   magnesium 71.5 mg, calcium 119 mg, chloride 208 mg.
+        // Chloride isn't tracked by the V&M page so it's omitted.
+        ingredients.append(Ingredient(name: "SlowMag",
                                       servingSize: 1,
                                       calories: 0,
                                       fat: 0,
                                       fiber: 0,
                                       netCarbs: 0,
                                       protein: 0,
-                                      magnesium: 200,
-                                      consumptionUnit: Unit.piece,
+                                      magnesium: 71.5,
+                                      calcium: 119,
+                                      consumptionUnit: Unit.pill,
                                       consumptionGrams: 1,
                                       meat: false,
+                                      supplement: true,
                                       verified: "5/10/2026"))
 
-        ingredients.append(Ingredient(name: "B-Complex",
+        // Thorne Basic Nutrients 2/Day — comprehensive iron-free
+        // multivitamin. Daily dose is 2 capsules; per-capsule values
+        // below are the manufacturer's 2-capsule label / 2 so seed
+        // amount = 2 reproduces the label total. Fields not tracked
+        // by the V&M page (biotin, iodine, chromium, molybdenum,
+        // boron, choline, inositol) are omitted.
+        ingredients.append(Ingredient(name: "Thorne Basic Nutrients 2/Day",
                                       servingSize: 1,
                                       calories: 0,
                                       fat: 0,
                                       fiber: 0,
                                       netCarbs: 0,
                                       protein: 0,
-                                      vitaminB6: 25,
-                                      vitaminB12: 100,
-                                      thiamin: 25,
-                                      riboflavin: 25,
-                                      pantothenicAcid: 25,
-                                      niacin: 50,
-                                      folate: 400,
-                                      consumptionUnit: Unit.piece,
+                                      zinc: 7.5,
+                                      vitaminK: 500,
+                                      vitaminE: 33.5,
+                                      vitaminD: 12.5,
+                                      vitaminC: 125,
+                                      vitaminB6: 5,
+                                      vitaminB12: 300,
+                                      vitaminA: 750,
+                                      thiamin: 12.5,
+                                      selenium: 50,
+                                      riboflavin: 4.5,
+                                      pantothenicAcid: 22.5,
+                                      niacin: 40,
+                                      manganese: 1.5,
+                                      magnesium: 100,
+                                      folate: 500,
+                                      copper: 0.5,
+                                      calcium: 50,
+                                      consumptionUnit: Unit.pill,
                                       consumptionGrams: 1,
                                       meat: false,
-                                      verified: "5/10/2026"))
+                                      supplement: true,
+                                      verified: "5/13/2026"))
 
-        ingredients.append(Ingredient(name: "Multivitamin",
+        // Non-V&M supplements — tracked for record-keeping only; none
+        // contributes to any vitamin/mineral the V&M page reports.
+        // consumptionGrams reflects the per-capsule/per-dose mass so
+        // total grams in the day can be calculated correctly elsewhere.
+
+        ingredients.append(Ingredient(name: "Creatine HCl",
                                       servingSize: 1,
                                       calories: 0,
                                       fat: 0,
                                       fiber: 0,
                                       netCarbs: 0,
                                       protein: 0,
-                                      zinc: 11,
-                                      vitaminK: 30,
-                                      vitaminE: 15,
-                                      vitaminD: 25,
-                                      vitaminC: 60,
-                                      vitaminB6: 1.7,
-                                      vitaminB12: 6,
-                                      vitaminA: 600,
-                                      thiamin: 1.2,
-                                      selenium: 55,
-                                      riboflavin: 1.3,
-                                      phosphorus: 100,
-                                      pantothenicAcid: 5,
-                                      niacin: 16,
-                                      manganese: 2.3,
-                                      magnesium: 50,
-                                      iron: 18,
-                                      folate: 400,
-                                      copper: 0.9,
-                                      calcium: 200,
-                                      consumptionUnit: Unit.piece,
-                                      consumptionGrams: 1,
+                                      consumptionUnit: Unit.pill,
+                                      consumptionGrams: 0.75,  // ~750 mg per capsule (CON-CRET HCl)
                                       meat: false,
+                                      supplement: true,
+                                      verified: "5/10/2026"))
+
+        ingredients.append(Ingredient(name: "Taurine",
+                                      servingSize: 1,
+                                      calories: 0,
+                                      fat: 0,
+                                      fiber: 0,
+                                      netCarbs: 0,
+                                      protein: 0,
+                                      consumptionUnit: Unit.pill,
+                                      consumptionGrams: 1,     // 1000 mg dose
+                                      meat: false,
+                                      verified: "5/10/2026"))
+
+        ingredients.append(Ingredient(name: "Glycine",
+                                      servingSize: 1,
+                                      calories: 0,
+                                      fat: 0,
+                                      fiber: 0,
+                                      netCarbs: 0,
+                                      protein: 0,
+                                      consumptionUnit: Unit.pill,
+                                      consumptionGrams: 3,     // 3 g dose
+                                      meat: false,
+                                      supplement: true,
+                                      verified: "5/10/2026"))
+
+        ingredients.append(Ingredient(name: "L-Theanine",
+                                      servingSize: 1,
+                                      calories: 0,
+                                      fat: 0,
+                                      fiber: 0,
+                                      netCarbs: 0,
+                                      protein: 0,
+                                      consumptionUnit: Unit.pill,
+                                      consumptionGrams: 0.2,   // 200 mg dose
+                                      meat: false,
+                                      supplement: true,
+                                      verified: "5/10/2026"))
+
+        ingredients.append(Ingredient(name: "Apigenin",
+                                      servingSize: 1,
+                                      calories: 0,
+                                      fat: 0,
+                                      fiber: 0,
+                                      netCarbs: 0,
+                                      protein: 0,
+                                      consumptionUnit: Unit.pill,
+                                      consumptionGrams: 0.05,  // 50 mg dose
+                                      meat: false,
+                                      supplement: true,
                                       verified: "5/10/2026"))
     }
 
@@ -1174,7 +1312,6 @@ class IngredientMgr: ObservableObject {
                 meatAmount: Double = 0,
                 mealAdjustments: [MealAdjustment] = [],
                 microNutrients: Bool = false,
-                available: Bool = true,
                 verified: String = "",
                 stepAmount: Double = 0) {
         let ingredient = Ingredient(name: name,
@@ -1231,18 +1368,14 @@ class IngredientMgr: ObservableObject {
                                     meatAmount: meatAmount,
                                     mealAdjustments: mealAdjustments,
                                     microNutrients: microNutrients,
-                                    available: available,
                                     verified: verified,
                                     stepAmount: stepAmount)
         self.ingredients.append(ingredient)
     }
 
 
-    func getAll(includeUnavailable: Bool = false) -> [Ingredient] {
-        if includeUnavailable {
-            return ingredients.sorted(by: { $0.name < $1.name })
-        }
-        return ingredients.filter({ $0.available == true }).sorted(by: { $0.name < $1.name })
+    func getAll() -> [Ingredient] {
+        return ingredients.sorted(by: { $0.name < $1.name })
     }
 
     // Return an array of sorted ingredients that are not:
@@ -1305,31 +1438,6 @@ class IngredientMgr: ObservableObject {
         if let index = ingredients.firstIndex(where: { $0.id == ingredient.id }) {
             ingredients[index] = ingredient.update(ingredient: ingredient)
         }
-    }
-
-
-    func available(_ name: String) {
-        if let index = ingredients.firstIndex(where: { $0.name == name }) {
-            if !ingredients[index].available {
-                ingredients[index] = ingredients[index].toggleAvailable()
-            }
-        }
-    }
-
-
-    func unavailableIngredientsExist() -> Bool {
-        let unavailableIngredients = ingredients.filter({ $0.available == false })
-        return unavailableIngredients.count > 0
-    }
-
-
-    func toggleAvailable(_ ingredient: Ingredient) -> Ingredient? {
-        if let index = ingredients.firstIndex(where: { $0.id == ingredient.id }) {
-            ingredients[index] = ingredient.toggleAvailable()
-            return ingredients[index]
-        }
-
-        return nil
     }
 
 
@@ -1431,11 +1539,10 @@ struct Ingredient: Codable, Identifiable {
 
     var meat: Bool
     var meatAmount: Double
+    var supplement: Bool
     var mealAdjustments: [MealAdjustment]
 
     var microNutrients: Bool
-
-    var available: Bool
 
     var verified: String
 
@@ -1494,9 +1601,9 @@ struct Ingredient: Codable, Identifiable {
          consumptionGrams: Double,
          meat: Bool = false,
          meatAmount: Double = 200,
+         supplement: Bool = false,
          mealAdjustments: [MealAdjustment] = [],
          microNutrients: Bool = false,
-         available: Bool = true,
          verified: String = "",
          stepAmount: Double = 0) {
 
@@ -1565,11 +1672,10 @@ struct Ingredient: Codable, Identifiable {
 
         self.meat = meat
         self.meatAmount = meatAmount
+        self.supplement = supplement
         self.mealAdjustments = mealAdjustments
 
         self.microNutrients = microNutrients
-
-        self.available = available
 
         self.verified = verified
 
@@ -1631,9 +1737,9 @@ struct Ingredient: Codable, Identifiable {
         self.consumptionGrams = try c.decode(Double.self, forKey: .consumptionGrams)
         self.meat = try c.decode(Bool.self, forKey: .meat)
         self.meatAmount = try c.decode(Double.self, forKey: .meatAmount)
+        self.supplement = try c.decodeIfPresent(Bool.self, forKey: .supplement) ?? false
         self.mealAdjustments = try c.decode([MealAdjustment].self, forKey: .mealAdjustments)
         self.microNutrients = try c.decode(Bool.self, forKey: .microNutrients)
-        self.available = try c.decode(Bool.self, forKey: .available)
         self.verified = try c.decode(String.self, forKey: .verified)
         self.stepAmount = try c.decodeIfPresent(Double.self, forKey: .stepAmount) ?? 0
     }
@@ -1676,67 +1782,6 @@ struct Ingredient: Codable, Identifiable {
         get {
             (protein * 100) / servingSize
         }
-    }
-
-
-    func toggleAvailable() -> Ingredient {
-        return Ingredient(id: id,
-                          name: name,
-                          brand: brand,
-                          fullName: fullName,
-                          category: category,
-                          url: url,
-                          totalCost: totalCost,
-                          totalGrams: totalGrams,
-                          ingredients: ingredients,
-                          allergens: allergens,
-                          servingSize: servingSize,
-                          calories: calories,
-                          fat: fat,
-                          saturatedFat: saturatedFat,
-                          transFat: transFat,
-                          polyunsaturatedFat: polyunsaturatedFat,
-                          monounsaturatedFat: monounsaturatedFat,
-                          cholesterol: cholesterol,
-                          sodium: sodium,
-                          carbohydrates: carbohydrates,
-                          fiber: fiber,
-                          sugar: sugar,
-                          addedSugar: addedSugar,
-                          sugarAlcohool: sugarAlcohool,
-                          netCarbs: netCarbs,
-                          protein: protein,
-                          omega3: omega3,
-                          zinc: zinc,
-                          vitaminK: vitaminK,
-                          vitaminE: vitaminE,
-                          vitaminD: vitaminD,
-                          vitaminC: vitaminC,
-                          vitaminB6: vitaminB6,
-                          vitaminB12: vitaminB12,
-                          vitaminA: vitaminA,
-                          thiamin: thiamin,
-                          selenium: selenium,
-                          riboflavin: riboflavin,
-                          potassium: potassium,
-                          phosphorus: phosphorus,
-                          pantothenicAcid: pantothenicAcid,
-                          niacin: niacin,
-                          manganese: manganese,
-                          magnesium: magnesium,
-                          iron: iron,
-                          folicAcid: folicAcid,
-                          folate: folate,
-                          copper: copper,
-                          calcium: calcium,
-                          consumptionUnit: consumptionUnit,
-                          consumptionGrams: consumptionGrams,
-                          meat: meat,
-                          mealAdjustments: mealAdjustments,
-                          microNutrients: microNutrients,
-                          available: !available,
-                          verified: verified,
-                          stepAmount: stepAmount)
     }
 
 
@@ -1794,9 +1839,9 @@ struct Ingredient: Codable, Identifiable {
                           consumptionGrams: ingredient.consumptionGrams,
                           meat: ingredient.meat,
                           meatAmount: ingredient.meatAmount,
+                          supplement: ingredient.supplement,
                           mealAdjustments: ingredient.mealAdjustments,
                           microNutrients: ingredient.microNutrients,
-                          available: ingredient.available,
                           verified: verified,
                           stepAmount: ingredient.stepAmount)
     }

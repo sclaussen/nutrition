@@ -2,10 +2,21 @@ import Foundation
 
 
 enum Constants {
+    // Three user-visible adjustment modes (plus Default as a
+    // transient internal state):
+    //   Default   — fresh row, hasn't been touched; renders black.
+    //               Auto-adjustments can promote it to Automatic.
+    //   Manual    — user controls amount; auto-adjust skips this
+    //               row; renders black. Same color as Default; user
+    //               doesn't see a difference.
+    //   Automatic — system auto-adjusted this generation cycle;
+    //               renders green.
+    //   Done      — user-locked / "complete"; renders blue.
+    //               Inc/dec/pill are disabled; auto-adjust skips.
     static let Default: Int = 1
-
     static let Manual: Int = 2
     static let Automatic: Int = 3
+    static let Done: Int = 5
 
     static let Ingredient: Int = 2
     static let Inactive: Int = 3
@@ -52,31 +63,19 @@ class MealIngredientMgr: ObservableObject {
 
         mealIngredients = []
 
-        mealIngredients.append(MealIngredient(name: "Dave's Bread W", amount: 2, active: false))
-        mealIngredients.append(MealIngredient(name: "Cheddar Cheese W", amount: 4, active: false))
-        mealIngredients.append(MealIngredient(name: "Turkey W", amount: 4, active: false))
-        mealIngredients.append(MealIngredient(name: "Hummus W", amount: 1, active: false))
         mealIngredients.append(MealIngredient(name: "Sard (H2O)", amount: 1, active: false))
         mealIngredients.append(MealIngredient(name: "Sard (SB)", amount: 1, active: false))
         mealIngredients.append(MealIngredient(name: "Sard (LS)", amount: 1, active: false))
         mealIngredients.append(MealIngredient(name: "Sard (LS L)", amount: 1, active: false))
         mealIngredients.append(MealIngredient(name: "Mack (SB)", amount: 1, active: false))
         mealIngredients.append(MealIngredient(name: "Mack (Smk)", amount: 1, active: false))
-        mealIngredients.append(MealIngredient(name: "Babybel Cheese", amount: 1, active: false))
-        mealIngredients.append(MealIngredient(name: "Tillamook Cheddar Cheese", amount: 1, active: false))
-        mealIngredients.append(MealIngredient(name: "Macadamia Nuts", amount: 0, active: false))
-        mealIngredients.append(MealIngredient(name: "Pecans", amount: 20, active: false))
-        mealIngredients.append(MealIngredient(name: "Walnuts", amount: 20, active: false))
-        mealIngredients.append(MealIngredient(name: "Peanuts", amount: 20, active: false))
-        mealIngredients.append(MealIngredient(name: "Dave's Bread", amount: 1, active: false))
-        mealIngredients.append(MealIngredient(name: "Dave's Bread (Thin)", amount: 1, active: false))
-        mealIngredients.append(MealIngredient(name: "Ezekiel 4:9", amount: 1, active: false))
-        mealIngredients.append(MealIngredient(name: "Sunflower Butter", amount: 1, active: false))
-        mealIngredients.append(MealIngredient(name: "Peanut Butter", amount: 1, active: false))
-        mealIngredients.append(MealIngredient(name: "Jelly", amount: 1, active: false))
-        mealIngredients.append(MealIngredient(name: "Latte (Venti Iced)", amount: 1, active: false))
-
-        mealIngredients.append(MealIngredient(name: "Dubliner Cheese", amount: 30, active: false))
+        // Cheeses (Babybel, Tillamook Cheddar, Dubliner) and nuts
+        // (Macadamia, Pecans, Walnuts, Peanuts) moved below the
+        // String Cheese / String Cheese W block further down the list
+        // — keeps the dairy + nuts grouped together near the end.
+        // Dubliner Cheese, Babybel Cheese, Tillamook Cheddar Cheese,
+        // Macadamia Nuts, Pecans, Walnuts, and Peanuts all moved
+        // below the String Cheese block further down the list.
         // mealIngredients.append(MealIngredient(name: "Mitica", amount: 10, active: false))
         // mealIngredients.append(MealIngredient(name: "Flackers (SS)", amount: 30, active: false))
         // mealIngredients.append(MealIngredient(name: "Cheddar Cheese", amount: 1, active: false))
@@ -86,26 +85,46 @@ class MealIngredientMgr: ObservableObject {
         mealIngredients.append(MealIngredient(name: "Eggs", amount: 5))
         mealIngredients.append(MealIngredient(name: "Broccoli", amount: 150))
         mealIngredients.append(MealIngredient(name: "Cauliflower", amount: 100))
-        mealIngredients.append(MealIngredient(name: "String Cheese", amount: 0))
-        mealIngredients.append(MealIngredient(name: "String Cheese W", amount: 0, active: false))
-        mealIngredients.append(MealIngredient(name: "Romaine", amount: 150))
+        // String Cheese W moved below String Cheese (further down).
+        mealIngredients.append(MealIngredient(name: "Romaine", amount: 175))
         mealIngredients.append(MealIngredient(name: "Spinach", amount: 50))
         mealIngredients.append(MealIngredient(name: "Arugula", amount: 50))
         mealIngredients.append(MealIngredient(name: "Mushrooms", amount: 125))
-        mealIngredients.append(MealIngredient(name: "Radish", amount: 100))
-        mealIngredients.append(MealIngredient(name: "Avocado", amount: 145))
-        mealIngredients.append(MealIngredient(name: "Pumpkin Seeds", amount: 30))
+        mealIngredients.append(MealIngredient(name: "Radish", amount: 70))
+        mealIngredients.append(MealIngredient(name: "Avocado", amount: 225))
         mealIngredients.append(MealIngredient(name: "Mustard", amount: 3))
         mealIngredients.append(MealIngredient(name: "Fish Oil", amount: 1))
         mealIngredients.append(MealIngredient(name: "Extra Virgin Olive Oil", amount: 2))
+        mealIngredients.append(MealIngredient(name: "Pumpkin Seeds", amount: 30))
+        mealIngredients.append(MealIngredient(name: "String Cheese", amount: 0))
+        // String Cheese W, the other cheeses, and the nuts moved
+        // here per request: String Cheese / String Cheese W first,
+        // then other cheeses, then nuts.
+        mealIngredients.append(MealIngredient(name: "String Cheese W", amount: 0, active: false))
+        mealIngredients.append(MealIngredient(name: "Dubliner Cheese", amount: 30, active: false))
+        mealIngredients.append(MealIngredient(name: "Manchego Cheese", amount: 30, active: false))
+        mealIngredients.append(MealIngredient(name: "Macadamia Nuts", amount: 0, active: false))
+        mealIngredients.append(MealIngredient(name: "Pecans", amount: 20, active: false))
+        mealIngredients.append(MealIngredient(name: "Walnuts", amount: 20, active: false))
+        mealIngredients.append(MealIngredient(name: "Peanuts", amount: 20, active: false))
+
+        // Berries — seeded inactive so they're easy to enable from
+        // the meal list when you actually eat them, without showing
+        // every day.  Toggle "Show inactive" in the toolbar to see.
+        mealIngredients.append(MealIngredient(name: "Blueberries",  amount: 100, active: false))
+        mealIngredients.append(MealIngredient(name: "Blackberries", amount: 100, active: false))
 
         // Supplements — hidden from the meal list by default, but
         // active and counted toward daily V&M (and macros).  Toggle
-        // 'Show supplements' in the view-options menu to see them.
+        // 'Show supplements' in the toolbar to see them.  Order matches
+        // the user's preferred display order, not time-of-day.
+        mealIngredients.append(MealIngredient(name: "Thorne Basic Nutrients 2/Day", amount: 2, isSupplement: true))
+        mealIngredients.append(MealIngredient(name: "Creatine HCl",         amount: 2, isSupplement: true))
+        mealIngredients.append(MealIngredient(name: "Glycine",              amount: 1, isSupplement: true))
         mealIngredients.append(MealIngredient(name: "Vitamin D3 (1000 IU)", amount: 1, isSupplement: true))
-        mealIngredients.append(MealIngredient(name: "Magnesium (200 mg)",   amount: 1, isSupplement: true))
-        mealIngredients.append(MealIngredient(name: "B-Complex",            amount: 1, isSupplement: true))
-        mealIngredients.append(MealIngredient(name: "Multivitamin",         amount: 1, isSupplement: true))
+        mealIngredients.append(MealIngredient(name: "SlowMag",              amount: 2, isSupplement: true))
+        mealIngredients.append(MealIngredient(name: "L-Theanine",           amount: 1, isSupplement: true))
+        mealIngredients.append(MealIngredient(name: "Apigenin",             amount: 1, isSupplement: true))
     }
 
 
@@ -116,14 +135,16 @@ class MealIngredientMgr: ObservableObject {
                 meat: Bool = false,
                 adjustment: Int = Constants.Default,
                 priorState: Int = Constants.Active,
-                active: Bool = true) {
+                active: Bool = true,
+                isSupplement: Bool = false) {
 
         let mealIngredient = MealIngredient(name: name,
                                             amount: amount,
                                             meat: meat,
                                             adjustment: adjustment,
                                             priorState: priorState,
-                                            active: active)
+                                            active: active,
+                                            isSupplement: isSupplement)
 
         mealIngredients.append(mealIngredient)
     }
@@ -151,6 +172,33 @@ class MealIngredientMgr: ObservableObject {
                 }
 
                 mealIngredients[index] = mealIngredients[index].undoAdjustment()
+            }
+        }
+    }
+
+
+    // Promote a row to Done (blue / fully locked). Called when the
+    // user taps the name of a Manual or Default row. Keeps the
+    // current amount.
+    func doneAdjustment(name: String, amount: Double) {
+        if let index = mealIngredients.firstIndex(where: { $0.name == name }) {
+            mealIngredients[index] = mealIngredients[index].doneAdjustment(amount: amount)
+        }
+    }
+
+
+    // Revert a Done row to Default.
+    //
+    // resetAmount=true: caller has decided this ingredient is auto-
+    //   eligible and the amount should be reset to originalAmount so
+    //   the next generateMeal can let auto recompute cleanly.
+    // resetAmount=false: caller has decided this is a manual-only
+    //   ingredient; preserve the user's amount.
+    func undoDoneAdjustment(name: String, resetAmount: Bool) {
+        print("Undo Done Adjustment for \(name) resetAmount=\(resetAmount)")
+        if let index = mealIngredients.firstIndex(where: { $0.name == name }) {
+            if mealIngredients[index].adjustment == Constants.Done {
+                mealIngredients[index] = mealIngredients[index].undoDoneAdjustment(resetAmount: resetAmount)
             }
         }
     }
@@ -203,14 +251,22 @@ class MealIngredientMgr: ObservableObject {
     }
 
 
-    func reapplyMeat(name: String, amount: Double) {
-        // If there is an existing meat and amount, remove it
-        if let index = mealIngredients.firstIndex(where: { $0.meat == true }) {
-            print("  Removing: \(mealIngredients[index].name) amount \(mealIngredients[index].amount)")
-            mealIngredients.remove(at: index)
-        }
+    // Replace the meal's protein rows with the given list. Removes
+    // every existing meat-flagged MealIngredient, then adds one per
+    // protein. Proteins sharing the same `name` are coalesced (their
+    // amounts summed) so the MealIngredient name-uniqueness invariant
+    // — `getByName(name:)` returns the first match — keeps holding.
+    func reapplyProteins(_ proteins: [Protein]) {
+        mealIngredients.removeAll(where: { $0.meat })
 
-        if name != "None" {
+        var combined: [String: Double] = [:]
+        var order: [String] = []
+        for p in proteins {
+            if combined[p.name] == nil { order.append(p.name) }
+            combined[p.name, default: 0] += p.amount
+        }
+        for name in order {
+            let amount = combined[name]!
             print("  Adding: \(name) amount \(amount)")
             create(name: name, amount: amount, meat: true)
         }
@@ -232,10 +288,12 @@ class MealIngredientMgr: ObservableObject {
     // If "includeInactive" is true return both the active and
     // inactive meal ingredients.
     func getActive(includeInactive: Bool = false) -> [MealIngredient] {
-        if includeInactive {
-            return mealIngredients
-        }
-        return mealIngredients.filter({ $0.active == true })
+        let base = includeInactive ? mealIngredients : mealIngredients.filter { $0.active }
+        // Supplements always render at the very bottom of the meal
+        // list — under the meat (which is dynamically appended via
+        // reapplyMeat).  Within each group the original insertion
+        // order is preserved, since filter is stable.
+        return base.filter { !$0.isSupplement } + base.filter { $0.isSupplement }
     }
 
 
@@ -479,10 +537,48 @@ struct MealIngredient: Codable, Identifiable {
     // Adjust the meal ingredient's amount saving the original value
     // for active and amount to allow the auto adjustment to be
     // removed later.
+    // Promote this row to Done (blue / locked complete). Preserves
+    // priorState so the prior pre-Done active/inactive flag is
+    // recoverable if we ever need it.
+    func doneAdjustment(amount: Double) -> MealIngredient {
+        return MealIngredient(id: self.id, name: self.name, originalAmount: self.originalAmount, amount: amount, meat: self.meat, calories: self.calories, fat: self.fat, fiber: self.fiber, netcarbs: self.netcarbs, protein: self.protein, adjustment: Constants.Done, priorState: self.priorState, active: true, isSupplement: self.isSupplement)
+    }
+
+
+    // Revert from Done back to Default.
+    //
+    // resetAmount=true: amount goes back to originalAmount so the
+    //   next generateMeal's auto-adjustment can compute the right
+    //   amount cleanly without double-counting against the user's
+    //   Done amount.
+    // resetAmount=false: preserve the user's amount (manual-only
+    //   ingredient — no auto-rule to overwrite, the user's amount
+    //   should survive Done → manual mode).
+    //
+    // Active is always preserved as-is — we do NOT derive it from
+    // priorState the way `undoAdjustment()` does. That derivation
+    // breaks across multi-step user cycles because priorState gets
+    // reset to Default during the auto-adjust round-trip, and a
+    // subsequent Done → Default would then evaluate Default==Active
+    // as false and silently deactivate the row.
+    func undoDoneAdjustment(resetAmount: Bool) -> MealIngredient {
+        let newAmount = resetAmount ? self.originalAmount : self.amount
+        return MealIngredient(id: self.id, name: self.name, originalAmount: self.originalAmount, amount: newAmount, meat: self.meat, calories: self.calories, fat: self.fat, fiber: self.fiber, netcarbs: self.netcarbs, protein: self.protein, adjustment: Constants.Default, priorState: self.priorState, active: self.active, isSupplement: self.isSupplement)
+    }
+
+
     func automaticAdjustment(amount: Double) -> MealIngredient {
 
-        if adjustment == Constants.Manual {
-            print("  Attempted an automatic adjustment but the meal ingredient has been manually adjusted: \(name)")
+        if adjustment == Constants.Manual || adjustment == Constants.Done {
+            print("  Attempted an automatic adjustment but the meal ingredient has been manually adjusted or marked Done: \(name)")
+            return self
+        }
+
+        // Defensive: caller (tryAddingAdjustment) already skips
+        // inactive rows. Double-check here so any future call site
+        // can't silently reactivate a row the user has deactivated.
+        if !active {
+            print("  Attempted an automatic adjustment but the meal ingredient is inactive: \(name)")
             return self
         }
 
@@ -516,8 +612,13 @@ struct MealIngredient: Codable, Identifiable {
         // amount: self.originalAmount
         // adjustment: Default
         // priorState: Default
-        // active: self.priorState
-        return MealIngredient(id: self.id, name: self.name, originalAmount: self.originalAmount, amount: self.originalAmount, meat: self.meat, calories: calories, fat: fat, fiber: fiber, netcarbs: netcarbs, protein: protein, adjustment: Constants.Default, priorState: Constants.Default, active: self.priorState == Constants.Active, isSupplement: self.isSupplement)
+        // active: stays true only if BOTH the row is currently
+        //   active AND priorState was Active. self.active being
+        //   false here means the user just deactivated the row
+        //   (trash-can swipe) AFTER the auto-adjustment had set
+        //   priorState=Active — we must NOT silently reactivate.
+        let restoredActive = self.active && (self.priorState == Constants.Active)
+        return MealIngredient(id: self.id, name: self.name, originalAmount: self.originalAmount, amount: self.originalAmount, meat: self.meat, calories: calories, fat: fat, fiber: fiber, netcarbs: netcarbs, protein: protein, adjustment: Constants.Default, priorState: Constants.Default, active: restoredActive, isSupplement: self.isSupplement)
     }
 
 
