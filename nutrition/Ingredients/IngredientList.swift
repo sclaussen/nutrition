@@ -99,19 +99,26 @@ struct IngredientList: View {
                 // this the row would shrink to chevron-sized.
                 HStack(spacing: 0) {
                     Button {
-                        promote(ingredient)
+                        toggleFoodActive(ingredient)
                     } label: {
-                        // Plain Text uses the full row width instead of
-                        // IngredientRow's 39.5% name slot (designed
-                        // around macro columns we no longer show).
-                        HStack(spacing: 4) {
-                            Text(displayName(ingredient))
-                              .font(.callout)
-                              .foregroundColor(statusColor(for: ingredient))
-                            if AvoidList.firstMatch(in: ingredient.ingredients) != nil {
-                                Image(systemName: "exclamationmark.triangle.fill")
+                        // Name + tiny brand subtext. Tapping toggles
+                        // whether this ingredient is an active member
+                        // of its Food (green) vs inactive (black).
+                        VStack(alignment: .leading, spacing: 1) {
+                            HStack(spacing: 4) {
+                                Text(displayName(ingredient))
+                                  .font(.callout)
+                                  .foregroundColor(statusColor(for: ingredient))
+                                if AvoidList.firstMatch(in: ingredient.ingredients) != nil {
+                                    Image(systemName: "exclamationmark.triangle.fill")
+                                      .font(.caption2)
+                                      .foregroundColor(.orange)
+                                }
+                            }
+                            if !ingredient.brand.isEmpty {
+                                Text(ingredient.brand)
                                   .font(.caption2)
-                                  .foregroundColor(.orange)
+                                  .foregroundColor(Color.theme.blackWhiteSecondary)
                             }
                         }
                           .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .leading)
@@ -384,13 +391,17 @@ struct IngredientList: View {
     }
 
 
-    // Color encoding:
-    //   blue                 = meat (managed via Proteins picker, not here)
-    //   black (primary text) = not in the meal
-    //   green                = in the meal
+    // Prep page color: green when the ingredient is an active
+    // member of its Food, black otherwise. No blue on this page
+    // (Done/lock + meat-blue remain a Meal-page concept).
     private func statusColor(for ingredient: Ingredient) -> Color {
-        if ingredient.meat { return Color.theme.blue }
-        return isInMeal(ingredient) ? Color.theme.manual : Color.theme.blackWhite
+        ingredient.foodActive ? Color.theme.manual : Color.theme.blackWhite
+    }
+
+
+    // Prep tap: flip this ingredient's active-in-its-Food state.
+    private func toggleFoodActive(_ ingredient: Ingredient) {
+        ingredientMgr.toggleFoodActive(name: ingredient.name)
     }
 
 
