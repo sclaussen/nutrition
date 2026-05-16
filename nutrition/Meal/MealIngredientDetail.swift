@@ -110,8 +110,12 @@ struct MealIngredientDetail: View {
         var entries: [VMEntry] = []
 
         for type in vitaminMineralOrder {
-            let raw = rawValue(of: ingredient, for: type)
-            let contribution = raw * servings
+            // Use the shared mapping from VitaminMineralActuals so the
+            // unit conversions (copper mg→mcg ×1000, vitamin D mcg→IU
+            // ×40) are applied — otherwise the detail page reports raw
+            // ingredient values that don't match the unit label below.
+            let perServing = nutrientValue(of: ingredient, for: type)
+            let contribution = perServing * servings
             if contribution <= 0 { continue }
 
             let vm = VitaminMineral(name: type, age: age, gender: gender)
@@ -137,34 +141,6 @@ struct MealIngredientDetail: View {
         }
 
         return entries
-    }
-
-
-    private func rawValue(of ingredient: Ingredient, for type: VitaminMineralType) -> Double {
-        switch type {
-        case .calcium:         return ingredient.calcium
-        case .copper:          return ingredient.copper
-        case .folate:          return ingredient.folate
-        case .folicAcid:       return ingredient.folicAcid
-        case .iron:            return ingredient.iron
-        case .magnesium:       return ingredient.magnesium
-        case .manganese:       return ingredient.manganese
-        case .niacin:          return ingredient.niacin
-        case .pantothenicAcid: return ingredient.pantothenicAcid
-        case .phosphorus:      return ingredient.phosphorus
-        case .potassium:       return ingredient.potassium
-        case .riboflavin:      return ingredient.riboflavin
-        case .selenium:        return ingredient.selenium
-        case .thiamin:         return ingredient.thiamin
-        case .vitaminA:        return ingredient.vitaminA
-        case .vitaminB12:      return ingredient.vitaminB12
-        case .vitaminB6:       return ingredient.vitaminB6
-        case .vitaminC:        return ingredient.vitaminC
-        case .vitaminD:        return ingredient.vitaminD
-        case .vitaminE:        return ingredient.vitaminE
-        case .vitaminK:        return ingredient.vitaminK
-        case .zinc:            return ingredient.zinc
-        }
     }
 
 

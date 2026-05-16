@@ -26,14 +26,12 @@ struct AdjustmentList: View {
                   .foregroundColor(adjustment.active ? Color.theme.blackWhite : Color.theme.red)
                   .swipeActions(edge: .leading) {
                       Button {
-                          if adjustment.active || ingredientMgr.getByName(name: adjustment.name)!.available {
-                              let newAdjustment = adjustmentMgr.toggleActive(adjustment)
-                              print("  \(newAdjustment!.name) active: \(newAdjustment!.active)")
-                          }
+                          let newAdjustment = adjustmentMgr.toggleActive(adjustment)
+                          print("  \(newAdjustment!.name) active: \(newAdjustment!.active)")
                       } label: {
-                          Label("", systemImage: !ingredientMgr.getByName(name: adjustment.name)!.available ? "circle.slash" : adjustment.active ? "pause.circle" : "play.circle")
+                          Label("", systemImage: adjustment.active ? "pause.circle" : "play.circle")
                       }
-                        .tint(!ingredientMgr.getByName(name: adjustment.name)!.available ? Color.theme.blackWhiteSecondary : adjustment.active ? Color.theme.red : Color.theme.green)
+                        .tint(adjustment.active ? Color.theme.red : Color.theme.green)
                   }
                   .swipeActions(edge: .trailing) {
                       Button(role: .destructive) {

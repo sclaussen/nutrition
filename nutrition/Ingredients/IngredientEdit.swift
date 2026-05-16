@@ -5,13 +5,56 @@ struct IngredientEdit: View {
     @Environment(\.presentationMode) var presentationMode
     @EnvironmentObject var ingredientMgr: IngredientMgr
     @EnvironmentObject var adjustmentMgr: AdjustmentMgr
+    @EnvironmentObject var foodMgr: FoodMgr
+
+    @State private var newGroupName = ""
 
     @State var ingredient: Ingredient
     @State private var showAutoAdjust: Bool = false
 
+    // Verify-with-AI state. confident macro/V&M corrections are
+    // auto-applied + saved immediately; identity/price and any
+    // low-confidence fields are collected into `verifyReview` and
+    // surfaced in a sheet for explicit accept/skip.
+    @State private var isVerifying = false
+    @State private var verifyError: String? = nil
+    @State private var verifyNote: String? = nil
+    @State private var verifyReview: VerifyReview? = nil
+
+    // Identity / price-ish fields are never auto-applied — they
+    // always go through review (price is web-approximate; name/
+    // brand changes are identity-sensitive).
+    private static let alwaysReviewIDs: Set<String> = [
+        "name", "brand", "fullName", "url",
+        "ingredientsList", "allergens", "price", "packageGrams"
+    ]
+
+    // Optional scan inputs. When supplied, the ingredient state is
+    // patched on appear with the parsed values, and a diff banner is
+    // shown listing which fields are about to change.
+    let prefill: ParsedIngredient?
+    let diff: ScanDiff?
+
+    init(ingredient: Ingredient,
+         prefill: ParsedIngredient? = nil,
+         diff: ScanDiff? = nil) {
+        self._ingredient = State(initialValue: ingredient)
+        self.prefill = prefill
+        self.diff = diff
+    }
+
     var body: some View {
         Form {
+            if let diff = diff, !diff.isEmpty {
+                diffBanner(diff)
+            }
+            if let prefill = prefill, !prefill.lowConfidenceFields.isEmpty {
+                lowConfidenceBanner(fields: prefill.lowConfidenceFields)
+            }
+            avoidSection
             mainSections
+            groupSection
+            verifySection
             meatSection
             supplementSection
             autoAdjustSection
@@ -22,7 +65,13 @@ struct IngredientEdit: View {
               AutoAdjustEditor(ingredient: ingredient)
                 .environmentObject(adjustmentMgr)
           }
+          .sheet(item: $verifyReview) { review in
+              VerifyReviewSheet(review: review) { selected in
+                  applyReviewSelection(parsed: review.parsed, ids: selected)
+              }
+          }
           .padding([.leading, .trailing], -20)
+          .onAppear { applyPrefill() }
           .navigationBarBackButtonHidden(true)
           .toolbar {
               ToolbarItem(placement: .navigation) {
@@ -68,6 +117,121 @@ struct IngredientEdit: View {
 
 
 extension IngredientEdit {
+
+    // ============================================================
+    // Apply LLM-parsed values to the bound `ingredient`. Only
+    // touches fields the LLM actually filled in (non-nil), so any
+    // existing values are preserved when the label didn't show
+    // them.
+    // ============================================================
+    fileprivate func applyPrefill() {
+        guard let p = prefill else { return }
+
+        if !p.name.isEmpty { ingredient.name = p.name }
+        if let v = p.brand    { ingredient.brand = v }
+        if let v = p.fullName { ingredient.fullName = v }
+        if let v = p.url      { ingredient.url = v }
+        if let v = p.ingredientsList { ingredient.ingredients = v }
+        if let v = p.allergens       { ingredient.allergens = v }
+
+        if let v = p.servingSize      { ingredient.servingSize = v }
+        if let v = p.calories         { ingredient.calories = v }
+        if let v = p.fat              { ingredient.fat = v }
+        if let v = p.saturatedFat     { ingredient.saturatedFat = v }
+        if let v = p.transFat         { ingredient.transFat = v }
+        if let v = p.cholesterol      { ingredient.cholesterol = v }
+        if let v = p.sodium           { ingredient.sodium = v }
+        if let v = p.carbohydrates    { ingredient.carbohydrates = v }
+        if let v = p.fiber            { ingredient.fiber = v }
+        if let v = p.sugar            { ingredient.sugar = v }
+        if let v = p.addedSugar       { ingredient.addedSugar = v }
+        if let v = p.netCarbs         { ingredient.netCarbs = v }
+        if let v = p.protein          { ingredient.protein = v }
+
+        if p.consumptionUnit != nil { ingredient.consumptionUnit = p.consumptionUnitEnum }
+        if let v = p.consumptionGrams { ingredient.consumptionGrams = v }
+
+        if let v = p.omega3          { ingredient.omega3 = v }
+        if let v = p.vitaminD        { ingredient.vitaminD = v }
+        if let v = p.calcium         { ingredient.calcium = v }
+        if let v = p.iron            { ingredient.iron = v }
+        if let v = p.potassium       { ingredient.potassium = v }
+        if let v = p.vitaminA        { ingredient.vitaminA = v }
+        if let v = p.vitaminC        { ingredient.vitaminC = v }
+        if let v = p.vitaminE        { ingredient.vitaminE = v }
+        if let v = p.vitaminK        { ingredient.vitaminK = v }
+        if let v = p.thiamin         { ingredient.thiamin = v }
+        if let v = p.riboflavin      { ingredient.riboflavin = v }
+        if let v = p.niacin          { ingredient.niacin = v }
+        if let v = p.vitaminB6       { ingredient.vitaminB6 = v }
+        if let v = p.folate          { ingredient.folate = v }
+        if let v = p.vitaminB12      { ingredient.vitaminB12 = v }
+        if let v = p.pantothenicAcid { ingredient.pantothenicAcid = v }
+        if let v = p.phosphorus      { ingredient.phosphorus = v }
+        if let v = p.magnesium       { ingredient.magnesium = v }
+        if let v = p.zinc            { ingredient.zinc = v }
+        if let v = p.selenium        { ingredient.selenium = v }
+        if let v = p.copper          { ingredient.copper = v }
+        if let v = p.manganese       { ingredient.manganese = v }
+    }
+
+
+    // Top-of-form summary listing every field that will change
+    // when the user taps Save. Each row reads "Field: old → new".
+    fileprivate func diffBanner(_ diff: ScanDiff) -> some View {
+        Section(header: Text("\(diff.changes.count) field\(diff.changes.count == 1 ? "" : "s") will change")) {
+            ForEach(diff.changes) { change in
+                HStack {
+                    Text(change.field)
+                      .font(.caption)
+                      .foregroundColor(Color.theme.blackWhiteSecondary)
+                    Spacer()
+                    Text("\(change.oldValue) \u{2192} ")
+                      .font(.caption)
+                      .foregroundColor(Color.theme.blackWhiteSecondary)
+                    + Text(change.newValue)
+                      .font(.caption)
+                      .foregroundColor(Color.theme.manual)
+                }
+            }
+        }
+    }
+
+
+    fileprivate func lowConfidenceBanner(fields: [String]) -> some View {
+        Section {
+            VStack(alignment: .leading, spacing: 4) {
+                Label("Low-confidence fields", systemImage: "exclamationmark.triangle.fill")
+                  .font(.callout)
+                  .foregroundColor(.orange)
+                Text(fields.joined(separator: ", "))
+                  .font(.caption)
+                  .foregroundColor(Color.theme.blackWhiteSecondary)
+            }
+              .padding(.vertical, 4)
+        }
+    }
+
+
+    @ViewBuilder
+    private var avoidSection: some View {
+        let hits = AvoidList.allMatches(in: ingredient.ingredients)
+        if !hits.isEmpty {
+            Section {
+                VStack(alignment: .leading, spacing: 4) {
+                    Label("Contains flagged ingredients", systemImage: "exclamationmark.triangle.fill")
+                      .font(.callout)
+                      .foregroundColor(.orange)
+                    Text(hits.map { $0.canonicalName }.joined(separator: ", "))
+                      .font(.caption)
+                      .foregroundColor(Color.theme.blackWhiteSecondary)
+                }
+                  .padding(.vertical, 4)
+            }
+        }
+    }
+
+
     private var mainSections: some View {
         Group {
             Section {
@@ -98,6 +262,65 @@ extension IngredientEdit {
         Section {
             NameValue("Supplement", description: "hidden in meal list by default",
                       $ingredient.supplement, control: .toggle)
+        }
+    }
+
+    // Group / variant membership. Picking or creating a group makes
+    // this ingredient a member; the group is the thing added to a
+    // meal and members are swapped via long-press on the meal row.
+    // Group-entity changes (create / default) are applied to FoodMgr
+    // immediately; the foodName link persists when the ingredient is
+    // saved.
+    private var isGroupDefault: Bool {
+        guard !ingredient.foodName.isEmpty else { return false }
+        return foodMgr.getByName(name: ingredient.foodName)?.defaultMemberName == ingredient.name
+    }
+
+    private var groupSection: some View {
+        Section(header: Text("Food"),
+                footer: Text("Optional. Ingredients sharing a Food are collapsed to one meal row; long-press that row in the meal to pick which variant.")
+                  .font(.caption2)) {
+
+            Picker("Food", selection: Binding(
+                get: { ingredient.foodName },
+                set: { newValue in
+                    ingredient.foodName = newValue
+                    if !newValue.isEmpty {
+                        foodMgr.ensure(name: newValue, defaultMember: ingredient.name)
+                    }
+                }
+            )) {
+                Text("None").tag("")
+                ForEach(foodMgr.names, id: \.self) { g in
+                    Text(g).tag(g)
+                }
+            }
+
+            HStack {
+                TextField("New Food\u{2026}", text: $newGroupName)
+                  .autocorrectionDisabled()
+                Button("Create") {
+                    let trimmed = newGroupName.trimmingCharacters(in: .whitespaces)
+                    guard !trimmed.isEmpty else { return }
+                    ingredient.foodName = trimmed
+                    foodMgr.ensure(name: trimmed, defaultMember: ingredient.name)
+                    newGroupName = ""
+                }
+                  .disabled(newGroupName.trimmingCharacters(in: .whitespaces).isEmpty)
+                  .foregroundColor(Color.theme.blueYellow)
+            }
+
+            if !ingredient.foodName.isEmpty {
+                Toggle("Default variant of this Food", isOn: Binding(
+                    get: { isGroupDefault },
+                    set: { on in
+                        if on {
+                            foodMgr.setDefault(group: ingredient.foodName,
+                                                member: ingredient.name)
+                        }
+                    }
+                ))
+            }
         }
     }
 
@@ -322,5 +545,183 @@ struct AutoAdjustEditor: View {
             return String(Int(value))
         }
         return String(value)
+    }
+}
+
+
+// =============================================================
+// Verify-with-AI: section UI + run/apply logic.
+// =============================================================
+extension IngredientEdit {
+
+    var verifySection: some View {
+        Section {
+            Button {
+                verify()
+            } label: {
+                if isVerifying {
+                    HStack {
+                        ProgressView()
+                        Text("Verifying with AI\u{2026}")
+                    }
+                } else {
+                    Label("Verify with AI", systemImage: "sparkles")
+                      .foregroundColor(Color.theme.blueYellow)
+                }
+            }
+              .disabled(isVerifying)
+
+            if let note = verifyNote {
+                Text(note)
+                  .font(.caption)
+                  .foregroundColor(Color.theme.blackWhiteSecondary)
+            }
+            if let err = verifyError {
+                Text(err)
+                  .font(.caption)
+                  .foregroundColor(Color.theme.red)
+            }
+        } footer: {
+            Text("Web-searches the canonical product (Whole Foods first), updates brand/price and re-checks macros & vitamins. Confident nutrition fixes apply automatically; price and uncertain fields go to review.")
+              .font(.caption2)
+        }
+    }
+
+
+    private func verify() {
+        isVerifying = true
+        verifyError = nil
+        verifyNote = nil
+        let snapshot = ingredient
+        Task {
+            do {
+                let parsed = try await NutritionScannerService.verifyByName(snapshot)
+                let d = ScanDiff.compute(existing: snapshot, parsed: parsed)
+                let low = Set(parsed.lowConfidenceFields)
+                var autoIDs = Set<String>()
+                var reviewChanges: [ScanDiff.Change] = []
+                for c in d.changes {
+                    if low.contains(c.id) || Self.alwaysReviewIDs.contains(c.id) {
+                        reviewChanges.append(c)
+                    } else {
+                        autoIDs.insert(c.id)
+                    }
+                }
+                await MainActor.run {
+                    if !autoIDs.isEmpty {
+                        var updated = ingredient
+                        ScanDiff.apply(parsed: parsed, ids: autoIDs, to: &updated)
+                        ingredient = updated
+                        ingredientMgr.update(updated)
+                    }
+                    isVerifying = false
+                    if reviewChanges.isEmpty {
+                        verifyNote = autoIDs.isEmpty
+                          ? "Verified \u{2014} everything already matched."
+                          : "Verified \u{2014} \(autoIDs.count) field\(autoIDs.count == 1 ? "" : "s") auto-updated, nothing to review."
+                    } else {
+                        verifyReview = VerifyReview(parsed: parsed,
+                                                    changes: reviewChanges,
+                                                    autoAppliedCount: autoIDs.count)
+                    }
+                }
+            } catch {
+                await MainActor.run {
+                    isVerifying = false
+                    verifyError = (error as? NutritionScannerError)?.errorDescription
+                      ?? error.localizedDescription
+                }
+            }
+        }
+    }
+
+
+    func applyReviewSelection(parsed: ParsedIngredient, ids: Set<String>) {
+        guard !ids.isEmpty else { return }
+        var updated = ingredient
+        ScanDiff.apply(parsed: parsed, ids: ids, to: &updated)
+        ingredient = updated
+        ingredientMgr.update(updated)
+    }
+}
+
+
+struct VerifyReview: Identifiable {
+    let id = UUID()
+    let parsed: ParsedIngredient
+    let changes: [ScanDiff.Change]
+    let autoAppliedCount: Int
+}
+
+
+// Per-row accept/skip for the fields that weren't auto-applied
+// (price + anything the model flagged low-confidence). Price is
+// deselected by default so the user must opt into a web-sourced
+// price; everything else defaults selected.
+struct VerifyReviewSheet: View {
+
+    @Environment(\.presentationMode) private var presentationMode
+    let review: VerifyReview
+    let onApply: (Set<String>) -> Void
+
+    @State private var selected: Set<String> = []
+
+    var body: some View {
+        NavigationView {
+            Form {
+                Section {
+                    Text("\(review.autoAppliedCount) confident field\(review.autoAppliedCount == 1 ? "" : "s") already applied. Review these \u{2014} price comes from a live web search and is approximate.")
+                      .font(.caption)
+                }
+                Section(header: Text("Proposed changes")) {
+                    ForEach(review.changes) { c in
+                        Button {
+                            if selected.contains(c.id) {
+                                selected.remove(c.id)
+                            } else {
+                                selected.insert(c.id)
+                            }
+                        } label: {
+                            HStack(spacing: 10) {
+                                Image(systemName: selected.contains(c.id)
+                                        ? "checkmark.circle.fill" : "circle")
+                                  .foregroundColor(Color.theme.blueYellow)
+                                VStack(alignment: .leading, spacing: 2) {
+                                    Text(c.field)
+                                      .font(.callout)
+                                      .foregroundColor(Color.theme.blackWhite)
+                                    Text("\(c.oldValue) \u{2192} \(c.newValue)")
+                                      .font(.caption)
+                                      .foregroundColor(Color.theme.blackWhiteSecondary)
+                                }
+                                Spacer()
+                            }
+                        }
+                    }
+                }
+            }
+              .navigationTitle("Review changes")
+              .navigationBarTitleDisplayMode(.inline)
+              .toolbar {
+                  ToolbarItem(placement: .navigation) {
+                      Button("Skip") {
+                          presentationMode.wrappedValue.dismiss()
+                      }
+                        .foregroundColor(Color.theme.blueYellow)
+                  }
+                  ToolbarItem(placement: .primaryAction) {
+                      Button("Apply") {
+                          onApply(selected)
+                          presentationMode.wrappedValue.dismiss()
+                      }
+                        .foregroundColor(Color.theme.blueYellow)
+                        .disabled(selected.isEmpty)
+                  }
+              }
+              .onAppear {
+                  selected = Set(review.changes.map { $0.id })
+                    .subtracting(["price"])
+              }
+        }
     }
 }

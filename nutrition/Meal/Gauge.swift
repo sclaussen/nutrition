@@ -33,6 +33,8 @@ struct Gauge: View {
     var warningThreshold: Double
     var errorThreshold: Double
     var type: GaugeType
+    var secondaryGoal: Double
+    var secondaryGoalPrecision: Int
 
     init(title: String = "",
          titleFontColor: Color = Color.theme.blackWhite,
@@ -57,6 +59,11 @@ struct Gauge: View {
          warningThreshold: Double = 5,
          errorThreshold: Double = 10,
          type: GaugeType = GaugeType.goal,
+         // Optional reference value rendered as a smaller line below
+         // the goal value (e.g. TDEE/maintenance calories below the
+         // 80%-of-TDEE goal).  Set to 0 to omit.
+         secondaryGoal: Double = 0,
+         secondaryGoalPrecision: Int = 0,
          scale: Double = 1.0) {
 
         self.title = title
@@ -82,6 +89,8 @@ struct Gauge: View {
         self.warningThreshold = warningThreshold
         self.errorThreshold = errorThreshold
         self.type = type
+        self.secondaryGoal = secondaryGoal
+        self.secondaryGoalPrecision = secondaryGoalPrecision
 
         if type == .value {
             self.titleOffset = 0 - (side / 2 + side * 0.05)
@@ -91,8 +100,13 @@ struct Gauge: View {
             self.progressLineWidth = self.progressLineWidth / 2.2
             self.progressLineNormal = Color.theme.blue
         } else {
-            self.titleOffset = 0 - (side / 2 + side * 0.21)
-            self.actualOffset = 0 - side * 0.1
+            // Title-to-gauge distance: 0.50 of side pushes the title
+            // well clear of the donut top, with visible whitespace
+            // between them (was 0.35 — still felt cramped).
+            self.titleOffset = 0 - (side / 2 + side * 0.50)
+            // Big number sits dead-center on the donut; the unit
+            // text ("cal", "grams") trails below via its own offset.
+            self.actualOffset = 0
         }
     }
 
@@ -104,7 +118,12 @@ struct Gauge: View {
               .font(.system(size: titleFontSize))
               .foregroundColor(titleFontColor)
               .bold()
-              .frame(width: side)
+              .lineLimit(1)
+              // .fixedSize lets the title use its natural one-line width
+              // so longer labels ("NCarbs", "Protein") don't wrap when
+              // the title font grows past what side-width can hold.
+              // Centering is preserved via the parent ZStack alignment.
+              .fixedSize(horizontal: true, vertical: false)
               .offset(y: titleOffset)
 
             Circle()
@@ -137,10 +156,55 @@ struct Gauge: View {
               .offset(y: actualOffset)
 
             if goal > 0 {
-                Text(format(goal, goalPrecision))
-                  .foregroundColor(annotationFontColor)
-                  .font(.system(size: goalFontSize))
-                  .offset(y: side / 2 - side * 0.1)
+                // Percentage rendered to the LEFT of the goal value
+                // ("73% / 2,303").  pct is %-of-TDEE for the Calories
+                // gauge (where secondaryGoal = TDEE), %-of-goal for the
+                // other gauges.  For .ceiling gauges (NCarbs), the %
+                // turns red once it crosses 100% — visual cue that you
+                // went over your hard limit.
+                //
+                // VStack offset shifted DOWN by half the secondary line's
+                // height (only when secondaryGoal is shown) so the "Goal"
+                // label stays y-aligned with the other gauges in the row.
+                let pct: Int = secondaryGoal > 0
+                    ? Int((actual / secondaryGoal * 100).rounded())
+                    : Int((actual / goal * 100).rounded())
+                let pctColor: Color = (type == .ceiling && pct > 100)
+                    ? progressLineError
+                    : annotationFontColor
+                let secondaryShift: Double = secondaryGoal > 0 ? goalFontSize * 0.85 / 2 : 0
+                VStack(spacing: 0) {
+                    Text("Goal")
+                      .foregroundColor(annotationFontColor)
+                      .font(.system(size: goalFontSize * 0.7))
+                    HStack(spacing: 0) {
+                        Text("\(pct)%")
+                          .bold()
+                          .foregroundColor(pctColor)
+                        Text(" / \(format(goal, goalPrecision))")
+                          .bold()
+                          .foregroundColor(annotationFontColor)
+                    }
+                      .font(.system(size: goalFontSize))
+                      .lineLimit(1)
+                      .fixedSize(horizontal: true, vertical: false)
+                    if secondaryGoal > 0 {
+                        // "<actual - TDEE> / <TDEE>" — negative when you
+                        // still have room under TDEE (e.g. "-2,091 /
+                        // 2,879"), positive when you've gone over.  The
+                        // sign comes for free from NumberFormatter, so
+                        // values above TDEE render without a leading
+                        // minus per the requested behavior.
+                        let diff = (actual - secondaryGoal).rounded()
+                        Text("\(format(diff, 0)) / \(format(secondaryGoal, secondaryGoalPrecision))")
+                          .foregroundColor(annotationFontColor)
+                          .font(.system(size: goalFontSize * 0.85))
+                    }
+                }
+                  // +4pt nudge — pushes "Goal" (and the percent line
+                  // beneath it) a few pixels lower so it doesn't crowd
+                  // the bottom of the gauge ring.
+                  .offset(y: side / 2 + side * 0.02 + 4 + secondaryShift)
             }
         }.frame(width: side * 1.25)
     }

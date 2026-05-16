@@ -12,6 +12,7 @@ enum Unit: ValueType {
     case microgram
     case milligram
     case piece
+    case pill
     case slice
     case tablespoon
     case whole
@@ -38,9 +39,10 @@ enum Unit: ValueType {
         case .egg: return "egg"
         case .gram: return "gram"
         case .internationalUnit: return "IU"
-        case .microgram: return "mg"
-        case .milligram: return "ug"
+        case .microgram: return "mcg"
+        case .milligram: return "mg"
         case .piece: return "piece"
+        case .pill: return "pill"
         case .slice: return "slice"
         case .tablespoon: return "tbsp"
         case .whole: return "whole"
@@ -69,9 +71,10 @@ enum Unit: ValueType {
         case .egg: return "eggs"
         case .gram: return "grams"
         case .internationalUnit: return "IUs"
-        case .microgram: return "mgs"
-        case .milligram: return "ugs"
+        case .microgram: return "mcgs"
+        case .milligram: return "mgs"
         case .piece: return "pieces"
+        case .pill: return "pills"
         case .slice: return "slices"
         case .tablespoon: return "tbsps"
         case .whole: return "whole"

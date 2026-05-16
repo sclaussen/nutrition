@@ -6,36 +6,44 @@ import SwiftUI
 // we reserve the same width manually to keep columns aligned.
 private let chevronTrail: CGFloat = 18
 
-private let minWidth: CGFloat    = 60
-private let maxWidth: CGFloat    = 60
-private let actualWidth: CGFloat = 60
-private let unitWidth: CGFloat   = 50
+private let minWidth: CGFloat        = 60
+private let maxWidth: CGFloat        = 60
+// Actual + unit are rendered as a single right-justified string ("4.7 mgs"),
+// so this column is sized to fit the widest expected combo (e.g. "10,000 mcgs").
+private let actualUnitWidth: CGFloat = 110
 
 
 struct VitaminMineralRowHeader: View {
+    // Set false when rendered outside a List/NavigationLink context
+    // (e.g. in a plain VStack) — there's no auto-chevron to reserve
+    // space for, so the trailing spacer must collapse to keep the
+    // headers aligned over the data columns.
+    var reserveChevronSpace: Bool = true
+
     var body: some View {
         HStack(spacing: 5) {
             Text("Vitamin/Mineral")
-              .font(.caption)
+              // .callout matches the data row's name font so the
+              // first column reads at the same visual weight as the
+              // entries below.
+              .font(.callout)
               .foregroundColor(Color.theme.blueYellow)
               .frame(maxWidth: .infinity, alignment: .leading)
             Text("Min")
-              .font(.caption2)
+              .font(.callout)
               .foregroundColor(Color.theme.blueYellow)
               .frame(width: minWidth, alignment: .trailing)
             Text("Max")
-              .font(.caption2)
+              .font(.callout)
               .foregroundColor(Color.theme.blueYellow)
               .frame(width: maxWidth, alignment: .trailing)
             Text("Actual")
-              .font(.caption2)
+              .font(.callout)
               .foregroundColor(Color.theme.blueYellow)
-              .frame(width: actualWidth, alignment: .trailing)
-            Text("Unit")
-              .font(.caption2)
-              .foregroundColor(Color.theme.blueYellow)
-              .frame(width: unitWidth, alignment: .leading)
-            Spacer().frame(width: chevronTrail)
+              .frame(width: actualUnitWidth, alignment: .trailing)
+            if reserveChevronSpace {
+                Spacer().frame(width: chevronTrail)
+            }
         }
     }
 }
@@ -55,19 +63,25 @@ struct VitaminMineralRow: View {
               .font(.callout)
               .foregroundColor(nameColor)
               .frame(maxWidth: .infinity, alignment: .leading)
-            Text("\(min.formattedString(0))")
-              .font(.caption2)
+            Text("\(min.formattedString(precision))")
+              .font(.callout)
               .frame(width: minWidth, alignment: .trailing)
-            Text(max > 0 ? "\(max.formattedString(0))" : "—")
-              .font(.caption2)
+            Text(max > 0 ? "\(max.formattedString(precision))" : "—")
+              .font(.callout)
               .frame(width: maxWidth, alignment: .trailing)
-            Text("\(actual.formattedString(0))")
-              .font(.caption2)
-              .frame(width: actualWidth, alignment: .trailing)
-            Text(unit.pluralForm)
-              .font(.caption)
-              .frame(width: unitWidth, alignment: .leading)
+            Text("\(actual.formattedString(precision)) \(unit.pluralForm)")
+              .font(.callout)
+              .frame(width: actualUnitWidth, alignment: .trailing)
         }
+    }
+
+
+    // Decimals to show.  Small-value nutrients (e.g. Pantothenic Acid
+    // min 5, Riboflavin min 1.3) need 1 decimal so a near-miss shows as
+    // "4.7 vs 5.0" instead of misleadingly rounding both to "5"; large-
+    // value ones (e.g. Phosphorus min 700) read fine as integers.
+    private var precision: Int {
+        return min < 10 ? 1 : 0
     }
 
 

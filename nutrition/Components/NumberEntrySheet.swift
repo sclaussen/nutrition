@@ -60,8 +60,26 @@ struct NumberEntrySheet: View {
                   }
               }
               .onAppear {
+                  // Sheet-presentation animation can swallow a focus
+                  // state set on the very first run loop. A small
+                  // delay lets the animation settle so the keyboard
+                  // reliably appears and the field grabs the
+                  // responder.
                   DispatchQueue.main.asyncAfter(deadline: .now() + 0.4) {
                       focused = true
+                  }
+              }
+              // Pre-select all text the instant the field actually
+              // becomes the first responder (numeric-entry UX: first
+              // keystroke replaces the prior value instead of
+              // appending). Notification-driven rather than
+              // timer-driven so it fires when the UITextField is
+              // genuinely ready — the previous fixed-delay
+              // sendAction(selectAll:) was racing and leaving the
+              // cursor at the end instead of selecting the digits.
+              .onReceive(NotificationCenter.default.publisher(for: UITextField.textDidBeginEditingNotification)) { note in
+                  if let tf = note.object as? UITextField {
+                      tf.selectedTextRange = tf.textRange(from: tf.beginningOfDocument, to: tf.endOfDocument)
                   }
               }
         }

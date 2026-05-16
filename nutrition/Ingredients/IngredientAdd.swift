@@ -6,6 +6,15 @@ struct IngredientAdd: View {
     @EnvironmentObject var adjustmentMgr: AdjustmentMgr
     @EnvironmentObject var mealIngredientMgr: MealIngredientMgr
 
+    // Optional scan result. When non-nil, fields are populated
+    // from it on appear, and the names listed in
+    // `lowConfidenceFields` get a yellow tint in the form.
+    let prefill: ParsedIngredient?
+
+    init(prefill: ParsedIngredient? = nil) {
+        self.prefill = prefill
+    }
+
     @State var name: String = ""
 
     @State var url: String = ""
@@ -45,6 +54,7 @@ struct IngredientAdd: View {
     @State var vitaminE: Double = 0
     @State var vitaminK: Double = 0
     @State var thiamin: Double = 0
+    @State var riboflavin: Double = 0
     @State var niacin: Double = 0
     @State var vitaminB6: Double = 0
     @State var folate: Double = 0
@@ -59,12 +69,16 @@ struct IngredientAdd: View {
 
     var body: some View {
         Form {
+            if let prefill = prefill, !prefill.lowConfidenceFields.isEmpty {
+                lowConfidenceBanner(fields: prefill.lowConfidenceFields)
+            }
             mainSections
             meatSection
             quickAddSection
             vitaminAndMineralsSection
         }
           .padding([.leading, .trailing], -20)
+          .onAppear { applyPrefill() }
           .navigationBarBackButtonHidden(true)
           .toolbar {
               ToolbarItem(placement: .navigation) {
@@ -94,6 +108,10 @@ struct IngredientAdd: View {
 
     func save() {
         withAnimation {
+            // Previously the V&M state vars on this view were collected
+            // by the form but discarded at save — `create()` was being
+            // called with only macro fields.  Pass them through so the
+            // values entered actually persist on the new ingredient.
             ingredientMgr.create(name: name,
                                  servingSize: servingSize,
                                  calories: calories,
@@ -101,12 +119,33 @@ struct IngredientAdd: View {
                                  fiber: fiber,
                                  netCarbs: netCarbs,
                                  protein: protein,
+                                 omega3: omega3,
+                                 zinc: zinc,
+                                 vitaminK: vitaminK,
+                                 vitaminE: vitaminE,
+                                 vitaminD: vitaminD,
+                                 vitaminC: vitaminC,
+                                 vitaminB6: vitaminB6,
+                                 vitaminB12: vitaminB12,
+                                 vitaminA: vitaminA,
+                                 thiamin: thiamin,
+                                 selenium: selenium,
+                                 riboflavin: riboflavin,
+                                 potassium: potassium,
+                                 phosphorus: phosphorus,
+                                 pantothenicAcid: pantothenicAcid,
+                                 niacin: niacin,
+                                 manganese: manganese,
+                                 magnesium: magnesium,
+                                 iron: iron,
+                                 folate: folate,
+                                 copper: copper,
+                                 calcium: calcium,
                                  consumptionUnit: consumptionUnit,
                                  consumptionGrams: consumptionGrams,
                                  meat: meat,
                                  meatAmount: 0,
                                  mealAdjustments: mealAdjustments,
-                                 available: true,
                                  verified: "")
             if ingredientAdd {
                 mealIngredientMgr.create(name: name,
@@ -131,6 +170,77 @@ struct IngredientAdd2_Previews: PreviewProvider {
 }
 
 extension IngredientAdd {
+
+    // ============================================================
+    // Apply LLM-parsed values to the form's @State vars. Only
+    // touches fields the LLM actually filled in (non-nil) — a
+    // missing field on the parsed side leaves the user-entered
+    // (or default-zero) value alone. A non-empty parsed name
+    // wins over the blank @State default.
+    // ============================================================
+    fileprivate func applyPrefill() {
+        guard let p = prefill else { return }
+
+        if !p.name.isEmpty { name = p.name }
+        if let v = p.brand    { company = v }
+        if let v = p.fullName { product = v }
+        if let v = p.url      { url = v }
+
+        if let v = p.servingSize      { servingSize = v }
+        if let v = p.calories         { calories = v }
+        if let v = p.fat              { fat = v }
+        if let v = p.fiber            { fiber = v }
+        if let v = p.netCarbs         { netCarbs = v }
+        if let v = p.protein          { protein = v }
+
+        consumptionUnit = p.consumptionUnitEnum
+        if let v = p.consumptionGrams { consumptionGrams = v }
+
+        if let v = p.omega3          { omega3 = v }
+        if let v = p.vitaminD        { vitaminD = v }
+        if let v = p.calcium         { calcium = v }
+        if let v = p.iron            { iron = v }
+        if let v = p.potassium       { potassium = v }
+        if let v = p.vitaminA        { vitaminA = v }
+        if let v = p.vitaminC        { vitaminC = v }
+        if let v = p.vitaminE        { vitaminE = v }
+        if let v = p.vitaminK        { vitaminK = v }
+        if let v = p.thiamin         { thiamin = v }
+        if let v = p.riboflavin      { riboflavin = v }
+        if let v = p.niacin          { niacin = v }
+        if let v = p.vitaminB6       { vitaminB6 = v }
+        if let v = p.folate          { folate = v }
+        if let v = p.vitaminB12      { vitaminB12 = v }
+        if let v = p.pantothenicAcid { pantothenicAcid = v }
+        if let v = p.phosphorus      { phosphorus = v }
+        if let v = p.magnesium       { magnesium = v }
+        if let v = p.zinc            { zinc = v }
+        if let v = p.selenium        { selenium = v }
+        if let v = p.copper          { copper = v }
+        if let v = p.manganese       { manganese = v }
+    }
+
+
+    // Yellow banner listing the field names the LLM was unsure
+    // about. We don't try to per-row tint individual NameValue
+    // controls — the prefill flow lets the user eyeball
+    // everything anyway, and this single banner is enough of a
+    // "double-check these" cue without restructuring NameValue.
+    fileprivate func lowConfidenceBanner(fields: [String]) -> some View {
+        Section {
+            VStack(alignment: .leading, spacing: 4) {
+                Label("Low-confidence fields", systemImage: "exclamationmark.triangle.fill")
+                  .font(.callout)
+                  .foregroundColor(.orange)
+                Text(fields.joined(separator: ", "))
+                  .font(.caption)
+                  .foregroundColor(Color.theme.blackWhiteSecondary)
+            }
+              .padding(.vertical, 4)
+        }
+    }
+
+
     private var mainSections: some View {
         Group {
             Section {
@@ -205,36 +315,37 @@ extension IngredientAdd {
     }
 
     private var vitaminAndMineralsSection: some View {
+        // V&M fields are always visible (toggle gate removed) — see
+        // matching note in IngredientEdit.swift.  New ingredients can
+        // record V&M values directly without first enabling a toggle.
         Section(header: Text("Vitamins and Minerals")) {
-            NameValue("Add vitamins and minerals", $vitaminsAndMinerals, control: .toggle)
-            if vitaminsAndMinerals {
-                Group {
-                    NameValue("Omega-3", $omega3, edit: true)
-                    NameValue("Vitamin D", $vitaminD, edit: true)
-                    NameValue("Calcium", $calcium, edit: true)
-                    NameValue("Iron", $iron, edit: true)
-                    NameValue("Potassium", $potassium, edit: true)
-                    NameValue("Vitamin A", $vitaminA, edit: true)
-                    NameValue("Vitamin C", $vitaminC, edit: true)
-                    NameValue("Vitamin E", $vitaminE, edit: true)
-                    NameValue("Vitamin K", $vitaminK, edit: true)
-                    NameValue("Thiamin", $thiamin, edit: true)
-                }
-                Group {
-                    NameValue("Vitamin B6", $vitaminB6, edit: true)
-                    NameValue("Folate", $folate, edit: true)
-                    NameValue("Vitamin B12", $vitaminB12, edit: true)
-                    NameValue("Pantothenic Acid", $pantothenicAcid, edit: true)
-                    NameValue("Phosphorus", $phosphorus, edit: true)
-                    NameValue("Magnesium", $magnesium, edit: true)
-                    NameValue("Zinc", $zinc, edit: true)
-                    NameValue("Selenium", $selenium, edit: true)
-                    NameValue("Copper", $copper, edit: true)
-                    NameValue("Manganese", $manganese, edit: true)
-                }
-                Group {
-                    NameValue("Niacin", $niacin, edit: true)
-                }
+            Group {
+                NameValue("Omega-3", $omega3, edit: true)
+                NameValue("Vitamin D", $vitaminD, edit: true)
+                NameValue("Calcium", $calcium, edit: true)
+                NameValue("Iron", $iron, edit: true)
+                NameValue("Potassium", $potassium, edit: true)
+                NameValue("Vitamin A", $vitaminA, edit: true)
+                NameValue("Vitamin C", $vitaminC, edit: true)
+                NameValue("Vitamin E", $vitaminE, edit: true)
+                NameValue("Vitamin K", $vitaminK, edit: true)
+                NameValue("Thiamin", $thiamin, edit: true)
+            }
+            Group {
+                NameValue("Vitamin B6", $vitaminB6, edit: true)
+                NameValue("Folate", $folate, edit: true)
+                NameValue("Vitamin B12", $vitaminB12, edit: true)
+                NameValue("Pantothenic Acid", $pantothenicAcid, edit: true)
+                NameValue("Phosphorus", $phosphorus, edit: true)
+                NameValue("Magnesium", $magnesium, edit: true)
+                NameValue("Zinc", $zinc, edit: true)
+                NameValue("Selenium", $selenium, edit: true)
+                NameValue("Copper", $copper, edit: true)
+                NameValue("Manganese", $manganese, edit: true)
+            }
+            Group {
+                NameValue("Niacin", $niacin, edit: true)
+                NameValue("Riboflavin", $riboflavin, edit: true)
             }
         }
     }

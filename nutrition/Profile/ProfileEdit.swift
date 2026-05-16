@@ -9,6 +9,15 @@ struct ProfileEdit: View {
 
     var body: some View {
         Form {
+            Section(header: Text("Scanner")) {
+                // Moved here from the Prep page toolbar. The Anthropic
+                // API key lives in the Keychain (app-global, not tied
+                // to any screen), so relocating this entry point does
+                // not affect a previously-entered key — it's the same
+                // SettingsView reading the same Keychain item.
+                NavigationLink("Scanner Settings", destination: SettingsView())
+                NavigationLink("Verify All Ingredients", destination: VerifyAllWalkthrough())
+            }
             Section(header: Text("Base")) {
                 NameValue("Date of Birth", $profileMgr.profile.dateOfBirth, control: .date)
                 NameValue("Gender", $profileMgr.profile.gender, options: Gender.allCases, control: .picker)
@@ -40,30 +49,72 @@ struct ProfileEdit: View {
             }
             Section(header: Text("Gross (without the caloric deficit)")) {
                 Group {
-                    NameValue("Base Metabolic Rate", description: "Mifflin-St Jeor", $profileMgr.profile.caloriesBaseMetabolicRate, .calorie)
-                    NameValue("Resting Calories", description: "Mifflin-St Jeor BMR * 1.2", $profileMgr.profile.caloriesResting, .calorie)
-                    NameValue("Active Calories Burned", description: "daily calories burned due to exercise/movement", $profileMgr.profile.activeCaloriesBurned, .calorie)
-                    NameValue("Unadjusted Caloric Goal", description: "resting + active energy burned", $profileMgr.profile.caloriesGoalUnadjusted, .calorie)
-                    NameValue("Fat Goal", description: "caloric goal - netCarbs - protein", $profileMgr.profile.fatGoalUnadjusted)
-                    NameValue("Fiber Minimum", description: "14g fiber/1k consumed calories", $profileMgr.profile.fiberMinimumUnadjusted)
-                    NameValue("Net Carbs Maximum", description: "consumption max (carbs - fiber)", $profileMgr.profile.netCarbsMaximum)
-                    NameValue("Protein Goal", description: "lean body mass * protein ratio", $profileMgr.profile.proteinGoalUnadjusted)
-                    NameValue("Fat %", description: "percentage of calories from fat", $profileMgr.profile.fatGoalPercentageUnadjusted, .percentage)
-                    NameValue("Net Carbs %", description: "percentage of calories from carbs", $profileMgr.profile.netCarbsMaximumPercentageUnadjusted, .percentage)
+                    NavigationLink(destination: ProfileMetricDetail(metric: .baseMetabolicRate, profile: profileMgr.profile)) {
+                        NameValue("Base Metabolic Rate", description: "Mifflin-St Jeor", $profileMgr.profile.caloriesBaseMetabolicRate, .calorie)
+                    }
+                    NavigationLink(destination: ProfileMetricDetail(metric: .restingCalories, profile: profileMgr.profile)) {
+                        NameValue("Resting Calories", description: "Mifflin-St Jeor BMR * 1.2", $profileMgr.profile.caloriesResting, .calorie)
+                    }
+                    NavigationLink(destination: ProfileMetricDetail(metric: .activeCaloriesBurned, profile: profileMgr.profile)) {
+                        NameValue("Active Calories Burned", description: "daily calories burned due to exercise/movement", $profileMgr.profile.activeCaloriesBurned, .calorie)
+                    }
+                    NavigationLink(destination: ProfileMetricDetail(metric: .unadjustedCaloricGoal, profile: profileMgr.profile)) {
+                        NameValue("Unadjusted Caloric Goal", description: "resting + active energy burned", $profileMgr.profile.caloriesGoalUnadjusted, .calorie)
+                    }
+                    NavigationLink(destination: ProfileMetricDetail(metric: .fatGoalGross, profile: profileMgr.profile)) {
+                        NameValue("Fat Goal", description: "caloric goal - netCarbs - protein", $profileMgr.profile.fatGoalUnadjusted)
+                    }
+                    NavigationLink(destination: ProfileMetricDetail(metric: .fiberMinimumGross, profile: profileMgr.profile)) {
+                        NameValue("Fiber Minimum", description: "14g fiber/1k consumed calories", $profileMgr.profile.fiberMinimumUnadjusted)
+                    }
+                    NavigationLink(destination: ProfileMetricDetail(metric: .netCarbsMaximum, profile: profileMgr.profile)) {
+                        NameValue("Net Carbs Maximum", description: "consumption max (carbs - fiber)", $profileMgr.profile.netCarbsMaximum)
+                    }
+                    NavigationLink(destination: ProfileMetricDetail(metric: .proteinGoal, profile: profileMgr.profile)) {
+                        NameValue("Protein Goal", description: "lean body mass * protein ratio", $profileMgr.profile.proteinGoalUnadjusted)
+                    }
+                    NavigationLink(destination: ProfileMetricDetail(metric: .fatPercentGross, profile: profileMgr.profile)) {
+                        NameValue("Fat %", description: "percentage of calories from fat", $profileMgr.profile.fatGoalPercentageUnadjusted, .percentage)
+                    }
+                    NavigationLink(destination: ProfileMetricDetail(metric: .netCarbsPercentGross, profile: profileMgr.profile)) {
+                        NameValue("Net Carbs %", description: "percentage of calories from carbs", $profileMgr.profile.netCarbsMaximumPercentageUnadjusted, .percentage)
+                    }
                 }
-                NameValue("Protein %", description: "percentage of calories from protein", $profileMgr.profile.proteinGoalPercentageUnadjusted, .percentage)
+                NavigationLink(destination: ProfileMetricDetail(metric: .proteinPercentGross, profile: profileMgr.profile)) {
+                    NameValue("Protein %", description: "percentage of calories from protein", $profileMgr.profile.proteinGoalPercentageUnadjusted, .percentage)
+                }
             }
             Section(header: Text("Net (with the caloric deficit)")) {
-                NameValue("Unadjusted Caloric Goal", description: "gross caloric goal", $profileMgr.profile.caloriesGoalUnadjusted, .calorie)
-                NameValue("Caloric Deficit", description: "adjustment to daily gross caloric goal", $profileMgr.profile.calorieDeficit, .percentage)
-                NameValue("Net Caloric Goal", description: "with calorie deficit applied", $profileMgr.profile.caloriesGoal, .calorie)
-                NameValue("Fat Goal", description: "net caloric goal - netCarbs - protein", $profileMgr.profile.fatGoal)
-                NameValue("Fiber Minimum", description: "14g fiber/1000 consumed cal", $profileMgr.profile.fiberMinimum)
-                NameValue("Net Carbs Maximum", description: "consumption max (carbs - fiber)", $profileMgr.profile.netCarbsMaximum)
-                NameValue("Protein Goal", description: "lean body mass * protein ratio", $profileMgr.profile.proteinGoal)
-                NameValue("Fat %", description: "percentage of net calories from fat", $profileMgr.profile.fatGoalPercentage, .percentage)
-                NameValue("Net Carbs %", description: "percentage of net calories from carbs", $profileMgr.profile.netCarbsMaximumPercentage, .percentage)
-                NameValue("Protein %", description: "percentage of net calories from protein", $profileMgr.profile.proteinGoalPercentage, .percentage)
+                NavigationLink(destination: ProfileMetricDetail(metric: .unadjustedCaloricGoal, profile: profileMgr.profile)) {
+                    NameValue("Unadjusted Caloric Goal", description: "gross caloric goal", $profileMgr.profile.caloriesGoalUnadjusted, .calorie)
+                }
+                NavigationLink(destination: ProfileMetricDetail(metric: .caloricDeficit, profile: profileMgr.profile)) {
+                    NameValue("Caloric Deficit", description: "adjustment to daily gross caloric goal", $profileMgr.profile.calorieDeficit, .percentage)
+                }
+                NavigationLink(destination: ProfileMetricDetail(metric: .netCaloricGoal, profile: profileMgr.profile)) {
+                    NameValue("Net Caloric Goal", description: "with calorie deficit applied", $profileMgr.profile.caloriesGoal, .calorie)
+                }
+                NavigationLink(destination: ProfileMetricDetail(metric: .fatGoalNet, profile: profileMgr.profile)) {
+                    NameValue("Fat Goal", description: "net caloric goal - netCarbs - protein", $profileMgr.profile.fatGoal)
+                }
+                NavigationLink(destination: ProfileMetricDetail(metric: .fiberMinimumNet, profile: profileMgr.profile)) {
+                    NameValue("Fiber Minimum", description: "14g fiber/1000 consumed cal", $profileMgr.profile.fiberMinimum)
+                }
+                NavigationLink(destination: ProfileMetricDetail(metric: .netCarbsMaximum, profile: profileMgr.profile)) {
+                    NameValue("Net Carbs Maximum", description: "consumption max (carbs - fiber)", $profileMgr.profile.netCarbsMaximum)
+                }
+                NavigationLink(destination: ProfileMetricDetail(metric: .proteinGoal, profile: profileMgr.profile)) {
+                    NameValue("Protein Goal", description: "lean body mass * protein ratio", $profileMgr.profile.proteinGoal)
+                }
+                NavigationLink(destination: ProfileMetricDetail(metric: .fatPercentNet, profile: profileMgr.profile)) {
+                    NameValue("Fat %", description: "percentage of net calories from fat", $profileMgr.profile.fatGoalPercentage, .percentage)
+                }
+                NavigationLink(destination: ProfileMetricDetail(metric: .netCarbsPercentNet, profile: profileMgr.profile)) {
+                    NameValue("Net Carbs %", description: "percentage of net calories from carbs", $profileMgr.profile.netCarbsMaximumPercentage, .percentage)
+                }
+                NavigationLink(destination: ProfileMetricDetail(metric: .proteinPercentNet, profile: profileMgr.profile)) {
+                    NameValue("Protein %", description: "percentage of net calories from protein", $profileMgr.profile.proteinGoalPercentage, .percentage)
+                }
             }
         }
         // .environment(\.defaultMinListRowHeight, 60)
@@ -116,3 +167,343 @@ struct ProfileEdit: View {
 //        }
 //    }
 //}
+
+
+// =============================================================
+// ProfileMetricDetail — chevron-driven inline documentation for
+// the derived rows in the Gross and Net sections of ProfileEdit.
+// Each row pushes a detail page explaining what the value is,
+// how it's derived (formula + live inputs from the profile),
+// and any notes worth knowing.
+// =============================================================
+
+enum ProfileMetric {
+    case baseMetabolicRate
+    case restingCalories
+    case activeCaloriesBurned
+    case unadjustedCaloricGoal
+    case caloricDeficit
+    case netCaloricGoal
+    case fatGoalGross
+    case fatGoalNet
+    case fiberMinimumGross
+    case fiberMinimumNet
+    case netCarbsMaximum
+    case proteinGoal           // identical formula in gross + net (depends on body comp, not calories)
+    case fatPercentGross
+    case fatPercentNet
+    case netCarbsPercentGross
+    case netCarbsPercentNet
+    case proteinPercentGross
+    case proteinPercentNet
+}
+
+
+struct ProfileMetricDoc {
+    let title: String
+    let result: String                                     // "1,856 cals"
+    let what: String                                       // plain-English summary
+    let formula: String                                    // math notation, monospaced
+    let inputs: [(label: String, value: String)]
+    let notes: String?
+}
+
+
+struct ProfileMetricDetail: View {
+
+    let metric: ProfileMetric
+    let profile: Profile
+
+    var body: some View {
+        let doc = profileMetricDoc(metric, profile: profile)
+        Form {
+            Section("Value") {
+                HStack {
+                    Text("Current")
+                      .font(.callout)
+                    Spacer()
+                    Text(doc.result)
+                      .font(.body.monospacedDigit())
+                      .foregroundColor(Color.theme.blueYellow)
+                }
+            }
+
+            Section("What it is") {
+                Text(doc.what)
+                  .font(.callout)
+            }
+
+            Section("Formula") {
+                Text(doc.formula)
+                  .font(.callout.monospaced())
+            }
+
+            if !doc.inputs.isEmpty {
+                Section("Current inputs") {
+                    ForEach(doc.inputs.indices, id: \.self) { i in
+                        HStack {
+                            Text(doc.inputs[i].label)
+                              .font(.callout)
+                            Spacer()
+                            Text(doc.inputs[i].value)
+                              .font(.body.monospacedDigit())
+                              .foregroundColor(Color.theme.blackWhiteSecondary)
+                        }
+                    }
+                }
+            }
+
+            if let notes = doc.notes {
+                Section("Notes") {
+                    Text(notes)
+                      .font(.caption)
+                }
+            }
+        }
+          .navigationTitle(doc.title)
+          .navigationBarTitleDisplayMode(.inline)
+    }
+}
+
+
+// Helper: format a Double with units. The integer-cal/g/% style
+// matches what the rows render via NameValue's default precision.
+private func cals(_ v: Double) -> String { "\(v.formattedString(0)) cals" }
+private func grams(_ v: Double) -> String { "\(v.formattedString(0)) g" }
+private func pct(_ v: Double)  -> String { "\(v.formattedString(0))%" }
+
+
+func profileMetricDoc(_ metric: ProfileMetric, profile: Profile) -> ProfileMetricDoc {
+
+    switch metric {
+
+    case .baseMetabolicRate:
+        return ProfileMetricDoc(
+          title: "Base Metabolic Rate",
+          result: cals(profile.caloriesBaseMetabolicRate),
+          what: "Calories your body burns at complete rest — what it takes to keep your organs running. Doesn't include any movement, digestion, or exercise.",
+          formula: profile.gender == .male
+            ? "Mifflin-St Jeor (male):\n  9.99·weight(kg)\n+ 6.25·height(cm)\n− (4.92·age + 5)"
+            : "Mifflin-St Jeor (female):\n  9.99·weight(kg)\n+ 6.25·height(cm)\n− (4.92·age − 161)",
+          inputs: [
+            ("weight",  "\(profile.bodyMassKg.formattedString(1)) kg"),
+            ("height",  "\(profile.heightCm.formattedString(1)) cm"),
+            ("age",     "\(profile.age.formattedString(1)) yrs"),
+            ("gender",  profile.gender.formattedString(0)),
+          ],
+          notes: "Mifflin-St Jeor is the modern replacement for Harris-Benedict; ~5% more accurate in non-athletes. Female formula's −161 is conventional; ours uses 4.92·age (Mifflin's published coefficient) rather than the rounded 5."
+        )
+
+    case .restingCalories:
+        return ProfileMetricDoc(
+          title: "Resting Calories",
+          result: cals(profile.caloriesResting),
+          what: "Calories you'd burn across a sedentary day — BMR plus the energy used by light activity (sitting, eating, fidgeting). Does NOT include intentional exercise.",
+          formula: "BMR · 1.2",
+          inputs: [
+            ("BMR",                 cals(profile.caloriesBaseMetabolicRate)),
+            ("activity multiplier", "1.2 (sedentary)"),
+          ],
+          notes: "The 1.2 factor is the standard Harris-Benedict 'sedentary' multiplier. Active Calories Burned is tracked separately so this stays stable."
+        )
+
+    case .activeCaloriesBurned:
+        return ProfileMetricDoc(
+          title: "Active Calories Burned",
+          result: cals(profile.activeCaloriesBurned),
+          what: "Calories you burn on top of resting through exercise and intentional movement. A stored value — update it when your activity meaningfully changes.",
+          formula: "Stored value (you set it on Profile)",
+          inputs: [],
+          notes: "Day-to-day fluctuations don't matter. Treat this as a weekly average for the kind of activity you actually do. HealthKit integration is a TODO."
+        )
+
+    case .unadjustedCaloricGoal:
+        return ProfileMetricDoc(
+          title: "Unadjusted Caloric Goal",
+          result: cals(profile.caloriesGoalUnadjusted),
+          what: "Total daily calories before the deficit is applied. This is what you'd eat to maintain your current weight given your activity.",
+          formula: "Resting Calories + Active Calories Burned",
+          inputs: [
+            ("resting", cals(profile.caloriesResting)),
+            ("active",  cals(profile.activeCaloriesBurned)),
+          ],
+          notes: nil
+        )
+
+    case .caloricDeficit:
+        return ProfileMetricDoc(
+          title: "Caloric Deficit",
+          result: "\(profile.calorieDeficit)%",
+          what: "Percentage cut applied to the gross caloric goal to drive weight loss. Higher = faster loss but harder to sustain and more lean-mass risk.",
+          formula: "Stored value (you set it on Profile)",
+          inputs: [],
+          notes: "10–15% is mild, 20% is moderate, >25% is aggressive. Protein and net-carb floors stay fixed across the cut to protect muscle and stay below carb tolerance."
+        )
+
+    case .netCaloricGoal:
+        return ProfileMetricDoc(
+          title: "Net Caloric Goal",
+          result: cals(profile.caloriesGoal),
+          what: "Your actual daily calorie target after applying the deficit. This is the number you eat to.",
+          formula: "Unadjusted Caloric Goal · (1 − Deficit%)",
+          inputs: [
+            ("unadjusted goal", cals(profile.caloriesGoalUnadjusted)),
+            ("deficit",         "\(profile.calorieDeficit)%"),
+          ],
+          notes: nil
+        )
+
+    case .fatGoalGross:
+        return ProfileMetricDoc(
+          title: "Fat Goal (Gross)",
+          result: grams(profile.fatGoalUnadjusted),
+          what: "Grams of fat per day at the gross (no-deficit) caloric goal. Computed as whatever's left after protein and net-carbs are subtracted.",
+          formula: "(Caloric Goal − (Protein·4 + NetCarbs·4)) / 9",
+          inputs: [
+            ("caloric goal", cals(profile.caloriesGoalUnadjusted)),
+            ("protein",      grams(profile.proteinGoalUnadjusted)),
+            ("net carbs",    grams(profile.netCarbsMaximum)),
+          ],
+          notes: "Fat is 9 cal/g; protein and net-carbs are 4 cal/g. On keto, fat is the elastic macro — it absorbs whatever caloric room is left."
+        )
+
+    case .fatGoalNet:
+        return ProfileMetricDoc(
+          title: "Fat Goal (Net)",
+          result: grams(profile.fatGoal),
+          what: "Grams of fat per day at the net (after-deficit) caloric goal. This is your actual daily fat target.",
+          formula: "(Net Caloric Goal − (Protein·4 + NetCarbs·4)) / 9",
+          inputs: [
+            ("net caloric goal", cals(profile.caloriesGoal)),
+            ("protein",          grams(profile.proteinGoal)),
+            ("net carbs",        grams(profile.netCarbsMaximum)),
+          ],
+          notes: "Fat absorbs the deficit. Protein and net-carb caps stay the same regardless of how aggressive the deficit is."
+        )
+
+    case .fiberMinimumGross:
+        return ProfileMetricDoc(
+          title: "Fiber Minimum (Gross)",
+          result: grams(profile.fiberMinimumUnadjusted),
+          what: "Daily fiber target scaled to the gross caloric goal — 14 grams per 1,000 calories. A standard digestive-health rule of thumb.",
+          formula: "(Caloric Goal / 1000) · 14",
+          inputs: [
+            ("caloric goal", cals(profile.caloriesGoalUnadjusted)),
+          ],
+          notes: "Source: USDA / Dietary Guidelines for Americans. Floor only — going over is fine."
+        )
+
+    case .fiberMinimumNet:
+        return ProfileMetricDoc(
+          title: "Fiber Minimum (Net)",
+          result: grams(profile.fiberMinimum),
+          what: "Daily fiber target scaled to the net caloric goal. The number you actually aim for since you're eating to the net goal.",
+          formula: "(Net Caloric Goal / 1000) · 14",
+          inputs: [
+            ("net caloric goal", cals(profile.caloriesGoal)),
+          ],
+          notes: "Same 14g/1000kcal rule. The smaller denominator gives a lower floor than the gross version."
+        )
+
+    case .netCarbsMaximum:
+        return ProfileMetricDoc(
+          title: "Net Carbs Maximum",
+          result: grams(profile.netCarbsMaximum),
+          what: "Daily ceiling on net carbs (total carbs − fiber). Stored manually on the Base section. The same value applies in both gross and net since it's not derived from the caloric goal.",
+          formula: "Stored value (you set it on Profile)",
+          inputs: [],
+          notes: "20g is the standard ketogenic threshold. Lower for stricter ketosis (15g) or carnivore (close to 0). Going over kicks you out of ketosis."
+        )
+
+    case .proteinGoal:
+        return ProfileMetricDoc(
+          title: "Protein Goal",
+          result: grams(profile.proteinGoalUnadjusted),
+          what: "Daily protein target. Depends on body composition rather than caloric goal, so the same value applies in both gross and net.",
+          formula: "Lean Body Mass · Protein Ratio",
+          inputs: [
+            ("lean body mass", "\(profile.leanBodyMass.formattedString(1)) lb"),
+            ("protein ratio",  "\(profile.proteinRatio.formattedString(2)) g/lb LBM"),
+          ],
+          notes: "Range: 0.8–1.2 g/lb LBM. Higher for muscle-building or older adults guarding against sarcopenia; lower for sedentary or very lean. Protein stays fixed across the caloric deficit to protect muscle."
+        )
+
+    case .fatPercentGross:
+        return ProfileMetricDoc(
+          title: "Fat % (Gross)",
+          result: pct(profile.fatGoalPercentageUnadjusted),
+          what: "Share of gross calories coming from fat. On keto this is the dominant macro by calories.",
+          formula: "(Fat Goal · 9) / Caloric Goal · 100",
+          inputs: [
+            ("fat goal",     grams(profile.fatGoalUnadjusted)),
+            ("caloric goal", cals(profile.caloriesGoalUnadjusted)),
+          ],
+          notes: "Typical keto split is 70–75% fat. Lower means you're flirting with the protein-as-glucose threshold."
+        )
+
+    case .fatPercentNet:
+        return ProfileMetricDoc(
+          title: "Fat % (Net)",
+          result: pct(profile.fatGoalPercentage),
+          what: "Share of net (after-deficit) calories coming from fat. Drops as the deficit gets larger — fat takes the cut while protein and carbs hold steady.",
+          formula: "(Fat Goal · 9) / Net Caloric Goal · 100",
+          inputs: [
+            ("fat goal",         grams(profile.fatGoal)),
+            ("net caloric goal", cals(profile.caloriesGoal)),
+          ],
+          notes: nil
+        )
+
+    case .netCarbsPercentGross:
+        return ProfileMetricDoc(
+          title: "Net Carbs % (Gross)",
+          result: pct(profile.netCarbsMaximumPercentageUnadjusted),
+          what: "Share of gross calories coming from net carbs. Should be small on keto — a single-digit number.",
+          formula: "(Net Carbs · 4) / Caloric Goal · 100",
+          inputs: [
+            ("net carbs",    grams(profile.netCarbsMaximum)),
+            ("caloric goal", cals(profile.caloriesGoalUnadjusted)),
+          ],
+          notes: nil
+        )
+
+    case .netCarbsPercentNet:
+        return ProfileMetricDoc(
+          title: "Net Carbs % (Net)",
+          result: pct(profile.netCarbsMaximumPercentage),
+          what: "Share of net (after-deficit) calories coming from net carbs.",
+          formula: "(Net Carbs · 4) / Net Caloric Goal · 100",
+          inputs: [
+            ("net carbs",        grams(profile.netCarbsMaximum)),
+            ("net caloric goal", cals(profile.caloriesGoal)),
+          ],
+          notes: "Same gram cap, smaller denominator — this percentage rises slightly with deeper deficits."
+        )
+
+    case .proteinPercentGross:
+        return ProfileMetricDoc(
+          title: "Protein % (Gross)",
+          result: pct(profile.proteinGoalPercentageUnadjusted),
+          what: "Share of gross calories coming from protein.",
+          formula: "(Protein · 4) / Caloric Goal · 100",
+          inputs: [
+            ("protein",      grams(profile.proteinGoalUnadjusted)),
+            ("caloric goal", cals(profile.caloriesGoalUnadjusted)),
+          ],
+          notes: nil
+        )
+
+    case .proteinPercentNet:
+        return ProfileMetricDoc(
+          title: "Protein % (Net)",
+          result: pct(profile.proteinGoalPercentage),
+          what: "Share of net (after-deficit) calories coming from protein. Rises as the deficit grows since protein grams stay fixed while total calories shrink.",
+          formula: "(Protein · 4) / Net Caloric Goal · 100",
+          inputs: [
+            ("protein",          grams(profile.proteinGoal)),
+            ("net caloric goal", cals(profile.caloriesGoal)),
+          ],
+          notes: "A rising protein-% during a cut is by design — it's the muscle-protective effect of holding protein constant while cutting calories."
+        )
+    }
+}

@@ -112,6 +112,26 @@ struct VitaminMineral: Codable, Identifiable {
     }
 
 
+    // The unit that min(), max(), and the per-nutrient totals
+    // returned by computeVitaminMineralActuals are expressed in.
+    // NIH publishes copper, folate/folic acid, selenium, vitamin A,
+    // B12, and K in micrograms; vitamin D in International Units;
+    // everything else in milligrams.  computeVitaminMineralActuals
+    // converts ingredient field values into this unit so the row
+    // comparison (min ≤ actual ≤ max) is unit-consistent.
+    func unit() -> Unit {
+        switch name {
+        case .copper, .folate, .folicAcid, .selenium,
+             .vitaminA, .vitaminB12, .vitaminK:
+            return .microgram
+        case .vitaminD:
+            return .internationalUnit
+        default:
+            return .milligram
+        }
+    }
+
+
     func max() -> Double {
         if name == VitaminMineralType.calcium {
             return calciumMax

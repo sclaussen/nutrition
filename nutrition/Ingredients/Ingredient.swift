@@ -14,6 +14,7 @@ class IngredientMgr: ObservableObject {
 
     init() {
         ingredients.append(Ingredient(name: "Coconut Oil",
+                                      brand: "365 by Whole Foods Market",
                                       servingSize: 14,
                                       calories: 130,
                                       fat: 14,
@@ -24,18 +25,20 @@ class IngredientMgr: ObservableObject {
                                       consumptionGrams: 14,
                                       meat: false,
                                       verified: "12/25/23"))
-        // ingredients.append(Ingredient(name: "Avocado Oil",
-        //                               servingSize: 14,
-        //                               calories: 130,
-        //                               fat: 14,
-        //                               fiber: 0,
-        //                               netCarbs: 0,
-        //                               protein: 0,
-        //                               consumptionUnit: Unit.tablespoon,
-        //                               consumptionGrams: 14,
-        //                               meat: false,
-        //                               verified: "9/1/22"))
+        ingredients.append(Ingredient(name: "Avocado Oil",
+                                      brand: "365 by Whole Foods Market",
+                                      servingSize: 14,
+                                      calories: 130,
+                                      fat: 14,
+                                      fiber: 0,
+                                      netCarbs: 0,
+                                      protein: 0,
+                                      consumptionUnit: Unit.tablespoon,
+                                      consumptionGrams: 14,
+                                      meat: false,
+                                      verified: "9/1/22"))
         ingredients.append(Ingredient(name: "Chicken",
+                                      brand: "ButcherBox",
                                       servingSize: 100,
                                       calories: 115,
                                       fat: 2.7,
@@ -53,6 +56,7 @@ class IngredientMgr: ObservableObject {
                                       meat: true,
                                       meatAmount: 300))
         ingredients.append(Ingredient(name: "Beef",
+                                      brand: "ButcherBox",
                                       servingSize: 100,
                                       calories: 214,
                                       fat: 15.2,
@@ -70,29 +74,32 @@ class IngredientMgr: ObservableObject {
                                       consumptionGrams: 1,
                                       meat: true,
                                       meatAmount: 200))
-        // ingredients.append(Ingredient(name: "Bison",
-        //                               servingSize: 112,
-        //                               calories: 160,
-        //                               fat: 8,
-        //                               fiber: 0,
-        //                               netCarbs: 0,
-        //                               protein: 23,
-        //                               consumptionUnit: Unit.gram,
-        //                               consumptionGrams: 1,
-        //                               meat: true,
-        //                               meatAmount: 150));
-        // ingredients.append(Ingredient(name: "Lamb",
-        //                               servingSize: 85,
-        //                               calories: 253,
-        //                               fat: 22,
-        //                               fiber: 0,
-        //                               netCarbs: 0.19,
-        //                               protein: 13.09,
-        //                               consumptionUnit: Unit.gram,
-        //                               consumptionGrams: 1,
-        //                               meat: true,
-        //                               meatAmount: 150))
+        ingredients.append(Ingredient(name: "Bison",
+                                      brand: "ButcherBox",
+                                      servingSize: 112,
+                                      calories: 160,
+                                      fat: 8,
+                                      fiber: 0,
+                                      netCarbs: 0,
+                                      protein: 23,
+                                      consumptionUnit: Unit.gram,
+                                      consumptionGrams: 1,
+                                      meat: true,
+                                      meatAmount: 150));
+        ingredients.append(Ingredient(name: "Lamb",
+                                      brand: "ButcherBox",
+                                      servingSize: 85,
+                                      calories: 253,
+                                      fat: 22,
+                                      fiber: 0,
+                                      netCarbs: 0.19,
+                                      protein: 13.09,
+                                      consumptionUnit: Unit.gram,
+                                      consumptionGrams: 1,
+                                      meat: true,
+                                      meatAmount: 150))
         ingredients.append(Ingredient(name: "Pork Chop",
+                                      brand: "ButcherBox",
                                       servingSize: 113,
                                       calories: 220,
                                       fat: 11,
@@ -110,6 +117,7 @@ class IngredientMgr: ObservableObject {
                                       meat: true,
                                       meatAmount: 300))
         ingredients.append(Ingredient(name: "Salmon",
+                                      brand: "ButcherBox",
                                       servingSize: 112,
                                       calories: 150,
                                       fat: 5,
@@ -126,41 +134,42 @@ class IngredientMgr: ObservableObject {
                                       consumptionGrams: 1,
                                       meat: true,
                                       meatAmount: 300))
-        // ingredients.append(Ingredient(name: "Top Sirloin Cap",
-        //                               servingSize: 238,
-        //                               calories: 125,
-        //                               fat: 14,
-        //                               fiber: 0,
-        //                               netCarbs: 0,
-        //                               protein: 51,
-        //                               consumptionUnit: Unit.gram,
-        //                               consumptionGrams: 1,
-        //                               meat: true,
-        //                               available: false))
-        // ingredients.append(Ingredient(name: "Flat Iron Steak",
-        //                               servingSize: 112,
-        //                               calories: 170,
-        //                               fat: 9,
-        //                               fiber: 0,
-        //                               netCarbs: 0,
-        //                               protein: 22,
-        //                               consumptionUnit: Unit.gram,
-        //                               consumptionGrams: 1,
-        //                               meat: true,
-        //                               available: false))
-        // ingredients.append(Ingredient(name: "Argentine Red Shrimp",
-        //                               servingSize: 110,
-        //                               calories: 100,
-        //                               fat: 1.5,
-        //                               fiber: 0,
-        //                               netCarbs: 0,
-        //                               protein: 21,
-        //                               consumptionUnit: Unit.gram,
-        //                               consumptionGrams: 1,
-        //                               meat: true,
-        //                               meatAmount: 250,
-        //                               available: false))
+        ingredients.append(Ingredient(name: "Top Sirloin Cap",
+                                      brand: "ButcherBox",
+                                      servingSize: 238,
+                                      calories: 125,
+                                      fat: 14,
+                                      fiber: 0,
+                                      netCarbs: 0,
+                                      protein: 51,
+                                      consumptionUnit: Unit.gram,
+                                      consumptionGrams: 1,
+                                      meat: true))
+        ingredients.append(Ingredient(name: "Flat Iron Steak",
+                                      brand: "ButcherBox",
+                                      servingSize: 112,
+                                      calories: 170,
+                                      fat: 9,
+                                      fiber: 0,
+                                      netCarbs: 0,
+                                      protein: 22,
+                                      consumptionUnit: Unit.gram,
+                                      consumptionGrams: 1,
+                                      meat: true))
+        ingredients.append(Ingredient(name: "Argentine Red Shrimp",
+                                      brand: "ButcherBox",
+                                      servingSize: 110,
+                                      calories: 100,
+                                      fat: 1.5,
+                                      fiber: 0,
+                                      netCarbs: 0,
+                                      protein: 21,
+                                      consumptionUnit: Unit.gram,
+                                      consumptionGrams: 1,
+                                      meat: true,
+                                      meatAmount: 250))
         ingredients.append(Ingredient(name: "Eggs",
+                                      brand: "Vital Farms",
                                       servingSize: 50,
                                       calories: 70,
                                       fat: 5,
@@ -180,6 +189,7 @@ class IngredientMgr: ObservableObject {
                                       meat: false,
                                       verified: "12/25/23"))
         ingredients.append(Ingredient(name: "Arugula",
+                                      brand: "365 by Whole Foods Market",
                                       servingSize: 20,
                                       calories: 5,
                                       fat: 0.13,
@@ -197,6 +207,7 @@ class IngredientMgr: ObservableObject {
                                       verified: "No nutrition on whole foods site",
                                       stepAmount: 5))
         ingredients.append(Ingredient(name: "Spinach",
+                                      brand: "365 by Whole Foods Market",
                                       servingSize: 85,
                                       calories: 25,
                                       fat: 0.25,
@@ -218,6 +229,7 @@ class IngredientMgr: ObservableObject {
                                       meat: false,
                                       stepAmount: 5))
         ingredients.append(Ingredient(name: "Romaine",
+                                      brand: "365 by Whole Foods Market",
                                       servingSize: 47,
                                       calories: 8,
                                       fat: 0.14,
@@ -237,6 +249,7 @@ class IngredientMgr: ObservableObject {
                                       verified: "3/16/22",
                                       stepAmount: 5))
         ingredients.append(Ingredient(name: "Broccoli",
+                                      brand: "365 by Whole Foods Market",
                                       servingSize: 85,
                                       calories: 20,
                                       fat: 0,
@@ -257,6 +270,7 @@ class IngredientMgr: ObservableObject {
                                       verified: "9/1/22",
                                       stepAmount: 5))
         ingredients.append(Ingredient(name: "Cauliflower",
+                                      brand: "365 by Whole Foods Market",
                                       servingSize: 85,
                                       calories: 20,
                                       fat: 0,
@@ -276,6 +290,7 @@ class IngredientMgr: ObservableObject {
                                       verified: "9/1/22",
                                       stepAmount: 5))
         ingredients.append(Ingredient(name: "Mushrooms",
+                                      brand: "365 by Whole Foods Market",
                                       servingSize: 35,
                                       calories: 8,
                                       fat: 0.12,
@@ -294,6 +309,7 @@ class IngredientMgr: ObservableObject {
                                       verified: "9/1/22",
                                       stepAmount: 5))
         ingredients.append(Ingredient(name: "Radish",
+                                      brand: "365 by Whole Foods Market",
                                       servingSize: 58,
                                       calories: 9,
                                       fat: 0.06,
@@ -308,16 +324,26 @@ class IngredientMgr: ObservableObject {
                                       meat: false,
                                       verified: "9/1/22",
                                       stepAmount: 5))
-        ingredients.append(Ingredient(name: "Avocado",
+        // Avocado is a Food (group) with size variants. Values per
+        // 50 g serving (= 0.25 fruit on the Whole Foods label).
+        // Large = generic Whole Foods Hass; Medium = 365 Organic
+        // 4-count ($4.99 / ~560 g edible across the 4 fruit).
+        ingredients.append(Ingredient(name: "Avocado, Large",
+                                      brand: "365 by Whole Foods Market",
+                                      foodName: "Avocado",
                                       servingSize: 50,
                                       calories: 80,
                                       fat: 7,
+                                      saturatedFat: 1.1,
+                                      sodium: 3.5,
+                                      carbohydrates: 4.3,
                                       fiber: 3.4,
                                       netCarbs: 0.9,
                                       protein: 1,
                                       vitaminK: 11,
                                       vitaminE: 1.1,
                                       vitaminC: 5,
+                                      vitaminA: 73,
                                       potassium: 243,
                                       pantothenicAcid: 0.7,
                                       magnesium: 15,
@@ -325,13 +351,46 @@ class IngredientMgr: ObservableObject {
                                       consumptionUnit: Unit.gram,
                                       consumptionGrams: 1,
                                       meat: false,
-                                      verified: "9/1/22",
-                                      stepAmount: 5))
+                                      verified: "5/16/2026",
+                                      stepAmount: 5,
+                                      defaultAmount: 225))
+        ingredients.append(Ingredient(name: "Avocado, Medium",
+                                      brand: "365 by Whole Foods Market",
+                                      foodName: "Avocado",
+                                      totalCost: 4.99,
+                                      totalGrams: 560,
+                                      servingSize: 50,
+                                      calories: 80,
+                                      fat: 7,
+                                      saturatedFat: 1.1,
+                                      sodium: 3.5,
+                                      carbohydrates: 4.3,
+                                      fiber: 3.4,
+                                      sugar: 0.33,
+                                      netCarbs: 0.9,
+                                      protein: 1,
+                                      vitaminK: 11,
+                                      vitaminE: 1.1,
+                                      vitaminC: 10,
+                                      vitaminA: 146,
+                                      potassium: 243,
+                                      pantothenicAcid: 0.7,
+                                      magnesium: 15,
+                                      iron: 0.55,
+                                      folate: 41,
+                                      calcium: 12,
+                                      consumptionUnit: Unit.gram,
+                                      consumptionGrams: 1,
+                                      meat: false,
+                                      verified: "5/16/2026",
+                                      stepAmount: 5,
+                                      defaultAmount: 140))
 
         // USDA per 100 g.  Step 25 g — a typical handful is ~75–100 g.
         // Copper stored in mg (matches our convention — see
         // VitaminMineralActuals.swift, which converts to mcg).
         ingredients.append(Ingredient(name: "Blueberries",
+                                      brand: "365 by Whole Foods Market",
                                       servingSize: 100,
                                       calories: 57,
                                       fat: 0.33,
@@ -356,6 +415,7 @@ class IngredientMgr: ObservableObject {
                                       stepAmount: 25))
 
         ingredients.append(Ingredient(name: "Blackberries",
+                                      brand: "365 by Whole Foods Market",
                                       servingSize: 100,
                                       calories: 43,
                                       fat: 0.49,
@@ -380,6 +440,7 @@ class IngredientMgr: ObservableObject {
                                       verified: "5/11/2026",
                                       stepAmount: 25))
         ingredients.append(Ingredient(name: "Sard (H2O)",
+                                      brand: "Wild Planet",
                                       servingSize: 85,
                                       calories: 140,
                                       fat: 8,
@@ -398,6 +459,7 @@ class IngredientMgr: ObservableObject {
                                       meat: false,
                                       verified: "3/10/24"))
         ingredients.append(Ingredient(name: "Sard (SB)",
+                                      brand: "Wild Planet",
                                       servingSize: 85,
                                       calories: 190,
                                       fat: 12,
@@ -416,6 +478,7 @@ class IngredientMgr: ObservableObject {
                                       meat: false,
                                       verified: "3/10/24"))
         ingredients.append(Ingredient(name: "Sard (LS)",
+                                      brand: "Wild Planet",
                                       servingSize: 85,
                                       calories: 170,
                                       fat: 11,
@@ -434,6 +497,7 @@ class IngredientMgr: ObservableObject {
                                       meat: false,
                                       verified: "3/10/24"))
         ingredients.append(Ingredient(name: "Sard (LS L)",
+                                      brand: "Wild Planet",
                                       servingSize: 85,
                                       calories: 170,
                                       fat: 11,
@@ -452,6 +516,7 @@ class IngredientMgr: ObservableObject {
                                       meat: false,
                                       verified: "3/10/24"))
         ingredients.append(Ingredient(name: "Mack (SB)",
+                                      brand: "Wild Planet",
                                       servingSize: 85,
                                       calories: 180,
                                       fat: 11,
@@ -469,6 +534,7 @@ class IngredientMgr: ObservableObject {
                                       meat: false,
                                       verified: "3/10/24"))
         ingredients.append(Ingredient(name: "Mack (Smk)",
+                                      brand: "Wild Planet",
                                       servingSize: 75,
                                       calories: 140,
                                       fat: 6,
@@ -485,6 +551,7 @@ class IngredientMgr: ObservableObject {
                                       meat: false,
                                       verified: "3/10/24"))
         ingredients.append(Ingredient(name: "Tuna",
+                                      brand: "Wild Planet",
                                       servingSize: 85,
                                       calories: 100,
                                       fat: 2.5,
@@ -501,7 +568,29 @@ class IngredientMgr: ObservableObject {
                                       consumptionGrams: 85,
                                       meat: false,
                                       verified: "3/16/22"))
+        ingredients.append(Ingredient(name: "Cashews",
+                                      brand: "365 by Whole Foods Market",
+                                      servingSize: 28,
+                                      calories: 160,
+                                      fat: 13,
+                                      fiber: 1,
+                                      netCarbs: 8,
+                                      protein: 5,
+                                      zinc: 1.6,
+                                      vitaminK: 9.5,
+                                      thiamin: 0.1,
+                                      selenium: 5.6,
+                                      potassium: 187,
+                                      phosphorus: 165,
+                                      manganese: 0.5,
+                                      magnesium: 80,
+                                      iron: 1.9,
+                                      copper: 0.6,
+                                      consumptionUnit: Unit.gram,
+                                      consumptionGrams: 1,
+                                      meat: false))
         ingredients.append(Ingredient(name: "Macadamia Nuts",
+                                      brand: "Aurora",
                                       servingSize: 30,
                                       calories: 220,
                                       fat: 23,
@@ -518,6 +607,7 @@ class IngredientMgr: ObservableObject {
                                       meat: false,
                                       verified: "3/16/22"))
         ingredients.append(Ingredient(name: "Walnuts",
+                                      brand: "Aurora",
                                       servingSize: 28,
                                       calories: 190,
                                       fat: 18,
@@ -533,6 +623,7 @@ class IngredientMgr: ObservableObject {
                                       consumptionGrams: 1,
                                       meat: false))
         ingredients.append(Ingredient(name: "Pecans",
+                                      brand: "Aurora",
                                       servingSize: 28,
                                       calories: 190,
                                       fat: 20,
@@ -548,6 +639,7 @@ class IngredientMgr: ObservableObject {
                                       consumptionGrams: 1,
                                       meat: false))
         ingredients.append(Ingredient(name: "Peanuts",
+                                      brand: "365 by Whole Foods Market",
                                       servingSize: 28,
                                       calories: 160,
                                       fat: 14,
@@ -565,6 +657,7 @@ class IngredientMgr: ObservableObject {
                                       meat: false,
                                       verified: "9/1/22"))
         ingredients.append(Ingredient(name: "Pumpkin Seeds",
+                                      brand: "365 by Whole Foods Market",
                                       servingSize: 28,
                                       calories: 160,
                                       fat: 14,
@@ -584,6 +677,7 @@ class IngredientMgr: ObservableObject {
                                       meat: false,
                                       verified: "12/25/23"))
         ingredients.append(Ingredient(name: "Mustard",
+                                      brand: "Organicville",
                                       servingSize: 5,
                                       calories: 5,
                                       fat: 0,
@@ -595,6 +689,7 @@ class IngredientMgr: ObservableObject {
                                       meat: false,
                                       verified: "3/16/22"))
         ingredients.append(Ingredient(name: "Extra Virgin Olive Oil",
+                                      brand: "365 by Whole Foods Market",
                                       servingSize: 14,
                                       calories: 120,
                                       fat: 14,
@@ -608,6 +703,7 @@ class IngredientMgr: ObservableObject {
                                       meat: false,
                                       verified: "3/16/22"))
         ingredients.append(Ingredient(name: "Fish Oil",
+                                      brand: "Carlson",
                                       servingSize: 4.667,
                                       calories: 40,
                                       fat: 4.5,
@@ -619,6 +715,8 @@ class IngredientMgr: ObservableObject {
                                       meat: false,
                                       verified: "3/16/22"))
         ingredients.append(Ingredient(name: "String Cheese",
+                                      brand: "365 by Whole Foods Market",
+                                      foodName: "String Cheese",
                                       servingSize: 28,
                                       calories: 80,
                                       fat: 6,
@@ -635,6 +733,7 @@ class IngredientMgr: ObservableObject {
                                       meat: false,
                                       verified: "9/1/22"))
         ingredients.append(Ingredient(name: "Dubliner Cheese",
+                                      brand: "Kerrygold",
                                       servingSize: 28,
                                       calories: 110,
                                       fat: 9,
@@ -651,6 +750,7 @@ class IngredientMgr: ObservableObject {
                                       meat: false,
                                       verified: "3/16/22"))
         ingredients.append(Ingredient(name: "Manchego Cheese",
+                                      brand: "Mitica",
                                       servingSize: 28,
                                       calories: 110,
                                       fat: 9,
@@ -667,6 +767,7 @@ class IngredientMgr: ObservableObject {
                                       meat: false,
                                       verified: "5/12/26"))
         ingredients.append(Ingredient(name: "Babybel Cheese",
+                                      brand: "Mini Babybel",
                                       servingSize: 21,
                                       calories: 70,
                                       fat: 6,
@@ -683,6 +784,7 @@ class IngredientMgr: ObservableObject {
                                       meat: false,
                                       verified: "12/22/23"))
         ingredients.append(Ingredient(name: "Tillamook Cheddar Cheese",
+                                      brand: "Tillamook",
                                       servingSize: 21,
                                       calories: 90,
                                       fat: 7,
@@ -699,6 +801,7 @@ class IngredientMgr: ObservableObject {
                                       meat: false,
                                       verified: "12/25/23"))
         ingredients.append(Ingredient(name: "Mini Original Semisoft Cheese",
+                                      brand: "Mini Babybel",
                                       servingSize: 21,
                                       calories: 70,
                                       fat: 6,
@@ -714,83 +817,92 @@ class IngredientMgr: ObservableObject {
                                       consumptionGrams: 1,
                                       meat: false,
                                       verified: "3/16/22"))
-        // ingredients.append(Ingredient(name: "Emmi Roth",
-        //                               servingSize: 28,
-        //                               calories: 110,
-        //                               fat: 9,
-        //                               fiber: 0,
-        //                               netCarbs: 0,
-        //                               protein: 8,
-        //                               consumptionUnit: Unit.gram,
-        //                               consumptionGrams: 1,
-        //                               meat: false,
-        //                               verified: "9/1/22"))
-        // ingredients.append(Ingredient(name: "Mitica",
-        //                               servingSize: 28,
-        //                               calories: 100,
-        //                               fat: 8,
-        //                               fiber: 0,
-        //                               netCarbs: 0,
-        //                               protein: 7,
-        //                               consumptionUnit: Unit.gram,
-        //                               consumptionGrams: 1,
-        //                               meat: false,
-        //                               verified: "1/8/24"))
-        // ingredients.append(Ingredient(name: "Cheddar Cheese",
-        //                               servingSize: 28,
-        //                               calories: 110,
-        //                               fat: 9,
-        //                               fiber: 0,
-        //                               netCarbs: 1,
-        //                               protein: 7,
-        //                               consumptionUnit: Unit.slice,
-        //                               consumptionGrams: 9.33,
-        //                               meat: false,
-        //                               verified: "3/16/22"))
-        // ingredients.append(Ingredient(name: "Keto Bite (Mint)",
-        //                               servingSize: 25,
-        //                               calories: 140,
-        //                               fat: 12,
-        //                               fiber: 4,
-        //                               netCarbs: 1,
-        //                               protein: 6,
-        //                               consumptionUnit: Unit.whole,
-        //                               consumptionGrams: 9.33,
-        //                               meat: false,
-        //                               verified: "3/16/22"))
-        // ingredients.append(Ingredient(name: "Keto Bite (Macadamia)",
-        //                               servingSize: 25,
-        //                               calories: 140,
-        //                               fat: 11,
-        //                               fiber: 6,
-        //                               netCarbs: 0,
-        //                               protein: 6,
-        //                               consumptionUnit: Unit.whole,
-        //                               consumptionGrams: 9.33,
-        //                               meat: false,
-        //                               verified: "3/16/22"))
-        // ingredients.append(Ingredient(name: "Dark Chocolate (Divine)",
-        //                               servingSize: 28,
-        //                               calories: 180,
-        //                               fat: 14,
-        //                               fiber: 4,
-        //                               netCarbs: 6,
-        //                               protein: 3,
-        //                               consumptionUnit: Unit.piece,
-        //                               consumptionGrams: 3.5,
-        //                               meat: false))
-        // ingredients.append(Ingredient(name: "Flackers (SS)",
-        //                               servingSize: 30,
-        //                               calories: 160,
-        //                               fat: 12,
-        //                               fiber: 9,
-        //                               netCarbs: 1,
-        //                               protein: 6,
-        //                               consumptionUnit: Unit.gram,
-        //                               consumptionGrams: 1,
-        //                               meat: false,
-        //                               verified: "3/16/22"))
+        ingredients.append(Ingredient(name: "Emmi Roth",
+                                      brand: "Emmi Roth",
+                                      servingSize: 28,
+                                      calories: 110,
+                                      fat: 9,
+                                      fiber: 0,
+                                      netCarbs: 0,
+                                      protein: 8,
+                                      consumptionUnit: Unit.gram,
+                                      consumptionGrams: 1,
+                                      meat: false,
+                                      verified: "9/1/22"))
+        ingredients.append(Ingredient(name: "Mitica",
+                                      brand: "Mitica",
+                                      servingSize: 28,
+                                      calories: 100,
+                                      fat: 8,
+                                      fiber: 0,
+                                      netCarbs: 0,
+                                      protein: 7,
+                                      consumptionUnit: Unit.gram,
+                                      consumptionGrams: 1,
+                                      meat: false,
+                                      verified: "1/8/24"))
+        ingredients.append(Ingredient(name: "Cheddar Cheese",
+                                      brand: "Tillamook",
+                                      foodName: "Cheddar Cheese",
+                                      servingSize: 28,
+                                      calories: 110,
+                                      fat: 9,
+                                      fiber: 0,
+                                      netCarbs: 1,
+                                      protein: 7,
+                                      consumptionUnit: Unit.slice,
+                                      consumptionGrams: 9.33,
+                                      meat: false,
+                                      verified: "3/16/22"))
+        ingredients.append(Ingredient(name: "Keto Bite (Mint)",
+                                      brand: "ChocZero",
+                                      servingSize: 25,
+                                      calories: 140,
+                                      fat: 12,
+                                      fiber: 4,
+                                      netCarbs: 1,
+                                      protein: 6,
+                                      consumptionUnit: Unit.whole,
+                                      consumptionGrams: 9.33,
+                                      meat: false,
+                                      verified: "3/16/22"))
+        ingredients.append(Ingredient(name: "Keto Bite (Macadamia)",
+                                      brand: "ChocZero",
+                                      servingSize: 25,
+                                      calories: 140,
+                                      fat: 11,
+                                      fiber: 6,
+                                      netCarbs: 0,
+                                      protein: 6,
+                                      consumptionUnit: Unit.whole,
+                                      consumptionGrams: 9.33,
+                                      meat: false,
+                                      verified: "3/16/22"))
+        ingredients.append(Ingredient(name: "Dark Chocolate (Divine)",
+                                      brand: "Divine",
+                                      servingSize: 28,
+                                      calories: 180,
+                                      fat: 14,
+                                      fiber: 4,
+                                      netCarbs: 6,
+                                      protein: 3,
+                                      consumptionUnit: Unit.piece,
+                                      consumptionGrams: 3.5,
+                                      meat: false))
+        ingredients.append(Ingredient(name: "Flackers (SS)",
+                                      brand: "Doctor in the Kitchen",
+                                      servingSize: 30,
+                                      calories: 160,
+                                      fat: 12,
+                                      fiber: 9,
+                                      netCarbs: 1,
+                                      protein: 6,
+                                      consumptionUnit: Unit.gram,
+                                      consumptionGrams: 1,
+                                      meat: false,
+                                      verified: "3/16/22"))
         ingredients.append(Ingredient(name: "Latte (Venti Iced)",
+                                      brand: "Starbucks",
                                       servingSize: 1,
                                       calories: 180,
                                       fat: 6,
@@ -808,6 +920,7 @@ class IngredientMgr: ObservableObject {
                                       meat: false,
                                       verified: "11/1/24"))
         ingredients.append(Ingredient(name: "Latte (Grande Hot)",
+                                      brand: "Starbucks",
                                       servingSize: 1,
                                       calories: 190,
                                       fat: 7,
@@ -825,6 +938,8 @@ class IngredientMgr: ObservableObject {
                                       meat: false,
                                       verified: "11/1/24"))
         ingredients.append(Ingredient(name: "Peanut Butter",
+                                      brand: "Once Again",
+                                      foodName: "Peanut Butter",
                                       servingSize: 30,
                                       calories: 190,
                                       fat: 14,
@@ -842,6 +957,8 @@ class IngredientMgr: ObservableObject {
                                       meat: false,
                                       verified: "10/10/24"))
         ingredients.append(Ingredient(name: "Sunflower Butter",
+                                      brand: "Once Again",
+                                      foodName: "Sunflower Butter",
                                       servingSize: 30,
                                       calories: 210,
                                       fat: 19,
@@ -859,6 +976,8 @@ class IngredientMgr: ObservableObject {
                                       meat: false,
                                       verified: "10/10/24"))
         ingredients.append(Ingredient(name: "Jelly",
+                                      brand: "Crofter's",
+                                      foodName: "Jelly",
                                       servingSize: 18,
                                       calories: 30,
                                       fat: 0,
@@ -870,6 +989,8 @@ class IngredientMgr: ObservableObject {
                                       meat: false,
                                       verified: "10/10/24"))
         ingredients.append(Ingredient(name: "Ezekiel 4:9",
+                                      brand: "Food For Life",
+                                      foodName: "Bread",
                                       servingSize: 34,
                                       calories: 80,
                                       fat: 0.5,
@@ -888,6 +1009,8 @@ class IngredientMgr: ObservableObject {
                                       meat: false,
                                       verified: "11/1/24"))
         ingredients.append(Ingredient(name: "Dave's Bread (Thin)",
+                                      brand: "Dave's Killer Bread",
+                                      foodName: "Bread",
                                       servingSize: 28,
                                       calories: 70,
                                       fat: 1,
@@ -904,6 +1027,8 @@ class IngredientMgr: ObservableObject {
                                       meat: false,
                                       verified: "11/1/24"))
         ingredients.append(Ingredient(name: "Dave's Bread",
+                                      brand: "Dave's Killer Bread",
+                                      foodName: "Bread",
                                       servingSize: 45,
                                       calories: 110,
                                       fat: 1.5,
@@ -919,98 +1044,9 @@ class IngredientMgr: ObservableObject {
                                       consumptionGrams: 45,
                                       meat: false,
                                       verified: "11/1/24"))
-        ingredients.append(Ingredient(name: "PBJ Ezekiel",
-                                      servingSize: 59.5,
-                                      calories: 205,
-                                      fat: 7.5,
-                                      fiber: 4,
-                                      netCarbs: 22.5,
-                                      protein: 9,
-                                      vitaminE: 1.3,
-                                      niacin: 1.4,
-                                      magnesium: 30,
-                                      iron: 0.9,
-                                      folate: 18,
-                                      consumptionUnit: Unit.piece,
-                                      consumptionGrams: 59.5,
-                                      meat: false,
-                                      verified: "10/10/24"))
-        ingredients.append(Ingredient(name: "PBJ Daves Thin",
-                                      servingSize: 53.5,
-                                      calories: 195,
-                                      fat: 8,
-                                      fiber: 3,
-                                      netCarbs: 21.5,
-                                      protein: 7,
-                                      vitaminE: 1.3,
-                                      niacin: 1.3,
-                                      iron: 0.8,
-                                      folate: 13,
-                                      consumptionUnit: Unit.piece,
-                                      consumptionGrams: 53.5,
-                                      meat: false,
-                                      verified: "10/10/24"))
-        ingredients.append(Ingredient(name: "PBJ Daves",
-                                      servingSize: 70.5,
-                                      calories: 235,
-                                      fat: 8.5,
-                                      fiber: 6,
-                                      netCarbs: 27.5,
-                                      protein: 9,
-                                      vitaminE: 1.3,
-                                      niacin: 1.9,
-                                      iron: 1.2,
-                                      folate: 18,
-                                      consumptionUnit: Unit.piece,
-                                      consumptionGrams: 70.5,
-                                      meat: false,
-                                      verified: "10/10/24"))
-        ingredients.append(Ingredient(name: "SJ Ezekiel",
-                                      servingSize: 59.5,
-                                      calories: 215,
-                                      fat: 10,
-                                      fiber: 4.5,
-                                      netCarbs: 20.5,
-                                      protein: 7.5,
-                                      vitaminE: 3.7,
-                                      niacin: 1.4,
-                                      iron: 1,
-                                      folate: 18,
-                                      consumptionUnit: Unit.piece,
-                                      consumptionGrams: 59.5,
-                                      meat: false,
-                                      verified: "10/10/24"))
-        ingredients.append(Ingredient(name: "SJ Daves Thin",
-                                      servingSize: 53.5,
-                                      calories: 205,
-                                      fat: 10.5,
-                                      fiber: 3.5,
-                                      netCarbs: 19.5,
-                                      protein: 5.5,
-                                      vitaminE: 3.7,
-                                      niacin: 1.3,
-                                      iron: 0.9,
-                                      folate: 13,
-                                      consumptionUnit: Unit.piece,
-                                      consumptionGrams: 53.5,
-                                      meat: false,
-                                      verified: "10/10/24"))
-        ingredients.append(Ingredient(name: "SJ Daves",
-                                      servingSize: 70.5,
-                                      calories: 245,
-                                      fat: 11,
-                                      fiber: 6.5,
-                                      netCarbs: 25.5,
-                                      protein: 7.5,
-                                      vitaminE: 3.7,
-                                      niacin: 1.9,
-                                      iron: 1.3,
-                                      folate: 18,
-                                      consumptionUnit: Unit.piece,
-                                      consumptionGrams: 70.5,
-                                      meat: false,
-                                      verified: "10/10/24"))
         ingredients.append(Ingredient(name: "String Cheese W",
+                                      brand: "365 by Whole Foods Market",
+                                      foodName: "String Cheese",
                                       servingSize: 28,
                                       calories: 80,
                                       fat: 6,
@@ -1027,6 +1063,8 @@ class IngredientMgr: ObservableObject {
                                       meat: false,
                                       verified: "7/3/2025"))
         ingredients.append(Ingredient(name: "Hummus W",
+                                      brand: "365 by Whole Foods Market",
+                                      foodName: "Hummus",
                                       servingSize: 71,
                                       calories: 170,
                                       fat: 1.5,
@@ -1043,6 +1081,8 @@ class IngredientMgr: ObservableObject {
                                       meat: false,
                                       verified: "7/3/2025"))
         ingredients.append(Ingredient(name: "Dave's Bread W",
+                                      brand: "Dave's Killer Bread",
+                                      foodName: "Bread",
                                       servingSize: 45,
                                       calories: 110,
                                       fat: 1.5,
@@ -1059,6 +1099,8 @@ class IngredientMgr: ObservableObject {
                                       meat: false,
                                       verified: "7/3/2025"))
         ingredients.append(Ingredient(name: "Turkey W",
+                                      brand: "Applegate",
+                                      foodName: "Turkey",
                                       servingSize: 56,
                                       calories: 60,
                                       fat: 1,
@@ -1076,6 +1118,8 @@ class IngredientMgr: ObservableObject {
                                       meat: false,
                                       verified: "7/3/2025"))
         ingredients.append(Ingredient(name: "Cheddar Cheese W",
+                                      brand: "Tillamook",
+                                      foodName: "Cheddar Cheese",
                                       servingSize: 21,
                                       calories: 90,
                                       fat: 7,
@@ -1099,6 +1143,7 @@ class IngredientMgr: ObservableObject {
         // values below).  Macros are 0.
 
         ingredients.append(Ingredient(name: "Vitamin D3 (1000 IU)",
+                                      brand: "Thorne",
                                       servingSize: 1,
                                       calories: 0,
                                       fat: 0,
@@ -1117,6 +1162,7 @@ class IngredientMgr: ObservableObject {
         //   magnesium 71.5 mg, calcium 119 mg, chloride 208 mg.
         // Chloride isn't tracked by the V&M page so it's omitted.
         ingredients.append(Ingredient(name: "SlowMag",
+                                      brand: "SlowMag",
                                       servingSize: 1,
                                       calories: 0,
                                       fat: 0,
@@ -1138,6 +1184,7 @@ class IngredientMgr: ObservableObject {
         // by the V&M page (biotin, iodine, chromium, molybdenum,
         // boron, choline, inositol) are omitted.
         ingredients.append(Ingredient(name: "Thorne Basic Nutrients 2/Day",
+                                      brand: "Thorne",
                                       servingSize: 1,
                                       calories: 0,
                                       fat: 0,
@@ -1174,6 +1221,7 @@ class IngredientMgr: ObservableObject {
         // total grams in the day can be calculated correctly elsewhere.
 
         ingredients.append(Ingredient(name: "Creatine HCl",
+                                      brand: "CON-CRET",
                                       servingSize: 1,
                                       calories: 0,
                                       fat: 0,
@@ -1187,6 +1235,7 @@ class IngredientMgr: ObservableObject {
                                       verified: "5/10/2026"))
 
         ingredients.append(Ingredient(name: "Taurine",
+                                      brand: "Thorne",
                                       servingSize: 1,
                                       calories: 0,
                                       fat: 0,
@@ -1199,6 +1248,7 @@ class IngredientMgr: ObservableObject {
                                       verified: "5/10/2026"))
 
         ingredients.append(Ingredient(name: "Glycine",
+                                      brand: "Thorne",
                                       servingSize: 1,
                                       calories: 0,
                                       fat: 0,
@@ -1212,6 +1262,7 @@ class IngredientMgr: ObservableObject {
                                       verified: "5/10/2026"))
 
         ingredients.append(Ingredient(name: "L-Theanine",
+                                      brand: "Thorne",
                                       servingSize: 1,
                                       calories: 0,
                                       fat: 0,
@@ -1225,6 +1276,7 @@ class IngredientMgr: ObservableObject {
                                       verified: "5/10/2026"))
 
         ingredients.append(Ingredient(name: "Apigenin",
+                                      brand: "Double Wood",
                                       servingSize: 1,
                                       calories: 0,
                                       fat: 0,
@@ -1313,7 +1365,8 @@ class IngredientMgr: ObservableObject {
                 mealAdjustments: [MealAdjustment] = [],
                 microNutrients: Bool = false,
                 verified: String = "",
-                stepAmount: Double = 0) {
+                stepAmount: Double = 0,
+                defaultAmount: Double = 0) {
         let ingredient = Ingredient(name: name,
                                     brand: brand,
                                     fullName: fullName,
@@ -1369,7 +1422,8 @@ class IngredientMgr: ObservableObject {
                                     mealAdjustments: mealAdjustments,
                                     microNutrients: microNutrients,
                                     verified: verified,
-                                    stepAmount: stepAmount)
+                                    stepAmount: stepAmount,
+                                    defaultAmount: defaultAmount)
         self.ingredients.append(ingredient)
     }
 
@@ -1481,6 +1535,10 @@ struct Ingredient: Codable, Identifiable {
     var brand: String
     var fullName: String
     var category: String
+    // Optional group/variant set this ingredient belongs to (e.g.
+    // "Eggs"). Empty = not grouped. The Group entity (FoodMgr)
+    // owns the group's default member; membership lives here.
+    var foodName: String
 
     var url: String
     var totalCost: Double
@@ -1548,11 +1606,17 @@ struct Ingredient: Codable, Identifiable {
 
     var stepAmount: Double   // 0 means "auto" — use the effectiveStep heuristic
 
+    // Default consumption amount seeded into a new meal row (in the
+    // ingredient's consumption unit). 0 = no preset. For group
+    // members, switching member resets the row to this amount.
+    var defaultAmount: Double
+
     init(id: String = UUID().uuidString,
          name: String,
          brand: String = "",
          fullName: String = "",
          category: String = "",
+         foodName: String = "",
          url: String = "",
          totalCost: Double = 0,
          totalGrams: Double = 0,
@@ -1605,7 +1669,8 @@ struct Ingredient: Codable, Identifiable {
          mealAdjustments: [MealAdjustment] = [],
          microNutrients: Bool = false,
          verified: String = "",
-         stepAmount: Double = 0) {
+         stepAmount: Double = 0,
+         defaultAmount: Double = 0) {
 
         self.id = id
 
@@ -1614,6 +1679,7 @@ struct Ingredient: Codable, Identifiable {
         self.brand = brand
         self.fullName = fullName
         self.category = category
+        self.foodName = foodName
 
         self.url = url
         self.totalCost = totalCost
@@ -1680,6 +1746,7 @@ struct Ingredient: Codable, Identifiable {
         self.verified = verified
 
         self.stepAmount = stepAmount
+        self.defaultAmount = defaultAmount
     }
 
     init(from decoder: Decoder) throws {
@@ -1689,6 +1756,8 @@ struct Ingredient: Codable, Identifiable {
         self.brand = try c.decode(String.self, forKey: .brand)
         self.fullName = try c.decode(String.self, forKey: .fullName)
         self.category = try c.decode(String.self, forKey: .category)
+        // Migration-safe: absent in data saved before groups existed.
+        self.foodName = try c.decodeIfPresent(String.self, forKey: .foodName) ?? ""
         self.url = try c.decode(String.self, forKey: .url)
         self.totalCost = try c.decode(Double.self, forKey: .totalCost)
         self.totalGrams = try c.decode(Double.self, forKey: .totalGrams)
@@ -1742,6 +1811,7 @@ struct Ingredient: Codable, Identifiable {
         self.microNutrients = try c.decode(Bool.self, forKey: .microNutrients)
         self.verified = try c.decode(String.self, forKey: .verified)
         self.stepAmount = try c.decodeIfPresent(Double.self, forKey: .stepAmount) ?? 0
+        self.defaultAmount = try c.decodeIfPresent(Double.self, forKey: .defaultAmount) ?? 0
     }
 
     var calories100: Double {
@@ -1791,6 +1861,7 @@ struct Ingredient: Codable, Identifiable {
                           brand: ingredient.brand,
                           fullName: ingredient.fullName,
                           category: ingredient.category,
+                          foodName: ingredient.foodName,
                           url: ingredient.url,
                           totalCost: ingredient.totalCost,
                           totalGrams: ingredient.totalGrams,
@@ -1843,6 +1914,138 @@ struct Ingredient: Codable, Identifiable {
                           mealAdjustments: ingredient.mealAdjustments,
                           microNutrients: ingredient.microNutrients,
                           verified: verified,
-                          stepAmount: ingredient.stepAmount)
+                          stepAmount: ingredient.stepAmount,
+                          defaultAmount: ingredient.defaultAmount)
+    }
+}
+
+
+// ============================================================
+// AvoidList — substances to flag when they appear in an
+// Ingredient's `ingredients` (label) list. Pure static data +
+// matcher; no state, no persistence. Short acronyms (BHA/BHT/
+// MSG) match whole-word only so they don't fire on substrings.
+// ============================================================
+struct AvoidEntry {
+    let canonicalName: String
+    let category: String
+    let substrings: [String]      // all lowercased
+    var wholeWordOnly: Bool = false
+}
+
+enum AvoidList {
+
+    static let entries: [AvoidEntry] = [
+        // Added sugars & syrups (all corn-syrup variants)
+        AvoidEntry(canonicalName: "High-Fructose Corn Syrup", category: "Added sugar",
+                   substrings: ["high fructose corn syrup", "high-fructose corn syrup", "hfcs"]),
+        AvoidEntry(canonicalName: "Corn Syrup", category: "Added sugar",
+                   substrings: ["corn syrup"]),
+        AvoidEntry(canonicalName: "Glucose-Fructose Syrup", category: "Added sugar",
+                   substrings: ["glucose-fructose syrup", "glucose fructose syrup"]),
+        AvoidEntry(canonicalName: "Fructose Syrup", category: "Added sugar",
+                   substrings: ["fructose syrup"]),
+        AvoidEntry(canonicalName: "Invert Sugar", category: "Added sugar",
+                   substrings: ["invert sugar", "invert syrup"]),
+        AvoidEntry(canonicalName: "Dextrose", category: "Added sugar",
+                   substrings: ["dextrose"]),
+        AvoidEntry(canonicalName: "Maltodextrin", category: "Added sugar",
+                   substrings: ["maltodextrin"]),
+        AvoidEntry(canonicalName: "Crystalline Fructose", category: "Added sugar",
+                   substrings: ["crystalline fructose"]),
+        AvoidEntry(canonicalName: "Brown Rice Syrup", category: "Added sugar",
+                   substrings: ["brown rice syrup", "rice syrup"]),
+        AvoidEntry(canonicalName: "Agave Syrup", category: "Added sugar",
+                   substrings: ["agave nectar", "agave syrup"]),
+
+        // Trans fats / refined seed oils
+        AvoidEntry(canonicalName: "Partially Hydrogenated Oil (trans fat)", category: "Trans fat",
+                   substrings: ["partially hydrogenated"]),
+        AvoidEntry(canonicalName: "Soybean Oil", category: "Seed oil",
+                   substrings: ["soybean oil"]),
+        AvoidEntry(canonicalName: "Canola Oil", category: "Seed oil",
+                   substrings: ["canola oil"]),
+        AvoidEntry(canonicalName: "Sunflower Oil", category: "Seed oil",
+                   substrings: ["sunflower oil"]),
+        AvoidEntry(canonicalName: "Safflower Oil", category: "Seed oil",
+                   substrings: ["safflower oil"]),
+        AvoidEntry(canonicalName: "Cottonseed Oil", category: "Seed oil",
+                   substrings: ["cottonseed oil"]),
+        AvoidEntry(canonicalName: "Corn Oil", category: "Seed oil",
+                   substrings: ["corn oil"]),
+
+        // Artificial sweeteners
+        AvoidEntry(canonicalName: "Aspartame", category: "Artificial sweetener",
+                   substrings: ["aspartame"]),
+        AvoidEntry(canonicalName: "Sucralose", category: "Artificial sweetener",
+                   substrings: ["sucralose"]),
+        AvoidEntry(canonicalName: "Acesulfame Potassium", category: "Artificial sweetener",
+                   substrings: ["acesulfame potassium", "acesulfame-k", "ace-k"]),
+        AvoidEntry(canonicalName: "Saccharin", category: "Artificial sweetener",
+                   substrings: ["saccharin"]),
+
+        // Synthetic dyes
+        AvoidEntry(canonicalName: "Red 40", category: "Synthetic dye",
+                   substrings: ["red 40", "red no. 40", "allura red"]),
+        AvoidEntry(canonicalName: "Yellow 5", category: "Synthetic dye",
+                   substrings: ["yellow 5", "yellow no. 5", "tartrazine"]),
+        AvoidEntry(canonicalName: "Yellow 6", category: "Synthetic dye",
+                   substrings: ["yellow 6", "yellow no. 6", "sunset yellow"]),
+        AvoidEntry(canonicalName: "Blue 1", category: "Synthetic dye",
+                   substrings: ["blue 1", "blue no. 1", "brilliant blue"]),
+        AvoidEntry(canonicalName: "Red 3", category: "Synthetic dye",
+                   substrings: ["red 3", "red no. 3", "erythrosine"]),
+
+        // Preservatives / antioxidants
+        AvoidEntry(canonicalName: "BHA", category: "Preservative",
+                   substrings: ["butylated hydroxyanisole", "bha"], wholeWordOnly: true),
+        AvoidEntry(canonicalName: "BHT", category: "Preservative",
+                   substrings: ["butylated hydroxytoluene", "bht"], wholeWordOnly: true),
+        AvoidEntry(canonicalName: "TBHQ", category: "Preservative",
+                   substrings: ["tbhq", "tert-butylhydroquinone", "tertiary butylhydroquinone"]),
+        AvoidEntry(canonicalName: "Sodium Benzoate", category: "Preservative",
+                   substrings: ["sodium benzoate"]),
+        AvoidEntry(canonicalName: "Sodium Nitrite", category: "Preservative",
+                   substrings: ["sodium nitrite"]),
+        AvoidEntry(canonicalName: "Sodium Nitrate", category: "Preservative",
+                   substrings: ["sodium nitrate"]),
+        AvoidEntry(canonicalName: "Propyl Gallate", category: "Preservative",
+                   substrings: ["propyl gallate"]),
+
+        // Flavor enhancers
+        AvoidEntry(canonicalName: "MSG", category: "Flavor enhancer",
+                   substrings: ["monosodium glutamate", "msg"], wholeWordOnly: true),
+        AvoidEntry(canonicalName: "Autolyzed Yeast Extract", category: "Flavor enhancer",
+                   substrings: ["autolyzed yeast"]),
+        AvoidEntry(canonicalName: "Hydrolyzed Protein", category: "Flavor enhancer",
+                   substrings: ["hydrolyzed"]),
+
+        // Emulsifiers of concern
+        AvoidEntry(canonicalName: "Carrageenan", category: "Emulsifier",
+                   substrings: ["carrageenan"]),
+        AvoidEntry(canonicalName: "Polysorbate 80", category: "Emulsifier",
+                   substrings: ["polysorbate 80"]),
+        AvoidEntry(canonicalName: "Carboxymethylcellulose", category: "Emulsifier",
+                   substrings: ["carboxymethylcellulose", "cellulose gum"]),
+    ]
+
+
+    // All flagged substances present in the given label list.
+    static func allMatches(in ingredients: [String]) -> [AvoidEntry] {
+        guard !ingredients.isEmpty else { return [] }
+        let hay = ingredients.map { $0.lowercased() }
+        let tokens = Set(hay.flatMap {
+            $0.split { !$0.isLetter && !$0.isNumber }.map(String.init)
+        })
+        return entries.filter { e in
+            e.substrings.contains { sub in
+                e.wholeWordOnly ? tokens.contains(sub)
+                                : hay.contains { $0.contains(sub) }
+            }
+        }
+    }
+
+    static func firstMatch(in ingredients: [String]) -> AvoidEntry? {
+        allMatches(in: ingredients).first
     }
 }

@@ -51,6 +51,21 @@
 		9EFED2D8597BBE4683EDBFBE /* VitaminMineralActuals.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07EB3DC95824990DAAB347D4 /* VitaminMineralActuals.swift */; };
 		C575CA58D52D8B6140F52ACE /* VitaminMineralContributors.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7C951C6CE4D00BFD5B8844A /* VitaminMineralContributors.swift */; };
 		CDF59C31B84DD2F4B6AB91C5 /* AmountStepper.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2933EC65AD069B7C9E529AC /* AmountStepper.swift */; };
+		FF020000000000000000001A /* ParsedIngredient.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF010000000000000000000A /* ParsedIngredient.swift */; };
+		FF020000000000000000001B /* ScanDiff.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF010000000000000000000B /* ScanDiff.swift */; };
+		FF020000000000000000001C /* ScanReviewRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF010000000000000000000C /* ScanReviewRouter.swift */; };
+		FF020000000000000000001D /* NutritionScannerService.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF010000000000000000000D /* NutritionScannerService.swift */; };
+		FF020000000000000000001E /* CameraPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF010000000000000000000E /* CameraPicker.swift */; };
+		FF020000000000000000001F /* PhotoLibraryPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF010000000000000000000F /* PhotoLibraryPicker.swift */; };
+		FF0200000000000000000020 /* LabelCaptureSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF0100000000000000000010 /* LabelCaptureSheet.swift */; };
+		FF0200000000000000000021 /* MatchChooserSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF0100000000000000000011 /* MatchChooserSheet.swift */; };
+		FF0200000000000000000022 /* KeychainStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF0100000000000000000012 /* KeychainStore.swift */; };
+		FF0200000000000000000023 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF0100000000000000000013 /* SettingsView.swift */; };
+		FF0200000000000000000024 /* VerifyAllWalkthrough.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF0100000000000000000014 /* VerifyAllWalkthrough.swift */; };
+		FE0200000000000000000001 /* IngredientNutrientDetail.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE0100000000000000000001 /* IngredientNutrientDetail.swift */; };
+		FE0200000000000000000002 /* IngredientCostDetail.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE0100000000000000000002 /* IngredientCostDetail.swift */; };
+		FE0200000000000000000003 /* Group.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE0100000000000000000003 /* Group.swift */; };
+		FE0200000000000000000004 /* GroupMemberPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE0100000000000000000004 /* GroupMemberPicker.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -100,6 +115,21 @@
 		5F73DCC1042045FC0D1D224E /* MealIngredientDetail.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = MealIngredientDetail.swift; sourceTree = "<group>"; };
 		F2933EC65AD069B7C9E529AC /* AmountStepper.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = AmountStepper.swift; sourceTree = "<group>"; };
 		F7C951C6CE4D00BFD5B8844A /* VitaminMineralContributors.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = VitaminMineralContributors.swift; sourceTree = "<group>"; };
+		FF010000000000000000000A /* ParsedIngredient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ParsedIngredient.swift; sourceTree = "<group>"; };
+		FF010000000000000000000B /* ScanDiff.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScanDiff.swift; sourceTree = "<group>"; };
+		FF010000000000000000000C /* ScanReviewRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScanReviewRouter.swift; sourceTree = "<group>"; };
+		FF010000000000000000000D /* NutritionScannerService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NutritionScannerService.swift; sourceTree = "<group>"; };
+		FF010000000000000000000E /* CameraPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraPicker.swift; sourceTree = "<group>"; };
+		FF010000000000000000000F /* PhotoLibraryPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoLibraryPicker.swift; sourceTree = "<group>"; };
+		FF0100000000000000000010 /* LabelCaptureSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LabelCaptureSheet.swift; sourceTree = "<group>"; };
+		FF0100000000000000000011 /* MatchChooserSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MatchChooserSheet.swift; sourceTree = "<group>"; };
+		FF0100000000000000000012 /* KeychainStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeychainStore.swift; sourceTree = "<group>"; };
+		FF0100000000000000000013 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
+		FF0100000000000000000014 /* VerifyAllWalkthrough.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VerifyAllWalkthrough.swift; sourceTree = "<group>"; };
+		FE0100000000000000000001 /* IngredientNutrientDetail.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IngredientNutrientDetail.swift; sourceTree = "<group>"; };
+		FE0100000000000000000002 /* IngredientCostDetail.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IngredientCostDetail.swift; sourceTree = "<group>"; };
+		FE0100000000000000000003 /* Group.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Group.swift; sourceTree = "<group>"; };
+		FE0100000000000000000004 /* GroupMemberPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupMemberPicker.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -161,6 +191,8 @@
 				34DE420827FA6E910078448F /* Ingredients */,
 				34DE420927FA6F8F0078448F /* Profile */,
 				34E3237628F2542900832D9C /* VitaminMinerals */,
+				FF0300000000000000000030 /* Scanner */,
+				FF0300000000000000000031 /* Settings */,
 				34DC9A3827E8D8E40082D62E /* Components */,
 				342CD48D27E25389008703C2 /* Extensions */,
 				349EE53627C99AC40072255A /* Preview Content */,
@@ -206,6 +238,10 @@
 				34DE41FE27F64D1E0078448F /* Bar.swift */,
 				06217FE9A79EDCB3171D83C4 /* DailySummary.swift */,
 				5F73DCC1042045FC0D1D224E /* MealIngredientDetail.swift */,
+				FE0100000000000000000001 /* IngredientNutrientDetail.swift */,
+				FE0100000000000000000002 /* IngredientCostDetail.swift */,
+				FE0100000000000000000003 /* Group.swift */,
+				FE0100000000000000000004 /* GroupMemberPicker.swift */,
 			);
 			path = Meal;
 			sourceTree = "<group>";
@@ -252,6 +288,31 @@
 				F7C951C6CE4D00BFD5B8844A /* VitaminMineralContributors.swift */,
 			);
 			path = VitaminMinerals;
+			sourceTree = "<group>";
+		};
+		FF0300000000000000000030 /* Scanner */ = {
+			isa = PBXGroup;
+			children = (
+				FF010000000000000000000A /* ParsedIngredient.swift */,
+				FF010000000000000000000B /* ScanDiff.swift */,
+				FF010000000000000000000C /* ScanReviewRouter.swift */,
+				FF010000000000000000000D /* NutritionScannerService.swift */,
+				FF010000000000000000000E /* CameraPicker.swift */,
+				FF010000000000000000000F /* PhotoLibraryPicker.swift */,
+				FF0100000000000000000010 /* LabelCaptureSheet.swift */,
+				FF0100000000000000000011 /* MatchChooserSheet.swift */,
+				FF0100000000000000000014 /* VerifyAllWalkthrough.swift */,
+			);
+			path = Scanner;
+			sourceTree = "<group>";
+		};
+		FF0300000000000000000031 /* Settings */ = {
+			isa = PBXGroup;
+			children = (
+				FF0100000000000000000012 /* KeychainStore.swift */,
+				FF0100000000000000000013 /* SettingsView.swift */,
+			);
+			path = Settings;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -365,6 +426,21 @@
 				86BF27A2B218BF91A4B81D65 /* NumberEntrySheet.swift in Sources */,
 				CDF59C31B84DD2F4B6AB91C5 /* AmountStepper.swift in Sources */,
 				8956804D98C6E4DDC53DF0C7 /* MealIngredientDetail.swift in Sources */,
+				FF020000000000000000001A /* ParsedIngredient.swift in Sources */,
+				FF020000000000000000001B /* ScanDiff.swift in Sources */,
+				FF020000000000000000001C /* ScanReviewRouter.swift in Sources */,
+				FF020000000000000000001D /* NutritionScannerService.swift in Sources */,
+				FF020000000000000000001E /* CameraPicker.swift in Sources */,
+				FF020000000000000000001F /* PhotoLibraryPicker.swift in Sources */,
+				FF0200000000000000000020 /* LabelCaptureSheet.swift in Sources */,
+				FF0200000000000000000021 /* MatchChooserSheet.swift in Sources */,
+				FF0200000000000000000022 /* KeychainStore.swift in Sources */,
+				FF0200000000000000000023 /* SettingsView.swift in Sources */,
+				FF0200000000000000000024 /* VerifyAllWalkthrough.swift in Sources */,
+				FE0200000000000000000001 /* IngredientNutrientDetail.swift in Sources */,
+				FE0200000000000000000002 /* IngredientCostDetail.swift in Sources */,
+				FE0200000000000000000003 /* Group.swift in Sources */,
+				FE0200000000000000000004 /* GroupMemberPicker.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -499,8 +575,10 @@
 				DEVELOPMENT_TEAM = QATUG526J8;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSCameraUsageDescription = "Take photos of nutrition labels to add or update ingredients.";
 				INFOPLIST_KEY_NSHealthShareUsageDescription = "Your workout related data will be used to display your saved workouts in MyWorkouts.";
 				INFOPLIST_KEY_NSHealthUpdateUsageDescription = "Workouts tracked by MyWorkouts on Apple Watch will be saved to HealthKit.";
+				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "Pick existing photos of nutrition labels to add or update ingredients.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -532,8 +610,10 @@
 				DEVELOPMENT_TEAM = QATUG526J8;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSCameraUsageDescription = "Take photos of nutrition labels to add or update ingredients.";
 				INFOPLIST_KEY_NSHealthShareUsageDescription = "Your workout related data will be used to display your saved workouts in MyWorkouts.";
 				INFOPLIST_KEY_NSHealthUpdateUsageDescription = "Workouts tracked by MyWorkouts on Apple Watch will be saved to HealthKit.";
+				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "Pick existing photos of nutrition labels to add or update ingredients.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;

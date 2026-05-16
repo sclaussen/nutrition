@@ -19,79 +19,124 @@ struct DailySummary: View {
     }
 
 
+    // Sum of cost contributions across the active meal ingredients:
+    //   (ingredient.totalCost / ingredient.totalGrams)
+    //     × (mealIngredient.amount × ingredient.consumptionGrams)
+    // Unpriced ingredients (totalGrams == 0) contribute 0.
+    private func mealTotalCost() -> Double {
+        mealIngredientMgr.mealIngredients
+          .filter { $0.active }
+          .reduce(0) { running, mi in
+              if mi.isComposite {
+                  return running + compositeCost(mi, ingredientMgr)
+              }
+              guard let ing = ingredientMgr.getByName(name: mi.name),
+                    ing.totalGrams > 0 else { return running }
+              let costPerGram = ing.totalCost / ing.totalGrams
+              return running + costPerGram * (mi.amount * ing.consumptionGrams)
+          }
+    }
+
+
     var body: some View {
         let macros = macrosMgr.macros
         let profile = profileMgr.profile
-        let goal = profile.caloriesGoal
-        let actual = macros.calories
-        let pct = goal > 0 ? Int((actual / goal) * 100) : 0
 
         NavigationView {
             VStack(alignment: .leading, spacing: 10) {
 
-                // Calories
-                VStack(alignment: .leading, spacing: 3) {
-                    sectionLabel("CALORIES")
-                    HStack {
-                        Text("\(Int(actual)) / \(Int(goal))").font(.title3)
-                        Spacer()
-                        Text("\(pct)%").font(.title3).foregroundColor(Color.theme.blueYellow)
-                    }
-                    ProgressView(value: min(actual / max(goal, 1), 1.5))
+                // Macro + calorie donuts mirroring the meal page's
+                // fixed header — opens the summary with the same
+                // at-a-glance picture.
+                HStack(spacing: 0) {
+                    Spacer()
+                    Gauge(title: "Fat",      titleFontColor: Color.theme.blackWhite, titleFontSize: 17, macros.fat,                          actualFontSize: 18,                     macros.fatGoal,         annotationFontColor: Color.theme.blueYellow, unit: "grams", progressLineBackground: Color("ProgressLineBackground"),                 scale: 1.18)
+                    Spacer()
+                    Gauge(title: "NCarbs",   titleFontColor: Color.theme.blackWhite, titleFontSize: 17, macros.netCarbs, actualFontSize: 18, actualPrecision: 1, macros.netCarbsMaximum, annotationFontColor: Color.theme.blueYellow, unit: "grams", progressLineBackground: Color("ProgressLineBackground"), type: .ceiling, scale: 1.18)
+                    Spacer()
+                    Gauge(title: "Protein",  titleFontColor: Color.theme.blackWhite, titleFontSize: 17, macros.protein,                      actualFontSize: 18,                     macros.proteinGoal,     annotationFontColor: Color.theme.blueYellow, unit: "grams", progressLineBackground: Color("ProgressLineBackground"),                 scale: 1.18)
+                    Spacer()
+                    Gauge(title: "Calories", titleFontColor: Color.theme.blackWhite, titleFontSize: 17, macros.calories,                     actualFontSize: 18,                     profile.caloriesGoal,   annotationFontColor: Color.theme.blueYellow, unit: "cal",   progressLineBackground: Color("ProgressLineBackground"),                 secondaryGoal: profile.caloriesGoalUnadjusted, scale: 1.18)
+                    Spacer()
+                }
+                  .frame(height: 165)
+
+                // Body composition — 6 small gauges.  Section label
+                // removed since each gauge already has its own title.
+                HStack(spacing: 0) {
+                    Spacer()
+                    Gauge(title: "Weight",   titleFontColor: Color.theme.blackWhite, profile.bodyMass,                actualPrecision: 1, annotationFontColor: Color.theme.blueYellow, unit: "lbs",   progressLineBackground: Color("ProgressLineBackground"), type: .value, scale: 0.7)
+                    Gauge(title: "Fat %",    titleFontColor: Color.theme.blackWhite, profile.bodyFatPercentage,       actualPrecision: 1, annotationFontColor: Color.theme.blueYellow, unit: "%",     progressLineBackground: Color("ProgressLineBackground"), type: .value, scale: 0.7)
+                    Gauge(title: "BMI",      titleFontColor: Color.theme.blackWhite, profile.bodyMassIndex,           actualPrecision: 1, annotationFontColor: Color.theme.blueYellow,                progressLineBackground: Color("ProgressLineBackground"), type: .value, scale: 0.7)
+                    Gauge(title: "Activity", titleFontColor: Color.theme.blackWhite, profile.activeCaloriesBurned,                        annotationFontColor: Color.theme.blueYellow, unit: "cal",   progressLineBackground: Color("ProgressLineBackground"), type: .value, scale: 0.7)
+                    Gauge(title: "Deficit",  titleFontColor: Color.theme.blackWhite, Double(profile.calorieDeficit),                      annotationFontColor: Color.theme.blueYellow, unit: "%",     progressLineBackground: Color("ProgressLineBackground"), type: .value, scale: 0.7)
+                    Gauge(title: "Ratio",    titleFontColor: Color.theme.blackWhite, profile.proteinRatio,            actualPrecision: 2, annotationFontColor: Color.theme.blueYellow, unit: "g/lbm", progressLineBackground: Color("ProgressLineBackground"), type: .value, scale: 0.7)
+                    Spacer()
+                }
+                  .frame(height: 70)
+
+                // Total dollar cost of today's meal — sum over the
+                // active meal ingredients of (cost/gram × grams
+                // consumed). Mirrors the per-ingredient breakdown
+                // behind the $ icon on the meal page.
+                HStack {
+                    Text("Meal Cost").font(.callout)
+                    Spacer()
+                    Text(String(format: "$%.2f", mealTotalCost()))
+                      .font(.callout)
+                      .foregroundColor(Color.theme.blueYellow)
                 }
 
-                // Macros (2x2)
-                VStack(alignment: .leading, spacing: 3) {
-                    sectionLabel("MACROS")
-                    HStack(spacing: 8) {
-                        valueCell("Fat",       "\(Int(macros.fat)) / \(Int(macros.fatGoal)) g")
-                        valueCell("Fiber",     "\(Int(macros.fiber)) / \(Int(macros.fiberMinimum)) g")
-                    }
-                    HStack(spacing: 8) {
-                        valueCell("NetCarbs",  "\(Int(macros.netCarbs)) / \(Int(macros.netCarbsMaximum)) g")
-                        valueCell("Protein",   "\(Int(macros.protein)) / \(Int(macros.proteinGoal)) g")
-                    }
-                }
+                // CALORIES and MACROS text sections removed —
+                // the four donut gauges at the top of this page
+                // already show those numbers.
 
-                // Body (2x2)
-                VStack(alignment: .leading, spacing: 3) {
-                    sectionLabel("BODY")
-                    HStack(spacing: 8) {
-                        valueCell("Weight",     "\(profile.bodyMass.formattedString(1)) lb")
-                        valueCell("Body Fat",   "\(profile.bodyFatPercentage.formattedString(1)) %")
+                // V&M — only the out-of-range ("red") entries, rendered
+                // using the same Min | Max | Actual column layout as the
+                // full Vitamin/Mineral page so the two views stay
+                // visually consistent.  No section label — the
+                // "Vitamin/Mineral" column header is itself the heading.
+                //
+                // reserveChevronSpace: false → the trailing 18pt spacer
+                // baked into the header for List/NavigationLink contexts
+                // is suppressed here, so the header columns line up with
+                // the data values below (no chevron is added in a VStack).
+                let redRows = vitaminMineralRedRows()
+                if redRows.isEmpty {
+                    HStack(spacing: 6) {
+                        Image(systemName: "checkmark.circle.fill")
+                          .foregroundColor(Color.theme.green)
+                          .font(.caption)
+                        Text("All within range").font(.caption)
                     }
-                    HStack(spacing: 8) {
-                        valueCell("BMI",        profile.bodyMassIndex.formattedString(1))
-                        valueCell("Active Cal", "\(Int(profile.activeCaloriesBurned))")
-                    }
-                }
-
-                // V&M — only out-of-range
-                VStack(alignment: .leading, spacing: 3) {
-                    sectionLabel("VITAMINS & MINERALS")
-                    let warnings = vitaminMineralWarnings()
-                    if warnings.isEmpty {
-                        HStack(spacing: 6) {
-                            Image(systemName: "checkmark.circle.fill")
-                              .foregroundColor(Color.theme.green)
-                              .font(.caption)
-                            Text("All within range").font(.caption)
-                        }
-                    } else {
-                        ForEach(warnings, id: \.name) { w in
-                            HStack(spacing: 6) {
-                                Image(systemName: "exclamationmark.triangle.fill")
-                                  .foregroundColor(Color.theme.red)
-                                  .font(.caption2)
-                                Text(w.name).font(.caption)
-                                Text(w.direction)
-                                  .font(.caption2)
-                                  .foregroundColor(Color.theme.blackWhiteSecondary)
-                                Spacer()
-                                Text(w.values)
-                                  .font(.caption2)
-                                  .foregroundColor(Color.theme.blackWhiteSecondary)
+                } else {
+                    // Header keeps its trailing chevron reservation
+                    // (true) because each row below now ends with an
+                    // explicit chevron Image (we're not in a List, so
+                    // no auto-chevron — drawing it manually).  Header
+                    // and rows therefore both reserve the same 18pt
+                    // trail, keeping the Min/Max/Actual columns aligned.
+                    VStack(alignment: .leading, spacing: 4) {
+                        VitaminMineralRowHeader(reserveChevronSpace: true)
+                        ForEach(redRows, id: \.name) { row in
+                            NavigationLink(destination: VitaminMineralContributors(nutrient: row.name)) {
+                                HStack(spacing: 5) {
+                                    VitaminMineralRow(name: row.name,
+                                                      min: row.min,
+                                                      max: row.max,
+                                                      actual: row.actual,
+                                                      unit: row.unit)
+                                    // Chevron made more prominent so it
+                                    // reads as a tappable disclosure
+                                    // affordance, not chrome.
+                                    Image(systemName: "chevron.right")
+                                      .font(.footnote)
+                                      .foregroundColor(Color.theme.blueYellow)
+                                      .frame(width: 18)
+                                }
+                                  .contentShape(Rectangle())
                             }
+                              .buttonStyle(.plain)
                         }
                     }
                 }
@@ -138,17 +183,25 @@ struct DailySummary: View {
     }
 
 
-    private struct VMWarning {
-        let name: String      // e.g., "Calcium"
-        let direction: String // "below min" or "above max"
-        let values: String    // "150 / 1,000"
+    // One row's worth of data for VitaminMineralRow, surfaced only when
+    // the nutrient is out of range.  The `max` here is the *displayed*
+    // max — 0 for supp-only-UL nutrients (matches VitaminMineralList) so
+    // we don't trigger the over-max signal from food-inclusive totals.
+    private struct VMRedRow {
+        let name: VitaminMineralType
+        let min: Double
+        let max: Double
+        let actual: Double
+        let unit: Unit
     }
 
 
-    // Returns one warning entry per nutrient that's below min or
-    // above a defined max.  Nutrients with no min and no max are
-    // skipped.  Used by the V&M section above.
-    private func vitaminMineralWarnings() -> [VMWarning] {
+    // Out-of-range V&M rows in the same display order and using the
+    // same min/max/unit conventions as VitaminMineralList.  An entry
+    // counts as "red" when actual < min, or when the displayed max
+    // applies (i.e. the nutrient isn't in supplementOnlyULNutrients)
+    // *and* actual > max.
+    private func vitaminMineralRedRows() -> [VMRedRow] {
         let actuals = computeVitaminMineralActuals(
             mealIngredients: mealIngredientMgr.mealIngredients,
             ingredientMgr: ingredientMgr
@@ -156,32 +209,35 @@ struct DailySummary: View {
         let age = profileMgr.profile.age
         let gender = profileMgr.profile.gender
 
-        var warnings: [VMWarning] = []
+        var rows: [VMRedRow] = []
 
         for type in vitaminMineralOrder {
             let vm = VitaminMineral(name: type, age: age, gender: gender)
             let actual = actuals[type] ?? 0
             let min = vm.min()
-            let max = vm.max()
-            let label = type.formattedString()
+            let displayedMax = supplementOnlyULNutrients.contains(type) ? 0 : vm.max()
 
-            if min > 0 && actual < min {
-                warnings.append(VMWarning(
-                    name: label,
-                    direction: "below min",
-                    values: "\(actual.formattedString(0)) / \(min.formattedString(0))"
-                ))
-                continue
-            }
-            if max > 0 && actual > max {
-                warnings.append(VMWarning(
-                    name: label,
-                    direction: "above max",
-                    values: "\(actual.formattedString(0)) / \(max.formattedString(0))"
+            let belowMin = min > 0 && actual < min
+            let aboveMax = displayedMax > 0 && actual > displayedMax
+
+            if belowMin || aboveMax {
+                rows.append(VMRedRow(
+                    name: type,
+                    min: min,
+                    max: displayedMax,
+                    actual: actual,
+                    unit: vm.unit()
                 ))
             }
         }
 
-        return warnings
+        return rows
     }
 }
+
+
+// `IngredientSourcesForNutrient` removed — its purpose
+// (drill into a deficient nutrient from DailySummary to see which
+// ingredients could help) is now served by VitaminMineralContributors,
+// which adds a "today's meal contributors" section above the all-
+// sources list and reformats rows as "<grams-to-RDA>g (<per-100g>)".

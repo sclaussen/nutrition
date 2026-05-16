@@ -84,13 +84,72 @@ func contributorsTo(
 }
 
 
-// Pull a nutrient's raw per-serving value off an ingredient.  This
-// is the single mapping point between VitaminMineralType and the
-// individual fields on Ingredient.
-private func nutrientValue(of ingredient: Ingredient, for type: VitaminMineralType) -> Double {
+// One row in the "all sources" table — every ingredient in the
+// database that records a non-zero amount of this nutrient, ranked
+// by per-gram density. Tells the user *what to eat more of* to hit
+// the RDA when their current meal is short.
+struct IngredientNutrientDensity: Identifiable {
+    let id: String           // ingredient name (unique within db)
+    let name: String
+    let gramsForMin: Double  // grams of this ingredient to hit RDA min;
+                             // 0 when min is undefined (use sentinel)
+    let perHundredGrams: Double  // amount of nutrient per 100g
+}
+
+
+// All ingredients in the database that contribute to `nutrient`,
+// sorted most → least dense (per-gram). `rdaMin` is used to compute
+// "grams of X to reach minimum"; pass 0 when no min applies and the
+// caller renders a "—" instead.
+func allContributorsFor(
+    nutrient: VitaminMineralType,
+    rdaMin: Double,
+    ingredientMgr: IngredientMgr
+) -> [IngredientNutrientDensity] {
+
+    var rows: [IngredientNutrientDensity] = []
+
+    for ingredient in ingredientMgr.ingredients {
+        guard ingredient.servingSize > 0 else { continue }
+        let perServing = nutrientValue(of: ingredient, for: nutrient)
+        guard perServing > 0 else { continue }
+
+        let densityPerGram = perServing / ingredient.servingSize
+        let gramsForMin = rdaMin > 0 ? rdaMin / densityPerGram : 0
+        let per100g = densityPerGram * 100
+
+        rows.append(IngredientNutrientDensity(
+            id: ingredient.name,
+            name: ingredient.name,
+            gramsForMin: gramsForMin,
+            perHundredGrams: per100g
+        ))
+    }
+
+    // Descending by per-gram density — top of the list is the best
+    // source per gram. Equivalent to ascending by gramsForMin.
+    return rows.sorted { $0.perHundredGrams > $1.perHundredGrams }
+}
+
+
+// Pull a nutrient's raw per-serving value off an ingredient and
+// return it in the unit reported by VitaminMineral.unit() — the same
+// unit min()/max() use, so callers can compare freely.
+//
+// Two ingredient fields are stored in a different unit than what NIH
+// reports the RDA/UL in, and both need converting here so the row's
+// min ≤ actual ≤ max comparison is unit-consistent:
+//   - copper:    Ingredient stores mg, NIH reports mcg → ×1000
+//   - vitaminD:  Ingredient stores mcg, NIH reports IU → ×40
+//                (1 mcg vitamin D = 40 IU)
+// Internal (not file-private) so MealIngredientDetail can reuse the
+// same mapping + unit conversions when showing per-ingredient
+// contributions; otherwise the detail page double-shows raw mg/mcg
+// for copper and raw mcg for vitamin D, breaking unit consistency.
+func nutrientValue(of ingredient: Ingredient, for type: VitaminMineralType) -> Double {
     switch type {
     case .calcium:         return ingredient.calcium
-    case .copper:          return ingredient.copper
+    case .copper:          return ingredient.copper * 1000     // mg → mcg
     case .folate:          return ingredient.folate
     case .folicAcid:       return ingredient.folicAcid
     case .iron:            return ingredient.iron
@@ -107,7 +166,7 @@ private func nutrientValue(of ingredient: Ingredient, for type: VitaminMineralTy
     case .vitaminB12:      return ingredient.vitaminB12
     case .vitaminB6:       return ingredient.vitaminB6
     case .vitaminC:        return ingredient.vitaminC
-    case .vitaminD:        return ingredient.vitaminD
+    case .vitaminD:        return ingredient.vitaminD * 40     // mcg → IU
     case .vitaminE:        return ingredient.vitaminE
     case .vitaminK:        return ingredient.vitaminK
     case .zinc:            return ingredient.zinc

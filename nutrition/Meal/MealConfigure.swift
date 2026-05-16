@@ -4,7 +4,6 @@ struct MealConfigure: View {
 
     enum Field: Hashable {
         case activeCaloriesBurned
-        case meatAmount
     }
 
     @Environment(\.presentationMode) var presentationMode
@@ -29,12 +28,8 @@ struct MealConfigure: View {
                 NameValue("Caloric Deficit", description: "percentage to adjust daily caloric and macro goals", $profileMgr.profile.calorieDeficit, .percentage, edit: true)
                 NameValue("Water Minimum", description: "daily consumption mininimum, weight/2 * ~.03", $profileMgr.profile.waterLiters, .liter, precision: 1)
             }
-            Section {
-                NameValue("Meat", description: "main course", $profileMgr.profile.meat, options: ingredientMgr.getAllMeatNames(), control: .picker)
-                if profileMgr.profile.meat != "None" {
-                    NameValue("Meat Weight", $profileMgr.profile.meatAmount, edit: true)
-                }
-            }
+            // Meat picker / weight removed — proteins are edited from
+            // the meal list (double-tap a protein row).
         }
           .padding([.leading, .trailing], -20)
           .navigationBarBackButtonHidden(true)

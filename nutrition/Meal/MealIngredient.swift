@@ -136,7 +136,9 @@ class MealIngredientMgr: ObservableObject {
                 adjustment: Int = Constants.Default,
                 priorState: Int = Constants.Active,
                 active: Bool = true,
-                isSupplement: Bool = false) {
+                isSupplement: Bool = false,
+                selectedMemberName: String = "",
+                compositeParts: [MealCompositePart] = []) {
 
         let mealIngredient = MealIngredient(name: name,
                                             amount: amount,
@@ -144,9 +146,39 @@ class MealIngredientMgr: ObservableObject {
                                             adjustment: adjustment,
                                             priorState: priorState,
                                             active: active,
-                                            isSupplement: isSupplement)
+                                            isSupplement: isSupplement,
+                                            selectedMemberName: selectedMemberName,
+                                            compositeParts: compositeParts)
 
         mealIngredients.append(mealIngredient)
+    }
+
+
+    // Change which member of a group this meal row uses. Macros are
+    // recomputed by the next generateMeal() (resolution happens
+    // there via the row's selectedMemberName).
+    func setSelectedMember(name: String, member: String) {
+        if let index = mealIngredients.firstIndex(where: { $0.name == name }) {
+            mealIngredients[index].selectedMemberName = member
+        }
+    }
+
+
+    // Set a meal row's amount directly (used when switching Food
+    // variants so the row adopts the new variant's defaultAmount).
+    func setAmount(name: String, amount: Double) {
+        if let index = mealIngredients.firstIndex(where: { $0.name == name }) {
+            mealIngredients[index].amount = amount
+        }
+    }
+
+
+    // Replace a composite row's resolved parts (variant swap /
+    // amount change from the composite editor).
+    func setCompositeParts(name: String, parts: [MealCompositePart]) {
+        if let index = mealIngredients.firstIndex(where: { $0.name == name }) {
+            mealIngredients[index].compositeParts = parts
+        }
     }
 
 
@@ -411,6 +443,17 @@ class MealIngredientMgr: ObservableObject {
 }
 
 
+// One resolved component of a composite meal row: which Food, the
+// variant currently chosen for it, and how much. Macros/cost come
+// from the variant Ingredient at `amount` in its consumption unit.
+struct MealCompositePart: Codable, Equatable, Identifiable {
+    var id: String { foodName }
+    var foodName: String
+    var selectedVariantName: String
+    var amount: Double
+}
+
+
 struct MealIngredient: Codable, Identifiable {
     var id: String
 
@@ -437,6 +480,18 @@ struct MealIngredient: Codable, Identifiable {
     // (toggle in the view-options menu to show them).
     var isSupplement: Bool
 
+    // Non-empty ⇒ this meal row represents an ingredient GROUP
+    // (`name` holds the group name) and this is the currently
+    // selected member ingredient. Macros/cost resolve from the
+    // member, not the group name. Empty ⇒ ordinary ingredient row.
+    var selectedMemberName: String
+
+    // Non-empty ⇒ this row is a FoodComposite; `name` holds the
+    // composite name and macros/cost are the sum of these parts.
+    var compositeParts: [MealCompositePart]
+
+    var isComposite: Bool { !compositeParts.isEmpty }
+
 
     init(id: String = UUID().uuidString,
          name: String,
@@ -451,7 +506,9 @@ struct MealIngredient: Codable, Identifiable {
          adjustment: Int = Constants.Default,
          priorState: Int = Constants.Active,
          active: Bool = true,
-         isSupplement: Bool = false) {
+         isSupplement: Bool = false,
+         selectedMemberName: String = "",
+         compositeParts: [MealCompositePart] = []) {
 
         self.id = id
 
@@ -477,6 +534,8 @@ struct MealIngredient: Codable, Identifiable {
 
         self.active = active
         self.isSupplement = isSupplement
+        self.selectedMemberName = selectedMemberName
+        self.compositeParts = compositeParts
     }
 
 
@@ -498,26 +557,50 @@ struct MealIngredient: Codable, Identifiable {
         self.priorState = try c.decode(Int.self, forKey: .priorState)
         self.active = try c.decode(Bool.self, forKey: .active)
         self.isSupplement = try c.decodeIfPresent(Bool.self, forKey: .isSupplement) ?? false
+        // Migration-safe: absent in data saved before groups existed.
+        self.selectedMemberName = try c.decodeIfPresent(String.self, forKey: .selectedMemberName) ?? ""
+        self.compositeParts = try c.decodeIfPresent([MealCompositePart].self, forKey: .compositeParts) ?? []
     }
 
 
+    // All the methods below return a modified copy. They use
+    // `var c = self` and mutate only what changes, so every field
+    // (selectedMemberName and any added later) is preserved without
+    // having to re-list it at each call site.
+
     func toggleActive() -> MealIngredient {
-        return MealIngredient(id: id, name: name, originalAmount: originalAmount, amount: amount, meat: meat, calories: calories, fat: fat, fiber: fiber, netcarbs: netcarbs, protein: protein, adjustment: adjustment, priorState: priorState, active: !active, isSupplement: isSupplement);
+        var c = self
+        c.active.toggle()
+        return c
     }
 
 
     func toggleSupplement() -> MealIngredient {
-        return MealIngredient(id: id, name: name, originalAmount: originalAmount, amount: amount, meat: meat, calories: calories, fat: fat, fiber: fiber, netcarbs: netcarbs, protein: protein, adjustment: adjustment, priorState: priorState, active: active, isSupplement: !isSupplement);
+        var c = self
+        c.isSupplement.toggle()
+        return c
     }
 
 
     func setMacroActualsToZero() -> MealIngredient {
-        return MealIngredient(id: id, name: name, originalAmount: originalAmount, amount: amount, meat: meat, calories: 0, fat: 0, fiber: 0, netcarbs: 0, protein: 0, adjustment: adjustment, priorState: priorState, active: active, isSupplement: isSupplement);
+        var c = self
+        c.calories = 0
+        c.fat = 0
+        c.fiber = 0
+        c.netcarbs = 0
+        c.protein = 0
+        return c
     }
 
 
     func setMacroActuals(calories: Double, fat: Double, fiber: Double, netcarbs: Double, protein: Double) -> MealIngredient {
-        return MealIngredient(id: id, name: name, originalAmount: originalAmount, amount: amount, meat: meat, calories: self.calories + calories, fat: self.fat + fat, fiber: self.fiber + fiber, netcarbs: self.netcarbs + netcarbs, protein: self.protein + protein, adjustment: adjustment, priorState: priorState, active: active, isSupplement: isSupplement);
+        var c = self
+        c.calories += calories
+        c.fat += fat
+        c.fiber += fiber
+        c.netcarbs += netcarbs
+        c.protein += protein
+        return c
     }
 
 
@@ -525,12 +608,12 @@ struct MealIngredient: Codable, Identifiable {
         if adjustment == Constants.Automatic {
             undoAdjustment()
         }
-
-        // adjustment: Manual
-        // amount: amount
-        // priorState: self.active
-        // active: true
-        return MealIngredient(id: self.id, name: self.name, originalAmount: self.originalAmount, amount: amount, meat: self.meat, calories: self.calories, fat: self.fat, fiber: self.fiber, netcarbs: self.netcarbs, protein: self.protein, adjustment: Constants.Manual, priorState: self.active ? Constants.Active : Constants.Inactive, active: true, isSupplement: self.isSupplement);
+        var c = self
+        c.amount = amount
+        c.adjustment = Constants.Manual
+        c.priorState = self.active ? Constants.Active : Constants.Inactive
+        c.active = true
+        return c
     }
 
 
@@ -541,7 +624,11 @@ struct MealIngredient: Codable, Identifiable {
     // priorState so the prior pre-Done active/inactive flag is
     // recoverable if we ever need it.
     func doneAdjustment(amount: Double) -> MealIngredient {
-        return MealIngredient(id: self.id, name: self.name, originalAmount: self.originalAmount, amount: amount, meat: self.meat, calories: self.calories, fat: self.fat, fiber: self.fiber, netcarbs: self.netcarbs, protein: self.protein, adjustment: Constants.Done, priorState: self.priorState, active: true, isSupplement: self.isSupplement)
+        var c = self
+        c.amount = amount
+        c.adjustment = Constants.Done
+        c.active = true
+        return c
     }
 
 
@@ -562,8 +649,10 @@ struct MealIngredient: Codable, Identifiable {
     // subsequent Done → Default would then evaluate Default==Active
     // as false and silently deactivate the row.
     func undoDoneAdjustment(resetAmount: Bool) -> MealIngredient {
-        let newAmount = resetAmount ? self.originalAmount : self.amount
-        return MealIngredient(id: self.id, name: self.name, originalAmount: self.originalAmount, amount: newAmount, meat: self.meat, calories: self.calories, fat: self.fat, fiber: self.fiber, netcarbs: self.netcarbs, protein: self.protein, adjustment: Constants.Default, priorState: self.priorState, active: self.active, isSupplement: self.isSupplement)
+        var c = self
+        c.amount = resetAmount ? self.originalAmount : self.amount
+        c.adjustment = Constants.Default
+        return c
     }
 
 
@@ -588,7 +677,12 @@ struct MealIngredient: Codable, Identifiable {
             // priorState: self.active
             // active: true
             print("  Automatic adjustment of \(self.name) to \(amount) (and activating ingredient) (original amount \(originalAmount))")
-            return MealIngredient(id: self.id, name: self.name, originalAmount: self.originalAmount, amount: amount, meat: self.meat, calories: self.calories, fat: self.fat, fiber: self.fiber, netcarbs: self.netcarbs, protein: self.protein, adjustment: Constants.Automatic, priorState: self.active ? Constants.Active : Constants.Inactive, active: true, isSupplement: self.isSupplement)
+            var c = self
+            c.amount = amount
+            c.adjustment = Constants.Automatic
+            c.priorState = self.active ? Constants.Active : Constants.Inactive
+            c.active = true
+            return c
         }
 
         if adjustment == Constants.Default && active {
@@ -597,12 +691,18 @@ struct MealIngredient: Codable, Identifiable {
             // priorState: self.active
             // active: true
             print("  Automatic adjustment of \(self.name) by \(amount) to \(self.amount + amount) (initial adjustment) (original amount \(originalAmount))")
-            return MealIngredient(id: self.id, name: self.name, originalAmount: self.originalAmount, amount: self.amount + amount, meat: self.meat, calories: self.calories, fat: self.fat, fiber: self.fiber, netcarbs: self.netcarbs, protein: self.protein, adjustment: Constants.Automatic, priorState: self.active ? Constants.Active : Constants.Inactive, active: true, isSupplement: self.isSupplement)
+            var c = self
+            c.amount = self.amount + amount
+            c.adjustment = Constants.Automatic
+            c.priorState = self.active ? Constants.Active : Constants.Inactive
+            c.active = true
+            return c
         }
 
         print("  Automatic adjustment of \(self.name) by \(amount) to \(self.amount + amount) (delta adjustment) (original amount \(originalAmount))")
-        // amount: += amount
-        return MealIngredient(id: self.id, name: self.name, originalAmount: self.originalAmount, amount: self.amount + amount, meat: self.meat, calories: self.calories, fat: self.fat, fiber: self.fiber, netcarbs: self.netcarbs, protein: self.protein, adjustment: self.adjustment, priorState: self.priorState, active: self.active, isSupplement: self.isSupplement)
+        var c = self
+        c.amount = self.amount + amount
+        return c
     }
 
 
@@ -618,12 +718,32 @@ struct MealIngredient: Codable, Identifiable {
         //   (trash-can swipe) AFTER the auto-adjustment had set
         //   priorState=Active — we must NOT silently reactivate.
         let restoredActive = self.active && (self.priorState == Constants.Active)
-        return MealIngredient(id: self.id, name: self.name, originalAmount: self.originalAmount, amount: self.originalAmount, meat: self.meat, calories: calories, fat: fat, fiber: fiber, netcarbs: netcarbs, protein: protein, adjustment: Constants.Default, priorState: Constants.Default, active: restoredActive, isSupplement: self.isSupplement)
+        var c = self
+        c.amount = self.originalAmount
+        c.adjustment = Constants.Default
+        c.priorState = Constants.Default
+        c.active = restoredActive
+        return c
     }
 
 
     func update(mealIngredient: MealIngredient) -> MealIngredient {
         print("  Update \(mealIngredient.name)")
-        return MealIngredient(id: mealIngredient.id, name: mealIngredient.name, originalAmount: mealIngredient.originalAmount, amount: mealIngredient.amount, meat: mealIngredient.meat, calories: mealIngredient.calories, fat: mealIngredient.fat, fiber: mealIngredient.fiber, netcarbs: mealIngredient.netcarbs, protein: mealIngredient.protein, adjustment: mealIngredient.adjustment, priorState: mealIngredient.priorState, active: mealIngredient.active, isSupplement: mealIngredient.isSupplement);
+        return mealIngredient
     }
+}
+
+
+// Total cost of a composite meal row: sum of each component's
+// selected variant cost-per-gram × grams consumed. Components
+// without pricing (totalGrams == 0) contribute 0.
+func compositeCost(_ mi: MealIngredient, _ ingredientMgr: IngredientMgr) -> Double {
+    var total = 0.0
+    for part in mi.compositeParts {
+        guard let ing = ingredientMgr.getByName(name: part.selectedVariantName),
+              ing.totalGrams > 0 else { continue }
+        let costPerGram = ing.totalCost / ing.totalGrams
+        total += costPerGram * (part.amount * ing.consumptionGrams)
+    }
+    return total
 }
