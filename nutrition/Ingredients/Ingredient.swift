@@ -1,6 +1,24 @@
 import Foundation
 
 
+enum IngredientType: String, Codable, CaseIterable, Identifiable {
+    case meat, supplement, nuts, produce, cheese, oils, proteins, carbs
+    var id: String { rawValue }
+    var label: String { rawValue.capitalized }
+    var sortRank: Int {
+        switch self {
+        case .oils: return 0
+        case .produce: return 1
+        case .cheese: return 2
+        case .nuts: return 3
+        case .proteins: return 4
+        case .carbs: return 5
+        case .meat: return 6
+        case .supplement: return 7
+        }
+    }
+}
+
 
 class IngredientMgr: ObservableObject {
 
@@ -24,7 +42,6 @@ class IngredientMgr: ObservableObject {
                                       protein: 0,
                                       consumptionUnit: Unit.tablespoon,
                                       consumptionGrams: 14,
-                                      meat: false,
                                       verified: "12/25/23"))
         ingredients.append(Ingredient(name: "Avocado Oil",
                                       brand: "365 by Whole Foods Market",
@@ -36,7 +53,6 @@ class IngredientMgr: ObservableObject {
                                       protein: 0,
                                       consumptionUnit: Unit.tablespoon,
                                       consumptionGrams: 14,
-                                      meat: false,
                                       verified: "9/1/22"))
         ingredients.append(Ingredient(name: "Chicken",
                                       brand: "ButcherBox",
@@ -54,7 +70,6 @@ class IngredientMgr: ObservableObject {
                                       niacin: 10,
                                       consumptionUnit: Unit.gram,
                                       consumptionGrams: 1,
-                                      meat: true,
                                       meatAmount: 300))
         ingredients.append(Ingredient(name: "Beef",
                                       brand: "ButcherBox",
@@ -74,7 +89,6 @@ class IngredientMgr: ObservableObject {
                                       iron: 2.6,
                                       consumptionUnit: Unit.gram,
                                       consumptionGrams: 1,
-                                      meat: true,
                                       meatAmount: 200))
         ingredients.append(Ingredient(name: "Bison",
                                       brand: "ButcherBox",
@@ -86,7 +100,6 @@ class IngredientMgr: ObservableObject {
                                       protein: 23,
                                       consumptionUnit: Unit.gram,
                                       consumptionGrams: 1,
-                                      meat: true,
                                       meatAmount: 150));
         ingredients.append(Ingredient(name: "Lamb",
                                       brand: "ButcherBox",
@@ -98,7 +111,6 @@ class IngredientMgr: ObservableObject {
                                       protein: 13.09,
                                       consumptionUnit: Unit.gram,
                                       consumptionGrams: 1,
-                                      meat: true,
                                       meatAmount: 150))
         ingredients.append(Ingredient(name: "Pork Chop",
                                       brand: "ButcherBox",
@@ -116,7 +128,6 @@ class IngredientMgr: ObservableObject {
                                       niacin: 6,
                                       consumptionUnit: Unit.gram,
                                       consumptionGrams: 1,
-                                      meat: true,
                                       meatAmount: 300))
         ingredients.append(Ingredient(name: "Salmon",
                                       brand: "ButcherBox",
@@ -135,7 +146,6 @@ class IngredientMgr: ObservableObject {
                                       niacin: 8,
                                       consumptionUnit: Unit.gram,
                                       consumptionGrams: 1,
-                                      meat: true,
                                       meatAmount: 300))
         ingredients.append(Ingredient(name: "Top Sirloin Cap",
                                       brand: "ButcherBox",
@@ -146,8 +156,7 @@ class IngredientMgr: ObservableObject {
                                       netCarbs: 0,
                                       protein: 51,
                                       consumptionUnit: Unit.gram,
-                                      consumptionGrams: 1,
-                                      meat: true))
+                                      consumptionGrams: 1))
         ingredients.append(Ingredient(name: "Flat Iron Steak",
                                       brand: "ButcherBox",
                                       servingSize: 112,
@@ -157,8 +166,7 @@ class IngredientMgr: ObservableObject {
                                       netCarbs: 0,
                                       protein: 22,
                                       consumptionUnit: Unit.gram,
-                                      consumptionGrams: 1,
-                                      meat: true))
+                                      consumptionGrams: 1))
         ingredients.append(Ingredient(name: "Argentine Red Shrimp",
                                       brand: "ButcherBox",
                                       servingSize: 110,
@@ -169,7 +177,6 @@ class IngredientMgr: ObservableObject {
                                       protein: 21,
                                       consumptionUnit: Unit.gram,
                                       consumptionGrams: 1,
-                                      meat: true,
                                       meatAmount: 250))
         ingredients.append(Ingredient(name: "Eggs",
                                       brand: "Vital Farms",
@@ -190,7 +197,6 @@ class IngredientMgr: ObservableObject {
                                       calcium: 30, // mg
                                       consumptionUnit: Unit.egg,
                                       consumptionGrams: 50,
-                                      meat: false,
                                       verified: "12/25/23"))
         ingredients.append(Ingredient(name: "Arugula",
                                       brand: "365 by Whole Foods Market",
@@ -207,7 +213,6 @@ class IngredientMgr: ObservableObject {
                                       calcium: 32,
                                       consumptionUnit: Unit.gram,
                                       consumptionGrams: 1,
-                                      meat: false,
                                       verified: "No nutrition on whole foods site",
                                       stepAmount: 5))
         ingredients.append(Ingredient(name: "Spinach",
@@ -231,7 +236,6 @@ class IngredientMgr: ObservableObject {
                                       calcium: 30.0,
                                       consumptionUnit: Unit.gram,
                                       consumptionGrams: 1,
-                                      meat: false,
                                       stepAmount: 5))
         ingredients.append(Ingredient(name: "Romaine",
                                       brand: "365 by Whole Foods Market",
@@ -250,7 +254,6 @@ class IngredientMgr: ObservableObject {
                                       calcium: 16,
                                       consumptionUnit: Unit.gram,
                                       consumptionGrams: 1,
-                                      meat: false,
                                       verified: "3/16/22",
                                       stepAmount: 5))
         ingredients.append(Ingredient(name: "Broccoli",
@@ -272,7 +275,6 @@ class IngredientMgr: ObservableObject {
                                       calcium: 30.0,
                                       consumptionUnit: Unit.gram,
                                       consumptionGrams: 1,
-                                      meat: false,
                                       verified: "9/1/22",
                                       stepAmount: 5))
         ingredients.append(Ingredient(name: "Cauliflower",
@@ -293,7 +295,6 @@ class IngredientMgr: ObservableObject {
                                       folate: 48,
                                       consumptionUnit: Unit.gram,
                                       consumptionGrams: 1,
-                                      meat: false,
                                       verified: "9/1/22",
                                       stepAmount: 5))
         ingredients.append(Ingredient(name: "Mushrooms",
@@ -313,7 +314,6 @@ class IngredientMgr: ObservableObject {
                                       copper: 0.1,
                                       consumptionUnit: Unit.gram,
                                       consumptionGrams: 1,
-                                      meat: false,
                                       verified: "9/1/22",
                                       stepAmount: 5))
         ingredients.append(Ingredient(name: "Radish",
@@ -329,7 +329,6 @@ class IngredientMgr: ObservableObject {
                                       folate: 15,
                                       consumptionUnit: Unit.gram,
                                       consumptionGrams: 1,
-                                      meat: false,
                                       verified: "9/1/22",
                                       stepAmount: 5))
         // Avocado is a Food (group) with size variants. Values per
@@ -358,7 +357,6 @@ class IngredientMgr: ObservableObject {
                                       folate: 41,
                                       consumptionUnit: Unit.gram,
                                       consumptionGrams: 1,
-                                      meat: false,
                                       verified: "5/16/2026",
                                       stepAmount: 5,
                                       defaultAmount: 225))
@@ -389,7 +387,6 @@ class IngredientMgr: ObservableObject {
                                       calcium: 12,
                                       consumptionUnit: Unit.gram,
                                       consumptionGrams: 1,
-                                      meat: false,
                                       verified: "5/16/2026",
                                       stepAmount: 5,
                                       defaultAmount: 140))
@@ -419,7 +416,6 @@ class IngredientMgr: ObservableObject {
                                       calcium: 8.88,
                                       consumptionUnit: Unit.gram,
                                       consumptionGrams: 1,
-                                      meat: false,
                                       verified: "5/11/2026",
                                       stepAmount: 25))
 
@@ -446,7 +442,6 @@ class IngredientMgr: ObservableObject {
                                       calcium: 21.0,
                                       consumptionUnit: Unit.gram,
                                       consumptionGrams: 1,
-                                      meat: false,
                                       verified: "5/11/2026",
                                       stepAmount: 25))
         ingredients.append(Ingredient(name: "Sard (H2O)",
@@ -466,7 +461,6 @@ class IngredientMgr: ObservableObject {
                                       calcium: 325,
                                       consumptionUnit: Unit.can,
                                       consumptionGrams: 85,
-                                      meat: false,
                                       verified: "3/10/24"))
         ingredients.append(Ingredient(name: "Sard (SB)",
                                       brand: "Wild Planet",
@@ -485,7 +479,6 @@ class IngredientMgr: ObservableObject {
                                       calcium: 325,
                                       consumptionUnit: Unit.can,
                                       consumptionGrams: 85,
-                                      meat: false,
                                       verified: "3/10/24"))
         ingredients.append(Ingredient(name: "Sard (LS)",
                                       brand: "Wild Planet",
@@ -504,7 +497,6 @@ class IngredientMgr: ObservableObject {
                                       calcium: 325,
                                       consumptionUnit: Unit.can,
                                       consumptionGrams: 85,
-                                      meat: false,
                                       verified: "3/10/24"))
         ingredients.append(Ingredient(name: "Sard (LS L)",
                                       brand: "Wild Planet",
@@ -523,7 +515,6 @@ class IngredientMgr: ObservableObject {
                                       calcium: 325,
                                       consumptionUnit: Unit.can,
                                       consumptionGrams: 85,
-                                      meat: false,
                                       verified: "3/10/24"))
         ingredients.append(Ingredient(name: "Mack (SB)",
                                       brand: "Wild Planet",
@@ -541,7 +532,6 @@ class IngredientMgr: ObservableObject {
                                       niacin: 7,
                                       consumptionUnit: Unit.can,
                                       consumptionGrams: 85,
-                                      meat: false,
                                       verified: "3/10/24"))
         ingredients.append(Ingredient(name: "Mack (Smk)",
                                       brand: "Wild Planet",
@@ -558,7 +548,6 @@ class IngredientMgr: ObservableObject {
                                       niacin: 6,
                                       consumptionUnit: Unit.can,
                                       consumptionGrams: 75,
-                                      meat: false,
                                       verified: "3/10/24"))
         ingredients.append(Ingredient(name: "Tuna",
                                       brand: "Wild Planet",
@@ -577,7 +566,6 @@ class IngredientMgr: ObservableObject {
                                       niacin: 11,
                                       consumptionUnit: Unit.can,
                                       consumptionGrams: 85,
-                                      meat: false,
                                       verified: "3/16/22"))
         ingredients.append(Ingredient(name: "Cashews",
                                       brand: "365 by Whole Foods Market",
@@ -598,8 +586,7 @@ class IngredientMgr: ObservableObject {
                                       iron: 1.9,
                                       copper: 0.6,
                                       consumptionUnit: Unit.gram,
-                                      consumptionGrams: 1,
-                                      meat: false))
+                                      consumptionGrams: 1))
         ingredients.append(Ingredient(name: "Macadamia Nuts",
                                       brand: "Aurora",
                                       servingSize: 30,
@@ -615,7 +602,6 @@ class IngredientMgr: ObservableObject {
                                       copper: 0.2,
                                       consumptionUnit: Unit.gram,
                                       consumptionGrams: 1,
-                                      meat: false,
                                       verified: "3/16/22"))
         ingredients.append(Ingredient(name: "Walnuts",
                                       brand: "Aurora",
@@ -631,8 +617,7 @@ class IngredientMgr: ObservableObject {
                                       folate: 28,
                                       copper: 0.5,
                                       consumptionUnit: Unit.gram,
-                                      consumptionGrams: 1,
-                                      meat: false))
+                                      consumptionGrams: 1))
         ingredients.append(Ingredient(name: "Pecans",
                                       brand: "Aurora",
                                       foodName: "Pecans",
@@ -648,8 +633,7 @@ class IngredientMgr: ObservableObject {
                                       manganese: 1.3,
                                       copper: 0.3,
                                       consumptionUnit: Unit.gram,
-                                      consumptionGrams: 1,
-                                      meat: false))
+                                      consumptionGrams: 1))
         ingredients.append(Ingredient(name: "Peanuts",
                                       brand: "365 by Whole Foods Market",
                                       servingSize: 28,
@@ -666,7 +650,6 @@ class IngredientMgr: ObservableObject {
                                       folate: 67,
                                       consumptionUnit: Unit.gram,
                                       consumptionGrams: 1,
-                                      meat: false,
                                       verified: "9/1/22"))
         ingredients.append(Ingredient(name: "Pumpkin Seeds",
                                       brand: "365 by Whole Foods Market",
@@ -687,7 +670,6 @@ class IngredientMgr: ObservableObject {
                                       copper: 0.4,
                                       consumptionUnit: Unit.gram,
                                       consumptionGrams: 1,
-                                      meat: false,
                                       verified: "12/25/23"))
         ingredients.append(Ingredient(name: "Mustard",
                                       brand: "Organicville",
@@ -700,7 +682,6 @@ class IngredientMgr: ObservableObject {
                                       protein: 0,
                                       consumptionUnit: Unit.tablespoon,
                                       consumptionGrams: 15,
-                                      meat: false,
                                       verified: "3/16/22"))
         ingredients.append(Ingredient(name: "Extra Virgin Olive Oil",
                                       brand: "365 by Whole Foods Market",
@@ -714,7 +695,6 @@ class IngredientMgr: ObservableObject {
                                       vitaminE: 1.9,
                                       consumptionUnit: Unit.tablespoon,
                                       consumptionGrams: 14,
-                                      meat: false,
                                       verified: "3/16/22"))
         ingredients.append(Ingredient(name: "Fish Oil",
                                       brand: "Carlson",
@@ -726,7 +706,6 @@ class IngredientMgr: ObservableObject {
                                       protein: 0,
                                       consumptionUnit: Unit.tablespoon,
                                       consumptionGrams: 14,
-                                      meat: false,
                                       verified: "3/16/22"))
         ingredients.append(Ingredient(name: "String Cheese",
                                       brand: "365 by Whole Foods Market",
@@ -744,7 +723,6 @@ class IngredientMgr: ObservableObject {
                                       calcium: 0.0,
                                       consumptionUnit: Unit.piece,
                                       consumptionGrams: 28,
-                                      meat: false,
                                       verified: "9/1/22"))
         ingredients.append(Ingredient(name: "Dubliner Cheese",
                                       brand: "Kerrygold",
@@ -761,7 +739,6 @@ class IngredientMgr: ObservableObject {
                                       calcium: 200,
                                       consumptionUnit: Unit.gram,
                                       consumptionGrams: 1,
-                                      meat: false,
                                       verified: "3/16/22"))
         ingredients.append(Ingredient(name: "Manchego Cheese",
                                       brand: "Mitica",
@@ -779,7 +756,6 @@ class IngredientMgr: ObservableObject {
                                       calcium: 283.0,
                                       consumptionUnit: Unit.gram,
                                       consumptionGrams: 1,
-                                      meat: false,
                                       verified: "5/12/26"))
         ingredients.append(Ingredient(name: "Babybel Cheese",
                                       brand: "Mini Babybel",
@@ -797,7 +773,6 @@ class IngredientMgr: ObservableObject {
                                       calcium: 150,
                                       consumptionUnit: Unit.piece,
                                       consumptionGrams: 21,
-                                      meat: false,
                                       verified: "12/22/23"))
         ingredients.append(Ingredient(name: "Tillamook Cheddar Cheese",
                                       brand: "Tillamook",
@@ -814,7 +789,6 @@ class IngredientMgr: ObservableObject {
                                       calcium: 150,
                                       consumptionUnit: Unit.piece,
                                       consumptionGrams: 21,
-                                      meat: false,
                                       verified: "12/25/23"))
         ingredients.append(Ingredient(name: "Mini Original Semisoft Cheese",
                                       brand: "Mini Babybel",
@@ -831,7 +805,6 @@ class IngredientMgr: ObservableObject {
                                       calcium: 150,
                                       consumptionUnit: Unit.gram,
                                       consumptionGrams: 1,
-                                      meat: false,
                                       verified: "3/16/22"))
         ingredients.append(Ingredient(name: "Emmi Roth",
                                       brand: "Emmi Roth",
@@ -843,7 +816,6 @@ class IngredientMgr: ObservableObject {
                                       protein: 8,
                                       consumptionUnit: Unit.gram,
                                       consumptionGrams: 1,
-                                      meat: false,
                                       verified: "9/1/22"))
         ingredients.append(Ingredient(name: "Mitica",
                                       brand: "Mitica",
@@ -855,7 +827,6 @@ class IngredientMgr: ObservableObject {
                                       protein: 7,
                                       consumptionUnit: Unit.gram,
                                       consumptionGrams: 1,
-                                      meat: false,
                                       verified: "1/8/24"))
         ingredients.append(Ingredient(name: "Cheddar Cheese",
                                       brand: "Tillamook",
@@ -868,7 +839,6 @@ class IngredientMgr: ObservableObject {
                                       protein: 7,
                                       consumptionUnit: Unit.slice,
                                       consumptionGrams: 9.33,
-                                      meat: false,
                                       verified: "3/16/22"))
         ingredients.append(Ingredient(name: "Keto Bite (Mint)",
                                       brand: "ChocZero",
@@ -880,7 +850,6 @@ class IngredientMgr: ObservableObject {
                                       protein: 6,
                                       consumptionUnit: Unit.whole,
                                       consumptionGrams: 9.33,
-                                      meat: false,
                                       verified: "3/16/22"))
         ingredients.append(Ingredient(name: "Keto Bite (Macadamia)",
                                       brand: "ChocZero",
@@ -892,7 +861,6 @@ class IngredientMgr: ObservableObject {
                                       protein: 6,
                                       consumptionUnit: Unit.whole,
                                       consumptionGrams: 9.33,
-                                      meat: false,
                                       verified: "3/16/22"))
         ingredients.append(Ingredient(name: "Dark Chocolate (Divine)",
                                       brand: "Divine",
@@ -903,8 +871,7 @@ class IngredientMgr: ObservableObject {
                                       netCarbs: 6,
                                       protein: 3,
                                       consumptionUnit: Unit.piece,
-                                      consumptionGrams: 3.5,
-                                      meat: false))
+                                      consumptionGrams: 3.5))
         ingredients.append(Ingredient(name: "Flackers (SS)",
                                       brand: "Doctor in the Kitchen",
                                       servingSize: 30,
@@ -915,7 +882,6 @@ class IngredientMgr: ObservableObject {
                                       protein: 6,
                                       consumptionUnit: Unit.gram,
                                       consumptionGrams: 1,
-                                      meat: false,
                                       verified: "3/16/22"))
         ingredients.append(Ingredient(name: "Latte (Venti Iced)",
                                       brand: "Starbucks",
@@ -933,7 +899,6 @@ class IngredientMgr: ObservableObject {
                                       calcium: 300,
                                       consumptionUnit: Unit.cup,
                                       consumptionGrams: 1,
-                                      meat: false,
                                       verified: "11/1/24"))
         ingredients.append(Ingredient(name: "Latte (Grande Hot)",
                                       brand: "Starbucks",
@@ -951,7 +916,6 @@ class IngredientMgr: ObservableObject {
                                       calcium: 300,
                                       consumptionUnit: Unit.cup,
                                       consumptionGrams: 1,
-                                      meat: false,
                                       verified: "11/1/24"))
         ingredients.append(Ingredient(name: "Peanut Butter",
                                       brand: "Once Again",
@@ -970,7 +934,6 @@ class IngredientMgr: ObservableObject {
                                       folate: 24,
                                       consumptionUnit: Unit.tablespoon,
                                       consumptionGrams: 15,
-                                      meat: false,
                                       verified: "10/10/24"))
         ingredients.append(Ingredient(name: "Sunflower Butter",
                                       brand: "Once Again",
@@ -989,7 +952,6 @@ class IngredientMgr: ObservableObject {
                                       copper: 0.5,
                                       consumptionUnit: Unit.tablespoon,
                                       consumptionGrams: 15,
-                                      meat: false,
                                       verified: "10/10/24"))
         ingredients.append(Ingredient(name: "Jelly",
                                       brand: "Crofter's",
@@ -1002,7 +964,6 @@ class IngredientMgr: ObservableObject {
                                       protein: 0,
                                       consumptionUnit: Unit.tablespoon,
                                       consumptionGrams: 18,
-                                      meat: false,
                                       verified: "10/10/24"))
         ingredients.append(Ingredient(name: "Ezekiel 4:9",
                                       brand: "Food For Life",
@@ -1022,7 +983,6 @@ class IngredientMgr: ObservableObject {
                                       folate: 13,
                                       consumptionUnit: Unit.slice,
                                       consumptionGrams: 34,
-                                      meat: false,
                                       verified: "11/1/24"))
         ingredients.append(Ingredient(name: "Dave's Bread (Thin)",
                                       brand: "Dave's Killer Bread",
@@ -1040,7 +1000,6 @@ class IngredientMgr: ObservableObject {
                                       folate: 8,
                                       consumptionUnit: Unit.slice,
                                       consumptionGrams: 28,
-                                      meat: false,
                                       verified: "11/1/24"))
         ingredients.append(Ingredient(name: "Dave's Bread",
                                       brand: "Dave's Killer Bread",
@@ -1058,7 +1017,6 @@ class IngredientMgr: ObservableObject {
                                       folate: 13,
                                       consumptionUnit: Unit.slice,
                                       consumptionGrams: 45,
-                                      meat: false,
                                       verified: "11/1/24"))
         ingredients.append(Ingredient(name: "String Cheese W",
                                       brand: "365 by Whole Foods Market",
@@ -1076,7 +1034,6 @@ class IngredientMgr: ObservableObject {
                                       calcium: 200,
                                       consumptionUnit: Unit.piece,
                                       consumptionGrams: 28,
-                                      meat: false,
                                       verified: "7/3/2025"))
         ingredients.append(Ingredient(name: "Hummus W",
                                       brand: "365 by Whole Foods Market",
@@ -1094,7 +1051,6 @@ class IngredientMgr: ObservableObject {
                                       folate: 60,
                                       consumptionUnit: Unit.whole,
                                       consumptionGrams: 71,
-                                      meat: false,
                                       verified: "7/3/2025"))
         ingredients.append(Ingredient(name: "Dave's Bread W",
                                       brand: "Dave's Killer Bread",
@@ -1112,7 +1068,6 @@ class IngredientMgr: ObservableObject {
                                       folate: 13,
                                       consumptionUnit: Unit.slice,
                                       consumptionGrams: 45,
-                                      meat: false,
                                       verified: "7/3/2025"))
         ingredients.append(Ingredient(name: "Turkey W",
                                       brand: "Applegate",
@@ -1131,7 +1086,6 @@ class IngredientMgr: ObservableObject {
                                       niacin: 3.6,
                                       consumptionUnit: Unit.slice,
                                       consumptionGrams: 28,
-                                      meat: false,
                                       verified: "7/3/2025"))
         ingredients.append(Ingredient(name: "Cheddar Cheese W",
                                       brand: "Tillamook",
@@ -1149,7 +1103,6 @@ class IngredientMgr: ObservableObject {
                                       calcium: 150,
                                       consumptionUnit: Unit.slice,
                                       consumptionGrams: 21,
-                                      meat: false,
                                       verified: "7/3/2025"))
 
 
@@ -1169,8 +1122,6 @@ class IngredientMgr: ObservableObject {
                                       vitaminD: 25,
                                       consumptionUnit: Unit.pill,
                                       consumptionGrams: 1,
-                                      meat: false,
-                                      supplement: true,
                                       verified: "5/10/2026"))
 
         // SlowMag — magnesium chloride + calcium, taken with the meal.
@@ -1189,8 +1140,6 @@ class IngredientMgr: ObservableObject {
                                       calcium: 119,
                                       consumptionUnit: Unit.pill,
                                       consumptionGrams: 1,
-                                      meat: false,
-                                      supplement: true,
                                       verified: "5/10/2026"))
 
         // Thorne Basic Nutrients 2/Day — comprehensive iron-free
@@ -1227,8 +1176,6 @@ class IngredientMgr: ObservableObject {
                                       calcium: 50,
                                       consumptionUnit: Unit.pill,
                                       consumptionGrams: 1,
-                                      meat: false,
-                                      supplement: true,
                                       verified: "5/13/2026"))
 
         // Non-V&M supplements — tracked for record-keeping only; none
@@ -1246,8 +1193,6 @@ class IngredientMgr: ObservableObject {
                                       protein: 0,
                                       consumptionUnit: Unit.pill,
                                       consumptionGrams: 0.75,  // ~750 mg per capsule (CON-CRET HCl)
-                                      meat: false,
-                                      supplement: true,
                                       verified: "5/10/2026"))
 
         ingredients.append(Ingredient(name: "Taurine",
@@ -1260,7 +1205,6 @@ class IngredientMgr: ObservableObject {
                                       protein: 0,
                                       consumptionUnit: Unit.pill,
                                       consumptionGrams: 1,     // 1000 mg dose
-                                      meat: false,
                                       verified: "5/10/2026"))
 
         ingredients.append(Ingredient(name: "Glycine",
@@ -1273,8 +1217,6 @@ class IngredientMgr: ObservableObject {
                                       protein: 0,
                                       consumptionUnit: Unit.pill,
                                       consumptionGrams: 3,     // 3 g dose
-                                      meat: false,
-                                      supplement: true,
                                       verified: "5/10/2026"))
 
         ingredients.append(Ingredient(name: "L-Theanine",
@@ -1287,8 +1229,6 @@ class IngredientMgr: ObservableObject {
                                       protein: 0,
                                       consumptionUnit: Unit.pill,
                                       consumptionGrams: 0.2,   // 200 mg dose
-                                      meat: false,
-                                      supplement: true,
                                       verified: "5/10/2026"))
 
         ingredients.append(Ingredient(name: "Apigenin",
@@ -1301,8 +1241,6 @@ class IngredientMgr: ObservableObject {
                                       protein: 0,
                                       consumptionUnit: Unit.pill,
                                       consumptionGrams: 0.05,  // 50 mg dose
-                                      meat: false,
-                                      supplement: true,
                                       verified: "5/10/2026"))
         ingredients.append(Ingredient(name: "Arugula (365 by Whole Foods M 5 OZ)",
                                       brand: "365 by Whole Foods Market",
@@ -1325,7 +1263,6 @@ class IngredientMgr: ObservableObject {
                                       calcium: 32.0,
                                       consumptionUnit: Unit.gram,
                                       consumptionGrams: 1,
-                                      meat: false,
                                       verified: "5/16/2026",
                                       stepAmount: 5,
                                       defaultAmount: 20))
@@ -1345,7 +1282,6 @@ class IngredientMgr: ObservableObject {
                                       protein: 2.0,
                                       consumptionUnit: Unit.gram,
                                       consumptionGrams: 1,
-                                      meat: false,
                                       verified: "5/16/2026",
                                       stepAmount: 5,
                                       defaultAmount: 85))
@@ -1370,7 +1306,6 @@ class IngredientMgr: ObservableObject {
                                       calcium: 6.0,
                                       consumptionUnit: Unit.gram,
                                       consumptionGrams: 1,
-                                      meat: false,
                                       verified: "5/16/2026",
                                       stepAmount: 5,
                                       defaultAmount: 50))
@@ -1390,7 +1325,6 @@ class IngredientMgr: ObservableObject {
                                       calcium: 30.0,
                                       consumptionUnit: Unit.gram,
                                       consumptionGrams: 1,
-                                      meat: false,
                                       verified: "5/16/2026",
                                       stepAmount: 5,
                                       defaultAmount: 44))
@@ -1411,7 +1345,6 @@ class IngredientMgr: ObservableObject {
                                       calcium: 0.0,
                                       consumptionUnit: Unit.gram,
                                       consumptionGrams: 1,
-                                      meat: false,
                                       verified: "5/16/2026",
                                       stepAmount: 5,
                                       defaultAmount: 28))
@@ -1433,7 +1366,6 @@ class IngredientMgr: ObservableObject {
                                       potassium: 263.0,
                                       consumptionUnit: Unit.gram,
                                       consumptionGrams: 1,
-                                      meat: false,
                                       verified: "5/16/2026",
                                       stepAmount: 5,
                                       defaultAmount: 84))
@@ -1452,7 +1384,6 @@ class IngredientMgr: ObservableObject {
                                       protein: 21.0,
                                       consumptionUnit: Unit.gram,
                                       consumptionGrams: 1,
-                                      meat: false,
                                       verified: "5/16/2026",
                                       stepAmount: 5,
                                       defaultAmount: 85))
@@ -1474,7 +1405,6 @@ class IngredientMgr: ObservableObject {
                                       calcium: 0.0,
                                       consumptionUnit: Unit.gram,
                                       consumptionGrams: 1,
-                                      meat: false,
                                       verified: "5/16/2026",
                                       stepAmount: 5,
                                       defaultAmount: 28))
@@ -1499,7 +1429,6 @@ class IngredientMgr: ObservableObject {
                                       calcium: 8.88,
                                       consumptionUnit: Unit.gram,
                                       consumptionGrams: 1,
-                                      meat: false,
                                       verified: "5/16/2026",
                                       stepAmount: 5,
                                       defaultAmount: 148))
@@ -1520,7 +1449,6 @@ class IngredientMgr: ObservableObject {
                                       calcium: 30.0,
                                       consumptionUnit: Unit.gram,
                                       consumptionGrams: 1,
-                                      meat: false,
                                       verified: "5/16/2026",
                                       stepAmount: 5,
                                       defaultAmount: 50))
@@ -1538,7 +1466,6 @@ class IngredientMgr: ObservableObject {
                                       protein: 0.0,
                                       consumptionUnit: Unit.gram,
                                       consumptionGrams: 1,
-                                      meat: false,
                                       verified: "5/16/2026",
                                       stepAmount: 5,
                                       defaultAmount: 5))
@@ -1563,7 +1490,6 @@ class IngredientMgr: ObservableObject {
                                       calcium: 21.0,
                                       consumptionUnit: Unit.gram,
                                       consumptionGrams: 1,
-                                      meat: false,
                                       verified: "5/16/2026",
                                       stepAmount: 5,
                                       defaultAmount: 72))
@@ -1586,7 +1512,6 @@ class IngredientMgr: ObservableObject {
                                       calcium: 26.0,
                                       consumptionUnit: Unit.gram,
                                       consumptionGrams: 1,
-                                      meat: false,
                                       verified: "5/16/2026",
                                       stepAmount: 5,
                                       defaultAmount: 28))
@@ -1609,7 +1534,6 @@ class IngredientMgr: ObservableObject {
                                       calcium: 26.0,
                                       consumptionUnit: Unit.gram,
                                       consumptionGrams: 1,
-                                      meat: false,
                                       verified: "5/16/2026",
                                       stepAmount: 5,
                                       defaultAmount: 30))
@@ -1629,7 +1553,6 @@ class IngredientMgr: ObservableObject {
                                       protein: 2.0,
                                       consumptionUnit: Unit.gram,
                                       consumptionGrams: 1,
-                                      meat: false,
                                       verified: "5/16/2026",
                                       stepAmount: 5,
                                       defaultAmount: 30))
@@ -1647,7 +1570,6 @@ class IngredientMgr: ObservableObject {
                                       protein: 8.0,
                                       consumptionUnit: Unit.gram,
                                       consumptionGrams: 1,
-                                      meat: false,
                                       verified: "5/16/2026",
                                       stepAmount: 5,
                                       defaultAmount: 30))
@@ -1673,7 +1595,6 @@ class IngredientMgr: ObservableObject {
                                       calcium: 85.0,
                                       consumptionUnit: Unit.gram,
                                       consumptionGrams: 1,
-                                      meat: false,
                                       verified: "5/16/2026",
                                       stepAmount: 5,
                                       defaultAmount: 85))
@@ -1694,7 +1615,6 @@ class IngredientMgr: ObservableObject {
                                       calcium: 0.0,
                                       consumptionUnit: Unit.gram,
                                       consumptionGrams: 1,
-                                      meat: false,
                                       verified: "5/16/2026",
                                       stepAmount: 5,
                                       defaultAmount: 113))
@@ -1714,7 +1634,6 @@ class IngredientMgr: ObservableObject {
                                       calcium: 283.0,
                                       consumptionUnit: Unit.gram,
                                       consumptionGrams: 1,
-                                      meat: false,
                                       verified: "5/16/2026",
                                       stepAmount: 5,
                                       defaultAmount: 28))
@@ -1736,7 +1655,6 @@ class IngredientMgr: ObservableObject {
                                       calcium: 21.0,
                                       consumptionUnit: Unit.gram,
                                       consumptionGrams: 1,
-                                      meat: false,
                                       verified: "5/16/2026",
                                       stepAmount: 5,
                                       defaultAmount: 85))
@@ -1762,7 +1680,6 @@ class IngredientMgr: ObservableObject {
                                       calcium: 85.0,
                                       consumptionUnit: Unit.gram,
                                       consumptionGrams: 1,
-                                      meat: false,
                                       verified: "5/16/2026",
                                       stepAmount: 5,
                                       defaultAmount: 85))
@@ -1784,7 +1701,6 @@ class IngredientMgr: ObservableObject {
                                       calcium: 26.0,
                                       consumptionUnit: Unit.gram,
                                       consumptionGrams: 1,
-                                      meat: false,
                                       verified: "5/16/2026",
                                       stepAmount: 5,
                                       defaultAmount: 30))
@@ -1809,7 +1725,6 @@ class IngredientMgr: ObservableObject {
                                       calcium: 6.0,
                                       consumptionUnit: Unit.gram,
                                       consumptionGrams: 1,
-                                      meat: false,
                                       verified: "5/16/2026",
                                       stepAmount: 5,
                                       defaultAmount: 50))
@@ -1826,7 +1741,6 @@ class IngredientMgr: ObservableObject {
                                       protein: 0.0,
                                       consumptionUnit: Unit.gram,
                                       consumptionGrams: 1,
-                                      meat: false,
                                       verified: "5/16/2026",
                                       stepAmount: 5,
                                       defaultAmount: 14))
@@ -1847,7 +1761,6 @@ class IngredientMgr: ObservableObject {
                                       calcium: 15.0,
                                       consumptionUnit: Unit.gram,
                                       consumptionGrams: 1,
-                                      meat: false,
                                       verified: "5/16/2026",
                                       stepAmount: 5,
                                       defaultAmount: 28))
@@ -1865,7 +1778,6 @@ class IngredientMgr: ObservableObject {
                                       protein: 4.0,
                                       consumptionUnit: Unit.gram,
                                       consumptionGrams: 1,
-                                      meat: false,
                                       verified: "5/16/2026",
                                       stepAmount: 5,
                                       defaultAmount: 20))
@@ -1890,7 +1802,6 @@ class IngredientMgr: ObservableObject {
                                       calcium: 12.0,
                                       consumptionUnit: Unit.gram,
                                       consumptionGrams: 1,
-                                      meat: false,
                                       verified: "5/16/2026",
                                       stepAmount: 5,
                                       defaultAmount: 50))
@@ -1912,7 +1823,6 @@ class IngredientMgr: ObservableObject {
                                       calcium: 30.0,
                                       consumptionUnit: Unit.gram,
                                       consumptionGrams: 1,
-                                      meat: false,
                                       verified: "5/16/2026",
                                       stepAmount: 5,
                                       defaultAmount: 85))
@@ -1930,7 +1840,6 @@ class IngredientMgr: ObservableObject {
                                       protein: 6.0,
                                       consumptionUnit: Unit.gram,
                                       consumptionGrams: 1,
-                                      meat: false,
                                       verified: "5/16/2026",
                                       stepAmount: 5,
                                       defaultAmount: 50))
@@ -1948,7 +1857,6 @@ class IngredientMgr: ObservableObject {
                                       protein: 6.0,
                                       consumptionUnit: Unit.gram,
                                       consumptionGrams: 1,
-                                      meat: false,
                                       verified: "5/16/2026",
                                       stepAmount: 5,
                                       defaultAmount: 50))
@@ -1965,7 +1873,6 @@ class IngredientMgr: ObservableObject {
                                       protein: 0.0,
                                       consumptionUnit: Unit.gram,
                                       consumptionGrams: 1,
-                                      meat: false,
                                       verified: "5/16/2026",
                                       stepAmount: 5,
                                       defaultAmount: 14))
@@ -1988,7 +1895,6 @@ class IngredientMgr: ObservableObject {
                                       calcium: 21.0,
                                       consumptionUnit: Unit.gram,
                                       consumptionGrams: 1,
-                                      meat: false,
                                       verified: "5/16/2026",
                                       stepAmount: 5,
                                       defaultAmount: 85))
@@ -2008,7 +1914,6 @@ class IngredientMgr: ObservableObject {
                                       protein: 4.0,
                                       consumptionUnit: Unit.gram,
                                       consumptionGrams: 1,
-                                      meat: false,
                                       verified: "5/16/2026",
                                       stepAmount: 5,
                                       defaultAmount: 142))
@@ -2028,7 +1933,6 @@ class IngredientMgr: ObservableObject {
                                       calcium: 9.0,
                                       consumptionUnit: Unit.gram,
                                       consumptionGrams: 1,
-                                      meat: false,
                                       verified: "5/16/2026",
                                       stepAmount: 5,
                                       defaultAmount: 34))
@@ -2055,7 +1959,6 @@ class IngredientMgr: ObservableObject {
                                       calcium: 136.0,
                                       consumptionUnit: Unit.gram,
                                       consumptionGrams: 1,
-                                      meat: false,
                                       verified: "5/16/2026",
                                       stepAmount: 5,
                                       defaultAmount: 85))
@@ -2077,7 +1980,6 @@ class IngredientMgr: ObservableObject {
                                       potassium: 263.0,
                                       consumptionUnit: Unit.gram,
                                       consumptionGrams: 1,
-                                      meat: false,
                                       verified: "5/16/2026",
                                       stepAmount: 5,
                                       defaultAmount: 84))
@@ -2097,7 +1999,6 @@ class IngredientMgr: ObservableObject {
                                       calcium: 24.0,
                                       consumptionUnit: Unit.gram,
                                       consumptionGrams: 1,
-                                      meat: false,
                                       verified: "5/16/2026",
                                       stepAmount: 5,
                                       defaultAmount: 30))
@@ -2117,7 +2018,6 @@ class IngredientMgr: ObservableObject {
                                       protein: 3.0,
                                       consumptionUnit: Unit.gram,
                                       consumptionGrams: 1,
-                                      meat: false,
                                       verified: "5/16/2026",
                                       stepAmount: 5,
                                       defaultAmount: 28))
@@ -2143,7 +2043,6 @@ class IngredientMgr: ObservableObject {
                                       calcium: 2.52,
                                       consumptionUnit: Unit.gram,
                                       consumptionGrams: 1,
-                                      meat: false,
                                       verified: "5/16/2026",
                                       stepAmount: 5,
                                       defaultAmount: 84))
@@ -2168,7 +2067,6 @@ class IngredientMgr: ObservableObject {
                                       calcium: 23.5,
                                       consumptionUnit: Unit.gram,
                                       consumptionGrams: 1,
-                                      meat: false,
                                       verified: "5/16/2026",
                                       stepAmount: 5,
                                       defaultAmount: 100))
@@ -2191,7 +2089,6 @@ class IngredientMgr: ObservableObject {
                                       calcium: 26.0,
                                       consumptionUnit: Unit.gram,
                                       consumptionGrams: 1,
-                                      meat: false,
                                       verified: "5/16/2026",
                                       stepAmount: 5,
                                       defaultAmount: 30))
@@ -2211,7 +2108,6 @@ class IngredientMgr: ObservableObject {
                                       potassium: 430.0,
                                       consumptionUnit: Unit.gram,
                                       consumptionGrams: 1,
-                                      meat: false,
                                       verified: "5/16/2026",
                                       stepAmount: 5,
                                       defaultAmount: 113))
@@ -2231,7 +2127,6 @@ class IngredientMgr: ObservableObject {
                                       iron: 1.0,
                                       consumptionUnit: Unit.gram,
                                       consumptionGrams: 1,
-                                      meat: false,
                                       verified: "5/16/2026",
                                       stepAmount: 5,
                                       defaultAmount: 112))
@@ -2250,7 +2145,6 @@ class IngredientMgr: ObservableObject {
                                       protein: 5.0,
                                       consumptionUnit: Unit.gram,
                                       consumptionGrams: 1,
-                                      meat: false,
                                       verified: "5/16/2026",
                                       stepAmount: 5,
                                       defaultAmount: 30))
@@ -2269,7 +2163,6 @@ class IngredientMgr: ObservableObject {
                                       protein: 21.0,
                                       consumptionUnit: Unit.gram,
                                       consumptionGrams: 1,
-                                      meat: false,
                                       verified: "5/16/2026",
                                       stepAmount: 5,
                                       defaultAmount: 85))
@@ -2295,7 +2188,6 @@ class IngredientMgr: ObservableObject {
                                       calcium: 30.0,
                                       consumptionUnit: Unit.gram,
                                       consumptionGrams: 1,
-                                      meat: false,
                                       verified: "5/16/2026",
                                       stepAmount: 5,
                                       defaultAmount: 30))
@@ -2317,7 +2209,6 @@ class IngredientMgr: ObservableObject {
                                       calcium: 30.0,
                                       consumptionUnit: Unit.gram,
                                       consumptionGrams: 1,
-                                      meat: false,
                                       verified: "5/16/2026",
                                       stepAmount: 5,
                                       defaultAmount: 50))
@@ -2339,7 +2230,6 @@ class IngredientMgr: ObservableObject {
                                       calcium: 9.0,
                                       consumptionUnit: Unit.gram,
                                       consumptionGrams: 1,
-                                      meat: false,
                                       verified: "5/16/2026",
                                       stepAmount: 5,
                                       defaultAmount: 140))
@@ -2361,7 +2251,6 @@ class IngredientMgr: ObservableObject {
                                       calcium: 9.0,
                                       consumptionUnit: Unit.gram,
                                       consumptionGrams: 1,
-                                      meat: false,
                                       verified: "5/16/2026",
                                       stepAmount: 5,
                                       defaultAmount: 140))
@@ -2386,7 +2275,6 @@ class IngredientMgr: ObservableObject {
                                       calcium: 8.88,
                                       consumptionUnit: Unit.gram,
                                       consumptionGrams: 1,
-                                      meat: false,
                                       verified: "5/16/2026",
                                       stepAmount: 5,
                                       defaultAmount: 148))
@@ -2412,7 +2300,6 @@ class IngredientMgr: ObservableObject {
                                       calcium: 21.0,
                                       consumptionUnit: Unit.gram,
                                       consumptionGrams: 1,
-                                      meat: false,
                                       verified: "5/16/2026",
                                       stepAmount: 5,
                                       defaultAmount: 72))
@@ -2436,7 +2323,6 @@ class IngredientMgr: ObservableObject {
                                       calcium: 6.0,
                                       consumptionUnit: Unit.gram,
                                       consumptionGrams: 1,
-                                      meat: false,
                                       verified: "5/16/2026",
                                       stepAmount: 5,
                                       defaultAmount: 50))
@@ -2461,7 +2347,6 @@ class IngredientMgr: ObservableObject {
                                       calcium: 6.0,
                                       consumptionUnit: Unit.gram,
                                       consumptionGrams: 1,
-                                      meat: false,
                                       verified: "5/16/2026",
                                       stepAmount: 5,
                                       defaultAmount: 50))
@@ -2483,7 +2368,6 @@ class IngredientMgr: ObservableObject {
                                       calcium: 0.0,
                                       consumptionUnit: Unit.gram,
                                       consumptionGrams: 1,
-                                      meat: false,
                                       verified: "5/16/2026",
                                       stepAmount: 5,
                                       defaultAmount: 140))
@@ -2559,18 +2443,19 @@ class IngredientMgr: ObservableObject {
                 calcium: Double = 0,
                 consumptionUnit: Unit,
                 consumptionGrams: Double,
-                meat: Bool = false,
                 meatAmount: Double = 0,
                 mealAdjustments: [MealAdjustment] = [],
                 microNutrients: Bool = false,
                 verified: String = "",
                 stepAmount: Double = 0,
                 defaultAmount: Double = 0,
-                foodActive: Bool = true) {
+                foodActive: Bool = true,
+                foodName: String = "") {
         let ingredient = Ingredient(name: name,
                                     brand: brand,
                                     fullName: fullName,
                                     category: category,
+                                    foodName: foodName,
                                     url: url,
                                     totalCost: totalCost,
                                     totalGrams: totalGrams,
@@ -2617,7 +2502,6 @@ class IngredientMgr: ObservableObject {
                                     calcium: calcium,
                                     consumptionUnit: consumptionUnit,
                                     consumptionGrams: consumptionGrams,
-                                    meat: meat,
                                     meatAmount: meatAmount,
                                     mealAdjustments: mealAdjustments,
                                     microNutrients: microNutrients,
@@ -2643,7 +2527,6 @@ class IngredientMgr: ObservableObject {
     // ingredient to the adjustments list.
     func getNewMealIngredientNames(existingMealIngredientNames: [String]) -> [String] {
         let existingMealIngredientNamesSet = Set(existingMealIngredientNames)
-        let meatNamesSet = Set(getAllMeatNames())
 
         // Remove the existing meal ingredients and meats leaving the
         // set of ingredient names to potentially add
@@ -2661,8 +2544,8 @@ class IngredientMgr: ObservableObject {
     // meats (ingredient.meat = true) in addition to 'None'.  This
     // list is used by the Meal Configure dialog to configure the meat
     // for the meal (or 'None' if there's no meat).
-    func getAllMeatNames() -> [String] {
-        let meats = ingredients.filter({ $0.meat == true })
+    func getAllMeatNames(foodMgr: FoodMgr) -> [String] {
+        let meats = ingredients.filter({ foodMgr.isMeat($0) })
         var meatNames: [String] = []
         meatNames.append("None")
         for meat in meats {
@@ -2806,9 +2689,7 @@ struct Ingredient: Codable, Identifiable {
     var consumptionUnit: Unit
     var consumptionGrams: Double
 
-    var meat: Bool
     var meatAmount: Double
-    var supplement: Bool
     var mealAdjustments: [MealAdjustment]
 
     var microNutrients: Bool
@@ -2879,9 +2760,7 @@ struct Ingredient: Codable, Identifiable {
          calcium: Double = 0,
          consumptionUnit: Unit = Unit.gram,
          consumptionGrams: Double,
-         meat: Bool = false,
          meatAmount: Double = 200,
-         supplement: Bool = false,
          mealAdjustments: [MealAdjustment] = [],
          microNutrients: Bool = false,
          verified: String = "",
@@ -2953,9 +2832,7 @@ struct Ingredient: Codable, Identifiable {
         self.consumptionUnit = consumptionUnit
         self.consumptionGrams = consumptionGrams
 
-        self.meat = meat
         self.meatAmount = meatAmount
-        self.supplement = supplement
         self.mealAdjustments = mealAdjustments
 
         self.microNutrients = microNutrients
@@ -3022,9 +2899,7 @@ struct Ingredient: Codable, Identifiable {
         self.calcium = try c.decode(Double.self, forKey: .calcium)
         self.consumptionUnit = try c.decode(Unit.self, forKey: .consumptionUnit)
         self.consumptionGrams = try c.decode(Double.self, forKey: .consumptionGrams)
-        self.meat = try c.decode(Bool.self, forKey: .meat)
         self.meatAmount = try c.decode(Double.self, forKey: .meatAmount)
-        self.supplement = try c.decodeIfPresent(Bool.self, forKey: .supplement) ?? false
         self.mealAdjustments = try c.decode([MealAdjustment].self, forKey: .mealAdjustments)
         self.microNutrients = try c.decode(Bool.self, forKey: .microNutrients)
         self.verified = try c.decode(String.self, forKey: .verified)
@@ -3032,6 +2907,27 @@ struct Ingredient: Codable, Identifiable {
         self.defaultAmount = try c.decodeIfPresent(Double.self, forKey: .defaultAmount) ?? 0
         self.foodActive = try c.decodeIfPresent(Bool.self, forKey: .foodActive) ?? true
     }
+
+    var effectiveTotalGrams: Double {
+        if totalGrams > 0 { return totalGrams }
+        let s = name.lowercased()
+        func num(_ pattern: String) -> Double? {
+            guard let re = try? NSRegularExpression(pattern: pattern),
+                  let m = re.firstMatch(in: s, range: NSRange(s.startIndex..., in: s)),
+                  let r = Range(m.range(at: 1), in: s) else { return nil }
+            return Double(s[r])
+        }
+        if let n = num(#"([0-9]+(?:\.[0-9]+)?)\s*fl\s*oz"#)                  { return n * 28.3495 }
+        if let n = num(#"([0-9]+(?:\.[0-9]+)?)\s*(?:oz|ounce|ounces)\b"#)    { return n * 28.3495 }
+        if let n = num(#"([0-9]+(?:\.[0-9]+)?)\s*(?:lb|lbs|pound|pounds)\b"#) { return n * 453.592 }
+        if let n = num(#"([0-9]+(?:\.[0-9]+)?)\s*(?:count|ct)\b"#)           { return n * servingSize }
+        if let n = num(#"([0-9]+(?:\.[0-9]+)?)\s*pint"#)                     { return n * 473.176 }
+        if let n = num(#"([0-9]+(?:\.[0-9]+)?)\s*g(?:ram|rams)?\b"#)         { return n }
+        return 0
+    }
+    var costPerGram: Double { let g = effectiveTotalGrams; return g > 0 ? totalCost / g : 0 }
+    var costPer100: Double { get { costPerGram * 100 } set {} }
+    var costPerServing: Double { costPerGram * servingSize }
 
     var calories100: Double {
         set {
@@ -3127,9 +3023,7 @@ struct Ingredient: Codable, Identifiable {
                           calcium: ingredient.calcium,
                           consumptionUnit: ingredient.consumptionUnit,
                           consumptionGrams: ingredient.consumptionGrams,
-                          meat: ingredient.meat,
                           meatAmount: ingredient.meatAmount,
-                          supplement: ingredient.supplement,
                           mealAdjustments: ingredient.mealAdjustments,
                           microNutrients: ingredient.microNutrients,
                           verified: verified,
