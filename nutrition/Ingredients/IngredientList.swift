@@ -149,6 +149,18 @@ struct IngredientList: View {
                     }
                       .buttonStyle(.borderless)
 
+                    // Far-right value of whatever metric we're sorted
+                    // by (none when sorted by name/category).
+                    if let m = metricText(sortMetric(forRow: ingredient,
+                                                     mode: sortBy)) {
+                        Text(m)
+                          .font(.caption)
+                          .foregroundColor(Color.theme.blackWhiteSecondary)
+                          .frame(alignment: .trailing)
+                          .layoutPriority(1)
+                          .padding(.trailing, 6)
+                    }
+
                     Button {
                         editIngredient = ingredient
                     } label: {
@@ -362,6 +374,13 @@ struct IngredientList: View {
                   .foregroundColor(Color.theme.blackWhiteSecondary)
                   .lineLimit(1)
                   .frame(maxWidth: .infinity, alignment: .trailing)
+                // Summed metric for the active sort (none for name).
+                if let m = metricText(compositeMetric(comp, mode: sortBy)) {
+                    Text(m)
+                      .font(.caption)
+                      .foregroundColor(Color.theme.blackWhiteSecondary)
+                      .layoutPriority(1)
+                }
                 // Chevron → edit, mirroring the ingredient rows.
                 Button {
                     editComposite = comp
@@ -433,19 +452,88 @@ struct IngredientList: View {
     }
 
 
-    private func costPer100(_ ing: Ingredient) -> Double {
-        ing.totalGrams > 0 ? (ing.totalCost / ing.totalGrams) * 100 : 0
-    }
-
     // The ingredient's category rank, resolved through its Food.
     // Foodless ingredients sort last (Int.max).
     private func typeRank(_ ing: Ingredient) -> Int {
         foodMgr.type(of: ing)?.sortRank ?? Int.max
     }
 
+    // ============================================================
+    // Single source of truth for the sortable metric.
+    //
+    // The macro metrics are per-100g (matching the original sort and
+    // the on-screen "highest first" intent). Cost uses the project-
+    // wide cost-per-serving basis — `Ingredient.costPerServing`
+    // (= totalCost / effectiveTotalGrams * servingSize), the same
+    // basis MealIngredientDetail displays — so the sort key and the
+    // number shown on the row are always the same value.
+    //
+    // `nil` means "no value for this row + mode" (e.g. name mode, or
+    // an unresolvable Food). Callers display nothing and sort these
+    // rows last.
+    // ============================================================
+    private func ingredientMetric(_ ing: Ingredient, mode: SortBy) -> Double? {
+        switch mode {
+        case .name:    return nil
+        case .protein: return ing.protein100
+        case .carbs:   return ing.netCarbs100
+        case .fat:     return ing.fat100
+        case .cost:    return ing.costPerServing
+        }
+    }
+
+    // Composite metric = sum over each component's resolved (default
+    // variant) ingredient. Cost sums each component's contributed
+    // cost-per-serving; macros sum the per-100g values — same per-
+    // component basis as a plain ingredient row, so the displayed
+    // total matches the sort key.
+    private func compositeMetric(_ c: FoodComposite, mode: SortBy) -> Double? {
+        guard mode != .name else { return nil }
+        var total = 0.0
+        var resolvedAny = false
+        for comp in c.components {
+            guard let ing = ingredientMgr.getByName(
+                    name: defaultVariant(forFood: comp.foodName)),
+                  let v = ingredientMetric(ing, mode: mode) else { continue }
+            total += v
+            resolvedAny = true
+        }
+        return resolvedAny ? total : nil
+    }
+
+    // The metric for any row kind, resolved for display + sorting.
+    //   * Ingredient tab row  -> the ingredient itself
+    //   * Food (group) row    -> already resolved to the Food's
+    //                            current ingredient by
+    //                            getIngredientList(), so use it as-is
+    private func sortMetric(forRow ing: Ingredient, mode: SortBy) -> Double? {
+        ingredientMetric(ing, mode: mode)
+    }
+
+    // Right-aligned trailing label for a row, or nil when the active
+    // sort has no per-row number (name/category). Macros -> "12.3 g",
+    // cost -> "$1.23".
+    private func metricText(_ value: Double?) -> String? {
+        guard let value = value else { return nil }
+        if sortBy == .cost { return String(format: "$%.2f", value) }
+        return "\(value.formattedString(1)) g"
+    }
+
+    // Sort comparator helper: rows with a value rank by value
+    // (highest first); rows with no value sort last, consistently.
+    private func metricBefore(_ a: Double?, _ b: Double?) -> Bool {
+        switch (a, b) {
+        case let (.some(x), .some(y)): return x > y
+        case (.some, .none):           return true
+        case (.none, .some):           return false
+        case (.none, .none):           return false
+        }
+    }
+
     // Shared sort for the Food and Ingredient tabs. Name groups by
     // the Food's category (sortRank) then name; protein / carbs /
-    // fat / cost are per-100g, highest first.
+    // fat / cost go through the shared sortMetric so the order always
+    // matches the number rendered on the row.
     private func applySort(_ items: [Ingredient]) -> [Ingredient] {
         switch sortBy {
         case .name:
@@ -458,30 +546,12 @@ struct IngredientList: View {
                 if s0 != s1 { return s0 < s1 }
                 return displayName($0) < displayName($1)
             }
-        case .protein: return items.sorted { $0.protein100  > $1.protein100 }
-        case .carbs:   return items.sorted { $0.netCarbs100  > $1.netCarbs100 }
-        case .fat:     return items.sorted { $0.fat100       > $1.fat100 }
-        case .cost:    return items.sorted { costPer100($0)  > costPer100($1) }
-        }
-    }
-
-    // Composite tab uses the same selector. The metric is the sum of
-    // each component's default variant's per-100g value (or per-100g
-    // cost); Name is alphabetical.
-    private func compositeMetric(_ c: FoodComposite) -> Double {
-        var total = 0.0
-        for comp in c.components {
-            guard let ing = ingredientMgr.getByName(
-                name: defaultVariant(forFood: comp.foodName)) else { continue }
-            switch sortBy {
-            case .protein: total += ing.protein100
-            case .carbs:   total += ing.netCarbs100
-            case .fat:     total += ing.fat100
-            case .cost:    total += costPer100(ing)
-            case .name:    break
+        default:
+            return items.sorted {
+                metricBefore(sortMetric(forRow: $0, mode: sortBy),
+                             sortMetric(forRow: $1, mode: sortBy))
             }
         }
-        return total
     }
 
     private func sortedComposites() -> [FoodComposite] {
@@ -489,7 +559,8 @@ struct IngredientList: View {
             return foodCompositeMgr.composites.sorted { $0.name < $1.name }
         }
         return foodCompositeMgr.composites.sorted {
-            compositeMetric($0) > compositeMetric($1)
+            metricBefore(compositeMetric($0, mode: sortBy),
+                         compositeMetric($1, mode: sortBy))
         }
     }
 

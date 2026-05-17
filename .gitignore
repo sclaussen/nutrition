@@ -6,4 +6,5 @@ build/
 
 scripts/.venv/
 scripts/wf_refresh_out.json
+scripts/__pycache__/
 *.bak
