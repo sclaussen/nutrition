@@ -76,6 +76,7 @@ class IngredientMgr: ObservableObject {
                                       verified: "5/17/2026"))
         ingredients.append(Ingredient(name: "Chicken",
                                       brand: "ButcherBox",
+                                      foodName: "Chicken",
                                       servingSize: 100,
                                       calories: 115,
                                       fat: 2.7,
@@ -112,6 +113,7 @@ class IngredientMgr: ObservableObject {
                                       meatAmount: 200))
         ingredients.append(Ingredient(name: "Bison",
                                       brand: "ButcherBox",
+                                      foodName: "Bison",
                                       totalCost: 13.99,
                                       totalGrams: 454,
                                       servingSize: 112,
@@ -125,6 +127,7 @@ class IngredientMgr: ObservableObject {
                                       meatAmount: 150));
         ingredients.append(Ingredient(name: "Lamb",
                                       brand: "ButcherBox",
+                                      foodName: "Lamb",
                                       totalCost: 11.99,
                                       totalGrams: 340,
                                       servingSize: 85,
@@ -138,6 +141,7 @@ class IngredientMgr: ObservableObject {
                                       meatAmount: 150))
         ingredients.append(Ingredient(name: "Pork Chop",
                                       brand: "ButcherBox",
+                                      foodName: "Pork Chop",
                                       totalCost: 9.99,
                                       totalGrams: 454,
                                       servingSize: 113,
@@ -175,6 +179,7 @@ class IngredientMgr: ObservableObject {
                                       meatAmount: 300))
         ingredients.append(Ingredient(name: "Top Sirloin Cap",
                                       brand: "ButcherBox",
+                                      foodName: "Top Sirloin Cap",
                                       totalCost: 18.99,
                                       totalGrams: 454,
                                       servingSize: 238,
@@ -207,6 +212,7 @@ class IngredientMgr: ObservableObject {
                                       verified: "12/25/23"))
         ingredients.append(Ingredient(name: "Arugula",
                                       brand: "365 by Whole Foods Market",
+                                      foodName: "Arugula",
                                       servingSize: 142.0,
                                       calories: 45.0,
                                       fat: 1.0,
@@ -246,6 +252,7 @@ class IngredientMgr: ObservableObject {
                                       stepAmount: 5))
         ingredients.append(Ingredient(name: "Romaine",
                                       brand: "365 by Whole Foods Market",
+                                      foodName: "Romaine",
                                       url: "https://www.wholefoodsmarket.com/grocery/product/b07814bsw2",
                                       servingSize: 47,
                                       calories: 8,
@@ -326,6 +333,7 @@ class IngredientMgr: ObservableObject {
                                       stepAmount: 5))
         ingredients.append(Ingredient(name: "Radish",
                                       brand: "365 by Whole Foods Market",
+                                      foodName: "Radish",
                                       servingSize: 85.0,
                                       calories: 14.0,
                                       fat: 0.1,
@@ -586,6 +594,7 @@ class IngredientMgr: ObservableObject {
                                       verified: "3/16/22"))
         ingredients.append(Ingredient(name: "Cashews",
                                       brand: "365 by Whole Foods Market",
+                                      foodName: "Cashews",
                                       totalCost: 11.99,
                                       totalGrams: 454,
                                       servingSize: 28,
@@ -608,6 +617,7 @@ class IngredientMgr: ObservableObject {
                                       consumptionGrams: 1))
         ingredients.append(Ingredient(name: "Macadamia Nuts",
                                       brand: "Aurora",
+                                      foodName: "Macadamia Nuts",
                                       servingSize: 30,
                                       calories: 220,
                                       fat: 23,
@@ -624,6 +634,7 @@ class IngredientMgr: ObservableObject {
                                       verified: "3/16/22"))
         ingredients.append(Ingredient(name: "Walnuts",
                                       brand: "Aurora",
+                                      foodName: "Walnuts",
                                       servingSize: 30.0,
                                       calories: 200.0,
                                       fat: 20.0,
@@ -717,6 +728,7 @@ class IngredientMgr: ObservableObject {
                                       consumptionGrams: 1))
         ingredients.append(Ingredient(name: "Peanuts",
                                       brand: "365 by Whole Foods Market",
+                                      foodName: "Peanuts",
                                       totalCost: 5.99,
                                       totalGrams: 454,
                                       servingSize: 28,
@@ -768,6 +780,7 @@ class IngredientMgr: ObservableObject {
                                       verified: "3/16/22"))
         ingredients.append(Ingredient(name: "Extra Virgin Olive Oil",
                                       brand: "365 by Whole Foods Market",
+                                      foodName: "Extra Virgin Olive Oil",
                                       url: "https://www.wholefoodsmarket.com/grocery/product/b074y6wz8x",
                                       totalCost: 11.99,
                                       totalGrams: 473,
@@ -784,6 +797,7 @@ class IngredientMgr: ObservableObject {
                                       verified: "3/16/22"))
         ingredients.append(Ingredient(name: "Fish Oil",
                                       brand: "Carlson",
+                                      foodName: "Fish Oil",
                                       url: "https://www.wholefoodsmarket.com/grocery/product/b001lf39ro",
                                       totalCost: 29.99,
                                       totalGrams: 560,
@@ -929,6 +943,7 @@ class IngredientMgr: ObservableObject {
                                       verified: "3/16/22"))
         ingredients.append(Ingredient(name: "Latte (Venti Iced)",
                                       brand: "Starbucks",
+                                      foodName: "Latte (Venti Iced)",
                                       totalCost: 5.45,
                                       totalGrams: 1,
                                       servingSize: 1,
@@ -948,6 +963,7 @@ class IngredientMgr: ObservableObject {
                                       verified: "11/1/24"))
         ingredients.append(Ingredient(name: "Latte (Grande Hot)",
                                       brand: "Starbucks",
+                                      foodName: "Latte (Grande Hot)",
                                       totalCost: 4.95,
                                       totalGrams: 1,
                                       servingSize: 1,
@@ -1361,6 +1377,7 @@ class IngredientMgr: ObservableObject {
 
         ingredients.append(Ingredient(name: "Vitamin D3 (1000 IU)",
                                       brand: "Thorne",
+                                      foodName: "Vitamin D3 (1000 IU)",
                                       url: "https://www.wholefoodsmarket.com/grocery/product/b0797h3vqs",
                                       totalCost: 11.00,
                                       totalGrams: 1,
@@ -1381,6 +1398,7 @@ class IngredientMgr: ObservableObject {
         // Chloride isn't tracked by the V&M page so it's omitted.
         ingredients.append(Ingredient(name: "SlowMag",
                                       brand: "SlowMag",
+                                      foodName: "SlowMag",
                                       totalCost: 18.99,
                                       totalGrams: 1,
                                       servingSize: 1,
@@ -1403,6 +1421,7 @@ class IngredientMgr: ObservableObject {
         // boron, choline, inositol) are omitted.
         ingredients.append(Ingredient(name: "Thorne Basic Nutrients 2/Day",
                                       brand: "Thorne",
+                                      foodName: "Thorne Basic Nutrients 2/Day",
                                       url: "https://www.wholefoodsmarket.com/grocery/product/b0fr5qmd5y",
                                       totalCost: 45.00,
                                       totalGrams: 1,
@@ -1441,6 +1460,7 @@ class IngredientMgr: ObservableObject {
 
         ingredients.append(Ingredient(name: "Creatine HCl",
                                       brand: "CON-CRET",
+                                      foodName: "Creatine HCl",
                                       url: "https://www.wholefoodsmarket.com/grocery/product/b0bkcvlygx",
                                       totalCost: 25.00,
                                       totalGrams: 1,
@@ -1456,6 +1476,7 @@ class IngredientMgr: ObservableObject {
 
         ingredients.append(Ingredient(name: "Taurine",
                                       brand: "Thorne",
+                                      foodName: "Taurine",
                                       totalCost: 22.00,
                                       totalGrams: 1,
                                       servingSize: 1,
@@ -1470,6 +1491,7 @@ class IngredientMgr: ObservableObject {
 
         ingredients.append(Ingredient(name: "Glycine",
                                       brand: "Thorne",
+                                      foodName: "Glycine",
                                       url: "https://www.wholefoodsmarket.com/grocery/product/b000vyrroc",
                                       totalCost: 19.00,
                                       totalGrams: 1,
@@ -1485,6 +1507,7 @@ class IngredientMgr: ObservableObject {
 
         ingredients.append(Ingredient(name: "L-Theanine",
                                       brand: "Thorne",
+                                      foodName: "L-Theanine",
                                       totalCost: 31.00,
                                       totalGrams: 1,
                                       servingSize: 1,
@@ -1499,6 +1522,7 @@ class IngredientMgr: ObservableObject {
 
         ingredients.append(Ingredient(name: "Apigenin",
                                       brand: "Double Wood",
+                                      foodName: "Apigenin",
                                       totalCost: 19.95,
                                       totalGrams: 1,
                                       servingSize: 1,
