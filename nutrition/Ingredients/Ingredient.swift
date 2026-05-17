@@ -786,7 +786,7 @@ class IngredientMgr: ObservableObject {
                                       foodName: "Extra Virgin Olive Oil",
                                       url: "https://www.wholefoodsmarket.com/grocery/product/b074y6wz8x",
                                       totalCost: 34.99,
-                                      totalGrams: 473,
+                                      totalGrams: 2747,
                                       servingSize: 14,
                                       calories: 120,
                                       fat: 14,
