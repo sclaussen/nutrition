@@ -86,6 +86,7 @@ class FoodMgr: ObservableObject {
         foods.append(Food(name: "Peanut Butter", type: .nuts, defaultAmount: 30, stepAmount: 5, currentIngredientName: "Peanut Butter (Once Again)"))
         foods.append(Food(name: "Peanuts", type: .nuts, currentIngredientName: "Peanuts"))
         foods.append(Food(name: "Pecans", type: .nuts, defaultAmount: 28, stepAmount: 5, currentIngredientName: "Pecans (365 by Whole Foods M 12 Ounce)"))
+        foods.append(Food(name: "Pistachios", type: .nuts, defaultAmount: 28, stepAmount: 5, currentIngredientName: "Pistachios (Wonderful No-Shell 12 oz)"))
         foods.append(Food(name: "Pumpkin Seeds", type: .nuts, defaultAmount: 28, stepAmount: 5, currentIngredientName: "Pumpkin Seeds (365 by Whole Foods M 8 Ounce)"))
         foods.append(Food(name: "Sunflower Butter", type: .nuts, defaultAmount: 30, stepAmount: 5, currentIngredientName: "Sunflower Butter (Once Again)"))
         foods.append(Food(name: "Walnuts", type: .nuts, defaultAmount: 30, stepAmount: 5, currentIngredientName: "Walnuts (Aurora 7 oz)"))
@@ -94,6 +95,7 @@ class FoodMgr: ObservableObject {
         foods.append(Food(name: "Eggs", type: .proteins, defaultAmount: 50, stepAmount: 5, currentIngredientName: "Eggs (365 by Whole Foods M 18 Count)"))
         foods.append(Food(name: "Mackerel", type: .proteins, currentIngredientName: "Mackerel (Skinless Boneless)"))
         foods.append(Food(name: "Sardines", type: .proteins, currentIngredientName: "Sardines (H2O)"))
+        foods.append(Food(name: "Starbucks Protein Box", type: .proteins, currentIngredientName: "Eggs & Cheddar Protein Box"))
         foods.append(Food(name: "Tuna", type: .proteins, defaultAmount: 85, stepAmount: 5, currentIngredientName: "Tuna (Wild Planet 5 Ounce)"))
         foods.append(Food(name: "Turkey", type: .proteins, currentIngredientName: "Turkey W"))
 
@@ -103,9 +105,11 @@ class FoodMgr: ObservableObject {
         foods.append(Food(name: "Latte (Grande Hot)", type: .carbs, currentIngredientName: "Latte (Grande Hot)"))
         foods.append(Food(name: "Latte (Venti Iced)", type: .carbs, currentIngredientName: "Latte (Venti Iced)"))
         foods.append(Food(name: "Mustard", type: .carbs, defaultAmount: 5, stepAmount: 5, currentIngredientName: "Mustard (Organicville 12 oz)"))
+        foods.append(Food(name: "Starbucks Breakfast Sandwich", type: .carbs, currentIngredientName: "Bacon, Gouda & Egg Sandwich"))
+        foods.append(Food(name: "Starbucks Sandwich", type: .carbs, currentIngredientName: "Ham & Swiss on Baguette"))
 
         // ---- meat ----
-        foods.append(Food(name: "Beef", type: .meat, defaultAmount: 113, stepAmount: 5, currentIngredientName: "Beef (365 by Whole Foods M 365 G)"))
+        foods.append(Food(name: "Beef", type: .meat, defaultAmount: 113, stepAmount: 5, currentIngredientName: "Beef (ButcherBox)"))
         foods.append(Food(name: "Bison", type: .meat, currentIngredientName: "Bison"))
         foods.append(Food(name: "Chicken", type: .meat, defaultAmount: 112, stepAmount: 5, currentIngredientName: "Chicken (Mary's Chicken)"))
         foods.append(Food(name: "Lamb", type: .meat, currentIngredientName: "Lamb"))
