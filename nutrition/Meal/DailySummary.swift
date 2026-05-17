@@ -27,6 +27,8 @@ struct DailySummary: View {
         mealIngredientMgr.mealIngredients
           .filter { $0.active }
           .reduce(0) { running, mi in
+              // Category placeholders are not real foods — zero cost.
+              if mi.isFoodTypeSlot { return running }
               if mi.isComposite {
                   return running + compositeCost(mi, ingredientMgr)
               }

@@ -124,6 +124,17 @@ class MealIngredientMgr: ObservableObject {
         mealIngredients.append(MealIngredient(name: "SlowMag",              amount: 2, isSupplement: true))
         mealIngredients.append(MealIngredient(name: "L-Theanine",           amount: 1, isSupplement: true))
         mealIngredients.append(MealIngredient(name: "Apigenin",             amount: 1, isSupplement: true))
+
+        // Category placeholder — a "pick a meat" slot that always
+        // renders at the very end of the meal list (sentinel sort
+        // rank). It contributes ZERO macros and never resolves to an
+        // ingredient. Tapping it lists every Food of type .meat;
+        // picking one replaces the placeholder with a normal Food
+        // row. It is part of the default meal pattern, so it comes
+        // back on Reset Meal even after it's been consumed.
+        mealIngredients.append(MealIngredient(name: IngredientType.meat.label,
+                                              amount: 0,
+                                              foodType: IngredientType.meat.rawValue))
     }
 
 
@@ -487,7 +498,18 @@ struct MealIngredient: Codable, Identifiable {
     // composite name and macros/cost are the sum of these parts.
     var compositeParts: [MealCompositePart]
 
+    // Non-empty ⇒ this row is a CATEGORY PLACEHOLDER, not a real
+    // food. `name` holds the capitalized category label (e.g.
+    // "Meat") and `foodType` holds the IngredientType rawValue
+    // (e.g. "meat"). It contributes ZERO macros, never resolves to
+    // an Ingredient, sorts to the very end of the meal list, and is
+    // replaced by a real Food row when the user picks one. Empty ⇒
+    // ordinary / composite row.
+    var foodType: String
+
     var isComposite: Bool { !compositeParts.isEmpty }
+
+    var isFoodTypeSlot: Bool { !foodType.isEmpty }
 
 
     init(id: String = UUID().uuidString,
@@ -504,7 +526,8 @@ struct MealIngredient: Codable, Identifiable {
          active: Bool = true,
          isSupplement: Bool = false,
          selectedMemberName: String = "",
-         compositeParts: [MealCompositePart] = []) {
+         compositeParts: [MealCompositePart] = [],
+         foodType: String = "") {
 
         self.id = id
 
@@ -530,6 +553,7 @@ struct MealIngredient: Codable, Identifiable {
         self.isSupplement = isSupplement
         self.selectedMemberName = selectedMemberName
         self.compositeParts = compositeParts
+        self.foodType = foodType
     }
 
 
@@ -556,6 +580,9 @@ struct MealIngredient: Codable, Identifiable {
         // Migration-safe: absent in data saved before groups existed.
         self.selectedMemberName = try c.decodeIfPresent(String.self, forKey: .selectedMemberName) ?? ""
         self.compositeParts = try c.decodeIfPresent([MealCompositePart].self, forKey: .compositeParts) ?? []
+        // Migration-safe: absent in data saved before category
+        // placeholders existed.
+        self.foodType = try c.decodeIfPresent(String.self, forKey: .foodType) ?? ""
     }
 
 

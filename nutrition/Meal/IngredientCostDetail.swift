@@ -58,6 +58,8 @@ struct IngredientCostDetail: View {
             mealIngredientMgr.mealIngredients
               .filter { $0.active && $0.amount > 0 }
               .compactMap { mi in
+                // Category placeholders are not real foods — exclude.
+                if mi.isFoodTypeSlot { return nil }
                 if mi.isComposite {
                     return (mi, compositeCost(mi, ingredientMgr))
                 }

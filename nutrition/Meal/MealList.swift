@@ -16,6 +16,8 @@ struct MealList: View {
     @State private var memberPickerFor: MealIngredient? = nil
     // Non-nil while the composite editor sheet is shown.
     @State private var compositeEditorFor: MealIngredient? = nil
+    // Non-nil while the category-placeholder Food picker is shown.
+    @State private var foodTypePickerFor: MealIngredient? = nil
 
     // Both toggles intentionally non-persistent — supplements default
     // hidden on every launch (you only enable them when you want to look),
@@ -104,6 +106,32 @@ struct MealList: View {
                 GeometryReader { geo in
                     let w = geo.size.width
                     HStack(spacing: 0) {
+                      if mealIngredient.isFoodTypeSlot {
+                        // CATEGORY PLACEHOLDER — visually distinct
+                        // "pick something" affordance. No stepper, no
+                        // macros, contributes zero calories. Tapping
+                        // anywhere on the row opens a Food picker for
+                        // this category (confirmationDialog below).
+                        // The #1 gestures (double-tap replicate,
+                        // long-press member picker, single-tap lock)
+                        // are intentionally NOT attached here.
+                        HStack(spacing: 6) {
+                            Image(systemName: "plus.circle.dashed")
+                              .font(.callout)
+                            Text("\(mealIngredient.name) — tap to choose")
+                              .font(.callout)
+                              .italic()
+                            Spacer(minLength: 0)
+                            Image(systemName: "chevron.down")
+                              .font(.caption2)
+                        }
+                          .foregroundColor(Color.theme.blackWhiteSecondary)
+                          .frame(width: w, alignment: .leading)
+                          .contentShape(Rectangle())
+                          .onTapGesture {
+                              foodTypePickerFor = mealIngredient
+                          }
+                      } else {
                         // Just the name — IngredientRow is overkill here
                         // (its showMacros/showAmount are both off, and
                         // its inner GeometryReader+frame(height: 9) was
@@ -212,6 +240,7 @@ struct MealList: View {
                           .buttonStyle(.borderless)
                           .foregroundColor(Color.theme.blackWhiteSecondary)
                           .frame(width: w * 0.10)
+                      }
                     }
                       // Color tells you which mode the row is in:
                       //   Red    — inactive
@@ -222,10 +251,14 @@ struct MealList: View {
                       //            cycle if macros are full)
                       //   Blue   — Done (Constants.Done)
                       //   Black  — Manual, or Default without an auto-rule
-                      .foregroundColor(!mealIngredient.active ? Color.theme.red :
+                      // Placeholders keep their own muted/secondary
+                      // color (applied on the inner HStack above) —
+                      // the mode-color logic doesn't apply to them.
+                      .foregroundColor(mealIngredient.isFoodTypeSlot ? Color.theme.blackWhiteSecondary :
+                                        (!mealIngredient.active ? Color.theme.red :
                                         (isInAutoMode(mealIngredient) ? Color.theme.manual :
                                            (mealIngredient.adjustment == Constants.Done ? Color.theme.blueYellow :
-                                              Color.theme.blackWhite)))
+                                              Color.theme.blackWhite))))
                 }
                   // Explicit row height — GeometryReader has no intrinsic
                   // height inside a List row, so without this the row
@@ -496,6 +529,26 @@ struct MealList: View {
                   }
               }
           }
+          // Tap on a category placeholder opens this Food picker:
+          // every Food whose category rawValue == the placeholder's
+          // foodType, in the normal Food sort order. Picking one
+          // replaces the placeholder with a normal Food row.
+          .confirmationDialog(
+              "Choose",
+              isPresented: Binding(
+                  get: { foodTypePickerFor != nil },
+                  set: { if !$0 { foodTypePickerFor = nil } }
+              ),
+              titleVisibility: .visible,
+              presenting: foodTypePickerFor
+          ) { mi in
+              ForEach(foodsForType(mi.foodType), id: \.id) { f in
+                  Button(f.name) {
+                      replacePlaceholder(mi, withFood: f.name)
+                      foodTypePickerFor = nil
+                  }
+              }
+          }
           // Scanner — capture sheet, ambiguous-match chooser, and
           // hidden NavigationLinks that push prefilled Add/Edit.
           // Mirrors IngredientList so behavior is identical from
@@ -650,10 +703,17 @@ struct MealList: View {
 
 
     // The category rank for a meal row, resolved through its
-    // ingredient's Food. Unresolvable rows sort last (Int.max).
+    // ingredient's Food. Category placeholders sort AFTER everything
+    // — including supplements and unresolvable rows — via a sentinel
+    // strictly greater than Int.max can't go, so Int.max is reserved
+    // for unresolvable real rows and placeholders get Int.max only
+    // after the explicit isFoodTypeSlot branch keeps them strictly
+    // last (see the secondary tiebreaker below). Unresolvable rows
+    // sort last among real rows (Int.max).
     private func mealRowTypeRank(_ mi: MealIngredient) -> Int {
-        guard let ing = resolvedIngredient(mi) else { return Int.max }
-        return foodMgr.type(of: ing)?.sortRank ?? Int.max
+        if mi.isFoodTypeSlot { return Int.max }
+        guard let ing = resolvedIngredient(mi) else { return Int.max - 1 }
+        return foodMgr.type(of: ing)?.sortRank ?? (Int.max - 1)
     }
 
 
@@ -897,6 +957,13 @@ struct MealList: View {
     func setMacroActualsAndUpdateMealMacroActuals(_ mi: MealIngredient,
                                                   amountOverride: Double? = nil) {
 
+        // Category placeholder — not a real food, contributes ZERO
+        // calories/macros and never resolves to an ingredient.
+        // Mirrors the composite branch's early structure but emits
+        // nothing. Must be checked BEFORE any resolution attempt so
+        // a placeholder can never crash or skew totals.
+        if mi.isFoodTypeSlot { return }
+
         let name = mi.name
         let amount = amountOverride ?? Double(mi.amount)
         let active = mi.active
@@ -1108,6 +1175,11 @@ struct MealList: View {
     }
 
     func resolvedIngredient(_ mi: MealIngredient) -> Ingredient? {
+        // Category placeholders are not real foods — they must
+        // NEVER resolve to an ingredient (zero macros, no cost, no
+        // consumption unit). Mirrors the composite/supplement
+        // exclusions elsewhere.
+        if mi.isFoodTypeSlot { return nil }
         if let ing = ingredientMgr.getByName(name: currentName(mi)) {
             return ing
         }
@@ -1159,6 +1231,46 @@ struct MealList: View {
                 mealIngredientMgr.setAmount(id: mi.id, amount: amt)
             }
         }
+        generateMeal()
+    }
+
+
+    // Every Food whose category rawValue matches `type`, in the
+    // normal Food sort order (category rank then seed order). Used
+    // by the category-placeholder picker. For "meat" this is the 7
+    // meat Foods: Beef, Bison, Chicken, Lamb, Pork Chop, Salmon,
+    // Top Sirloin Cap (in seed order).
+    func foodsForType(_ type: String) -> [Food] {
+        foodMgr.foodsSorted.filter { $0.type.rawValue == type }
+    }
+
+
+    // Replace a category placeholder with a normal Food row. Removes
+    // the placeholder by id (so it does NOT reappear within this
+    // meal) and adds Food X exactly like adding it from the prep
+    // screen (IngredientList.promote): the row's `name` is the Food
+    // name, amount is the Food's current ingredient's effective
+    // default, and isSupplement follows the Food's category. Then
+    // regenerates the meal. The placeholder only comes back on
+    // Reset Meal (it's seeded in resetMealIngredients()).
+    func replacePlaceholder(_ mi: MealIngredient, withFood foodName: String) {
+        if let existing = mealIngredientMgr.mealIngredients.first(where: { $0.id == mi.id }) {
+            mealIngredientMgr.delete(existing)
+        }
+        guard let food = foodMgr.getByName(name: foodName) else {
+            generateMeal()
+            return
+        }
+        // Mirror IngredientList.promote's grouped-Food branch: start
+        // the amount from the Food's current ingredient's effective
+        // preset (ingredient override wins, else Food-level default).
+        let member = food.currentIngredientName
+        let amount = ingredientMgr.getByName(name: member)
+            .map { foodMgr.effectiveDefaultAmount(for: $0) } ?? 0
+        mealIngredientMgr.create(name: food.name,
+                                 amount: amount,
+                                 active: true,
+                                 isSupplement: food.type == .supplement)
         generateMeal()
     }
 

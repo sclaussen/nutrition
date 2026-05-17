@@ -24,6 +24,9 @@ func computeVitaminMineralActuals(
     var totals: [VitaminMineralType: Double] = [:]
 
     for mealIngredient in mealIngredients where mealIngredient.active {
+        // Category placeholders are not real foods — contribute no
+        // vitamins/minerals.
+        if mealIngredient.isFoodTypeSlot { continue }
         guard let ingredient = ingredientMgr.getByName(name: mealIngredient.name) else {
             continue
         }
@@ -62,6 +65,8 @@ func contributorsTo(
     var contributions: [VitaminMineralContribution] = []
 
     for mealIngredient in mealIngredients where mealIngredient.active {
+        // Category placeholders are not real foods — no contribution.
+        if mealIngredient.isFoodTypeSlot { continue }
         guard let ingredient = ingredientMgr.getByName(name: mealIngredient.name) else {
             continue
         }
