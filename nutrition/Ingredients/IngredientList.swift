@@ -450,9 +450,13 @@ struct IngredientList: View {
         switch sortBy {
         case .name:
             return items.sorted {
-                typeRank($0) != typeRank($1)
-                  ? typeRank($0) < typeRank($1)
-                  : displayName($0) < displayName($1)
+                if typeRank($0) != typeRank($1) {
+                    return typeRank($0) < typeRank($1)
+                }
+                let s0 = foodMgr.seedOrder(of: $0)
+                let s1 = foodMgr.seedOrder(of: $1)
+                if s0 != s1 { return s0 < s1 }
+                return displayName($0) < displayName($1)
             }
         case .protein: return items.sorted { $0.protein100  > $1.protein100 }
         case .carbs:   return items.sorted { $0.netCarbs100  > $1.netCarbs100 }

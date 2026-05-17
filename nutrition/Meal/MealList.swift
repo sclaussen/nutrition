@@ -657,7 +657,11 @@ struct MealList: View {
         return visible.sorted {
             let r0 = mealRowTypeRank($0)
             let r1 = mealRowTypeRank($1)
-            return r0 != r1 ? r0 < r1 : $0.name < $1.name
+            if r0 != r1 { return r0 < r1 }
+            let s0 = mealRowSeedOrder($0)
+            let s1 = mealRowSeedOrder($1)
+            if s0 != s1 { return s0 < s1 }
+            return $0.name < $1.name
         }
     }
 
@@ -667,6 +671,15 @@ struct MealList: View {
     private func mealRowTypeRank(_ mi: MealIngredient) -> Int {
         guard let ing = resolvedIngredient(mi) else { return Int.max }
         return foodMgr.type(of: ing)?.sortRank ?? Int.max
+    }
+
+
+    // The Food seed (append) position for a meal row, resolved
+    // through its ingredient's Food. Unresolvable rows sort last
+    // (Int.max). Secondary tiebreaker after category rank.
+    private func mealRowSeedOrder(_ mi: MealIngredient) -> Int {
+        guard let ing = resolvedIngredient(mi) else { return Int.max }
+        return foodMgr.seedOrder(of: ing)
     }
 
 

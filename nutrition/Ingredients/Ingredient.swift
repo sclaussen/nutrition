@@ -597,7 +597,7 @@ class IngredientMgr: ObservableObject {
                                       verified: "3/16/22"))
         ingredients.append(Ingredient(name: "Cashews",
                                       brand: "365 by Whole Foods Market",
-                                      foodName: "Cashews",
+                                      foodName: "Nuts",
                                       totalCost: 11.99,
                                       totalGrams: 454,
                                       servingSize: 28,
@@ -620,7 +620,7 @@ class IngredientMgr: ObservableObject {
                                       consumptionGrams: 1))
         ingredients.append(Ingredient(name: "Macadamia Nuts",
                                       brand: "Aurora",
-                                      foodName: "Macadamia Nuts",
+                                      foodName: "Nuts",
                                       servingSize: 30,
                                       calories: 220,
                                       fat: 23,
@@ -637,7 +637,7 @@ class IngredientMgr: ObservableObject {
                                       verified: "3/16/22"))
         ingredients.append(Ingredient(name: "Walnuts",
                                       brand: "Aurora",
-                                      foodName: "Walnuts",
+                                      foodName: "Nuts",
                                       servingSize: 30.0,
                                       calories: 200.0,
                                       fat: 20.0,
@@ -653,7 +653,7 @@ class IngredientMgr: ObservableObject {
                                       consumptionGrams: 1))
         ingredients.append(Ingredient(name: "Pistachios (Wonderful In-Shell 16 oz)",
                                       brand: "Wonderful",
-                                      foodName: "Pistachios",
+                                      foodName: "Nuts",
                                       url: "https://www.wholefoodsmarket.com/grocery/product/b07h693qjg",
                                       totalCost: 10.49,
                                       totalGrams: 226,
@@ -684,7 +684,7 @@ class IngredientMgr: ObservableObject {
                                       defaultAmount: 28))
         ingredients.append(Ingredient(name: "Pistachios (Wonderful No-Shell 12 oz)",
                                       brand: "Wonderful",
-                                      foodName: "Pistachios",
+                                      foodName: "Nuts",
                                       url: "https://www.wholefoodsmarket.com/grocery/product/b00biz2nlu",
                                       totalCost: 12.99,
                                       totalGrams: 340.2,
@@ -715,7 +715,7 @@ class IngredientMgr: ObservableObject {
                                       defaultAmount: 28))
         ingredients.append(Ingredient(name: "Pecans",
                                       brand: "Aurora",
-                                      foodName: "Pecans",
+                                      foodName: "Nuts",
                                       servingSize: 28,
                                       calories: 210.0,
                                       fat: 22.0,
@@ -731,7 +731,7 @@ class IngredientMgr: ObservableObject {
                                       consumptionGrams: 1))
         ingredients.append(Ingredient(name: "Peanuts",
                                       brand: "365 by Whole Foods Market",
-                                      foodName: "Peanuts",
+                                      foodName: "Nuts",
                                       totalCost: 5.99,
                                       totalGrams: 454,
                                       servingSize: 28,
@@ -1710,7 +1710,7 @@ class IngredientMgr: ObservableObject {
                                       defaultAmount: 5))
         ingredients.append(Ingredient(name: "Pecans (Aurora 14 Ounce)",
                                       brand: "Aurora",
-                                      foodName: "Pecans",
+                                      foodName: "Nuts",
                                       url: "https://www.wholefoodsmarket.com/grocery/product/b079vrdfcw",
                                       totalCost: 12.79,
                                       totalGrams: 396.9,
@@ -1733,7 +1733,7 @@ class IngredientMgr: ObservableObject {
                                       defaultAmount: 28))
         ingredients.append(Ingredient(name: "Walnuts (Aurora 7 oz)",
                                       brand: "Aurora",
-                                      foodName: "Walnuts",
+                                      foodName: "Nuts",
                                       url: "https://www.wholefoodsmarket.com/grocery/product/b07812j5z2",
                                       totalCost: 9.89,
                                       totalGrams: 198.5,
@@ -1756,7 +1756,7 @@ class IngredientMgr: ObservableObject {
                                       defaultAmount: 30))
         ingredients.append(Ingredient(name: "Macadamia Nuts (Aurora 6 OZ)",
                                       brand: "Aurora",
-                                      foodName: "Macadamia Nuts",
+                                      foodName: "Nuts",
                                       url: "https://www.wholefoodsmarket.com/grocery/product/b07xvyq5rh",
                                       totalCost: 13.79,
                                       totalGrams: 170.1,
@@ -2191,7 +2191,7 @@ class IngredientMgr: ObservableObject {
                                       defaultAmount: 85))
         ingredients.append(Ingredient(name: "Macadamia Nuts (Whole Foods Market)",
                                       brand: "Whole Foods Market",
-                                      foodName: "Macadamia Nuts",
+                                      foodName: "Nuts",
                                       url: "https://www.wholefoodsmarket.com/grocery/product/b07t471m4j",
                                       servingSize: 30.0,
                                       calories: 220.0,
@@ -2211,7 +2211,7 @@ class IngredientMgr: ObservableObject {
                                       defaultAmount: 30))
         ingredients.append(Ingredient(name: "Pecans (365 by Whole Foods M 12 Ounce)",
                                       brand: "365 by Whole Foods Market",
-                                      foodName: "Pecans",
+                                      foodName: "Nuts",
                                       url: "https://www.wholefoodsmarket.com/grocery/product/b074vcsh7k",
                                       totalCost: 8.19,
                                       totalGrams: 340.2,
@@ -2282,7 +2282,7 @@ class IngredientMgr: ObservableObject {
                                       defaultAmount: 100))
         ingredients.append(Ingredient(name: "Macadamia Nuts (Aurora 8 oz)",
                                       brand: "Aurora",
-                                      foodName: "Macadamia Nuts",
+                                      foodName: "Nuts",
                                       url: "https://www.wholefoodsmarket.com/grocery/product/b002hqnkvq",
                                       totalCost: 15.99,
                                       totalGrams: 226.8,

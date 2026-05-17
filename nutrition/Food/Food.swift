@@ -79,13 +79,8 @@ class FoodMgr: ObservableObject {
         foods.append(Food(name: "String Cheese", type: .cheese, currentIngredientName: "String Cheese (365 by Whole Foods M 12 OZ)"))
 
         // ---- nuts ----
-        foods.append(Food(name: "Cashews", type: .nuts, currentIngredientName: "Cashews"))
-        foods.append(Food(name: "Macadamia Nuts", type: .nuts, defaultAmount: 30, stepAmount: 5, currentIngredientName: "Macadamia Nuts (Aurora 6 OZ)"))
-        foods.append(Food(name: "Peanuts", type: .nuts, currentIngredientName: "Peanuts"))
-        foods.append(Food(name: "Pecans", type: .nuts, defaultAmount: 28, stepAmount: 5, currentIngredientName: "Pecans (365 by Whole Foods M 12 Ounce)"))
-        foods.append(Food(name: "Pistachios", type: .nuts, defaultAmount: 28, stepAmount: 5, currentIngredientName: "Pistachios (Wonderful No-Shell 12 oz)"))
+        foods.append(Food(name: "Nuts", type: .nuts, defaultAmount: 30, stepAmount: 5, currentIngredientName: "Macadamia Nuts (Aurora 6 OZ)"))
         foods.append(Food(name: "Pumpkin Seeds", type: .nuts, defaultAmount: 28, stepAmount: 5, currentIngredientName: "Pumpkin Seeds (365 by Whole Foods M 8 Ounce)"))
-        foods.append(Food(name: "Walnuts", type: .nuts, defaultAmount: 30, stepAmount: 5, currentIngredientName: "Walnuts (Aurora 7 oz)"))
 
         // ---- proteins ----
         foods.append(Food(name: "Eggs", type: .proteins, defaultAmount: 50, stepAmount: 5, currentIngredientName: "Eggs (365 by Whole Foods M 18 Count)"))
@@ -148,6 +143,19 @@ class FoodMgr: ObservableObject {
     }
 
 
+    // Seed (append) position of a Food in `foods`. Since `foods`
+    // preserves init() append order at runtime, this is the
+    // authoritative within-category display order. Unknown name =>
+    // Int.max so it sorts last (mirrors the type(of:) helper shape).
+    func seedOrder(ofFoodNamed name: String) -> Int {
+        foods.firstIndex { $0.name == name } ?? Int.max
+    }
+
+    func seedOrder(of ingredient: Ingredient) -> Int {
+        seedOrder(ofFoodNamed: ingredient.foodName)
+    }
+
+
     // Portion-config resolution. The Food owns the primary value;
     // an ingredient's own value is an override that wins when != 0.
 
@@ -165,13 +173,20 @@ class FoodMgr: ObservableObject {
     }
 
 
-    // Foods sorted by category (IngredientType.sortRank) then name.
+    // Foods sorted by category (IngredientType.sortRank) then seed
+    // (append) order — the order foods.append(...) appears in
+    // init(). Name is only the final stable fallback.
     var foodsSorted: [Food] {
-        foods.sorted {
-            $0.type.sortRank != $1.type.sortRank
-              ? $0.type.sortRank < $1.type.sortRank
-              : $0.name < $1.name
-        }
+        foods.enumerated().sorted { lhs, rhs in
+            let a = lhs.element, b = rhs.element
+            if a.type.sortRank != b.type.sortRank {
+                return a.type.sortRank < b.type.sortRank
+            }
+            if lhs.offset != rhs.offset {
+                return lhs.offset < rhs.offset
+            }
+            return a.name < b.name
+        }.map { $0.element }
     }
 
     // Food names in category (sortRank) then name order — the order
