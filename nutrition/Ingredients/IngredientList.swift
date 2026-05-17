@@ -121,33 +121,31 @@ struct IngredientList: View {
                 // GeometryReader has no intrinsic height, so without
                 // this the row would shrink to chevron-sized.
                 HStack(spacing: 0) {
-                    Button {
-                        toggleFoodActive(ingredient)
-                    } label: {
-                        // Name + tiny brand subtext. Tapping toggles
-                        // whether this ingredient is an active member
-                        // of its Food (green) vs inactive (black).
-                        VStack(alignment: .leading, spacing: 1) {
-                            HStack(spacing: 4) {
-                                Text(displayName(ingredient))
-                                  .font(.callout)
-                                  .foregroundColor(statusColor(for: ingredient))
-                                if AvoidList.firstMatch(in: ingredient.ingredients) != nil {
-                                    Image(systemName: "exclamationmark.triangle.fill")
-                                      .font(.caption2)
-                                      .foregroundColor(.orange)
-                                }
-                            }
-                            if !ingredient.brand.isEmpty {
-                                Text(ingredient.brand)
+                    // Name + tiny brand subtext. TAP opens the
+                    // details/edit page; LONG-PRESS toggles whether
+                    // this ingredient is an active member of its Food
+                    // (green) vs inactive (black) — the old tap action.
+                    VStack(alignment: .leading, spacing: 1) {
+                        HStack(spacing: 4) {
+                            Text(displayName(ingredient))
+                              .font(.callout)
+                              .foregroundColor(statusColor(for: ingredient))
+                            if AvoidList.firstMatch(in: ingredient.ingredients) != nil {
+                                Image(systemName: "exclamationmark.triangle.fill")
                                   .font(.caption2)
-                                  .foregroundColor(Color.theme.blackWhiteSecondary)
+                                  .foregroundColor(.orange)
                             }
                         }
-                          .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .leading)
-                          .contentShape(Rectangle())
+                        if !ingredient.brand.isEmpty {
+                            Text(ingredient.brand)
+                              .font(.caption2)
+                              .foregroundColor(Color.theme.blackWhiteSecondary)
+                        }
                     }
-                      .buttonStyle(.borderless)
+                      .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .leading)
+                      .contentShape(Rectangle())
+                      .onTapGesture { editIngredient = ingredient }
+                      .onLongPressGesture { toggleFoodActive(ingredient) }
 
                     // Far-right value of whatever metric we're sorted
                     // by (none when sorted by name/category).
