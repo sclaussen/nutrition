@@ -1,0 +1,152 @@
+{
+  "source": "/Users/shane/src/nutrition/nutrition/Profile/ProfileEdit.swift",
+  "tables": {
+    "Localizable": [
+      {
+        "comment": "",
+        "key": "Scanner",
+        "location": {
+          "startingColumn": 34,
+          "startingLine": 12
+        }
+      },
+      {
+        "comment": "",
+        "key": "Base",
+        "location": {
+          "startingColumn": 34,
+          "startingLine": 21
+        }
+      },
+      {
+        "comment": "",
+        "key": "Daily Metrics",
+        "location": {
+          "startingColumn": 34,
+          "startingLine": 29
+        }
+      },
+      {
+        "comment": "",
+        "key": "Derived Profile Data",
+        "location": {
+          "startingColumn": 34,
+          "startingLine": 39
+        }
+      },
+      {
+        "comment": "",
+        "key": "Gross (without the caloric deficit)",
+        "location": {
+          "startingColumn": 34,
+          "startingLine": 50
+        }
+      },
+      {
+        "comment": "",
+        "key": "Net (with the caloric deficit)",
+        "location": {
+          "startingColumn": 34,
+          "startingLine": 87
+        }
+      },
+      {
+        "comment": "",
+        "key": "Scanner Settings",
+        "location": {
+          "startingColumn": 32,
+          "startingLine": 18
+        }
+      },
+      {
+        "comment": "",
+        "key": "Verify All Ingredients",
+        "location": {
+          "startingColumn": 32,
+          "startingLine": 19
+        }
+      },
+      {
+        "comment": "",
+        "key": "Vitamins and Minerals",
+        "location": {
+          "startingColumn": 32,
+          "startingLine": 40
+        }
+      },
+      {
+        "comment": "",
+        "key": "Cancel",
+        "location": {
+          "startingColumn": 26,
+          "startingLine": 126
+        }
+      },
+      {
+        "comment": "",
+        "key": "Save",
+        "location": {
+          "startingColumn": 26,
+          "startingLine": 130
+        }
+      },
+      {
+        "comment": "",
+        "key": "Save",
+        "location": {
+          "startingColumn": 30,
+          "startingLine": 137
+        }
+      },
+      {
+        "comment": "",
+        "key": "Value",
+        "location": {
+          "startingColumn": 21,
+          "startingLine": 220
+        }
+      },
+      {
+        "comment": "",
+        "key": "What it is",
+        "location": {
+          "startingColumn": 21,
+          "startingLine": 231
+        }
+      },
+      {
+        "comment": "",
+        "key": "Formula",
+        "location": {
+          "startingColumn": 21,
+          "startingLine": 236
+        }
+      },
+      {
+        "comment": "",
+        "key": "Current inputs",
+        "location": {
+          "startingColumn": 25,
+          "startingLine": 242
+        }
+      },
+      {
+        "comment": "",
+        "key": "Notes",
+        "location": {
+          "startingColumn": 25,
+          "startingLine": 257
+        }
+      },
+      {
+        "comment": "",
+        "key": "Current",
+        "location": {
+          "startingColumn": 26,
+          "startingLine": 222
+        }
+      }
+    ]
+  },
+  "version": 1
+}

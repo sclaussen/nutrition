@@ -1,0 +1,168 @@
+{
+  "source": "/Users/shane/src/nutrition/nutrition/Ingredients/IngredientList.swift",
+  "tables": {
+    "Localizable": [
+      {
+        "comment": "",
+        "key": "The meal ingredient must be deleted first.  It may be necessary to lock the meal ingredients prior to deletion so the meal ingredient is not readded as an adjustment.",
+        "location": {
+          "startingColumn": 18,
+          "startingLine": 199
+        }
+      },
+      {
+        "comment": "",
+        "key": "The adjustment ingredient must be deleted first.",
+        "location": {
+          "startingColumn": 18,
+          "startingLine": 202
+        }
+      },
+      {
+        "comment": "",
+        "key": "View",
+        "location": {
+          "startingColumn": 20,
+          "startingLine": 94
+        }
+      },
+      {
+        "comment": "",
+        "key": "Composite",
+        "location": {
+          "startingColumn": 22,
+          "startingLine": 95
+        }
+      },
+      {
+        "comment": "",
+        "key": "Food",
+        "location": {
+          "startingColumn": 22,
+          "startingLine": 96
+        }
+      },
+      {
+        "comment": "",
+        "key": "Ingredient",
+        "location": {
+          "startingColumn": 22,
+          "startingLine": 97
+        }
+      },
+      {
+        "comment": "",
+        "key": "Delete",
+        "location": {
+          "startingColumn": 33,
+          "startingLine": 167
+        }
+      },
+      {
+        "comment": "",
+        "key": "Unlist",
+        "location": {
+          "startingColumn": 37,
+          "startingLine": 179
+        }
+      },
+      {
+        "comment": "",
+        "key": "OK",
+        "location": {
+          "startingColumn": 22,
+          "startingLine": 200
+        }
+      },
+      {
+        "comment": "",
+        "key": "OK",
+        "location": {
+          "startingColumn": 22,
+          "startingLine": 203
+        }
+      },
+      {
+        "comment": "",
+        "key": "Sort",
+        "location": {
+          "startingColumn": 34,
+          "startingLine": 217
+        }
+      },
+      {
+        "comment": "",
+        "key": "Add",
+        "location": {
+          "startingColumn": 26,
+          "startingLine": 240
+        }
+      },
+      {
+        "comment": "",
+        "key": "New composite",
+        "location": {
+          "startingColumn": 50,
+          "startingLine": 661
+        }
+      },
+      {
+        "comment": "",
+        "key": "Edit composite",
+        "location": {
+          "startingColumn": 68,
+          "startingLine": 661
+        }
+      },
+      {
+        "comment": "",
+        "key": "Name",
+        "location": {
+          "startingColumn": 38,
+          "startingLine": 613
+        }
+      },
+      {
+        "comment": "",
+        "key": "Components",
+        "location": {
+          "startingColumn": 38,
+          "startingLine": 617
+        }
+      },
+      {
+        "comment": "",
+        "key": "Composite name",
+        "location": {
+          "startingColumn": 31,
+          "startingLine": 614
+        }
+      },
+      {
+        "comment": "",
+        "key": "Delete composite",
+        "location": {
+          "startingColumn": 35,
+          "startingLine": 655
+        }
+      },
+      {
+        "comment": "",
+        "key": "Cancel",
+        "location": {
+          "startingColumn": 30,
+          "startingLine": 672
+        }
+      },
+      {
+        "comment": "",
+        "key": "Save",
+        "location": {
+          "startingColumn": 30,
+          "startingLine": 676
+        }
+      }
+    ]
+  },
+  "version": 1
+}

@@ -1,0 +1,42 @@
+"/Users/shane/src/nutrition/nutrition/Scanner/PhotoLibraryPicker.swift":
+  diagnostics: "/Users/shane/src/nutrition/build/DerivedData/Build/Intermediates.noindex/nutrition.build/Debug-iphonesimulator/nutrition.build/Objects-normal/arm64/PhotoLibraryPicker.dia"
+  const-values: "/Users/shane/src/nutrition/build/DerivedData/Build/Intermediates.noindex/nutrition.build/Debug-iphonesimulator/nutrition.build/Objects-normal/arm64/PhotoLibraryPicker.swiftconstvalues"
+  dependencies: "/Users/shane/src/nutrition/build/DerivedData/Build/Intermediates.noindex/nutrition.build/Debug-iphonesimulator/nutrition.build/Objects-normal/arm64/PhotoLibraryPicker.d"
+  object: "/Users/shane/src/nutrition/build/DerivedData/Build/Intermediates.noindex/nutrition.build/Debug-iphonesimulator/nutrition.build/Objects-normal/arm64/PhotoLibraryPicker.o"
+  swift-dependencies: "/Users/shane/src/nutrition/build/DerivedData/Build/Intermediates.noindex/nutrition.build/Debug-iphonesimulator/nutrition.build/Objects-normal/arm64/PhotoLibraryPicker.swiftdeps"
+"/Users/shane/src/nutrition/nutrition/Scanner/NutritionScannerService.swift":
+  swift-dependencies: "/Users/shane/src/nutrition/build/DerivedData/Build/Intermediates.noindex/nutrition.build/Debug-iphonesimulator/nutrition.build/Objects-normal/arm64/NutritionScannerService.swiftdeps"
+  object: "/Users/shane/src/nutrition/build/DerivedData/Build/Intermediates.noindex/nutrition.build/Debug-iphonesimulator/nutrition.build/Objects-normal/arm64/NutritionScannerService.o"
+  diagnostics: "/Users/shane/src/nutrition/build/DerivedData/Build/Intermediates.noindex/nutrition.build/Debug-iphonesimulator/nutrition.build/Objects-normal/arm64/NutritionScannerService.dia"
+  dependencies: "/Users/shane/src/nutrition/build/DerivedData/Build/Intermediates.noindex/nutrition.build/Debug-iphonesimulator/nutrition.build/Objects-normal/arm64/NutritionScannerService.d"
+  const-values: "/Users/shane/src/nutrition/build/DerivedData/Build/Intermediates.noindex/nutrition.build/Debug-iphonesimulator/nutrition.build/Objects-normal/arm64/NutritionScannerService.swiftconstvalues"
+"/Users/shane/src/nutrition/nutrition/Settings/KeychainStore.swift":
+  diagnostics: "/Users/shane/src/nutrition/build/DerivedData/Build/Intermediates.noindex/nutrition.build/Debug-iphonesimulator/nutrition.build/Objects-normal/arm64/KeychainStore.dia"
+  swift-dependencies: "/Users/shane/src/nutrition/build/DerivedData/Build/Intermediates.noindex/nutrition.build/Debug-iphonesimulator/nutrition.build/Objects-normal/arm64/KeychainStore.swiftdeps"
+  object: "/Users/shane/src/nutrition/build/DerivedData/Build/Intermediates.noindex/nutrition.build/Debug-iphonesimulator/nutrition.build/Objects-normal/arm64/KeychainStore.o"
+  dependencies: "/Users/shane/src/nutrition/build/DerivedData/Build/Intermediates.noindex/nutrition.build/Debug-iphonesimulator/nutrition.build/Objects-normal/arm64/KeychainStore.d"
+  const-values: "/Users/shane/src/nutrition/build/DerivedData/Build/Intermediates.noindex/nutrition.build/Debug-iphonesimulator/nutrition.build/Objects-normal/arm64/KeychainStore.swiftconstvalues"
+"/Users/shane/src/nutrition/nutrition/Scanner/MatchChooserSheet.swift":
+  dependencies: "/Users/shane/src/nutrition/build/DerivedData/Build/Intermediates.noindex/nutrition.build/Debug-iphonesimulator/nutrition.build/Objects-normal/arm64/MatchChooserSheet.d"
+  swift-dependencies: "/Users/shane/src/nutrition/build/DerivedData/Build/Intermediates.noindex/nutrition.build/Debug-iphonesimulator/nutrition.build/Objects-normal/arm64/MatchChooserSheet.swiftdeps"
+  object: "/Users/shane/src/nutrition/build/DerivedData/Build/Intermediates.noindex/nutrition.build/Debug-iphonesimulator/nutrition.build/Objects-normal/arm64/MatchChooserSheet.o"
+  const-values: "/Users/shane/src/nutrition/build/DerivedData/Build/Intermediates.noindex/nutrition.build/Debug-iphonesimulator/nutrition.build/Objects-normal/arm64/MatchChooserSheet.swiftconstvalues"
+  diagnostics: "/Users/shane/src/nutrition/build/DerivedData/Build/Intermediates.noindex/nutrition.build/Debug-iphonesimulator/nutrition.build/Objects-normal/arm64/MatchChooserSheet.dia"
+"/Users/shane/src/nutrition/nutrition/Scanner/ScanReviewRouter.swift":
+  swift-dependencies: "/Users/shane/src/nutrition/build/DerivedData/Build/Intermediates.noindex/nutrition.build/Debug-iphonesimulator/nutrition.build/Objects-normal/arm64/ScanReviewRouter.swiftdeps"
+  object: "/Users/shane/src/nutrition/build/DerivedData/Build/Intermediates.noindex/nutrition.build/Debug-iphonesimulator/nutrition.build/Objects-normal/arm64/ScanReviewRouter.o"
+  diagnostics: "/Users/shane/src/nutrition/build/DerivedData/Build/Intermediates.noindex/nutrition.build/Debug-iphonesimulator/nutrition.build/Objects-normal/arm64/ScanReviewRouter.dia"
+  dependencies: "/Users/shane/src/nutrition/build/DerivedData/Build/Intermediates.noindex/nutrition.build/Debug-iphonesimulator/nutrition.build/Objects-normal/arm64/ScanReviewRouter.d"
+  const-values: "/Users/shane/src/nutrition/build/DerivedData/Build/Intermediates.noindex/nutrition.build/Debug-iphonesimulator/nutrition.build/Objects-normal/arm64/ScanReviewRouter.swiftconstvalues"
+"/Users/shane/src/nutrition/nutrition/Scanner/CameraPicker.swift":
+  diagnostics: "/Users/shane/src/nutrition/build/DerivedData/Build/Intermediates.noindex/nutrition.build/Debug-iphonesimulator/nutrition.build/Objects-normal/arm64/CameraPicker.dia"
+  dependencies: "/Users/shane/src/nutrition/build/DerivedData/Build/Intermediates.noindex/nutrition.build/Debug-iphonesimulator/nutrition.build/Objects-normal/arm64/CameraPicker.d"
+  object: "/Users/shane/src/nutrition/build/DerivedData/Build/Intermediates.noindex/nutrition.build/Debug-iphonesimulator/nutrition.build/Objects-normal/arm64/CameraPicker.o"
+  const-values: "/Users/shane/src/nutrition/build/DerivedData/Build/Intermediates.noindex/nutrition.build/Debug-iphonesimulator/nutrition.build/Objects-normal/arm64/CameraPicker.swiftconstvalues"
+  swift-dependencies: "/Users/shane/src/nutrition/build/DerivedData/Build/Intermediates.noindex/nutrition.build/Debug-iphonesimulator/nutrition.build/Objects-normal/arm64/CameraPicker.swiftdeps"
+"/Users/shane/src/nutrition/nutrition/Scanner/LabelCaptureSheet.swift":
+  object: "/Users/shane/src/nutrition/build/DerivedData/Build/Intermediates.noindex/nutrition.build/Debug-iphonesimulator/nutrition.build/Objects-normal/arm64/LabelCaptureSheet.o"
+  swift-dependencies: "/Users/shane/src/nutrition/build/DerivedData/Build/Intermediates.noindex/nutrition.build/Debug-iphonesimulator/nutrition.build/Objects-normal/arm64/LabelCaptureSheet.swiftdeps"
+  dependencies: "/Users/shane/src/nutrition/build/DerivedData/Build/Intermediates.noindex/nutrition.build/Debug-iphonesimulator/nutrition.build/Objects-normal/arm64/LabelCaptureSheet.d"
+  diagnostics: "/Users/shane/src/nutrition/build/DerivedData/Build/Intermediates.noindex/nutrition.build/Debug-iphonesimulator/nutrition.build/Objects-normal/arm64/LabelCaptureSheet.dia"
+  const-values: "/Users/shane/src/nutrition/build/DerivedData/Build/Intermediates.noindex/nutrition.build/Debug-iphonesimulator/nutrition.build/Objects-normal/arm64/LabelCaptureSheet.swiftconstvalues"

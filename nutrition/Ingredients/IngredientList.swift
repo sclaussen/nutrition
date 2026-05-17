@@ -543,16 +543,18 @@ struct IngredientList: View {
             mealIngredientMgr.delete(mi)
         } else if ingredient.foodName.isEmpty {
             mealIngredientMgr.create(name: ingredient.name,
-                                     amount: ingredient.defaultAmount,
+                                     amount: foodMgr.effectiveDefaultAmount(for: ingredient),
                                      active: true,
                                      isSupplement: foodMgr.isSupplement(ingredient))
         } else {
             // The meal row is the Food; the ingredient resolves
             // through the Food's current (global). Start amount from
-            // the current ingredient's preset.
+            // the current ingredient's effective preset (ingredient
+            // override wins, else the Food-level default).
             let member = foodMgr.getByName(name: ingredient.foodName)?.currentIngredientName
                 ?? ingredient.name
-            let amount = ingredientMgr.getByName(name: member)?.defaultAmount ?? 0
+            let amount = ingredientMgr.getByName(name: member)
+                .map { foodMgr.effectiveDefaultAmount(for: $0) } ?? 0
             mealIngredientMgr.create(name: ingredient.foodName,
                                      amount: amount,
                                      active: true,

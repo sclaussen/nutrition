@@ -1,0 +1,112 @@
+{
+  "source": "/Users/shane/src/nutrition/nutrition/Meal/MealList.swift",
+  "tables": {
+    "Localizable": [
+      {
+        "comment": "",
+        "key": "Reset Meal Ingredients?",
+        "location": {
+          "startingColumn": 18,
+          "startingLine": 304
+        }
+      },
+      {
+        "comment": "",
+        "key": "Deactivate",
+        "location": {
+          "startingColumn": 37,
+          "startingLine": 155
+        }
+      },
+      {
+        "comment": "",
+        "key": "Configure",
+        "location": {
+          "startingColumn": 23,
+          "startingLine": 189
+        }
+      },
+      {
+        "comment": "",
+        "key": "Cancel",
+        "location": {
+          "startingColumn": 22,
+          "startingLine": 306
+        }
+      },
+      {
+        "comment": "",
+        "key": "Reset",
+        "location": {
+          "startingColumn": 22,
+          "startingLine": 309
+        }
+      },
+      {
+        "comment": "",
+        "key": "This will replace your current meal ingredient amounts with the defaults. This can't be undone.",
+        "location": {
+          "startingColumn": 20,
+          "startingLine": 316
+        }
+      },
+      {
+        "comment": "",
+        "key": "Proteins",
+        "location": {
+          "startingColumn": 32,
+          "startingLine": 861
+        }
+      },
+      {
+        "comment": "",
+        "key": "Add protein",
+        "location": {
+          "startingColumn": 31,
+          "startingLine": 856
+        }
+      },
+      {
+        "comment": "",
+        "key": "Cancel",
+        "location": {
+          "startingColumn": 30,
+          "startingLine": 865
+        }
+      },
+      {
+        "comment": "",
+        "key": "Save",
+        "location": {
+          "startingColumn": 30,
+          "startingLine": 871
+        }
+      },
+      {
+        "comment": "",
+        "key": "grams",
+        "location": {
+          "startingColumn": 18,
+          "startingLine": 937
+        }
+      },
+      {
+        "comment": "",
+        "key": "",
+        "location": {
+          "startingColumn": 20,
+          "startingLine": 898
+        }
+      },
+      {
+        "comment": "",
+        "key": "amount",
+        "location": {
+          "startingColumn": 23,
+          "startingLine": 924
+        }
+      }
+    ]
+  },
+  "version": 1
+}

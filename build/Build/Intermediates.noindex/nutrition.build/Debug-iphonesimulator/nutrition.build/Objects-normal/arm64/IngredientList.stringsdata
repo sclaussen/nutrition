@@ -1,0 +1,176 @@
+{
+  "source": "/Users/shane/src/nutrition/nutrition/Ingredients/IngredientList.swift",
+  "tables": {
+    "Localizable": [
+      {
+        "comment": "",
+        "key": "The meal ingredient must be deleted first.  It may be necessary to lock the meal ingredients prior to deletion so the meal ingredient is not readded as an adjustment.",
+        "location": {
+          "startingColumn": 18,
+          "startingLine": 102
+        }
+      },
+      {
+        "comment": "",
+        "key": "The adjustment ingredient must be deleted first.",
+        "location": {
+          "startingColumn": 18,
+          "startingLine": 105
+        }
+      },
+      {
+        "comment": "",
+        "key": "Add",
+        "location": {
+          "startingColumn": 37,
+          "startingLine": 50
+        }
+      },
+      {
+        "comment": "",
+        "key": "Activate",
+        "location": {
+          "startingColumn": 37,
+          "startingLine": 52
+        }
+      },
+      {
+        "comment": "",
+        "key": "Deactivate",
+        "location": {
+          "startingColumn": 37,
+          "startingLine": 54
+        }
+      },
+      {
+        "comment": "",
+        "key": "Auto",
+        "location": {
+          "startingColumn": 37,
+          "startingLine": 69
+        }
+      },
+      {
+        "comment": "",
+        "key": "Auto +%lld",
+        "location": {
+          "startingColumn": 37,
+          "startingLine": 67
+        }
+      },
+      {
+        "comment": "",
+        "key": "Delete",
+        "location": {
+          "startingColumn": 33,
+          "startingLine": 80
+        }
+      },
+      {
+        "comment": "",
+        "key": "Unlist",
+        "location": {
+          "startingColumn": 37,
+          "startingLine": 91
+        }
+      },
+      {
+        "comment": "",
+        "key": "OK",
+        "location": {
+          "startingColumn": 22,
+          "startingLine": 103
+        }
+      },
+      {
+        "comment": "",
+        "key": "OK",
+        "location": {
+          "startingColumn": 22,
+          "startingLine": 106
+        }
+      },
+      {
+        "comment": "",
+        "key": "Add",
+        "location": {
+          "startingColumn": 34,
+          "startingLine": 128
+        }
+      },
+      {
+        "comment": "",
+        "key": "Auto-adjust: %@",
+        "location": {
+          "startingColumn": 32,
+          "startingLine": 298
+        }
+      },
+      {
+        "comment": "",
+        "key": "Add per cycle",
+        "location": {
+          "startingColumn": 30,
+          "startingLine": 259
+        }
+      },
+      {
+        "comment": "",
+        "key": "amount",
+        "location": {
+          "startingColumn": 35,
+          "startingLine": 262
+        }
+      },
+      {
+        "comment": "",
+        "key": "Max (optional)",
+        "location": {
+          "startingColumn": 30,
+          "startingLine": 271
+        }
+      },
+      {
+        "comment": "",
+        "key": "none",
+        "location": {
+          "startingColumn": 35,
+          "startingLine": 274
+        }
+      },
+      {
+        "comment": "",
+        "key": "Generate-meal will add this amount per pass to %@ until the max (if set) is hit, macro goals are reached, or the ingredient is locked to Manual/Done.",
+        "location": {
+          "startingColumn": 26,
+          "startingLine": 283
+        }
+      },
+      {
+        "comment": "",
+        "key": "Disable auto-adjust",
+        "location": {
+          "startingColumn": 35,
+          "startingLine": 293
+        }
+      },
+      {
+        "comment": "",
+        "key": "Cancel",
+        "location": {
+          "startingColumn": 30,
+          "startingLine": 302
+        }
+      },
+      {
+        "comment": "",
+        "key": "Save",
+        "location": {
+          "startingColumn": 30,
+          "startingLine": 308
+        }
+      }
+    ]
+  },
+  "version": 1
+}

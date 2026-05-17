@@ -1122,11 +1122,15 @@ struct MealList: View {
         // Selection is global per Food — set the Food's current
         // ingredient; every screen resolves through it.
         foodMgr.setCurrent(food: mi.name, member: member)
-        // Adopt the picked variant's preset amount (e.g. Avocado
-        // Large 225 g vs Medium 140 g). Skip when it has no preset
-        // so a user's hand-set amount is preserved.
-        if let amt = ingredientMgr.getByName(name: member)?.defaultAmount, amt > 0 {
-            mealIngredientMgr.setAmount(name: mi.name, amount: amt)
+        // Adopt the picked variant's effective preset amount (e.g.
+        // Avocado Large 225 g vs Medium 140 g) — ingredient override
+        // wins, else the Food-level default. Skip when there's no
+        // preset so a user's hand-set amount is preserved.
+        if let memberIng = ingredientMgr.getByName(name: member) {
+            let amt = foodMgr.effectiveDefaultAmount(for: memberIng)
+            if amt > 0 {
+                mealIngredientMgr.setAmount(name: mi.name, amount: amt)
+            }
         }
         generateMeal()
     }

@@ -1,0 +1,24 @@
+"/Users/shane/src/nutrition/nutrition/Meal/MealIngredientDetail.swift":
+  diagnostics: "/Users/shane/src/nutrition/build/DerivedData/Build/Intermediates.noindex/nutrition.build/Debug-iphonesimulator/nutrition.build/Objects-normal/arm64/MealIngredientDetail.dia"
+  const-values: "/Users/shane/src/nutrition/build/DerivedData/Build/Intermediates.noindex/nutrition.build/Debug-iphonesimulator/nutrition.build/Objects-normal/arm64/MealIngredientDetail.swiftconstvalues"
+  object: "/Users/shane/src/nutrition/build/DerivedData/Build/Intermediates.noindex/nutrition.build/Debug-iphonesimulator/nutrition.build/Objects-normal/arm64/MealIngredientDetail.o"
+  dependencies: "/Users/shane/src/nutrition/build/DerivedData/Build/Intermediates.noindex/nutrition.build/Debug-iphonesimulator/nutrition.build/Objects-normal/arm64/MealIngredientDetail.d"
+  swift-dependencies: "/Users/shane/src/nutrition/build/DerivedData/Build/Intermediates.noindex/nutrition.build/Debug-iphonesimulator/nutrition.build/Objects-normal/arm64/MealIngredientDetail.swiftdeps"
+"/Users/shane/src/nutrition/nutrition/Scanner/ScanDiff.swift":
+  const-values: "/Users/shane/src/nutrition/build/DerivedData/Build/Intermediates.noindex/nutrition.build/Debug-iphonesimulator/nutrition.build/Objects-normal/arm64/ScanDiff.swiftconstvalues"
+  swift-dependencies: "/Users/shane/src/nutrition/build/DerivedData/Build/Intermediates.noindex/nutrition.build/Debug-iphonesimulator/nutrition.build/Objects-normal/arm64/ScanDiff.swiftdeps"
+  diagnostics: "/Users/shane/src/nutrition/build/DerivedData/Build/Intermediates.noindex/nutrition.build/Debug-iphonesimulator/nutrition.build/Objects-normal/arm64/ScanDiff.dia"
+  dependencies: "/Users/shane/src/nutrition/build/DerivedData/Build/Intermediates.noindex/nutrition.build/Debug-iphonesimulator/nutrition.build/Objects-normal/arm64/ScanDiff.d"
+  object: "/Users/shane/src/nutrition/build/DerivedData/Build/Intermediates.noindex/nutrition.build/Debug-iphonesimulator/nutrition.build/Objects-normal/arm64/ScanDiff.o"
+"/Users/shane/src/nutrition/nutrition/Meal/DailySummary.swift":
+  dependencies: "/Users/shane/src/nutrition/build/DerivedData/Build/Intermediates.noindex/nutrition.build/Debug-iphonesimulator/nutrition.build/Objects-normal/arm64/DailySummary.d"
+  object: "/Users/shane/src/nutrition/build/DerivedData/Build/Intermediates.noindex/nutrition.build/Debug-iphonesimulator/nutrition.build/Objects-normal/arm64/DailySummary.o"
+  diagnostics: "/Users/shane/src/nutrition/build/DerivedData/Build/Intermediates.noindex/nutrition.build/Debug-iphonesimulator/nutrition.build/Objects-normal/arm64/DailySummary.dia"
+  const-values: "/Users/shane/src/nutrition/build/DerivedData/Build/Intermediates.noindex/nutrition.build/Debug-iphonesimulator/nutrition.build/Objects-normal/arm64/DailySummary.swiftconstvalues"
+  swift-dependencies: "/Users/shane/src/nutrition/build/DerivedData/Build/Intermediates.noindex/nutrition.build/Debug-iphonesimulator/nutrition.build/Objects-normal/arm64/DailySummary.swiftdeps"
+"/Users/shane/src/nutrition/nutrition/Components/AmountStepper.swift":
+  dependencies: "/Users/shane/src/nutrition/build/DerivedData/Build/Intermediates.noindex/nutrition.build/Debug-iphonesimulator/nutrition.build/Objects-normal/arm64/AmountStepper.d"
+  diagnostics: "/Users/shane/src/nutrition/build/DerivedData/Build/Intermediates.noindex/nutrition.build/Debug-iphonesimulator/nutrition.build/Objects-normal/arm64/AmountStepper.dia"
+  const-values: "/Users/shane/src/nutrition/build/DerivedData/Build/Intermediates.noindex/nutrition.build/Debug-iphonesimulator/nutrition.build/Objects-normal/arm64/AmountStepper.swiftconstvalues"
+  object: "/Users/shane/src/nutrition/build/DerivedData/Build/Intermediates.noindex/nutrition.build/Debug-iphonesimulator/nutrition.build/Objects-normal/arm64/AmountStepper.o"
+  swift-dependencies: "/Users/shane/src/nutrition/build/DerivedData/Build/Intermediates.noindex/nutrition.build/Debug-iphonesimulator/nutrition.build/Objects-normal/arm64/AmountStepper.swiftdeps"

@@ -2,8 +2,11 @@ import SwiftUI
 
 
 // Returns the step size to use when the user taps `<` or `>` on
-// a meal-ingredient row.  If the ingredient has a user-set
-// `stepAmount > 0`, that wins.  Otherwise, fall back to a heuristic:
+// a meal-ingredient row.  Precedence:
+//   1. ingredient.stepAmount > 0 — per-variant override wins.
+//   2. the ingredient's Food-level stepAmount (> 0) — one value
+//      shared by every variant of that Food.
+//   3. the auto-heuristic below (final fallback):
 //   - meat (gram-unit)               -> 10  (chicken/beef/etc.)
 //   - piece/egg/can/whole/slice/cup  -> 1
 //   - tablespoon                     -> 0.5
@@ -13,6 +16,10 @@ import SwiftUI
 func effectiveStep(for ingredient: Ingredient, foodMgr: FoodMgr) -> Double {
     if ingredient.stepAmount > 0 {
         return ingredient.stepAmount
+    }
+    let foodStep = foodMgr.foodStepAmount(for: ingredient)
+    if foodStep > 0 {
+        return foodStep
     }
     // Proteins step by 10g — the generic gram heuristic (25 for
     // servingSize > 35) is too coarse for tuning a chicken or

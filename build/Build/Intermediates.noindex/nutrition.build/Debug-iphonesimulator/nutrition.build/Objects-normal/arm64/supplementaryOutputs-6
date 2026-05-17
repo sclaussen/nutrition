@@ -1,0 +1,30 @@
+"/Users/shane/src/nutrition/nutrition/Meal/Gauge.swift":
+  object: "/Users/shane/src/nutrition/build/Build/Intermediates.noindex/nutrition.build/Debug-iphonesimulator/nutrition.build/Objects-normal/arm64/Gauge.o"
+  dependencies: "/Users/shane/src/nutrition/build/Build/Intermediates.noindex/nutrition.build/Debug-iphonesimulator/nutrition.build/Objects-normal/arm64/Gauge.d"
+  diagnostics: "/Users/shane/src/nutrition/build/Build/Intermediates.noindex/nutrition.build/Debug-iphonesimulator/nutrition.build/Objects-normal/arm64/Gauge.dia"
+  swift-dependencies: "/Users/shane/src/nutrition/build/Build/Intermediates.noindex/nutrition.build/Debug-iphonesimulator/nutrition.build/Objects-normal/arm64/Gauge.swiftdeps"
+  const-values: "/Users/shane/src/nutrition/build/Build/Intermediates.noindex/nutrition.build/Debug-iphonesimulator/nutrition.build/Objects-normal/arm64/Gauge.swiftconstvalues"
+"/Users/shane/src/nutrition/nutrition/Adjustments/AdjustmentEdit.swift":
+  const-values: "/Users/shane/src/nutrition/build/Build/Intermediates.noindex/nutrition.build/Debug-iphonesimulator/nutrition.build/Objects-normal/arm64/AdjustmentEdit.swiftconstvalues"
+  object: "/Users/shane/src/nutrition/build/Build/Intermediates.noindex/nutrition.build/Debug-iphonesimulator/nutrition.build/Objects-normal/arm64/AdjustmentEdit.o"
+  dependencies: "/Users/shane/src/nutrition/build/Build/Intermediates.noindex/nutrition.build/Debug-iphonesimulator/nutrition.build/Objects-normal/arm64/AdjustmentEdit.d"
+  diagnostics: "/Users/shane/src/nutrition/build/Build/Intermediates.noindex/nutrition.build/Debug-iphonesimulator/nutrition.build/Objects-normal/arm64/AdjustmentEdit.dia"
+  swift-dependencies: "/Users/shane/src/nutrition/build/Build/Intermediates.noindex/nutrition.build/Debug-iphonesimulator/nutrition.build/Objects-normal/arm64/AdjustmentEdit.swiftdeps"
+"/Users/shane/src/nutrition/nutrition/Components/NameValue.swift":
+  const-values: "/Users/shane/src/nutrition/build/Build/Intermediates.noindex/nutrition.build/Debug-iphonesimulator/nutrition.build/Objects-normal/arm64/NameValue.swiftconstvalues"
+  diagnostics: "/Users/shane/src/nutrition/build/Build/Intermediates.noindex/nutrition.build/Debug-iphonesimulator/nutrition.build/Objects-normal/arm64/NameValue.dia"
+  object: "/Users/shane/src/nutrition/build/Build/Intermediates.noindex/nutrition.build/Debug-iphonesimulator/nutrition.build/Objects-normal/arm64/NameValue.o"
+  swift-dependencies: "/Users/shane/src/nutrition/build/Build/Intermediates.noindex/nutrition.build/Debug-iphonesimulator/nutrition.build/Objects-normal/arm64/NameValue.swiftdeps"
+  dependencies: "/Users/shane/src/nutrition/build/Build/Intermediates.noindex/nutrition.build/Debug-iphonesimulator/nutrition.build/Objects-normal/arm64/NameValue.d"
+"/Users/shane/src/nutrition/nutrition/Components/CheckboxToggle.swift":
+  const-values: "/Users/shane/src/nutrition/build/Build/Intermediates.noindex/nutrition.build/Debug-iphonesimulator/nutrition.build/Objects-normal/arm64/CheckboxToggle.swiftconstvalues"
+  diagnostics: "/Users/shane/src/nutrition/build/Build/Intermediates.noindex/nutrition.build/Debug-iphonesimulator/nutrition.build/Objects-normal/arm64/CheckboxToggle.dia"
+  swift-dependencies: "/Users/shane/src/nutrition/build/Build/Intermediates.noindex/nutrition.build/Debug-iphonesimulator/nutrition.build/Objects-normal/arm64/CheckboxToggle.swiftdeps"
+  dependencies: "/Users/shane/src/nutrition/build/Build/Intermediates.noindex/nutrition.build/Debug-iphonesimulator/nutrition.build/Objects-normal/arm64/CheckboxToggle.d"
+  object: "/Users/shane/src/nutrition/build/Build/Intermediates.noindex/nutrition.build/Debug-iphonesimulator/nutrition.build/Objects-normal/arm64/CheckboxToggle.o"
+"/Users/shane/src/nutrition/nutrition/app.swift":
+  object: "/Users/shane/src/nutrition/build/Build/Intermediates.noindex/nutrition.build/Debug-iphonesimulator/nutrition.build/Objects-normal/arm64/app.o"
+  const-values: "/Users/shane/src/nutrition/build/Build/Intermediates.noindex/nutrition.build/Debug-iphonesimulator/nutrition.build/Objects-normal/arm64/app.swiftconstvalues"
+  dependencies: "/Users/shane/src/nutrition/build/Build/Intermediates.noindex/nutrition.build/Debug-iphonesimulator/nutrition.build/Objects-normal/arm64/app.d"
+  swift-dependencies: "/Users/shane/src/nutrition/build/Build/Intermediates.noindex/nutrition.build/Debug-iphonesimulator/nutrition.build/Objects-normal/arm64/app.swiftdeps"
+  diagnostics: "/Users/shane/src/nutrition/build/Build/Intermediates.noindex/nutrition.build/Debug-iphonesimulator/nutrition.build/Objects-normal/arm64/app.dia"

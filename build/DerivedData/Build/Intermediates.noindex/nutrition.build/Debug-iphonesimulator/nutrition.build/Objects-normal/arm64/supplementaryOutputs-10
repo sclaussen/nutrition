@@ -1,0 +1,24 @@
+"/Users/shane/src/nutrition/nutrition/Meal/Dashboard.swift":
+  dependencies: "/Users/shane/src/nutrition/build/DerivedData/Build/Intermediates.noindex/nutrition.build/Debug-iphonesimulator/nutrition.build/Objects-normal/arm64/Dashboard.d"
+  object: "/Users/shane/src/nutrition/build/DerivedData/Build/Intermediates.noindex/nutrition.build/Debug-iphonesimulator/nutrition.build/Objects-normal/arm64/Dashboard.o"
+  diagnostics: "/Users/shane/src/nutrition/build/DerivedData/Build/Intermediates.noindex/nutrition.build/Debug-iphonesimulator/nutrition.build/Objects-normal/arm64/Dashboard.dia"
+  const-values: "/Users/shane/src/nutrition/build/DerivedData/Build/Intermediates.noindex/nutrition.build/Debug-iphonesimulator/nutrition.build/Objects-normal/arm64/Dashboard.swiftconstvalues"
+  swift-dependencies: "/Users/shane/src/nutrition/build/DerivedData/Build/Intermediates.noindex/nutrition.build/Debug-iphonesimulator/nutrition.build/Objects-normal/arm64/Dashboard.swiftdeps"
+"/Users/shane/src/nutrition/nutrition/Tabs.swift":
+  diagnostics: "/Users/shane/src/nutrition/build/DerivedData/Build/Intermediates.noindex/nutrition.build/Debug-iphonesimulator/nutrition.build/Objects-normal/arm64/Tabs.dia"
+  swift-dependencies: "/Users/shane/src/nutrition/build/DerivedData/Build/Intermediates.noindex/nutrition.build/Debug-iphonesimulator/nutrition.build/Objects-normal/arm64/Tabs.swiftdeps"
+  object: "/Users/shane/src/nutrition/build/DerivedData/Build/Intermediates.noindex/nutrition.build/Debug-iphonesimulator/nutrition.build/Objects-normal/arm64/Tabs.o"
+  dependencies: "/Users/shane/src/nutrition/build/DerivedData/Build/Intermediates.noindex/nutrition.build/Debug-iphonesimulator/nutrition.build/Objects-normal/arm64/Tabs.d"
+  const-values: "/Users/shane/src/nutrition/build/DerivedData/Build/Intermediates.noindex/nutrition.build/Debug-iphonesimulator/nutrition.build/Objects-normal/arm64/Tabs.swiftconstvalues"
+"/Users/shane/src/nutrition/nutrition/Profile/ProfileEdit.swift":
+  diagnostics: "/Users/shane/src/nutrition/build/DerivedData/Build/Intermediates.noindex/nutrition.build/Debug-iphonesimulator/nutrition.build/Objects-normal/arm64/ProfileEdit.dia"
+  object: "/Users/shane/src/nutrition/build/DerivedData/Build/Intermediates.noindex/nutrition.build/Debug-iphonesimulator/nutrition.build/Objects-normal/arm64/ProfileEdit.o"
+  swift-dependencies: "/Users/shane/src/nutrition/build/DerivedData/Build/Intermediates.noindex/nutrition.build/Debug-iphonesimulator/nutrition.build/Objects-normal/arm64/ProfileEdit.swiftdeps"
+  const-values: "/Users/shane/src/nutrition/build/DerivedData/Build/Intermediates.noindex/nutrition.build/Debug-iphonesimulator/nutrition.build/Objects-normal/arm64/ProfileEdit.swiftconstvalues"
+  dependencies: "/Users/shane/src/nutrition/build/DerivedData/Build/Intermediates.noindex/nutrition.build/Debug-iphonesimulator/nutrition.build/Objects-normal/arm64/ProfileEdit.d"
+"/Users/shane/src/nutrition/nutrition/Meal/MealConfigure.swift":
+  const-values: "/Users/shane/src/nutrition/build/DerivedData/Build/Intermediates.noindex/nutrition.build/Debug-iphonesimulator/nutrition.build/Objects-normal/arm64/MealConfigure.swiftconstvalues"
+  object: "/Users/shane/src/nutrition/build/DerivedData/Build/Intermediates.noindex/nutrition.build/Debug-iphonesimulator/nutrition.build/Objects-normal/arm64/MealConfigure.o"
+  dependencies: "/Users/shane/src/nutrition/build/DerivedData/Build/Intermediates.noindex/nutrition.build/Debug-iphonesimulator/nutrition.build/Objects-normal/arm64/MealConfigure.d"
+  swift-dependencies: "/Users/shane/src/nutrition/build/DerivedData/Build/Intermediates.noindex/nutrition.build/Debug-iphonesimulator/nutrition.build/Objects-normal/arm64/MealConfigure.swiftdeps"
+  diagnostics: "/Users/shane/src/nutrition/build/DerivedData/Build/Intermediates.noindex/nutrition.build/Debug-iphonesimulator/nutrition.build/Objects-normal/arm64/MealConfigure.dia"

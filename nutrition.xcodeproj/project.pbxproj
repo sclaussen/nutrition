@@ -64,7 +64,7 @@
 		FF0200000000000000000024 /* VerifyAllWalkthrough.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF0100000000000000000014 /* VerifyAllWalkthrough.swift */; };
 		FE0200000000000000000001 /* IngredientNutrientDetail.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE0100000000000000000001 /* IngredientNutrientDetail.swift */; };
 		FE0200000000000000000002 /* IngredientCostDetail.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE0100000000000000000002 /* IngredientCostDetail.swift */; };
-		FE0200000000000000000003 /* Group.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE0100000000000000000003 /* Group.swift */; };
+		FE0200000000000000000003 /* Food.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE0100000000000000000003 /* Food.swift */; };
 		FE0200000000000000000004 /* GroupMemberPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE0100000000000000000004 /* GroupMemberPicker.swift */; };
 /* End PBXBuildFile section */
 
@@ -128,7 +128,7 @@
 		FF0100000000000000000014 /* VerifyAllWalkthrough.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VerifyAllWalkthrough.swift; sourceTree = "<group>"; };
 		FE0100000000000000000001 /* IngredientNutrientDetail.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IngredientNutrientDetail.swift; sourceTree = "<group>"; };
 		FE0100000000000000000002 /* IngredientCostDetail.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IngredientCostDetail.swift; sourceTree = "<group>"; };
-		FE0100000000000000000003 /* Group.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Group.swift; sourceTree = "<group>"; };
+		FE0100000000000000000003 /* Food.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Food.swift; sourceTree = "<group>"; };
 		FE0100000000000000000004 /* GroupMemberPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupMemberPicker.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -186,6 +186,7 @@
 				3402286927D7C7C800741FBB /* nutrition.entitlements */,
 				349EE53027C99AC30072255A /* app.swift */,
 				349EE53227C99AC30072255A /* Tabs.swift */,
+				FE0100000000000000000010 /* Food */,
 				34DE420627FA6DF40078448F /* Meal */,
 				34DE420727FA6E2F0078448F /* Adjustments */,
 				34DE420827FA6E910078448F /* Ingredients */,
@@ -225,6 +226,14 @@
 			path = Components;
 			sourceTree = "<group>";
 		};
+		FE0100000000000000000010 /* Food */ = {
+			isa = PBXGroup;
+			children = (
+				FE0100000000000000000003 /* Food.swift */,
+			);
+			path = Food;
+			sourceTree = "<group>";
+		};
 		34DE420627FA6DF40078448F /* Meal */ = {
 			isa = PBXGroup;
 			children = (
@@ -240,7 +249,6 @@
 				5F73DCC1042045FC0D1D224E /* MealIngredientDetail.swift */,
 				FE0100000000000000000001 /* IngredientNutrientDetail.swift */,
 				FE0100000000000000000002 /* IngredientCostDetail.swift */,
-				FE0100000000000000000003 /* Group.swift */,
 				FE0100000000000000000004 /* GroupMemberPicker.swift */,
 			);
 			path = Meal;
@@ -439,7 +447,7 @@
 				FF0200000000000000000024 /* VerifyAllWalkthrough.swift in Sources */,
 				FE0200000000000000000001 /* IngredientNutrientDetail.swift in Sources */,
 				FE0200000000000000000002 /* IngredientCostDetail.swift in Sources */,
-				FE0200000000000000000003 /* Group.swift in Sources */,
+				FE0200000000000000000003 /* Food.swift in Sources */,
 				FE0200000000000000000004 /* GroupMemberPicker.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
