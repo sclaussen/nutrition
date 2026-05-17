@@ -3,3 +3,7 @@ TAGS
 build/
 
 .claude/
+
+scripts/.venv/
+scripts/wf_refresh_out.json
+*.bak
