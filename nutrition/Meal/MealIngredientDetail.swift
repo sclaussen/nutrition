@@ -35,28 +35,48 @@ struct MealIngredientDetail: View {
 
         List {
 
-            Section(header: Text("Amount")) {
+            Section(header: Text("Amount & Cost")) {
                 HStack {
                     Text(mealIngredient.name)
                     Spacer()
                     Text("\(mealIngredient.amount.formattedString(1)) \(ingredient?.consumptionUnit.pluralForm ?? "")")
                 }
                 if let ing = ingredient {
+                    // servings = amount in grams ÷ serving size;
+                    // costs derive from the resolved ingredient.
+                    let grams = mealIngredient.amount * ing.consumptionGrams
+                    let servings = ing.servingSize > 0 ? grams / ing.servingSize : 0
+                    let hasCost = ing.effectiveTotalGrams > 0
+                    let costPerGram = hasCost ? ing.totalCost / ing.effectiveTotalGrams : 0
+                    let costPerServing = costPerGram * ing.servingSize
+                    let contributed = costPerGram * grams
                     HStack {
                         Text("Serving size")
                         Spacer()
                         Text("\(ing.servingSize.formattedString(1)) g")
                           .foregroundColor(Color.theme.blackWhiteSecondary)
                     }
-                    // Macros below = per-serving values × this many
-                    // servings (amount in grams ÷ serving size).
-                    let grams = mealIngredient.amount * ing.consumptionGrams
-                    let servings = ing.servingSize > 0 ? grams / ing.servingSize : 0
+                    if hasCost {
+                        HStack {
+                            Text("Cost per serving")
+                            Spacer()
+                            Text(String(format: "$%.2f", costPerServing))
+                              .foregroundColor(Color.theme.blackWhiteSecondary)
+                        }
+                    }
                     HStack {
                         Text("Servings")
                         Spacer()
                         Text(servings.formattedString(2))
                           .foregroundColor(Color.theme.blackWhiteSecondary)
+                    }
+                    if hasCost {
+                        HStack {
+                            Text("Serving cost")
+                            Spacer()
+                            Text(String(format: "$%.2f", contributed))
+                              .foregroundColor(Color.theme.blueYellow)
+                        }
                     }
                 }
             }
@@ -68,26 +88,6 @@ struct MealIngredientDetail: View {
                 macroRow("Fiber",    mealIngredient.fiber,    unit: "g")
                 macroRow("NetCarbs", mealIngredient.netcarbs, unit: "g")
                 macroRow("Protein",  mealIngredient.protein,  unit: "g")
-            }
-
-
-            if let ing = ingredient, ing.effectiveTotalGrams > 0 {
-                let costPerGram   = ing.totalCost / ing.effectiveTotalGrams
-                let costPerServing = costPerGram * ing.servingSize
-                let contributed   = costPerGram * (mealIngredient.amount * ing.consumptionGrams)
-                Section(header: Text("Cost")) {
-                    HStack {
-                        Text("Per serving")
-                        Spacer()
-                        Text(String(format: "$%.2f", costPerServing))
-                    }
-                    HStack {
-                        Text("Contributed")
-                        Spacer()
-                        Text(String(format: "$%.2f", contributed))
-                          .foregroundColor(Color.theme.blueYellow)
-                    }
-                }
             }
 
 
