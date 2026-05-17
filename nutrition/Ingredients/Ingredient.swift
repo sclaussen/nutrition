@@ -2,7 +2,7 @@ import Foundation
 
 
 enum IngredientType: String, Codable, CaseIterable, Identifiable {
-    case meat, supplement, nuts, produce, cheese, oils, proteins, carbs
+    case meat, supplement, nuts, produce, cheese, oils, proteins, carbs, fruit
     var id: String { rawValue }
     var label: String { rawValue.capitalized }
     var sortRank: Int {
@@ -13,8 +13,9 @@ enum IngredientType: String, Codable, CaseIterable, Identifiable {
         case .nuts: return 3
         case .proteins: return 4
         case .carbs: return 5
-        case .meat: return 6
-        case .supplement: return 7
+        case .fruit: return 6
+        case .meat: return 7
+        case .supplement: return 8
         }
     }
 }
@@ -503,8 +504,9 @@ class IngredientMgr: ObservableObject {
                                       consumptionUnit: Unit.can,
                                       consumptionGrams: 85,
                                       verified: "3/10/24"))
-        ingredients.append(Ingredient(name: "Mack (SB)",
+        ingredients.append(Ingredient(name: "Mackerel (Skinless Boneless)",
                                       brand: "Wild Planet",
+                                      foodName: "Mackerel",
                                       servingSize: 85,
                                       calories: 180,
                                       fat: 11,
@@ -520,8 +522,9 @@ class IngredientMgr: ObservableObject {
                                       consumptionUnit: Unit.can,
                                       consumptionGrams: 85,
                                       verified: "3/10/24"))
-        ingredients.append(Ingredient(name: "Mack (Smk)",
+        ingredients.append(Ingredient(name: "Mackerel (Smoked)",
                                       brand: "Wild Planet",
+                                      foodName: "Mackerel",
                                       servingSize: 75,
                                       calories: 140,
                                       fat: 6,
@@ -715,6 +718,7 @@ class IngredientMgr: ObservableObject {
                                       verified: "9/1/22"))
         ingredients.append(Ingredient(name: "Dubliner Cheese",
                                       brand: "Kerrygold",
+                                      foodName: "Cheese",
                                       url: "https://www.wholefoodsmarket.com/grocery/product/b001e96kuu",
                                       servingSize: 28,
                                       calories: 110,
@@ -732,7 +736,7 @@ class IngredientMgr: ObservableObject {
                                       verified: "3/16/22"))
         ingredients.append(Ingredient(name: "Manchego Cheese",
                                       brand: "Mitica",
-                                      foodName: "Manchego",
+                                      foodName: "Cheese",
                                       url: "https://www.wholefoodsmarket.com/grocery/product/b0787tnqqx",
                                       servingSize: 28,
                                       calories: 110,
@@ -767,6 +771,7 @@ class IngredientMgr: ObservableObject {
                                       verified: "12/22/23"))
         ingredients.append(Ingredient(name: "Tillamook Cheddar Cheese",
                                       brand: "Tillamook",
+                                      foodName: "Cheese",
                                       servingSize: 21,
                                       calories: 90,
                                       fat: 7,
@@ -781,25 +786,9 @@ class IngredientMgr: ObservableObject {
                                       consumptionUnit: Unit.piece,
                                       consumptionGrams: 21,
                                       verified: "12/25/23"))
-        ingredients.append(Ingredient(name: "Mini Original Semisoft Cheese",
-                                      brand: "Mini Babybel",
-                                      url: "https://www.wholefoodsmarket.com/grocery/product/b0bvgj2vvp",
-                                      servingSize: 21,
-                                      calories: 70,
-                                      fat: 6,
-                                      fiber: 0,
-                                      netCarbs: 0,
-                                      protein: 5,
-                                      zinc: 0.8,
-                                      vitaminB12: 0.2,
-                                      vitaminA: 60,
-                                      phosphorus: 105,
-                                      calcium: 150,
-                                      consumptionUnit: Unit.gram,
-                                      consumptionGrams: 1,
-                                      verified: "3/16/22"))
         ingredients.append(Ingredient(name: "Emmi Roth",
                                       brand: "Emmi Roth",
+                                      foodName: "Cheese",
                                       servingSize: 28,
                                       calories: 110,
                                       fat: 9,
@@ -811,6 +800,7 @@ class IngredientMgr: ObservableObject {
                                       verified: "9/1/22"))
         ingredients.append(Ingredient(name: "Mitica",
                                       brand: "Mitica",
+                                      foodName: "Cheese",
                                       servingSize: 28,
                                       calories: 100,
                                       fat: 8,
@@ -822,7 +812,7 @@ class IngredientMgr: ObservableObject {
                                       verified: "1/8/24"))
         ingredients.append(Ingredient(name: "Cheddar Cheese",
                                       brand: "Tillamook",
-                                      foodName: "Cheddar Cheese",
+                                      foodName: "Cheese",
                                       servingSize: 28,
                                       calories: 110,
                                       fat: 9,
@@ -1024,7 +1014,7 @@ class IngredientMgr: ObservableObject {
                                       verified: "7/3/2025"))
         ingredients.append(Ingredient(name: "Cheddar Cheese W",
                                       brand: "Tillamook",
-                                      foodName: "Cheddar Cheese",
+                                      foodName: "Cheese",
                                       servingSize: 21,
                                       calories: 90,
                                       fat: 7,
@@ -1420,6 +1410,7 @@ class IngredientMgr: ObservableObject {
         ingredients.append(Ingredient(name: "Spinach (365 by Whole Foods M 5 oz)",
                                       brand: "365 by Whole Foods Market",
                                       foodName: "Spinach",
+                                      url: "https://www.wholefoodsmarket.com/grocery/product/b0bfg3bhnh",
                                       totalCost: 3.99,
                                       totalGrams: 141.8,
                                       servingSize: 85.0,
@@ -1465,7 +1456,7 @@ class IngredientMgr: ObservableObject {
                                       defaultAmount: 113))
         ingredients.append(Ingredient(name: "Manchego (Corcuera)",
                                       brand: "Corcuera",
-                                      foodName: "Manchego",
+                                      foodName: "Cheese",
                                       url: "https://www.wholefoodsmarket.com/grocery/product/b0787tnqqx",
                                       totalCost: 17.79,
                                       servingSize: 28.0,
@@ -1716,23 +1707,6 @@ class IngredientMgr: ObservableObject {
                                       verified: "5/16/2026",
                                       stepAmount: 5,
                                       defaultAmount: 50))
-        ingredients.append(Ingredient(name: "Olive Oil (365 by Whole Foods M 101.4 fl oz)",
-                                      brand: "365 by Whole Foods Market",
-                                      foodName: "Olive Oil",
-                                      url: "https://www.wholefoodsmarket.com/grocery/product/b074y6wz8x",
-                                      totalCost: 34.99,
-                                      servingSize: 14.0,
-                                      calories: 120.0,
-                                      fat: 14.0,
-                                      saturatedFat: 2.0,
-                                      fiber: 0.0,
-                                      netCarbs: 0.0,
-                                      protein: 0.0,
-                                      consumptionUnit: Unit.gram,
-                                      consumptionGrams: 1,
-                                      verified: "5/16/2026",
-                                      stepAmount: 5,
-                                      defaultAmount: 14))
         ingredients.append(Ingredient(name: "Radish (Whole Foods Market 12 Oz)",
                                       brand: "Whole Foods Market",
                                       foodName: "Radish",
@@ -2015,31 +1989,6 @@ class IngredientMgr: ObservableObject {
                                       verified: "5/16/2026",
                                       stepAmount: 5,
                                       defaultAmount: 85))
-        ingredients.append(Ingredient(name: "Spinach (365 by Whole Foods M 5 oz)",
-                                      brand: "365 by Whole Foods Market",
-                                      foodName: "Spinach",
-                                      totalCost: 2.99,
-                                      totalGrams: 141.8,
-                                      servingSize: 30.0,
-                                      calories: 7.0,
-                                      fat: 0.12,
-                                      saturatedFat: 0.02,
-                                      sodium: 24.0,
-                                      carbohydrates: 1.1,
-                                      fiber: 0.66,
-                                      sugar: 0.13,
-                                      netCarbs: 0.44,
-                                      protein: 0.86,
-                                      vitaminC: 8.0,
-                                      vitaminA: 141,
-                                      potassium: 167.0,
-                                      iron: 0.81,
-                                      calcium: 30.0,
-                                      consumptionUnit: Unit.gram,
-                                      consumptionGrams: 1,
-                                      verified: "5/16/2026",
-                                      stepAmount: 5,
-                                      defaultAmount: 30))
         ingredients.append(Ingredient(name: "Eggs (Vital Farms 18 Count)",
                                       brand: "Vital Farms",
                                       foodName: "Eggs",

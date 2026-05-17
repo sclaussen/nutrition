@@ -62,13 +62,12 @@ class FoodMgr: ObservableObject {
         foods.append(Food(name: "Avocado Oil", type: .oils, currentIngredientName: "Avocado Oil"))
         foods.append(Food(name: "Coconut Oil", type: .oils, defaultAmount: 14, stepAmount: 5, currentIngredientName: "Coconut Oil (365 by Whole Foods M 14 Fl Oz)"))
         foods.append(Food(name: "Extra Virgin Olive Oil", type: .oils, currentIngredientName: "Extra Virgin Olive Oil"))
-        foods.append(Food(name: "Olive Oil", type: .oils, defaultAmount: 14, stepAmount: 5, currentIngredientName: "Olive Oil (365 by Whole Foods M 101.4 fl oz)"))
 
         // ---- produce ----
         foods.append(Food(name: "Arugula", type: .produce, defaultAmount: 20, stepAmount: 5, currentIngredientName: "Arugula (365 by Whole Foods M 5 OZ)"))
         foods.append(Food(name: "Avocado", type: .produce, defaultAmount: 50, stepAmount: 5, currentIngredientName: "Avocado (365 by Whole Foods M 4 Count)"))
-        foods.append(Food(name: "Blackberries", type: .produce, defaultAmount: 72, stepAmount: 5, currentIngredientName: "Blackberries (Whole Foods Market 6 oz)"))
-        foods.append(Food(name: "Blueberries", type: .produce, defaultAmount: 140, stepAmount: 5, currentIngredientName: "Blueberries (365 by Whole Foods M 32 Ounce)"))
+        foods.append(Food(name: "Blackberries", type: .fruit, defaultAmount: 72, stepAmount: 5, currentIngredientName: "Blackberries (Whole Foods Market 6 oz)"))
+        foods.append(Food(name: "Blueberries", type: .fruit, defaultAmount: 140, stepAmount: 5, currentIngredientName: "Blueberries (365 by Whole Foods M 32 Ounce)"))
         foods.append(Food(name: "Broccoli", type: .produce, defaultAmount: 85, stepAmount: 5, currentIngredientName: "Broccoli (365 by Whole Foods M 32 Ounce)"))
         foods.append(Food(name: "Cauliflower", type: .produce, defaultAmount: 100, stepAmount: 5, currentIngredientName: "Cauliflower (365 by Whole Foods M 12 Ounce)"))
         foods.append(Food(name: "Mushrooms", type: .produce, defaultAmount: 84, stepAmount: 5, currentIngredientName: "Mushrooms (365 by Whole Foods M 8 Ounce)"))
@@ -78,14 +77,8 @@ class FoodMgr: ObservableObject {
 
         // ---- cheese ----
         foods.append(Food(name: "Babybel Cheese", type: .cheese, defaultAmount: 20, stepAmount: 5, currentIngredientName: "Babybel Cheese (Babybel 12 Count)"))
-        foods.append(Food(name: "Cheddar Cheese", type: .cheese, currentIngredientName: "Cheddar Cheese W"))
-        foods.append(Food(name: "Dubliner Cheese", type: .cheese, currentIngredientName: "Dubliner Cheese"))
-        foods.append(Food(name: "Emmi Roth", type: .cheese, currentIngredientName: "Emmi Roth"))
-        foods.append(Food(name: "Manchego", type: .cheese, currentIngredientName: "Manchego (Corcuera)"))
-        foods.append(Food(name: "Mini Original Semisoft Cheese", type: .cheese, currentIngredientName: "Mini Original Semisoft Cheese"))
-        foods.append(Food(name: "Mitica", type: .cheese, currentIngredientName: "Mitica"))
+        foods.append(Food(name: "Cheese", type: .cheese, currentIngredientName: "Manchego (Corcuera)"))
         foods.append(Food(name: "String Cheese", type: .cheese, currentIngredientName: "String Cheese (365 by Whole Foods M 12 OZ)"))
-        foods.append(Food(name: "Tillamook Cheddar Cheese", type: .cheese, currentIngredientName: "Tillamook Cheddar Cheese"))
 
         // ---- nuts ----
         foods.append(Food(name: "Cashews", type: .nuts, currentIngredientName: "Cashews"))
@@ -99,8 +92,7 @@ class FoodMgr: ObservableObject {
 
         // ---- proteins ----
         foods.append(Food(name: "Eggs", type: .proteins, defaultAmount: 50, stepAmount: 5, currentIngredientName: "Eggs (365 by Whole Foods M 18 Count)"))
-        foods.append(Food(name: "Mack (SB)", type: .proteins, currentIngredientName: "Mack (SB)"))
-        foods.append(Food(name: "Mack (Smk)", type: .proteins, currentIngredientName: "Mack (Smk)"))
+        foods.append(Food(name: "Mackerel", type: .proteins, currentIngredientName: "Mackerel (Skinless Boneless)"))
         foods.append(Food(name: "Sardines", type: .proteins, currentIngredientName: "Sardines (H2O)"))
         foods.append(Food(name: "Tuna", type: .proteins, defaultAmount: 85, stepAmount: 5, currentIngredientName: "Tuna (Wild Planet 5 Ounce)"))
         foods.append(Food(name: "Turkey", type: .proteins, currentIngredientName: "Turkey W"))
@@ -306,7 +298,7 @@ class FoodCompositeMgr: ObservableObject {
             FoodComposite(name: "Wrap", components: [
                 CompositeComponent(foodName: "Bread", amount: 1),
                 CompositeComponent(foodName: "Turkey", amount: 3),
-                CompositeComponent(foodName: "Cheddar Cheese", amount: 1),
+                CompositeComponent(foodName: "Cheese", amount: 1),
                 CompositeComponent(foodName: "String Cheese", amount: 1),
             ]),
         ]
