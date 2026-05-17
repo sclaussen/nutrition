@@ -77,7 +77,7 @@ class IngredientMgr: ObservableObject {
                                       verified: "5/17/2026"))
         ingredients.append(Ingredient(name: "Chicken",
                                       brand: "ButcherBox",
-                                      foodName: "Meat",
+                                      foodName: "Chicken",
                                       servingSize: 100,
                                       calories: 115,
                                       fat: 2.7,
@@ -95,7 +95,7 @@ class IngredientMgr: ObservableObject {
                                       meatAmount: 300))
         ingredients.append(Ingredient(name: "Beef",
                                       brand: "ButcherBox",
-                                      foodName: "Meat",
+                                      foodName: "Beef",
                                       servingSize: 100,
                                       calories: 214,
                                       fat: 15.2,
@@ -114,7 +114,7 @@ class IngredientMgr: ObservableObject {
                                       meatAmount: 200))
         ingredients.append(Ingredient(name: "Bison",
                                       brand: "ButcherBox",
-                                      foodName: "Meat",
+                                      foodName: "Bison",
                                       totalCost: 13.99,
                                       totalGrams: 454,
                                       servingSize: 112,
@@ -128,7 +128,7 @@ class IngredientMgr: ObservableObject {
                                       meatAmount: 150));
         ingredients.append(Ingredient(name: "Lamb",
                                       brand: "ButcherBox",
-                                      foodName: "Meat",
+                                      foodName: "Lamb",
                                       totalCost: 11.99,
                                       totalGrams: 340,
                                       servingSize: 85,
@@ -142,7 +142,7 @@ class IngredientMgr: ObservableObject {
                                       meatAmount: 150))
         ingredients.append(Ingredient(name: "Pork Chop",
                                       brand: "ButcherBox",
-                                      foodName: "Meat",
+                                      foodName: "Pork Chop",
                                       totalCost: 9.99,
                                       totalGrams: 454,
                                       servingSize: 113,
@@ -162,7 +162,7 @@ class IngredientMgr: ObservableObject {
                                       meatAmount: 300))
         ingredients.append(Ingredient(name: "Salmon",
                                       brand: "ButcherBox",
-                                      foodName: "Meat",
+                                      foodName: "Salmon",
                                       servingSize: 112,
                                       calories: 150,
                                       fat: 5,
@@ -180,7 +180,7 @@ class IngredientMgr: ObservableObject {
                                       meatAmount: 300))
         ingredients.append(Ingredient(name: "Top Sirloin Cap",
                                       brand: "ButcherBox",
-                                      foodName: "Meat",
+                                      foodName: "Top Sirloin Cap",
                                       totalCost: 18.99,
                                       totalGrams: 454,
                                       servingSize: 238,
@@ -1802,7 +1802,7 @@ class IngredientMgr: ObservableObject {
                                       defaultAmount: 85))
         ingredients.append(Ingredient(name: "Beef (365 by Whole Foods M 365 G)",
                                       brand: "365 by Whole Foods Market",
-                                      foodName: "Meat",
+                                      foodName: "Beef",
                                       url: "https://www.wholefoodsmarket.com/grocery/product/b0cbcx4thf",
                                       totalCost: 7.99,
                                       totalGrams: 453.6,
@@ -1823,7 +1823,7 @@ class IngredientMgr: ObservableObject {
                                       defaultAmount: 113))
         ingredients.append(Ingredient(name: "Beef (ButcherBox)",
                                       brand: "ButcherBox",
-                                      foodName: "Meat",
+                                      foodName: "Beef",
                                       totalCost: 9.50,
                                       totalGrams: 453.6,
                                       servingSize: 113,
@@ -2305,7 +2305,7 @@ class IngredientMgr: ObservableObject {
                                       defaultAmount: 30))
         ingredients.append(Ingredient(name: "Salmon (Whole Foods Market)",
                                       brand: "Whole Foods Market",
-                                      foodName: "Meat",
+                                      foodName: "Salmon",
                                       url: "https://www.wholefoodsmarket.com/grocery/product/b09y5w11j1",
                                       totalCost: 18.99,
                                       totalGrams: 454,
@@ -2326,7 +2326,7 @@ class IngredientMgr: ObservableObject {
                                       defaultAmount: 113))
         ingredients.append(Ingredient(name: "Chicken (Mary's Chicken)",
                                       brand: "Mary's Chicken",
-                                      foodName: "Meat",
+                                      foodName: "Chicken",
                                       url: "https://www.wholefoodsmarket.com/grocery/product/b0787z9hfs",
                                       totalCost: 4.99,
                                       totalGrams: 454,

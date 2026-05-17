@@ -106,7 +106,13 @@ class FoodMgr: ObservableObject {
         foods.append(Food(name: "Blueberries", type: .fruit, defaultAmount: 140, stepAmount: 5, currentIngredientName: "Blueberries (365 by Whole Foods M 32 Ounce)"))
 
         // ---- meat ----
-        foods.append(Food(name: "Meat", type: .meat, defaultAmount: 113, stepAmount: 5, currentIngredientName: "Chicken (Mary's Chicken)"))
+        foods.append(Food(name: "Beef", type: .meat, defaultAmount: 113, stepAmount: 5, currentIngredientName: "Beef (ButcherBox)"))
+        foods.append(Food(name: "Bison", type: .meat, currentIngredientName: "Bison"))
+        foods.append(Food(name: "Chicken", type: .meat, defaultAmount: 112, stepAmount: 5, currentIngredientName: "Chicken (Mary's Chicken)"))
+        foods.append(Food(name: "Lamb", type: .meat, currentIngredientName: "Lamb"))
+        foods.append(Food(name: "Pork Chop", type: .meat, currentIngredientName: "Pork Chop"))
+        foods.append(Food(name: "Salmon", type: .meat, defaultAmount: 113, stepAmount: 5, currentIngredientName: "Salmon (Whole Foods Market)"))
+        foods.append(Food(name: "Top Sirloin Cap", type: .meat, currentIngredientName: "Top Sirloin Cap"))
 
         // ---- supplement ----
         foods.append(Food(name: "Apigenin", type: .supplement, currentIngredientName: "Apigenin"))
