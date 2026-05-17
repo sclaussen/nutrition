@@ -687,39 +687,28 @@ struct MealList: View {
         // Supplement hide/show is unchanged — only the visible set is
         // affected.
         let visible = base.filter { showSupplements || !$0.isSupplement }
-        // Ordered by the row's Food category (IngredientType.sortRank)
-        // then name. Supplements naturally fall last (sortRank 7);
-        // rows whose Food can't be resolved sort after that.
+        // Ordered PURELY by each row's Food position in the Food.swift
+        // seed array (the user's salad-building order). Category
+        // grouping is intentionally ignored on the meal page. The
+        // Food-Type placeholder is forced strictly last; ties (e.g.
+        // duplicate rows of the same Food) keep insertion order.
+        let pos = Dictionary(
+            mealIngredientMgr.mealIngredients.enumerated().map { ($1.id, $0) },
+            uniquingKeysWith: { a, _ in a })
         return visible.sorted {
-            let r0 = mealRowTypeRank($0)
-            let r1 = mealRowTypeRank($1)
-            if r0 != r1 { return r0 < r1 }
+            if $0.isFoodTypeSlot != $1.isFoodTypeSlot { return !$0.isFoodTypeSlot }
             let s0 = mealRowSeedOrder($0)
             let s1 = mealRowSeedOrder($1)
             if s0 != s1 { return s0 < s1 }
-            return $0.name < $1.name
+            return (pos[$0.id] ?? 0) < (pos[$1.id] ?? 0)
         }
     }
 
 
-    // The category rank for a meal row, resolved through its
-    // ingredient's Food. Category placeholders sort AFTER everything
-    // — including supplements and unresolvable rows — via a sentinel
-    // strictly greater than Int.max can't go, so Int.max is reserved
-    // for unresolvable real rows and placeholders get Int.max only
-    // after the explicit isFoodTypeSlot branch keeps them strictly
-    // last (see the secondary tiebreaker below). Unresolvable rows
-    // sort last among real rows (Int.max).
-    private func mealRowTypeRank(_ mi: MealIngredient) -> Int {
-        if mi.isFoodTypeSlot { return Int.max }
-        guard let ing = resolvedIngredient(mi) else { return Int.max - 1 }
-        return foodMgr.type(of: ing)?.sortRank ?? (Int.max - 1)
-    }
-
-
-    // The Food seed (append) position for a meal row, resolved
-    // through its ingredient's Food. Unresolvable rows sort last
-    // (Int.max). Secondary tiebreaker after category rank.
+    // The Food seed (append) position for a meal row — the PRIMARY
+    // meal-page ordering key (Food.swift array order). Composite /
+    // unresolvable rows have no Food, so they sort last (Int.max),
+    // just before the Food-Type placeholder.
     private func mealRowSeedOrder(_ mi: MealIngredient) -> Int {
         guard let ing = resolvedIngredient(mi) else { return Int.max }
         return foodMgr.seedOrder(of: ing)
