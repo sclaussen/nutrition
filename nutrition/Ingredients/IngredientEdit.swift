@@ -648,6 +648,7 @@ extension IngredientEdit {
                     if !autoIDs.isEmpty {
                         var updated = ingredient
                         ScanDiff.apply(parsed: parsed, ids: autoIDs, to: &updated)
+                        updated.verified = ScanDiff.todayStamp()
                         ingredient = updated
                         ingredientMgr.update(updated)
                     }
@@ -677,6 +678,7 @@ extension IngredientEdit {
         guard !ids.isEmpty else { return }
         var updated = ingredient
         ScanDiff.apply(parsed: parsed, ids: ids, to: &updated)
+        updated.verified = ScanDiff.todayStamp()
         ingredient = updated
         ingredientMgr.update(updated)
     }

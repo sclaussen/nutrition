@@ -236,6 +236,7 @@ struct VerifyAllWalkthrough: View {
             if !agreedBrand.isEmpty {
                 ing.brand = agreedBrand
             }
+            ing.verified = ScanDiff.todayStamp()
             ingredientMgr.update(ing)
         }
         advance()

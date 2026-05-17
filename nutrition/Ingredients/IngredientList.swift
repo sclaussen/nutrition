@@ -58,6 +58,10 @@ struct IngredientList: View {
     // ============================================================
     @State private var showCaptureSheet = false
 
+    // Drives the hidden NavigationLink that pushes the all-items
+    // "Verify All" web-refresh sweep.
+    @State private var showVerifyAll = false
+
     @State private var addPrefill: ParsedIngredient? = nil
     @State private var editPrefillBundle: EditPrefillBundle? = nil
     @State private var chooserPayload: ChooserPayload? = nil
@@ -229,6 +233,13 @@ struct IngredientList: View {
                           Image(systemName: "camera.viewfinder")
                             .font(.system(size: 24.3))
                       }
+
+                      // All-items web-refresh sweep (Verify All).
+                      Button {
+                          showVerifyAll = true
+                      } label: {
+                          Image(systemName: "checkmark.seal")
+                      }
                   }
                     .foregroundColor(Color.theme.blueYellow)
               }
@@ -299,6 +310,12 @@ struct IngredientList: View {
                           }
                       },
                       isActive: editPrefillActive
+                  ) { EmptyView() }
+
+                  NavigationLink(
+                      destination: VerifyAllWalkthrough()
+                        .environmentObject(ingredientMgr),
+                      isActive: $showVerifyAll
                   ) { EmptyView() }
               }
           )

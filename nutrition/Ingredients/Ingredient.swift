@@ -3153,7 +3153,7 @@ struct Ingredient: Codable, Identifiable {
                           meatAmount: ingredient.meatAmount,
                           mealAdjustments: ingredient.mealAdjustments,
                           microNutrients: ingredient.microNutrients,
-                          verified: verified,
+                          verified: ingredient.verified,
                           stepAmount: ingredient.stepAmount,
                           defaultAmount: ingredient.defaultAmount,
                           foodActive: ingredient.foodActive)

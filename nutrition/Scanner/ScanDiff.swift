@@ -271,6 +271,19 @@ struct ScanDiff: Equatable {
     }
 
 
+    // ============================================================
+    // Today's date as a `verified` stamp. Matches the seed format
+    // (e.g. "5/16/2026"): no leading zeros, en_US_POSIX so it's
+    // locale-stable. One source of truth for the web-refresh flows.
+    // ============================================================
+    static func todayStamp() -> String {
+        let f = DateFormatter()
+        f.locale = Locale(identifier: "en_US_POSIX")
+        f.dateFormat = "M/d/yyyy"
+        return f.string(from: Date())
+    }
+
+
     private static func formatNumber(_ value: Double) -> String {
         if value == value.rounded() {
             return String(Int(value))
