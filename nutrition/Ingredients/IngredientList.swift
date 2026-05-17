@@ -554,11 +554,9 @@ struct IngredientList: View {
     //   black -> green  (added to meal, active: true)
     //   green -> black  (removed from meal)
     //
-    // No-op for meats: they're owned by the Proteins picker. The
-    // chevron still navigates to IngredientEdit so the meat's data
-    // is reachable.
+    // Meat is no longer special — it's an ordinary grouped Food and
+    // is added/removed here exactly like any other Food.
     private func promote(_ ingredient: Ingredient) {
-        if foodMgr.isMeat(ingredient) { return }
         let key = mealKey(ingredient)
         if let mi = mealIngredientMgr.getByName(name: key) {
             mealIngredientMgr.delete(mi)

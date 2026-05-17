@@ -131,7 +131,6 @@ class MealIngredientMgr: ObservableObject {
     // Consumer is the Meal Add dialog.
     func create(name: String,
                 amount: Double,
-                meat: Bool = false,
                 adjustment: Int = Constants.Default,
                 priorState: Int = Constants.Active,
                 active: Bool = true,
@@ -141,7 +140,6 @@ class MealIngredientMgr: ObservableObject {
 
         let mealIngredient = MealIngredient(name: name,
                                             amount: amount,
-                                            meat: meat,
                                             adjustment: adjustment,
                                             priorState: priorState,
                                             active: active,
@@ -153,11 +151,35 @@ class MealIngredientMgr: ObservableObject {
     }
 
 
+    // Duplicate an existing meal row into a new, independent row.
+    // The clone keeps the source row's member selection, amount,
+    // composite parts, supplement flag, and active state but gets a
+    // FRESH id (and resets adjustment/priorState to Default so the
+    // copy starts clean — the user can re-lock it independently).
+    // The new row is inserted directly after its source so it shows
+    // adjacent to the original in the list.
+    func replicate(id: String) {
+        guard let index = mealIngredients.firstIndex(where: { $0.id == id }) else {
+            return
+        }
+        let src = mealIngredients[index]
+        let clone = MealIngredient(name: src.name,
+                                   originalAmount: src.amount,
+                                   amount: src.amount,
+                                   active: src.active,
+                                   isSupplement: src.isSupplement,
+                                   selectedMemberName: src.selectedMemberName,
+                                   compositeParts: src.compositeParts)
+        mealIngredients.insert(clone, at: index + 1)
+    }
+
+
     // Change which member of a group this meal row uses. Macros are
     // recomputed by the next generateMeal() (resolution happens
-    // there via the row's selectedMemberName).
-    func setSelectedMember(name: String, member: String) {
-        if let index = mealIngredients.firstIndex(where: { $0.name == name }) {
+    // there via the row's selectedMemberName). Keyed by the row's
+    // unique id so multiple rows of the same Food are independent.
+    func setSelectedMember(id: String, member: String) {
+        if let index = mealIngredients.firstIndex(where: { $0.id == id }) {
             mealIngredients[index].selectedMemberName = member
         }
     }
@@ -165,8 +187,8 @@ class MealIngredientMgr: ObservableObject {
 
     // Set a meal row's amount directly (used when switching Food
     // variants so the row adopts the new variant's defaultAmount).
-    func setAmount(name: String, amount: Double) {
-        if let index = mealIngredients.firstIndex(where: { $0.name == name }) {
+    func setAmount(id: String, amount: Double) {
+        if let index = mealIngredients.firstIndex(where: { $0.id == id }) {
             mealIngredients[index].amount = amount
         }
     }
@@ -174,15 +196,15 @@ class MealIngredientMgr: ObservableObject {
 
     // Replace a composite row's resolved parts (variant swap /
     // amount change from the composite editor).
-    func setCompositeParts(name: String, parts: [MealCompositePart]) {
-        if let index = mealIngredients.firstIndex(where: { $0.name == name }) {
+    func setCompositeParts(id: String, parts: [MealCompositePart]) {
+        if let index = mealIngredients.firstIndex(where: { $0.id == id }) {
             mealIngredients[index].compositeParts = parts
         }
     }
 
 
-    func manualAdjustment(name: String, amount: Double) {
-        if let index = mealIngredients.firstIndex(where: { $0.name == name }) {
+    func manualAdjustment(id: String, name: String, amount: Double) {
+        if let index = mealIngredients.firstIndex(where: { $0.id == id }) {
             mealIngredients[index] = mealIngredients[index].manualAdjustment(amount: amount)
             return
         }
@@ -192,9 +214,9 @@ class MealIngredientMgr: ObservableObject {
     }
 
 
-    func undoManualAdjustment(name: String) {
-        print("Undo Manual Adjustment for \(name)")
-        if let index = mealIngredients.firstIndex(where: { $0.name == name }) {
+    func undoManualAdjustment(id: String) {
+        print("Undo Manual Adjustment for \(id)")
+        if let index = mealIngredients.firstIndex(where: { $0.id == id }) {
             if mealIngredients[index].adjustment == Constants.Manual {
                 if mealIngredients[index].priorState == Constants.Ingredient {
                     print("  - deleting the auto-added/auto-adjusted meal ingredient: \(mealIngredients[index].name)")
@@ -210,9 +232,10 @@ class MealIngredientMgr: ObservableObject {
 
     // Promote a row to Done (blue / fully locked). Called when the
     // user taps the name of a Manual or Default row. Keeps the
-    // current amount.
-    func doneAdjustment(name: String, amount: Double) {
-        if let index = mealIngredients.firstIndex(where: { $0.name == name }) {
+    // current amount. Keyed by row id so duplicated rows of the same
+    // Food lock independently.
+    func doneAdjustment(id: String, amount: Double) {
+        if let index = mealIngredients.firstIndex(where: { $0.id == id }) {
             mealIngredients[index] = mealIngredients[index].doneAdjustment(amount: amount)
         }
     }
@@ -225,9 +248,9 @@ class MealIngredientMgr: ObservableObject {
     //   the next generateMeal can let auto recompute cleanly.
     // resetAmount=false: caller has decided this is a manual-only
     //   ingredient; preserve the user's amount.
-    func undoDoneAdjustment(name: String, resetAmount: Bool) {
-        print("Undo Done Adjustment for \(name) resetAmount=\(resetAmount)")
-        if let index = mealIngredients.firstIndex(where: { $0.name == name }) {
+    func undoDoneAdjustment(id: String, resetAmount: Bool) {
+        print("Undo Done Adjustment for \(id) resetAmount=\(resetAmount)")
+        if let index = mealIngredients.firstIndex(where: { $0.id == id }) {
             if mealIngredients[index].adjustment == Constants.Done {
                 mealIngredients[index] = mealIngredients[index].undoDoneAdjustment(resetAmount: resetAmount)
             }
@@ -282,28 +305,6 @@ class MealIngredientMgr: ObservableObject {
     }
 
 
-    // Replace the meal's protein rows with the given list. Removes
-    // every existing meat-flagged MealIngredient, then adds one per
-    // protein. Proteins sharing the same `name` are coalesced (their
-    // amounts summed) so the MealIngredient name-uniqueness invariant
-    // — `getByName(name:)` returns the first match — keeps holding.
-    func reapplyProteins(_ proteins: [Protein]) {
-        mealIngredients.removeAll(where: { $0.meat })
-
-        var combined: [String: Double] = [:]
-        var order: [String] = []
-        for p in proteins {
-            if combined[p.name] == nil { order.append(p.name) }
-            combined[p.name, default: 0] += p.amount
-        }
-        for name in order {
-            let amount = combined[name]!
-            print("  Adding: \(name) amount \(amount)")
-            create(name: name, amount: amount, meat: true)
-        }
-    }
-
-
     // Get the meal ingredient by name
     func getByName(name: String) -> MealIngredient? {
         if let index = mealIngredients.firstIndex(where: { $0.name == name }) {
@@ -321,9 +322,8 @@ class MealIngredientMgr: ObservableObject {
     func getActive(includeInactive: Bool = false) -> [MealIngredient] {
         let base = includeInactive ? mealIngredients : mealIngredients.filter { $0.active }
         // Supplements always render at the very bottom of the meal
-        // list — under the meat (which is dynamically appended via
-        // reapplyMeat).  Within each group the original insertion
-        // order is preserved, since filter is stable.
+        // list.  Within each group the original insertion order is
+        // preserved, since filter is stable.
         return base.filter { !$0.isSupplement } + base.filter { $0.isSupplement }
     }
 
@@ -393,8 +393,8 @@ class MealIngredientMgr: ObservableObject {
     }
 
 
-    func setMacroActuals(name: String, calories: Double, fat: Double, fiber: Double, netcarbs: Double, protein: Double) {
-        if let index = mealIngredients.firstIndex(where: { $0.name == name }) {
+    func setMacroActuals(id: String, calories: Double, fat: Double, fiber: Double, netcarbs: Double, protein: Double) {
+        if let index = mealIngredients.firstIndex(where: { $0.id == id }) {
             mealIngredients[index] = mealIngredients[index].setMacroActuals(calories: calories, fat: fat, fiber: fiber, netcarbs: netcarbs, protein: protein)
         }
     }
@@ -461,8 +461,6 @@ struct MealIngredient: Codable, Identifiable {
     var originalAmount: Double
     var amount: Double
 
-    var meat: Bool
-
     var calories: Double
     var fat: Double
     var fiber: Double
@@ -496,7 +494,6 @@ struct MealIngredient: Codable, Identifiable {
          name: String,
          originalAmount: Double = 0,
          amount: Double,
-         meat: Bool = false,
          calories: Double = 0,
          fat: Double = 0,
          fiber: Double = 0,
@@ -519,8 +516,6 @@ struct MealIngredient: Codable, Identifiable {
             self.originalAmount = originalAmount
         }
         self.amount = amount
-
-        self.meat = meat
 
         self.calories = calories
         self.fat = fat
@@ -546,7 +541,9 @@ struct MealIngredient: Codable, Identifiable {
         self.name = try c.decode(String.self, forKey: .name)
         self.originalAmount = try c.decode(Double.self, forKey: .originalAmount)
         self.amount = try c.decode(Double.self, forKey: .amount)
-        self.meat = try c.decode(Bool.self, forKey: .meat)
+        // `meat` was removed from the model. Old saved JSON may still
+        // carry a "meat" key; Codable simply ignores unlisted keys, so
+        // there is nothing to decode here and old data still loads.
         self.calories = try c.decode(Double.self, forKey: .calories)
         self.fat = try c.decode(Double.self, forKey: .fat)
         self.fiber = try c.decode(Double.self, forKey: .fiber)

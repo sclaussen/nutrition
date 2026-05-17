@@ -36,10 +36,6 @@ struct MealList: View {
     @State private var detailFor: MealIngredient? = nil
     @State private var entrySheetFor: MealIngredient? = nil
     @State private var vmListActive = false
-    // Non-nil when a meat row is double-tapped — drives the proteins
-    // editor sheet. Item-based rather than bool-based so SwiftUI
-    // can present and dismiss cleanly off the same source of truth.
-    @State private var proteinsEditorActive: Bool = false
 
     // ============================================================
     // LLM scanner state — mirrors IngredientList's wiring so the
@@ -135,20 +131,20 @@ struct MealList: View {
                               // contentShape makes the full 50% zone hit-
                               // testable, not just the rendered glyphs.
                               .contentShape(Rectangle())
-                              // Double-tap on a meat row opens the proteins
-                              // editor. Single-tap goes through the same
-                              // Auto/Manual/Done cycle as every other
-                              // row — meat is no longer special-cased
-                              // beyond the double-tap addition.
-                              .if(mealIngredient.meat) { view in
-                                  view.onTapGesture(count: 2) {
-                                      proteinsEditorActive = true
-                                  }
+                              // Double-tap ANY non-composite row to
+                              // duplicate it into a new independent row
+                              // (same member + amount, fresh identity).
+                              // Attached BEFORE the single-tap so
+                              // SwiftUI gives the 2-tap gesture priority.
+                              .onTapGesture(count: 2) {
+                                  mealIngredientMgr.replicate(id: mealIngredient.id)
+                                  generateMeal()
                               }
                               // Group rows: long-press immediately opens
                               // the variant picker (confirmationDialog
                               // below). Lock stays on the single-tap
-                              // cycle.
+                              // cycle. The picked member changes ONLY
+                              // this row.
                               .if(isGroupRow(mealIngredient)) { view in
                                   view.onLongPressGesture {
                                       memberPickerFor = mealIngredient
@@ -174,7 +170,7 @@ struct MealList: View {
                         } else {
                             AmountStepper(
                             amount: mealIngredient.amount,
-                            unit: getConsumptionUnit(mealIngredient.name),
+                            unit: getConsumptionUnit(mealIngredient),
                             // "Locked" here means Done (blue): inc/dec/pill
                             // are disabled. Manual rows (black) still allow
                             // amount changes; the stepper stays visible and
@@ -194,7 +190,7 @@ struct MealList: View {
                             // being auto-adjusted. Same lock path as
                             // the Black → Blue tap-name transition.
                             onDecrementToZero: {
-                                mealIngredientMgr.doneAdjustment(name: mealIngredient.name, amount: 0)
+                                mealIngredientMgr.doneAdjustment(id: mealIngredient.id, amount: 0)
                                 generateMeal()
                             },
                             onPillTap:         { entrySheetFor = mealIngredient }
@@ -458,7 +454,7 @@ struct MealList: View {
               }
           }
           .sheet(item: $entrySheetFor) { mi in
-              let unit = getConsumptionUnit(mi.name)
+              let unit = getConsumptionUnit(mi)
               NumberEntrySheet(
                   title: "\(mi.name) (\(unit.pluralForm))",
                   initialValue: mi.amount
@@ -476,18 +472,9 @@ struct MealList: View {
                         .map { $0.name }.sorted()
                   }
               ) { updated in
-                  mealIngredientMgr.setCompositeParts(name: mi.name, parts: updated)
+                  mealIngredientMgr.setCompositeParts(id: mi.id, parts: updated)
                   generateMeal()
               }
-          }
-          .sheet(isPresented: $proteinsEditorActive, onDismiss: {
-              // Editor saves through profileMgr.setProteins which mutates
-              // profile.proteins; rebuild the meal so the new protein
-              // rows show up (or stale ones disappear). No-op on Cancel
-              // since cancel doesn't touch profile.
-              generateMeal()
-          }) {
-              ProteinsEditor()
           }
           // Long-press on a Food row opens this variant picker
           // immediately (no intermediate tap). Picking applies the
@@ -580,17 +567,13 @@ struct MealList: View {
     }
 
 
-    // Apply a new amount to the meal ingredient.  Meat ingredients
-    // route through profileMgr (updating the matching Protein in the
-    // profile.proteins list); everything else goes through
+    // Apply a new amount to this specific meal row. Every row (meat
+    // included — meat is no longer special) goes through
     // mealIngredientMgr.manualAdjustment so the change records as a
-    // manual override and survives the next generateMeal.
+    // manual override and survives the next generateMeal. Keyed by
+    // the row's id so duplicated rows adjust independently.
     func applyAmount(_ mi: MealIngredient, newAmount: Double) {
-        if mi.meat {
-            profileMgr.setProteinAmount(name: mi.name, amount: newAmount)
-        } else {
-            mealIngredientMgr.manualAdjustment(name: mi.name, amount: newAmount)
-        }
+        mealIngredientMgr.manualAdjustment(id: mi.id, name: mi.name, amount: newAmount)
         generateMeal()
     }
 
@@ -619,17 +602,17 @@ struct MealList: View {
             // skip the row from here on. mi.amount captures whatever
             // auto-adjustment landed on (or the seeded amount if
             // auto hadn't fired this cycle).
-            mealIngredientMgr.manualAdjustment(name: mi.name, amount: mi.amount)
+            mealIngredientMgr.manualAdjustment(id: mi.id, name: mi.name, amount: mi.amount)
         } else if mi.adjustment == Constants.Done {
             // Blue → Default. For auto-eligible ingredients, reset
             // amount to originalAmount so the next generateMeal can
             // re-promote cleanly. Manual-only ingredients keep the
             // user's amount.
             let isAutoEligible = adjustmentMgr.adjustments.contains { $0.name == mi.name }
-            mealIngredientMgr.undoDoneAdjustment(name: mi.name, resetAmount: isAutoEligible)
+            mealIngredientMgr.undoDoneAdjustment(id: mi.id, resetAmount: isAutoEligible)
         } else {
             // Black (Manual, or non-eligible Default) → Blue.
-            mealIngredientMgr.doneAdjustment(name: mi.name, amount: mi.amount)
+            mealIngredientMgr.doneAdjustment(id: mi.id, amount: mi.amount)
         }
         generateMeal()
     }
@@ -728,28 +711,12 @@ struct MealList: View {
         // 2. Meal ingredient amounts being set to original values, and deativation
         mealIngredientMgr.undoAutoAdjustments()
 
-        print("\nProtein Adjustments")
-        mealIngredientMgr.reapplyProteins(profileMgr.profile.proteins)
-        // Apply each protein's own mealAdjustments cascade. Today no
-        // active protein declares any, but the loop generalizes when
-        // we have multiple proteins so each one can contribute its
-        // own auto-adjusted sidekicks.
-        for protein in profileMgr.profile.proteins {
-            guard let ingredient = ingredientMgr.getByName(name: protein.name) else { continue }
-            for mealAdjustment in ingredient.mealAdjustments {
-                guard let mealIngredient = mealIngredientMgr.getByName(name: mealAdjustment.name) else { continue }
-                if mealIngredient.active {
-                    mealIngredientMgr.automaticAdjustment(name: mealAdjustment.name, amount: mealAdjustment.amount)
-                }
-            }
-        }
-
         // Initialize the total macros for each meal ingredient and
         // the total macros for all ingredients.  These will all be
         // updated later in this algorithm.
         mealIngredientMgr.setMacroActualsToZero()
         for mealIngredient in mealIngredientMgr.getActive(includeInactive: true) {
-            setMacroActualsAndUpdateMealMacroActuals(mealIngredient.name, Double(mealIngredient.amount), mealIngredient.active)
+            setMacroActualsAndUpdateMealMacroActuals(mealIngredient)
         }
 
         print("\nAdding Automatic Adjustments")
@@ -868,12 +835,16 @@ struct MealList: View {
         // the fat, netCarbs, or protein macros exceeding the daily
         // macro limits then the adjustment cannot be applied.
         //
-        // Resolve group/base names to the selected variant (mirrors
-        // setMacroActualsAndUpdateMealMacroActuals). If the target
-        // ingredient no longer resolves (e.g. an adjustment left over
-        // for a removed base entry), the adjustment simply can't be
-        // applied — skip it instead of force-unwrapping into a crash.
-        guard let ingredient = ingredientMgr.getByName(name: currentName(adjustment.name)) else {
+        // Resolve group/base names to the selected variant. The auto-
+        // adjust engine targets Foods by name (not specific rows), so
+        // use the row's member if a row already exists, else the
+        // Food's global default. If the target ingredient no longer
+        // resolves (e.g. an adjustment left over for a removed base
+        // entry), the adjustment simply can't be applied — skip it
+        // instead of force-unwrapping into a crash.
+        let resolvedName = mealIngredient.map { currentName($0) }
+            ?? currentName(forFoodName: adjustment.name)
+        guard let ingredient = ingredientMgr.getByName(name: resolvedName) else {
             return false
         }
         let servings = (adjustment.amount * ingredient.consumptionGrams) / ingredient.servingSize
@@ -890,8 +861,21 @@ struct MealList: View {
 
 
         // At this point, the adjustment "fits" and can be applied.
-        setMacroActualsAndUpdateMealMacroActuals(adjustment.name, Double(adjustment.amount), true)
+        // Account for just the DELTA against the running macro totals
+        // (and onto the target row's running macros) BEFORE mutating
+        // the row's amount — mirrors the original incremental
+        // bookkeeping. automaticAdjustment then bumps the row amount
+        // (creating the row if it didn't exist).
+        if let mi = mealIngredient {
+            setMacroActualsAndUpdateMealMacroActuals(mi, amountOverride: Double(adjustment.amount))
+        }
         mealIngredientMgr.automaticAdjustment(name: adjustment.name, amount: adjustment.amount)
+        // Row was just created by automaticAdjustment (no prior row) —
+        // account its delta now that it exists.
+        if mealIngredient == nil,
+           let created = mealIngredientMgr.getByName(name: adjustment.name) {
+            setMacroActualsAndUpdateMealMacroActuals(created, amountOverride: Double(adjustment.amount))
+        }
         return true
     }
 
@@ -904,11 +888,22 @@ struct MealList: View {
     //
     // Next, if the meal ingredient is active, add the meal
     // ingredient's macros to the cumulative meal's macros.
-    func setMacroActualsAndUpdateMealMacroActuals(_ name: String, _ amount: Double, _ active: Bool) {
+    // `amountOverride` lets the auto-adjust engine account for just
+    // the DELTA it is applying (adjustment.amount) instead of the
+    // row's full amount — preserving the original incremental macro
+    // bookkeeping. The bulk pass in generateMeal() passes nil so the
+    // row's full amount is used. Resolution (which member ingredient)
+    // is row-aware in both cases.
+    func setMacroActualsAndUpdateMealMacroActuals(_ mi: MealIngredient,
+                                                  amountOverride: Double? = nil) {
+
+        let name = mi.name
+        let amount = amountOverride ?? Double(mi.amount)
+        let active = mi.active
 
         // Composite row: macros are the sum of each component's
         // selected variant at the component's amount.
-        if let mi = mealIngredientMgr.getByName(name: name), mi.isComposite {
+        if mi.isComposite {
             var c = 0.0, f = 0.0, fi = 0.0, nc = 0.0, p = 0.0
             for part in mi.compositeParts {
                 guard let ing = ingredientMgr.getByName(name: part.selectedVariantName),
@@ -920,7 +915,7 @@ struct MealList: View {
                 nc += ing.netCarbs * servings
                 p  += ing.protein  * servings
             }
-            mealIngredientMgr.setMacroActuals(name: name, calories: c, fat: f, fiber: fi, netcarbs: nc, protein: p)
+            mealIngredientMgr.setMacroActuals(id: mi.id, calories: c, fat: f, fiber: fi, netcarbs: nc, protein: p)
             if active {
                 macrosMgr.addMacroActuals(name: name, calories: c, fat: f, fiber: fi, netCarbs: nc, protein: p)
             }
@@ -930,12 +925,13 @@ struct MealList: View {
         // Determine the number of servings consumed by taking the
         // total grams consumed divided by the grams per serving.
         // For a GROUP row the meal ingredient is stored under the
-        // group name; nutrition must come from the selected member.
+        // group name; nutrition must come from THIS row's selected
+        // member (currentName(mi) is row-aware).
         print(name);
-        guard let ingredient = ingredientMgr.getByName(name: currentName(name)) else {
+        guard let ingredient = ingredientMgr.getByName(name: currentName(mi)) else {
             // Group member deleted / unresolved — contribute nothing
             // rather than crashing on a force-unwrap.
-            print("  resolution failed for \(name) (lookup \(currentName(name)))")
+            print("  resolution failed for \(name) (lookup \(currentName(mi)))")
             return
         }
         let servings = (amount * ingredient.consumptionGrams) / ingredient.servingSize
@@ -949,8 +945,9 @@ struct MealList: View {
         let netcarbs: Double = Double(ingredient.netCarbs * servings)
         let protein: Double = Double(ingredient.protein * servings)
 
-        // Update the macro values on the meal ingredient
-        mealIngredientMgr.setMacroActuals(name: name, calories: calories, fat: fat, fiber: fiber, netcarbs: netcarbs, protein: protein)
+        // Update the macro values on this specific meal row (id-keyed
+        // so duplicated rows of the same Food each get their own).
+        mealIngredientMgr.setMacroActuals(id: mi.id, calories: calories, fat: fat, fiber: fiber, netcarbs: netcarbs, protein: protein)
 
         // Add the meal ingredient's macro values to the overall meal actuals
         if active {
@@ -1075,18 +1072,34 @@ struct MealList: View {
     }
 
 
-    func getConsumptionUnit(_ name: String) -> Unit {
-        // `name` may be a group name (meal row stored under the
-        // group); resolve to the selected member, and never crash if
-        // it can't be found.
-        return ingredientMgr.getByName(name: currentName(name))?.consumptionUnit ?? .gram
+    func getConsumptionUnit(_ mi: MealIngredient) -> Unit {
+        return resolvedIngredient(mi)?.consumptionUnit ?? .gram
     }
 
 
-    // A meal row's `name` is a Food name. The ingredient it resolves
-    // to is that Food's CURRENT ingredient (global, single source of
-    // truth). Fallbacks keep it crash-proof if data is inconsistent.
-    func currentName(_ foodOrName: String) -> String {
+    // A meal row's `name` is a Food name. Resolve it to the
+    // ingredient this SPECIFIC row should use:
+    //   1. the row's own selectedMemberName (per-row choice) if it
+    //      still names a real ingredient,
+    //   2. else the Food's global currentIngredientName default,
+    //   3. else the literal name (plain ungrouped ingredient row).
+    // Fallbacks keep it crash-proof if data is inconsistent.
+    func currentName(_ mi: MealIngredient) -> String {
+        if !mi.selectedMemberName.isEmpty,
+           ingredientMgr.getByName(name: mi.selectedMemberName) != nil {
+            return mi.selectedMemberName
+        }
+        if let f = foodMgr.getByName(name: mi.name),
+           ingredientMgr.getByName(name: f.currentIngredientName) != nil {
+            return f.currentIngredientName
+        }
+        return mi.name
+    }
+
+
+    // Name-only resolution (no per-row member). Used by the auto-
+    // adjust engine, which targets Foods by name, not specific rows.
+    func currentName(forFoodName foodOrName: String) -> String {
         if let f = foodMgr.getByName(name: foodOrName),
            ingredientMgr.getByName(name: f.currentIngredientName) != nil {
             return f.currentIngredientName
@@ -1095,7 +1108,7 @@ struct MealList: View {
     }
 
     func resolvedIngredient(_ mi: MealIngredient) -> Ingredient? {
-        if let ing = ingredientMgr.getByName(name: currentName(mi.name)) {
+        if let ing = ingredientMgr.getByName(name: currentName(mi)) {
             return ing
         }
         // Last-ditch: any surviving member of the Food.
@@ -1132,9 +1145,10 @@ struct MealList: View {
 
 
     func selectGroupMember(_ mi: MealIngredient, member: String) {
-        // Selection is global per Food — set the Food's current
-        // ingredient; every screen resolves through it.
-        foodMgr.setCurrent(food: mi.name, member: member)
+        // Per-row selection — store the chosen member on THIS row
+        // only (id-keyed). Does NOT mutate the Food global, so other
+        // rows of the same Food keep their own members.
+        mealIngredientMgr.setSelectedMember(id: mi.id, member: member)
         // Adopt the picked variant's effective preset amount (e.g.
         // Avocado Large 225 g vs Medium 140 g) — ingredient override
         // wins, else the Food-level default. Skip when there's no
@@ -1142,7 +1156,7 @@ struct MealList: View {
         if let memberIng = ingredientMgr.getByName(name: member) {
             let amt = foodMgr.effectiveDefaultAmount(for: memberIng)
             if amt > 0 {
-                mealIngredientMgr.setAmount(name: mi.name, amount: amt)
+                mealIngredientMgr.setAmount(id: mi.id, amount: amt)
             }
         }
         generateMeal()
@@ -1190,209 +1204,6 @@ struct MealList: View {
 //        }
 //    }
 //}
-
-
-// =============================================================
-// ProteinsEditor — inlined here (not its own file) so it's part
-// of the existing MealList compilation unit and doesn't require
-// touching project.pbxproj.
-// =============================================================
-//
-// Sheet for editing the proteins that get auto-added to every meal.
-// Each row is one Protein: a meat-type Picker + a grams TextField +
-// a trash button (hidden on the last remaining row — you zero the
-// grams instead of removing it).
-//
-// Source of truth while editing: `draft`, a local copy of
-// profileMgr.profile.proteins. Save commits draft via
-// ProfileMgr.setProteins(...); Cancel discards.
-struct ProteinsEditor: View {
-
-    @Environment(\.presentationMode) var presentationMode
-    @EnvironmentObject var ingredientMgr: IngredientMgr
-    @EnvironmentObject var profileMgr: ProfileMgr
-    @EnvironmentObject var foodMgr: FoodMgr
-
-    @State private var draft: [Protein] = []
-    // Mirror of each row's amount as a string so the user can clear
-    // the field while typing without flipping back to 0. Keyed by
-    // Protein.id. Synced from draft on appear and on row changes.
-    @State private var amountStrings: [UUID: String] = [:]
-
-
-    var body: some View {
-        NavigationView {
-            Form {
-                Section {
-                    ForEach(draft) { protein in
-                        rowFor(protein)
-                    }
-                }
-
-                Section {
-                    Button {
-                        addProtein()
-                    } label: {
-                        Label("Add protein", systemImage: "plus.circle")
-                          .foregroundColor(Color.theme.blueYellow)
-                    }
-                }
-            }
-              .navigationTitle("Proteins")
-              .navigationBarTitleDisplayMode(.inline)
-              .toolbar {
-                  ToolbarItem(placement: .navigation) {
-                      Button("Cancel") {
-                          presentationMode.wrappedValue.dismiss()
-                      }
-                        .foregroundColor(Color.theme.blueYellow)
-                  }
-                  ToolbarItem(placement: .primaryAction) {
-                      Button("Save") {
-                          commitAndDismiss()
-                      }
-                        .foregroundColor(Color.theme.blueYellow)
-                  }
-              }
-              .onAppear {
-                  draft = profileMgr.profile.proteins
-                  // Profile invariant says proteins is non-empty, but
-                  // be defensive — an empty list would render an empty
-                  // sheet with no way to add anything (the Add button
-                  // exists but feels wrong).
-                  if draft.isEmpty {
-                      draft = [defaultNewProtein()]
-                  }
-                  amountStrings = Dictionary(uniqueKeysWithValues:
-                      draft.map { ($0.id, formatAmount($0.amount)) })
-              }
-        }
-    }
-
-
-    // One row of the editor: [Meat picker] [amount text] grams (trash)
-    @ViewBuilder
-    private func rowFor(_ protein: Protein) -> some View {
-        let idx = draft.firstIndex(where: { $0.id == protein.id }) ?? 0
-        HStack(spacing: 8) {
-            Picker("", selection: Binding(
-                get: { draft[idx].name },
-                set: { newName in
-                    draft[idx].name = newName
-                    // Per the design: switching meat type auto-resets
-                    // the amount to that ingredient's default
-                    // meatAmount so the user gets the "right" weight
-                    // for the protein they just picked.
-                    let defaultAmt = ingredientMgr.getByName(name: newName)?.meatAmount ?? draft[idx].amount
-                    draft[idx].amount = defaultAmt
-                    amountStrings[protein.id] = formatAmount(defaultAmt)
-                }
-            )) {
-                ForEach(availableMeatNames(), id: \.self) { name in
-                    Text(name).tag(name)
-                }
-            }
-              .pickerStyle(.menu)
-              .labelsHidden()
-              .tint(Color.theme.blueYellow)
-
-            // Pushes the amount + unit + trash to the right edge so
-            // they stay column-aligned across rows regardless of how
-            // long the meat name is ("Pork Chop" vs "Beef").
-            Spacer()
-
-            TextField("amount", text: Binding(
-                get: { amountStrings[protein.id] ?? formatAmount(draft[idx].amount) },
-                set: { newText in
-                    amountStrings[protein.id] = newText
-                    if let value = Double(newText) {
-                        draft[idx].amount = value
-                    }
-                }
-            ))
-              .keyboardType(.decimalPad)
-              .multilineTextAlignment(.trailing)
-              .frame(maxWidth: 90)
-
-            Text("grams")
-              .font(.caption)
-              .foregroundColor(Color.theme.blackWhiteSecondary)
-
-            // Trash hidden on the last remaining row — the design
-            // requires at least one protein at all times. Zero-amount
-            // is allowed as a "soft removal" that still leaves the
-            // row editable.
-            if draft.count > 1 {
-                Button(role: .destructive) {
-                    removeProtein(id: protein.id)
-                } label: {
-                    Image(systemName: "trash")
-                      .foregroundColor(Color.theme.red)
-                }
-                  .buttonStyle(.borderless)
-            }
-        }
-    }
-
-
-    // All meat ingredients (minus the sentinel "None") in their
-    // original definition order. Same source as the legacy Meat
-    // picker in MealConfigure used.
-    private func availableMeatNames() -> [String] {
-        ingredientMgr.getAllMeatNames(foodMgr: foodMgr).filter { $0 != "None" }
-    }
-
-
-    // Pick a sensible new-row default: first meat not already in the
-    // draft (so adding three times yields three different proteins
-    // when possible); fall back to the first available name if every
-    // protein is already taken.
-    private func defaultNewProtein() -> Protein {
-        let used = Set(draft.map { $0.name })
-        let names = availableMeatNames()
-        let pick = names.first(where: { !used.contains($0) }) ?? names.first ?? "Chicken (Mary's Chicken)"
-        let amt = ingredientMgr.getByName(name: pick)?.meatAmount ?? 100
-        return Protein(name: pick, amount: amt)
-    }
-
-
-    private func addProtein() {
-        let p = defaultNewProtein()
-        draft.append(p)
-        amountStrings[p.id] = formatAmount(p.amount)
-    }
-
-
-    private func removeProtein(id: UUID) {
-        draft.removeAll(where: { $0.id == id })
-        amountStrings[id] = nil
-    }
-
-
-    private func commitAndDismiss() {
-        // Defensive: ensure every row's typed amount made it into the
-        // draft (user might tap Save while the field is mid-edit and
-        // hasn't fired its setter yet).
-        for (i, p) in draft.enumerated() {
-            if let s = amountStrings[p.id], let v = Double(s) {
-                draft[i].amount = v
-            }
-        }
-        profileMgr.setProteins(draft)
-        presentationMode.wrappedValue.dismiss()
-    }
-
-
-    // Mirror NumberEntrySheet's formatter: drop the decimal point
-    // when the value is a whole number (so "200" appears in the
-    // field, not "200.0").
-    private func formatAmount(_ value: Double) -> String {
-        if value == value.rounded() {
-            return String(Int(value))
-        }
-        return String(value)
-    }
-}
 
 
 // ============================================================

@@ -28,8 +28,10 @@ struct MealConfigure: View {
                 NameValue("Caloric Deficit", description: "percentage to adjust daily caloric and macro goals", $profileMgr.profile.calorieDeficit, .percentage, edit: true)
                 NameValue("Water Minimum", description: "daily consumption mininimum, weight/2 * ~.03", $profileMgr.profile.waterLiters, .liter, precision: 1)
             }
-            // Meat picker / weight removed — proteins are edited from
-            // the meal list (double-tap a protein row).
+            // Meat picker / weight removed — meat is now an ordinary
+            // grouped Food. Add it to the meal from the Prep page or
+            // the Meal Add dialog; duplicate any row by double-tapping
+            // it; switch a row's member via long-press.
         }
           .padding([.leading, .trailing], -20)
           .navigationBarBackButtonHidden(true)
