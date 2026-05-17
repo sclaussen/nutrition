@@ -58,54 +58,55 @@ class FoodMgr: ObservableObject {
         // Grouped by IngredientType.sortRank, alphabetical within
         // each group.
 
-        // ---- oils ----
-        foods.append(Food(name: "Avocado Oil", type: .oils, currentIngredientName: "Avocado Oil"))
-        foods.append(Food(name: "Coconut Oil", type: .oils, defaultAmount: 14, stepAmount: 5, currentIngredientName: "Coconut Oil (365 by Whole Foods M 14 Fl Oz)"))
-        foods.append(Food(name: "Extra Virgin Olive Oil", type: .oils, currentIngredientName: "Extra Virgin Olive Oil"))
-
-        // ---- produce ----
-        foods.append(Food(name: "Arugula", type: .produce, defaultAmount: 20, stepAmount: 5, currentIngredientName: "Arugula (365 by Whole Foods M 5 OZ)"))
-        foods.append(Food(name: "Avocado", type: .produce, defaultAmount: 50, stepAmount: 5, currentIngredientName: "Avocado (365 by Whole Foods M 4 Count)"))
+        // Boil Broccoli & Cauliflower
         foods.append(Food(name: "Broccoli", type: .produce, defaultAmount: 85, stepAmount: 5, currentIngredientName: "Broccoli (365 by Whole Foods M 32 Ounce)"))
         foods.append(Food(name: "Cauliflower", type: .produce, defaultAmount: 100, stepAmount: 5, currentIngredientName: "Cauliflower (365 by Whole Foods M 12 Ounce)"))
-        foods.append(Food(name: "Mushrooms", type: .produce, defaultAmount: 84, stepAmount: 5, currentIngredientName: "Mushrooms (365 by Whole Foods M 8 Ounce)"))
-        foods.append(Food(name: "Radish", type: .produce, defaultAmount: 85, stepAmount: 5, currentIngredientName: "Radish (Whole Foods Market 12 Oz)"))
+
+        // Cook Eggs
+        foods.append(Food(name: "Coconut Oil", type: .oils, defaultAmount: 14, stepAmount: 5, currentIngredientName: "Coconut Oil (365 by Whole Foods M 14 Fl Oz)"))
+        foods.append(Food(name: "Avocado Oil", type: .oils, currentIngredientName: "Avocado Oil"))
+        foods.append(Food(name: "Eggs", type: .proteins, defaultAmount: 50, stepAmount: 5, currentIngredientName: "Eggs (365 by Whole Foods M 18 Count)"))
+
+        // Salad
         foods.append(Food(name: "Romaine", type: .produce, stepAmount: 5, currentIngredientName: "Romaine"))
         foods.append(Food(name: "Spinach", type: .produce, defaultAmount: 85, stepAmount: 5, currentIngredientName: "Spinach (365 by Whole Foods M 5 oz)"))
+        foods.append(Food(name: "Arugula", type: .produce, defaultAmount: 20, stepAmount: 5, currentIngredientName: "Arugula (365 by Whole Foods M 5 OZ)"))
+        foods.append(Food(name: "Mushrooms", type: .produce, defaultAmount: 84, stepAmount: 5, currentIngredientName: "Mushrooms (365 by Whole Foods M 8 Ounce)"))
+        foods.append(Food(name: "Radish", type: .produce, defaultAmount: 85, stepAmount: 5, currentIngredientName: "Radish (Whole Foods Market 12 Oz)"))
+        foods.append(Food(name: "Avocado", type: .produce, defaultAmount: 50, stepAmount: 5, currentIngredientName: "Avocado (365 by Whole Foods M 4 Count)"))
+        foods.append(Food(name: "Pumpkin Seeds", type: .nuts, defaultAmount: 28, stepAmount: 5, currentIngredientName: "Pumpkin Seeds (365 by Whole Foods M 8 Ounce)"))
+        foods.append(Food(name: "Nuts", type: .nuts, defaultAmount: 30, stepAmount: 5, currentIngredientName: "Macadamia Nuts (Aurora 6 OZ)"))
+        foods.append(Food(name: "Mackerel", type: .proteins, currentIngredientName: "Mackerel (Skinless Boneless)"))
+        foods.append(Food(name: "Sardines", type: .proteins, currentIngredientName: "Sardines (H2O)"))
+        foods.append(Food(name: "Tuna", type: .proteins, defaultAmount: 85, stepAmount: 5, currentIngredientName: "Tuna (Wild Planet 5 Ounce)"))
+        foods.append(Food(name: "Mustard", type: .carbs, defaultAmount: 5, stepAmount: 5, currentIngredientName: "Mustard (Organicville 12 oz)"))
+        foods.append(Food(name: "Fish Oil", type: .supplement, currentIngredientName: "Fish Oil"))
+        foods.append(Food(name: "Extra Virgin Olive Oil", type: .oils, currentIngredientName: "Extra Virgin Olive Oil"))
 
-        // ---- cheese ----
+        // cheese
         foods.append(Food(name: "Babybel Cheese", type: .cheese, defaultAmount: 20, stepAmount: 5, currentIngredientName: "Babybel Cheese (Babybel 12 Count)"))
         foods.append(Food(name: "Cheese", type: .cheese, currentIngredientName: "Manchego (Corcuera)"))
         foods.append(Food(name: "String Cheese", type: .cheese, currentIngredientName: "String Cheese (365 by Whole Foods M 12 OZ)"))
 
-        // ---- nuts ----
-        foods.append(Food(name: "Nuts", type: .nuts, defaultAmount: 30, stepAmount: 5, currentIngredientName: "Macadamia Nuts (Aurora 6 OZ)"))
-        foods.append(Food(name: "Pumpkin Seeds", type: .nuts, defaultAmount: 28, stepAmount: 5, currentIngredientName: "Pumpkin Seeds (365 by Whole Foods M 8 Ounce)"))
-
-        // ---- proteins ----
-        foods.append(Food(name: "Eggs", type: .proteins, defaultAmount: 50, stepAmount: 5, currentIngredientName: "Eggs (365 by Whole Foods M 18 Count)"))
-        foods.append(Food(name: "Mackerel", type: .proteins, currentIngredientName: "Mackerel (Skinless Boneless)"))
-        foods.append(Food(name: "Sardines", type: .proteins, currentIngredientName: "Sardines (H2O)"))
+        // proteins
         foods.append(Food(name: "Starbucks Protein Box", type: .proteins, currentIngredientName: "Eggs & Cheddar Protein Box"))
-        foods.append(Food(name: "Tuna", type: .proteins, defaultAmount: 85, stepAmount: 5, currentIngredientName: "Tuna (Wild Planet 5 Ounce)"))
         foods.append(Food(name: "Turkey", type: .proteins, currentIngredientName: "Turkey W"))
 
-        // ---- carbs ----
-        foods.append(Food(name: "Bread", type: .carbs, currentIngredientName: "Bread (Food for Life 24 OZ)"))
-        foods.append(Food(name: "Jelly", type: .carbs, currentIngredientName: "Jelly"))
-        foods.append(Food(name: "Latte (Grande Hot)", type: .carbs, currentIngredientName: "Latte (Grande Hot)"))
-        foods.append(Food(name: "Latte (Venti Iced)", type: .carbs, currentIngredientName: "Latte (Venti Iced)"))
-        foods.append(Food(name: "Mustard", type: .carbs, defaultAmount: 5, stepAmount: 5, currentIngredientName: "Mustard (Organicville 12 oz)"))
-        foods.append(Food(name: "Peanut Butter", type: .carbs, defaultAmount: 30, stepAmount: 5, currentIngredientName: "Peanut Butter (Once Again)"))
-        foods.append(Food(name: "Starbucks Breakfast Sandwich", type: .carbs, currentIngredientName: "Bacon, Gouda & Egg Sandwich"))
-        foods.append(Food(name: "Starbucks Sandwich", type: .carbs, currentIngredientName: "Ham & Swiss on Baguette"))
-        foods.append(Food(name: "Sunflower Butter", type: .carbs, defaultAmount: 30, stepAmount: 5, currentIngredientName: "Sunflower Butter (Once Again)"))
-
-        // ---- fruit ----
+        // fruit
         foods.append(Food(name: "Blackberries", type: .fruit, defaultAmount: 72, stepAmount: 5, currentIngredientName: "Blackberries (Whole Foods Market 6 oz)"))
         foods.append(Food(name: "Blueberries", type: .fruit, defaultAmount: 140, stepAmount: 5, currentIngredientName: "Blueberries (365 by Whole Foods M 32 Ounce)"))
 
-        // ---- meat ----
+        // carbs
+        foods.append(Food(name: "Bread", type: .carbs, currentIngredientName: "Bread (Food for Life 24 OZ)"))
+        foods.append(Food(name: "Sunflower Butter", type: .carbs, defaultAmount: 30, stepAmount: 5, currentIngredientName: "Sunflower Butter (Once Again)"))
+        foods.append(Food(name: "Peanut Butter", type: .carbs, defaultAmount: 30, stepAmount: 5, currentIngredientName: "Peanut Butter (Once Again)"))
+        foods.append(Food(name: "Jelly", type: .carbs, currentIngredientName: "Jelly"))
+        foods.append(Food(name: "Latte (Grande Hot)", type: .carbs, currentIngredientName: "Latte (Grande Hot)"))
+        foods.append(Food(name: "Latte (Venti Iced)", type: .carbs, currentIngredientName: "Latte (Venti Iced)"))
+        foods.append(Food(name: "Starbucks Breakfast Sandwich", type: .carbs, currentIngredientName: "Bacon, Gouda & Egg Sandwich"))
+        foods.append(Food(name: "Starbucks Sandwich", type: .carbs, currentIngredientName: "Ham & Swiss on Baguette"))
+
+        // meats
         foods.append(Food(name: "Beef", type: .meat, defaultAmount: 113, stepAmount: 5, currentIngredientName: "Beef (ButcherBox)"))
         foods.append(Food(name: "Bison", type: .meat, currentIngredientName: "Bison"))
         foods.append(Food(name: "Chicken", type: .meat, defaultAmount: 112, stepAmount: 5, currentIngredientName: "Chicken (Mary's Chicken)"))
@@ -114,15 +115,14 @@ class FoodMgr: ObservableObject {
         foods.append(Food(name: "Salmon", type: .meat, defaultAmount: 113, stepAmount: 5, currentIngredientName: "Salmon (Whole Foods Market)"))
         foods.append(Food(name: "Top Sirloin Cap", type: .meat, currentIngredientName: "Top Sirloin Cap"))
 
-        // ---- supplement ----
-        foods.append(Food(name: "Apigenin", type: .supplement, currentIngredientName: "Apigenin"))
-        foods.append(Food(name: "Creatine HCl", type: .supplement, currentIngredientName: "Creatine HCl"))
-        foods.append(Food(name: "Fish Oil", type: .supplement, currentIngredientName: "Fish Oil"))
+        // supplements
+        foods.append(Food(name: "Thorne Basic Nutrients 2/Day", type: .supplement, currentIngredientName: "Thorne Basic Nutrients 2/Day"))
+        foods.append(Food(name: "Creatine", type: .supplement, currentIngredientName: "Creatine HCl"))
         foods.append(Food(name: "Glycine", type: .supplement, currentIngredientName: "Glycine"))
+        foods.append(Food(name: "Apigenin", type: .supplement, currentIngredientName: "Apigenin"))
         foods.append(Food(name: "L-Theanine", type: .supplement, currentIngredientName: "L-Theanine"))
         foods.append(Food(name: "SlowMag", type: .supplement, currentIngredientName: "SlowMag"))
         foods.append(Food(name: "Taurine", type: .supplement, currentIngredientName: "Taurine"))
-        foods.append(Food(name: "Thorne Basic Nutrients 2/Day", type: .supplement, currentIngredientName: "Thorne Basic Nutrients 2/Day"))
         foods.append(Food(name: "Vitamin D3 (1000 IU)", type: .supplement, currentIngredientName: "Vitamin D3 (1000 IU)"))
     }
 

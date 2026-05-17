@@ -1464,7 +1464,7 @@ class IngredientMgr: ObservableObject {
 
         ingredients.append(Ingredient(name: "Creatine HCl",
                                       brand: "CON-CRET",
-                                      foodName: "Creatine HCl",
+                                      foodName: "Creatine",
                                       url: "https://www.wholefoodsmarket.com/grocery/product/b0bkcvlygx",
                                       totalCost: 25.00,
                                       totalGrams: 1,
