@@ -66,8 +66,6 @@ class FoodMgr: ObservableObject {
         // ---- produce ----
         foods.append(Food(name: "Arugula", type: .produce, defaultAmount: 20, stepAmount: 5, currentIngredientName: "Arugula (365 by Whole Foods M 5 OZ)"))
         foods.append(Food(name: "Avocado", type: .produce, defaultAmount: 50, stepAmount: 5, currentIngredientName: "Avocado (365 by Whole Foods M 4 Count)"))
-        foods.append(Food(name: "Blackberries", type: .fruit, defaultAmount: 72, stepAmount: 5, currentIngredientName: "Blackberries (Whole Foods Market 6 oz)"))
-        foods.append(Food(name: "Blueberries", type: .fruit, defaultAmount: 140, stepAmount: 5, currentIngredientName: "Blueberries (365 by Whole Foods M 32 Ounce)"))
         foods.append(Food(name: "Broccoli", type: .produce, defaultAmount: 85, stepAmount: 5, currentIngredientName: "Broccoli (365 by Whole Foods M 32 Ounce)"))
         foods.append(Food(name: "Cauliflower", type: .produce, defaultAmount: 100, stepAmount: 5, currentIngredientName: "Cauliflower (365 by Whole Foods M 12 Ounce)"))
         foods.append(Food(name: "Mushrooms", type: .produce, defaultAmount: 84, stepAmount: 5, currentIngredientName: "Mushrooms (365 by Whole Foods M 8 Ounce)"))
@@ -83,12 +81,10 @@ class FoodMgr: ObservableObject {
         // ---- nuts ----
         foods.append(Food(name: "Cashews", type: .nuts, currentIngredientName: "Cashews"))
         foods.append(Food(name: "Macadamia Nuts", type: .nuts, defaultAmount: 30, stepAmount: 5, currentIngredientName: "Macadamia Nuts (Aurora 6 OZ)"))
-        foods.append(Food(name: "Peanut Butter", type: .nuts, defaultAmount: 30, stepAmount: 5, currentIngredientName: "Peanut Butter (Once Again)"))
         foods.append(Food(name: "Peanuts", type: .nuts, currentIngredientName: "Peanuts"))
         foods.append(Food(name: "Pecans", type: .nuts, defaultAmount: 28, stepAmount: 5, currentIngredientName: "Pecans (365 by Whole Foods M 12 Ounce)"))
         foods.append(Food(name: "Pistachios", type: .nuts, defaultAmount: 28, stepAmount: 5, currentIngredientName: "Pistachios (Wonderful No-Shell 12 oz)"))
         foods.append(Food(name: "Pumpkin Seeds", type: .nuts, defaultAmount: 28, stepAmount: 5, currentIngredientName: "Pumpkin Seeds (365 by Whole Foods M 8 Ounce)"))
-        foods.append(Food(name: "Sunflower Butter", type: .nuts, defaultAmount: 30, stepAmount: 5, currentIngredientName: "Sunflower Butter (Once Again)"))
         foods.append(Food(name: "Walnuts", type: .nuts, defaultAmount: 30, stepAmount: 5, currentIngredientName: "Walnuts (Aurora 7 oz)"))
 
         // ---- proteins ----
@@ -105,8 +101,14 @@ class FoodMgr: ObservableObject {
         foods.append(Food(name: "Latte (Grande Hot)", type: .carbs, currentIngredientName: "Latte (Grande Hot)"))
         foods.append(Food(name: "Latte (Venti Iced)", type: .carbs, currentIngredientName: "Latte (Venti Iced)"))
         foods.append(Food(name: "Mustard", type: .carbs, defaultAmount: 5, stepAmount: 5, currentIngredientName: "Mustard (Organicville 12 oz)"))
+        foods.append(Food(name: "Peanut Butter", type: .carbs, defaultAmount: 30, stepAmount: 5, currentIngredientName: "Peanut Butter (Once Again)"))
         foods.append(Food(name: "Starbucks Breakfast Sandwich", type: .carbs, currentIngredientName: "Bacon, Gouda & Egg Sandwich"))
         foods.append(Food(name: "Starbucks Sandwich", type: .carbs, currentIngredientName: "Ham & Swiss on Baguette"))
+        foods.append(Food(name: "Sunflower Butter", type: .carbs, defaultAmount: 30, stepAmount: 5, currentIngredientName: "Sunflower Butter (Once Again)"))
+
+        // ---- fruit ----
+        foods.append(Food(name: "Blackberries", type: .fruit, defaultAmount: 72, stepAmount: 5, currentIngredientName: "Blackberries (Whole Foods Market 6 oz)"))
+        foods.append(Food(name: "Blueberries", type: .fruit, defaultAmount: 140, stepAmount: 5, currentIngredientName: "Blueberries (365 by Whole Foods M 32 Ounce)"))
 
         // ---- meat ----
         foods.append(Food(name: "Beef", type: .meat, defaultAmount: 113, stepAmount: 5, currentIngredientName: "Beef (ButcherBox)"))
