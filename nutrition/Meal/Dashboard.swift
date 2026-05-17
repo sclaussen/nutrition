@@ -51,7 +51,7 @@ struct Dashboard: View {
         VStack(spacing: 0) {
             HStack(spacing: 0) {
                 Spacer()
-                Gauge(title: "Fat",      titleFontColor: Color.theme.blackWhite, titleFontSize: 17, fat,                          actualFontSize: 18,                     fatGoal,         annotationFontColor: Color.theme.blueYellow, unit: "grams", progressLineBackground: Color("ProgressLineBackground"),                 scale: 1.18)
+                Gauge(title: "Fat",      titleFontColor: Color.theme.blackWhite, titleFontSize: 13.6, fat,                          actualFontSize: 14.4,                     fatGoal,         goalFontSize: 9.6, annotationFontColor: Color.theme.blueYellow, unit: "grams", unitFontSize: 8, progressLineBackground: Color("ProgressLineBackground"),                 redThresholdPct: 100, scale: 1.18)
                   // contentShape on each Gauge makes the donut's
                   // empty interior tappable too — without it only
                   // the rendered ring + label glyphs would catch
@@ -59,15 +59,15 @@ struct Dashboard: View {
                   .contentShape(Rectangle())
                   .onTapGesture { showFatDetail = true }
                 Spacer()
-                Gauge(title: "NCarbs",   titleFontColor: Color.theme.blackWhite, titleFontSize: 17, netCarbs, actualFontSize: 18, actualPrecision: 1, netCarbsMaximum, annotationFontColor: Color.theme.blueYellow, unit: "grams", progressLineBackground: Color("ProgressLineBackground"), type: .ceiling, scale: 1.18)
+                Gauge(title: "NCarbs",   titleFontColor: Color.theme.blackWhite, titleFontSize: 13.6, netCarbs, actualFontSize: 14.4, actualPrecision: 1, netCarbsMaximum, goalFontSize: 9.6, annotationFontColor: Color.theme.blueYellow, unit: "grams", unitFontSize: 8, progressLineBackground: Color("ProgressLineBackground"), type: .ceiling, scale: 1.18)
                   .contentShape(Rectangle())
                   .onTapGesture { showNCarbsDetail = true }
                 Spacer()
-                Gauge(title: "Protein",  titleFontColor: Color.theme.blackWhite, titleFontSize: 17, protein,                      actualFontSize: 18,                     proteinGoal,     annotationFontColor: Color.theme.blueYellow, unit: "grams", progressLineBackground: Color("ProgressLineBackground"),                 scale: 1.18)
+                Gauge(title: "Protein",  titleFontColor: Color.theme.blackWhite, titleFontSize: 13.6, protein,                      actualFontSize: 14.4,                     proteinGoal,     goalFontSize: 9.6, annotationFontColor: Color.theme.blueYellow, unit: "grams", unitFontSize: 8, progressLineBackground: Color("ProgressLineBackground"),                 redThresholdPct: 100, scale: 1.18)
                   .contentShape(Rectangle())
                   .onTapGesture { showProteinDetail = true }
                 Spacer()
-                Gauge(title: "Calories", titleFontColor: Color.theme.blackWhite, titleFontSize: 17, calories,                     actualFontSize: 18,                     caloriesGoal,    annotationFontColor: Color.theme.blueYellow, unit: "cal",   progressLineBackground: Color("ProgressLineBackground"),                 secondaryGoal: caloriesGoalUnadjusted, scale: 1.18)
+                Gauge(title: "Calories", titleFontColor: Color.theme.blackWhite, titleFontSize: 13.6, calories,                     actualFontSize: 14.4,                     caloriesGoal,    goalFontSize: 9.6, annotationFontColor: Color.theme.blueYellow, unit: "cals",   unitFontSize: 8, progressLineBackground: Color("ProgressLineBackground"),                 secondaryGoal: caloriesGoalUnadjusted, redThresholdPct: 80, scale: 1.18)
                   .contentShape(Rectangle())
                   .onTapGesture { showSummary = true }
                 Spacer()

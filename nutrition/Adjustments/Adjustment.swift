@@ -12,10 +12,10 @@ class AdjustmentMgr: ObservableObject {
 
     init() {
         // adjustments.append(Adjustment(name: "Dubliner Cheese", amount: 5, constraints: true, maximum: 100))
-        // adjustments.append(Adjustment(name: "Sard (H2O)", amount: 1, group: "fish", constraints: true, maximum: 2))
-        // adjustments.append(Adjustment(name: "Sard (SB)", amount: 1, group: "fish", constraints: true, maximum: 2))
-        // adjustments.append(Adjustment(name: "Sard (LS)", amount: 1, group: "fish", constraints: true, maximum: 2))
-        // adjustments.append(Adjustment(name: "Sard (LS L)", amount: 1, group: "fish", constraints: true, maximum: 2))
+        // adjustments.append(Adjustment(name: "Sardines (H2O)", amount: 1, group: "fish", constraints: true, maximum: 2))
+        // adjustments.append(Adjustment(name: "Sardines (SB)", amount: 1, group: "fish", constraints: true, maximum: 2))
+        // adjustments.append(Adjustment(name: "Sardines (LS)", amount: 1, group: "fish", constraints: true, maximum: 2))
+        // adjustments.append(Adjustment(name: "Sardines (LS L)", amount: 1, group: "fish", constraints: true, maximum: 2))
         // adjustments.append(Adjustment(name: "Mack (SB)", amount: 1, group: "fish", constraints: true, maximum: 2))
         // adjustments.append(Adjustment(name: "Mack (Smk)", amount: 1, group: "fish", constraints: true, maximum: 2))
         // adjustments.append(Adjustment(name: "Eggs", amount: 1, constraints: true, maximum: 7))

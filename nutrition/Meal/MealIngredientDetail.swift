@@ -11,13 +11,27 @@ struct MealIngredientDetail: View {
 
     @EnvironmentObject var mealIngredientMgr: MealIngredientMgr
     @EnvironmentObject var ingredientMgr: IngredientMgr
+    @EnvironmentObject var foodMgr: FoodMgr
     @EnvironmentObject var profileMgr: ProfileMgr
 
     let mealIngredient: MealIngredient
 
 
+    // Every meal row is a Food; resolve to that Food's current
+    // ingredient (global selection), else any surviving member.
+    private func resolvedIngredient() -> Ingredient? {
+        if let f = foodMgr.getByName(name: mealIngredient.name),
+           let i = ingredientMgr.getByName(name: f.currentIngredientName) {
+            return i
+        }
+        if let i = ingredientMgr.getByName(name: mealIngredient.name) {
+            return i
+        }
+        return ingredientMgr.getAll().first { $0.foodName == mealIngredient.name }
+    }
+
     var body: some View {
-        let ingredient = ingredientMgr.getByName(name: mealIngredient.name)
+        let ingredient = resolvedIngredient()
 
         List {
 
@@ -26,6 +40,24 @@ struct MealIngredientDetail: View {
                     Text(mealIngredient.name)
                     Spacer()
                     Text("\(mealIngredient.amount.formattedString(1)) \(ingredient?.consumptionUnit.pluralForm ?? "")")
+                }
+                if let ing = ingredient {
+                    HStack {
+                        Text("Serving size")
+                        Spacer()
+                        Text("\(ing.servingSize.formattedString(1)) g")
+                          .foregroundColor(Color.theme.blackWhiteSecondary)
+                    }
+                    // Macros below = per-serving values × this many
+                    // servings (amount in grams ÷ serving size).
+                    let grams = mealIngredient.amount * ing.consumptionGrams
+                    let servings = ing.servingSize > 0 ? grams / ing.servingSize : 0
+                    HStack {
+                        Text("Servings")
+                        Spacer()
+                        Text(servings.formattedString(2))
+                          .foregroundColor(Color.theme.blackWhiteSecondary)
+                    }
                 }
             }
 
@@ -36,6 +68,26 @@ struct MealIngredientDetail: View {
                 macroRow("Fiber",    mealIngredient.fiber,    unit: "g")
                 macroRow("NetCarbs", mealIngredient.netcarbs, unit: "g")
                 macroRow("Protein",  mealIngredient.protein,  unit: "g")
+            }
+
+
+            if let ing = ingredient, ing.effectiveTotalGrams > 0 {
+                let costPerGram   = ing.totalCost / ing.effectiveTotalGrams
+                let costPerServing = costPerGram * ing.servingSize
+                let contributed   = costPerGram * (mealIngredient.amount * ing.consumptionGrams)
+                Section(header: Text("Cost")) {
+                    HStack {
+                        Text("Per serving")
+                        Spacer()
+                        Text(String(format: "$%.2f", costPerServing))
+                    }
+                    HStack {
+                        Text("Contributed")
+                        Spacer()
+                        Text(String(format: "$%.2f", contributed))
+                          .foregroundColor(Color.theme.blueYellow)
+                    }
+                }
             }
 
 

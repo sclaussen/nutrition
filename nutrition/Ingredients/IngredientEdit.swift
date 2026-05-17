@@ -8,6 +8,9 @@ struct IngredientEdit: View {
     @EnvironmentObject var foodMgr: FoodMgr
 
     @State private var newGroupName = ""
+    // Category for a brand-new Food created from this screen. An
+    // existing Food's type is inherited and never edited here.
+    @State private var newFoodType: IngredientType = .produce
 
     @State var ingredient: Ingredient
     @State private var showAutoAdjust: Bool = false
@@ -55,8 +58,6 @@ struct IngredientEdit: View {
             mainSections
             groupSection
             verifySection
-            meatSection
-            supplementSection
             autoAdjustSection
             vitaminAndMineralsSection
             per100GramsSection
@@ -232,15 +233,71 @@ extension IngredientEdit {
     }
 
 
+    // The variant portion of the name with the Food prefix and any
+    // wrapping parens stripped, so the Food isn't repeated in the
+    // Name field. `name` itself stays the canonical key — these are
+    // display-only views onto it that recompose on edit.
+    static func variant(of name: String, food: String) -> String {
+        var s = name
+        if !food.isEmpty, s.hasPrefix(food) {
+            s = String(s.dropFirst(food.count)).trimmingCharacters(in: .whitespaces)
+        }
+        if s.hasPrefix("(") && s.hasSuffix(")") && s.count >= 2 {
+            s = String(s.dropFirst().dropLast())
+        }
+        return s
+    }
+
+    static func compose(food: String, variant: String) -> String {
+        let v = variant.trimmingCharacters(in: .whitespaces)
+        let f = food.trimmingCharacters(in: .whitespaces)
+        if f.isEmpty { return v }
+        if v.isEmpty { return f }
+        return "\(f) (\(v))"
+    }
+
+    private var variantBinding: Binding<String> {
+        Binding(
+            get: { Self.variant(of: ingredient.name, food: ingredient.foodName) },
+            set: { newVariant in
+                let n = Self.compose(food: ingredient.foodName, variant: newVariant)
+                if !n.isEmpty { ingredient.name = n }
+            }
+        )
+    }
+
     private var mainSections: some View {
         Group {
             Section {
-                NameValue("Name", $ingredient.name)
+                Picker("Food", selection: Binding(
+                    get: { ingredient.foodName },
+                    set: { newFood in
+                        // Recompose name with the variant carried over
+                        // from the previous Food prefix.
+                        let v = Self.variant(of: ingredient.name,
+                                             food: ingredient.foodName)
+                        ingredient.foodName = newFood
+                        if !newFood.isEmpty {
+                            foodMgr.ensure(name: newFood,
+                                           defaultMember: ingredient.name,
+                                           type: foodMgr.getByName(name: newFood)?.type ?? newFoodType)
+                        }
+                        let n = Self.compose(food: newFood, variant: v)
+                        if !n.isEmpty { ingredient.name = n }
+                    }
+                )) {
+                    Text("None").tag("")
+                    ForEach(foodMgr.namesSorted, id: \.self) { g in
+                        Text(g).tag(g)
+                    }
+                }
+                NameValue("Name", variantBinding, edit: true)
             }
             Section(header: Text("Optional Product Details")) {
-                NameValue("Name", $ingredient.brand, edit: true)
+                NameValue("Brand", $ingredient.brand, edit: true)
                 NameValue("Cost", $ingredient.totalCost, .dollar, precision: 2, edit: true)
                 NameValue("Grams", description: "total ingredient grams in the product", $ingredient.totalGrams, edit: true)
+                NameValue("Cost / 100g", description: "computed: cost ÷ grams × 100", $ingredient.costPer100, .dollar, precision: 2)
             }
             Section(header: Text("Macronutrients")) {
                 NameValue("Serving Size", $ingredient.servingSize, edit: true)
@@ -258,13 +315,6 @@ extension IngredientEdit {
         }
     }
 
-    private var supplementSection: some View {
-        Section {
-            NameValue("Supplement", description: "hidden in meal list by default",
-                      $ingredient.supplement, control: .toggle)
-        }
-    }
-
     // Group / variant membership. Picking or creating a group makes
     // this ingredient a member; the group is the thing added to a
     // meal and members are swapped via long-press on the meal row.
@@ -273,7 +323,7 @@ extension IngredientEdit {
     // saved.
     private var isGroupDefault: Bool {
         guard !ingredient.foodName.isEmpty else { return false }
-        return foodMgr.getByName(name: ingredient.foodName)?.defaultMemberName == ingredient.name
+        return foodMgr.getByName(name: ingredient.foodName)?.currentIngredientName == ingredient.name
     }
 
     private var groupSection: some View {
@@ -286,15 +336,26 @@ extension IngredientEdit {
                 set: { newValue in
                     ingredient.foodName = newValue
                     if !newValue.isEmpty {
-                        foodMgr.ensure(name: newValue, defaultMember: ingredient.name)
+                        foodMgr.ensure(name: newValue,
+                                       defaultMember: ingredient.name,
+                                       type: foodMgr.getByName(name: newValue)?.type ?? newFoodType)
                     }
                 }
             )) {
                 Text("None").tag("")
-                ForEach(foodMgr.names, id: \.self) { g in
+                ForEach(foodMgr.namesSorted, id: \.self) { g in
                     Text(g).tag(g)
                 }
             }
+
+            // Category only applies when creating a brand-new Food;
+            // selecting an existing Food inherits its category.
+            Picker("New Food Type", selection: $newFoodType) {
+                ForEach(IngredientType.allCases) { t in
+                    Text(t.label).tag(t)
+                }
+            }
+              .pickerStyle(.menu)
 
             HStack {
                 TextField("New Food\u{2026}", text: $newGroupName)
@@ -303,7 +364,9 @@ extension IngredientEdit {
                     let trimmed = newGroupName.trimmingCharacters(in: .whitespaces)
                     guard !trimmed.isEmpty else { return }
                     ingredient.foodName = trimmed
-                    foodMgr.ensure(name: trimmed, defaultMember: ingredient.name)
+                    foodMgr.ensure(name: trimmed,
+                                   defaultMember: ingredient.name,
+                                   type: newFoodType)
                     newGroupName = ""
                 }
                   .disabled(newGroupName.trimmingCharacters(in: .whitespaces).isEmpty)
@@ -315,8 +378,8 @@ extension IngredientEdit {
                     get: { isGroupDefault },
                     set: { on in
                         if on {
-                            foodMgr.setDefault(group: ingredient.foodName,
-                                                member: ingredient.name)
+                            foodMgr.setCurrent(food: ingredient.foodName,
+                                               member: ingredient.name)
                         }
                     }
                 ))
@@ -343,32 +406,6 @@ extension IngredientEdit {
                       .foregroundColor(Color.theme.blueYellow)
                 }
             }
-        }
-    }
-
-    private var meatSection: some View {
-        Group {
-            Section {
-                NameValue("Meat", description: "main course", $ingredient.meat, control: .toggle)
-            }
-
-//            if ingredient.meat {
-//                ForEach(0..<ingredient.mealAdjustments.count, id: \.self) { index in
-//                    Section(header: Text("Base Meal Adjustment #" + String(index + 1))) {
-//                        NameValue("Ingredient", $ingredient.mealAdjustments[index].name, options: ingredientMgr.getNewMeatNames(existing: []), control: .picker)
-//                        if ingredient.mealAdjustments[index].name.count > 0 {
-//                            NameValue("Amount", $ingredient.mealAdjustments[index].amount, ingredientMgr.getIngredient(name: ingredient.mealAdjustments[index].name)!.consumptionUnit, negative: true, edit: true)
-//                        }
-//                    }
-//                }
-//
-//                Button {
-//                    let mealAdustment: MealAdjustment = MealAdjustment(name: "", amount: 0.0, consumptionUnit: .none)
-//                    ingredient.mealAdjustments.append(mealAdustment)
-//                } label: {
-//                    Label("Add a Base Meal Adjustment (Optional)", systemImage: "plus.circle")
-//                }
-//            }
         }
     }
 

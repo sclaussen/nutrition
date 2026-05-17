@@ -10,14 +10,14 @@ import SwiftUI
 //   - gram, servingSize <= 35        -> 5
 //   - gram, servingSize >  35        -> 25
 //   - anything else                  -> 1 (sensible default)
-func effectiveStep(for ingredient: Ingredient) -> Double {
+func effectiveStep(for ingredient: Ingredient, foodMgr: FoodMgr) -> Double {
     if ingredient.stepAmount > 0 {
         return ingredient.stepAmount
     }
     // Proteins step by 10g — the generic gram heuristic (25 for
     // servingSize > 35) is too coarse for tuning a chicken or
     // salmon portion. 10g hits the sweet spot.
-    if ingredient.meat && ingredient.consumptionUnit == .gram {
+    if foodMgr.isMeat(ingredient) && ingredient.consumptionUnit == .gram {
         return 10
     }
     switch ingredient.consumptionUnit {

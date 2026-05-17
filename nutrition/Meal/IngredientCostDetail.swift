@@ -20,6 +20,7 @@ struct IngredientCostDetail: View {
     @Environment(\.presentationMode) var presentationMode
     @EnvironmentObject var ingredientMgr: IngredientMgr
     @EnvironmentObject var mealIngredientMgr: MealIngredientMgr
+    @EnvironmentObject var foodMgr: FoodMgr
 
 
     var body: some View {
@@ -27,30 +28,19 @@ struct IngredientCostDetail: View {
         let total = rows.reduce(0) { $0 + $1.cost }
 
         List {
-            Section(footer:
+            ForEach(rows, id: \.mealIngredient.id) { row in
                 HStack {
-                    Text("Meal total").font(.callout)
-                    Spacer()
-                    Text(dollars(total))
+                    Text(row.mealIngredient.name)
                       .font(.callout)
-                      .foregroundColor(Color.theme.blueYellow)
+                    Spacer()
+                    Text(dollars(row.cost))
+                      .font(.caption)
                 }
-                  .padding(.top, 4)
-            ) {
-                ForEach(rows, id: \.mealIngredient.id) { row in
-                    HStack {
-                        Text(row.mealIngredient.name)
-                          .font(.callout)
-                        Spacer()
-                        Text(dollars(row.cost))
-                          .font(.caption)
-                    }
-                      .foregroundColor(Color.theme.blackWhite)
-                }
+                  .foregroundColor(Color.theme.blackWhite)
             }
         }
           .listStyle(.plain)
-          .navigationTitle("Meal Cost")
+          .navigationTitle("Meal Cost  \(dollars(total))")
           .navigationBarTitleDisplayMode(.inline)
           .toolbar {
               ToolbarItem(placement: .primaryAction) {
@@ -65,11 +55,16 @@ struct IngredientCostDetail: View {
 
     private func sortedRows() -> [(mealIngredient: MealIngredient, cost: Double)] {
         let pairs: [(mealIngredient: MealIngredient, cost: Double)] =
-            mealIngredientMgr.mealIngredients.compactMap { mi in
+            mealIngredientMgr.mealIngredients
+              .filter { $0.active && $0.amount > 0 }
+              .compactMap { mi in
                 if mi.isComposite {
                     return (mi, compositeCost(mi, ingredientMgr))
                 }
-                guard let ing = ingredientMgr.getByName(name: mi.name) else { return nil }
+                // Meal rows are Food names; resolve to the Food's
+                // current ingredient (where the price lives).
+                let lookup = foodMgr.getByName(name: mi.name)?.currentIngredientName ?? mi.name
+                guard let ing = ingredientMgr.getByName(name: lookup) else { return nil }
                 return (mi, costContribution(mi, ing))
             }
         return pairs.sorted { $0.cost > $1.cost }
@@ -77,8 +72,9 @@ struct IngredientCostDetail: View {
 
 
     private func costContribution(_ mi: MealIngredient, _ ing: Ingredient) -> Double {
-        guard ing.totalGrams > 0 else { return 0 }
-        let costPerGram = ing.totalCost / ing.totalGrams
+        let grams = ing.effectiveTotalGrams
+        guard grams > 0 else { return 0 }
+        let costPerGram = ing.totalCost / grams
         let gramsConsumed = mi.amount * ing.consumptionGrams
         return costPerGram * gramsConsumed
     }

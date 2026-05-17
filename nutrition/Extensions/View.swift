@@ -87,11 +87,15 @@ struct ValueViewModifier: ViewModifier {
 
 struct UnitViewModifier: ViewModifier {
     var geo: GeometryProxy
+    var unit: Unit = .none
 
     func body(content: Content) -> some View {
+        // The "$" reads as too small at .caption2 next to the value;
+        // render it at .callout (matching the value) while every
+        // other unit label stays at the compact .caption2.
         content
           .lineLimit(1)
-          .font(.caption2)
+          .font(unit == .dollar ? .callout : .caption2)
           .frame(minWidth: geo.size.width * 0.10, minHeight: 32, alignment: .leading)
           .border(Color.theme.red, width: 0)
           .offset(x: 4, y: 2)
@@ -119,8 +123,8 @@ extension View {
         return self.modifier(ValueViewModifier(geo: geo, wideValue: wideValue, unit: unit))
     }
 
-    func unit(_ geo: GeometryProxy) -> some View {
-        return self.modifier(UnitViewModifier(geo: geo))
+    func unit(_ geo: GeometryProxy, _ unit: Unit = .none) -> some View {
+        return self.modifier(UnitViewModifier(geo: geo, unit: unit))
     }
 
     func description(_ geo: GeometryProxy) -> some View {

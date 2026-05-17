@@ -120,8 +120,7 @@ struct MealList: View {
                             // dedicated multi-component editor (too
                             // complex for an inline dropdown). Single
                             // tap still cycles the lock state.
-                            Text(mealIngredient.name)
-                              .font(.callout)
+                            mealNameLabel(mealIngredient)
                               .frame(width: w * 0.50, alignment: .leading)
                               .contentShape(Rectangle())
                               .onLongPressGesture {
@@ -130,38 +129,8 @@ struct MealList: View {
                               .onTapGesture {
                                   toggleLock(mealIngredient)
                               }
-                        } else if memberPickerFor?.id == mealIngredient.id {
-                            // Long-press swapped this Food row into an
-                            // inline variant dropdown — no separate page.
-                            // Picking a variant applies it and reverts
-                            // to the normal Food row.
-                            Menu {
-                                ForEach(groupMembers(mealIngredient), id: \.id) { m in
-                                    Button {
-                                        selectGroupMember(mealIngredient, member: m.name)
-                                        memberPickerFor = nil
-                                    } label: {
-                                        if m.name == mealIngredient.selectedMemberName {
-                                            Label(m.name, systemImage: "checkmark")
-                                        } else {
-                                            Text(m.name)
-                                        }
-                                    }
-                                }
-                            } label: {
-                                HStack(spacing: 4) {
-                                    Text(mealIngredient.name)
-                                      .font(.callout)
-                                    Image(systemName: "chevron.down")
-                                      .font(.caption2)
-                                }
-                                  .frame(width: w * 0.50, alignment: .leading)
-                                  .contentShape(Rectangle())
-                            }
-                              .foregroundColor(Color.theme.blueYellow)
                         } else {
-                            Text(mealIngredient.name)
-                              .font(.callout)
+                            mealNameLabel(mealIngredient)
                               .frame(width: w * 0.50, alignment: .leading)
                               // contentShape makes the full 50% zone hit-
                               // testable, not just the rendered glyphs.
@@ -176,9 +145,10 @@ struct MealList: View {
                                       proteinsEditorActive = true
                                   }
                               }
-                              // Group rows: long-press swaps the row into
-                              // the inline variant dropdown above. Lock
-                              // stays on the single-tap cycle below.
+                              // Group rows: long-press immediately opens
+                              // the variant picker (confirmationDialog
+                              // below). Lock stays on the single-tap
+                              // cycle.
                               .if(isGroupRow(mealIngredient)) { view in
                                   view.onLongPressGesture {
                                       memberPickerFor = mealIngredient
@@ -195,7 +165,7 @@ struct MealList: View {
                             Button {
                                 compositeEditorFor = mealIngredient
                             } label: {
-                                Text("\(Int(mealIngredient.calories)) cal")
+                                Text("\(Int(mealIngredient.calories)) cals")
                                   .font(.callout)
                                   .frame(width: w * 0.40, alignment: .center)
                                   .contentShape(Rectangle())
@@ -395,21 +365,6 @@ struct MealList: View {
                         .foregroundColor(Color.theme.blueYellow)
 
                       Spacer().frame(width: 18)
-                      // info.circle is the primary explicit affordance
-                      // for opening DailySummary now that the dashboard
-                      // donuts each route to their own detail page
-                      // (Fat/NCarbs/Protein → IngredientNutrientDetail,
-                      // Calories → DailySummary). Reuses the same
-                      // showSummary binding the Calories gauge uses.
-                      Button {
-                          showSummary = true
-                      } label: {
-                          Image(systemName: "info.circle")
-                      }
-                        .frame(width: 44)
-                        .foregroundColor(Color.theme.blueYellow)
-
-                      Spacer().frame(width: 18)
                       // LLM scanner — rendered 50% larger than the
                       // other cluster glyphs (the inherited toolbar
                       // size is 25.5; 25.5 × 1.5 ≈ 38) since it's the
@@ -419,7 +374,7 @@ struct MealList: View {
                           showCaptureSheet = true
                       } label: {
                           Image(systemName: "camera.viewfinder")
-                            .font(.system(size: 38))
+                            .font(.system(size: 34.2))
                       }
                         .frame(width: 56)
                         .foregroundColor(Color.theme.blueYellow)
@@ -447,7 +402,7 @@ struct MealList: View {
                         .frame(width: 44)
                         .foregroundColor(Color.theme.blueYellow)
                   }
-                    .font(.system(size: 25.5))
+                    .font(.system(size: 22.95))
                     .padding(.horizontal, 8)
                     .padding(.vertical, 2)
 
@@ -499,6 +454,7 @@ struct MealList: View {
                   IngredientCostDetail()
                     .environmentObject(ingredientMgr)
                     .environmentObject(mealIngredientMgr)
+                    .environmentObject(foodMgr)
               }
           }
           .sheet(item: $entrySheetFor) { mi in
@@ -532,6 +488,26 @@ struct MealList: View {
               generateMeal()
           }) {
               ProteinsEditor()
+          }
+          // Long-press on a Food row opens this variant picker
+          // immediately (no intermediate tap). Picking applies the
+          // variant and becomes the Food's new default.
+          .confirmationDialog(
+              "Select variant",
+              isPresented: Binding(
+                  get: { memberPickerFor != nil },
+                  set: { if !$0 { memberPickerFor = nil } }
+              ),
+              titleVisibility: .visible,
+              presenting: memberPickerFor
+          ) { mi in
+              ForEach(groupMembers(mi), id: \.id) { m in
+                  Button(!m.brand.isEmpty && !m.name.contains(m.brand)
+                         ? "\(m.name) — \(m.brand)" : m.name) {
+                      selectGroupMember(mi, member: m.name)
+                      memberPickerFor = nil
+                  }
+              }
           }
           // Scanner — capture sheet, ambiguous-match chooser, and
           // hidden NavigationLinks that push prefilled Add/Edit.
@@ -598,7 +574,7 @@ struct MealList: View {
     // effective step size.  Floors at 0.
     func stepAmount(_ mi: MealIngredient, direction: Double) {
         guard let ingredient = resolvedIngredient(mi) else { return }
-        let delta = effectiveStep(for: ingredient) * direction
+        let delta = effectiveStep(for: ingredient, foodMgr: foodMgr) * direction
         let newAmount = max(0, mi.amount + delta)
         applyAmount(mi, newAmount: newAmount)
     }
@@ -672,7 +648,25 @@ struct MealList: View {
         } else {
             base = mealIngredientMgr.mealIngredients.filter { $0.active }
         }
-        return base.filter { showSupplements || !$0.isSupplement }
+        // Supplement hide/show is unchanged — only the visible set is
+        // affected.
+        let visible = base.filter { showSupplements || !$0.isSupplement }
+        // Ordered by the row's Food category (IngredientType.sortRank)
+        // then name. Supplements naturally fall last (sortRank 7);
+        // rows whose Food can't be resolved sort after that.
+        return visible.sorted {
+            let r0 = mealRowTypeRank($0)
+            let r1 = mealRowTypeRank($1)
+            return r0 != r1 ? r0 < r1 : $0.name < $1.name
+        }
+    }
+
+
+    // The category rank for a meal row, resolved through its
+    // ingredient's Food. Unresolvable rows sort last (Int.max).
+    private func mealRowTypeRank(_ mi: MealIngredient) -> Int {
+        guard let ing = resolvedIngredient(mi) else { return Int.max }
+        return foodMgr.type(of: ing)?.sortRank ?? Int.max
     }
 
 
@@ -860,7 +854,15 @@ struct MealList: View {
         // If the result of applying the adjustment would result in
         // the fat, netCarbs, or protein macros exceeding the daily
         // macro limits then the adjustment cannot be applied.
-        let ingredient = ingredientMgr.getByName(name: adjustment.name)!
+        //
+        // Resolve group/base names to the selected variant (mirrors
+        // setMacroActualsAndUpdateMealMacroActuals). If the target
+        // ingredient no longer resolves (e.g. an adjustment left over
+        // for a removed base entry), the adjustment simply can't be
+        // applied — skip it instead of force-unwrapping into a crash.
+        guard let ingredient = ingredientMgr.getByName(name: currentName(adjustment.name)) else {
+            return false
+        }
         let servings = (adjustment.amount * ingredient.consumptionGrams) / ingredient.servingSize
 
         let fat: Double = Double(ingredient.fat * servings)
@@ -917,17 +919,10 @@ struct MealList: View {
         // For a GROUP row the meal ingredient is stored under the
         // group name; nutrition must come from the selected member.
         print(name);
-        let lookupName: String = {
-            if let mi = mealIngredientMgr.getByName(name: name),
-               !mi.selectedMemberName.isEmpty {
-                return mi.selectedMemberName
-            }
-            return name
-        }()
-        guard let ingredient = ingredientMgr.getByName(name: lookupName) else {
+        guard let ingredient = ingredientMgr.getByName(name: currentName(name)) else {
             // Group member deleted / unresolved — contribute nothing
             // rather than crashing on a force-unwrap.
-            print("  resolution failed for \(name) (lookup \(lookupName))")
+            print("  resolution failed for \(name) (lookup \(currentName(name)))")
             return
         }
         let servings = (amount * ingredient.consumptionGrams) / ingredient.servingSize
@@ -1071,24 +1066,46 @@ struct MealList: View {
         // `name` may be a group name (meal row stored under the
         // group); resolve to the selected member, and never crash if
         // it can't be found.
-        let lookup: String = {
-            if let mi = mealIngredientMgr.getByName(name: name),
-               !mi.selectedMemberName.isEmpty {
-                return mi.selectedMemberName
-            }
-            return name
-        }()
-        return ingredientMgr.getByName(name: lookup)?.consumptionUnit ?? .gram
+        return ingredientMgr.getByName(name: currentName(name))?.consumptionUnit ?? .gram
     }
 
 
-    // The Ingredient that supplies a meal row's nutrition/step/cost:
-    // the selected member for a group row, else the row's own name.
+    // A meal row's `name` is a Food name. The ingredient it resolves
+    // to is that Food's CURRENT ingredient (global, single source of
+    // truth). Fallbacks keep it crash-proof if data is inconsistent.
+    func currentName(_ foodOrName: String) -> String {
+        if let f = foodMgr.getByName(name: foodOrName),
+           ingredientMgr.getByName(name: f.currentIngredientName) != nil {
+            return f.currentIngredientName
+        }
+        return foodOrName
+    }
+
     func resolvedIngredient(_ mi: MealIngredient) -> Ingredient? {
-        let lookup = mi.selectedMemberName.isEmpty ? mi.name : mi.selectedMemberName
-        return ingredientMgr.getByName(name: lookup)
+        if let ing = ingredientMgr.getByName(name: currentName(mi.name)) {
+            return ing
+        }
+        // Last-ditch: any surviving member of the Food.
+        return ingredientMgr.getAll().first { $0.foodName == mi.name }
     }
 
+
+    // Name + brand subtext, mirroring the prep screen exactly:
+    // .callout name (inherits the row's mode color, applied by the
+    // caller) + .caption2 brand in the secondary color.
+    @ViewBuilder
+    func mealNameLabel(_ mi: MealIngredient) -> some View {
+        let brand = resolvedIngredient(mi)?.brand ?? ""
+        VStack(alignment: .leading, spacing: 1) {
+            Text(mi.name)
+              .font(.callout)
+            if !brand.isEmpty {
+                Text(brand)
+                  .font(.caption2)
+                  .foregroundColor(Color.theme.blackWhiteSecondary)
+            }
+        }
+    }
 
     // Members of the group a meal row represents (for the picker).
     func groupMembers(_ mi: MealIngredient) -> [Ingredient] {
@@ -1097,14 +1114,14 @@ struct MealList: View {
 
 
     func isGroupRow(_ mi: MealIngredient) -> Bool {
-        !mi.selectedMemberName.isEmpty || foodMgr.getByName(name: mi.name) != nil
+        foodMgr.getByName(name: mi.name) != nil
     }
 
 
     func selectGroupMember(_ mi: MealIngredient, member: String) {
-        mealIngredientMgr.setSelectedMember(name: mi.name, member: member)
-        // Per design: the pick also becomes the Food's new default.
-        foodMgr.setDefault(group: mi.name, member: member)
+        // Selection is global per Food — set the Food's current
+        // ingredient; every screen resolves through it.
+        foodMgr.setCurrent(food: mi.name, member: member)
         // Adopt the picked variant's preset amount (e.g. Avocado
         // Large 225 g vs Medium 140 g). Skip when it has no preset
         // so a user's hand-set amount is preserved.
@@ -1119,7 +1136,7 @@ struct MealList: View {
     // its current default member, else any member, else the Food
     // name itself (defensive).
     private func defaultVariant(forFood foodName: String) -> String {
-        foodMgr.getByName(name: foodName)?.defaultMemberName
+        foodMgr.getByName(name: foodName)?.currentIngredientName
             ?? ingredientMgr.getAll().first { $0.foodName == foodName }?.name
             ?? foodName
     }
@@ -1177,6 +1194,7 @@ struct ProteinsEditor: View {
     @Environment(\.presentationMode) var presentationMode
     @EnvironmentObject var ingredientMgr: IngredientMgr
     @EnvironmentObject var profileMgr: ProfileMgr
+    @EnvironmentObject var foodMgr: FoodMgr
 
     @State private var draft: [Protein] = []
     // Mirror of each row's amount as a string so the user can clear
@@ -1304,7 +1322,7 @@ struct ProteinsEditor: View {
     // original definition order. Same source as the legacy Meat
     // picker in MealConfigure used.
     private func availableMeatNames() -> [String] {
-        ingredientMgr.getAllMeatNames().filter { $0 != "None" }
+        ingredientMgr.getAllMeatNames(foodMgr: foodMgr).filter { $0 != "None" }
     }
 
 
@@ -1315,7 +1333,7 @@ struct ProteinsEditor: View {
     private func defaultNewProtein() -> Protein {
         let used = Set(draft.map { $0.name })
         let names = availableMeatNames()
-        let pick = names.first(where: { !used.contains($0) }) ?? names.first ?? "Chicken"
+        let pick = names.first(where: { !used.contains($0) }) ?? names.first ?? "Chicken (Mary's Chicken)"
         let amt = ingredientMgr.getByName(name: pick)?.meatAmount ?? 100
         return Protein(name: pick, amount: amt)
     }

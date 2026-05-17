@@ -63,10 +63,10 @@ class MealIngredientMgr: ObservableObject {
 
         mealIngredients = []
 
-        mealIngredients.append(MealIngredient(name: "Sard (H2O)", amount: 1, active: false))
-        mealIngredients.append(MealIngredient(name: "Sard (SB)", amount: 1, active: false))
-        mealIngredients.append(MealIngredient(name: "Sard (LS)", amount: 1, active: false))
-        mealIngredients.append(MealIngredient(name: "Sard (LS L)", amount: 1, active: false))
+        mealIngredients.append(MealIngredient(name: "Sardines (H2O)", amount: 1, active: false))
+        mealIngredients.append(MealIngredient(name: "Sardines (SB)", amount: 1, active: false))
+        mealIngredients.append(MealIngredient(name: "Sardines (LS)", amount: 1, active: false))
+        mealIngredients.append(MealIngredient(name: "Sardines (LS L)", amount: 1, active: false))
         mealIngredients.append(MealIngredient(name: "Mack (SB)", amount: 1, active: false))
         mealIngredients.append(MealIngredient(name: "Mack (Smk)", amount: 1, active: false))
         // Cheeses (Babybel, Tillamook Cheddar, Dubliner) and nuts
@@ -77,7 +77,6 @@ class MealIngredientMgr: ObservableObject {
         // Macadamia Nuts, Pecans, Walnuts, and Peanuts all moved
         // below the String Cheese block further down the list.
         // mealIngredients.append(MealIngredient(name: "Mitica", amount: 10, active: false))
-        // mealIngredients.append(MealIngredient(name: "Flackers (SS)", amount: 30, active: false))
         // mealIngredients.append(MealIngredient(name: "Cheddar Cheese", amount: 1, active: false))
         // mealIngredients.append(MealIngredient(name: "Emmi Roth", amount: 30, active: false))
 
@@ -740,9 +739,10 @@ struct MealIngredient: Codable, Identifiable {
 func compositeCost(_ mi: MealIngredient, _ ingredientMgr: IngredientMgr) -> Double {
     var total = 0.0
     for part in mi.compositeParts {
-        guard let ing = ingredientMgr.getByName(name: part.selectedVariantName),
-              ing.totalGrams > 0 else { continue }
-        let costPerGram = ing.totalCost / ing.totalGrams
+        guard let ing = ingredientMgr.getByName(name: part.selectedVariantName) else { continue }
+        let grams = ing.effectiveTotalGrams
+        guard grams > 0 else { continue }
+        let costPerGram = ing.totalCost / grams
         total += costPerGram * (part.amount * ing.consumptionGrams)
     }
     return total

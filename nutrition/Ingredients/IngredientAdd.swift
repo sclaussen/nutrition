@@ -5,6 +5,7 @@ struct IngredientAdd: View {
     @EnvironmentObject var ingredientMgr: IngredientMgr
     @EnvironmentObject var adjustmentMgr: AdjustmentMgr
     @EnvironmentObject var mealIngredientMgr: MealIngredientMgr
+    @EnvironmentObject var foodMgr: FoodMgr
 
     // Optional scan result. When non-nil, fields are populated
     // from it on appear, and the names listed in
@@ -16,6 +17,11 @@ struct IngredientAdd: View {
     }
 
     @State var name: String = ""
+    @State var foodName: String = ""
+    @State private var newGroupName = ""
+    // Category for a brand-new Food created from this screen. An
+    // existing Food's type is inherited and never edited here.
+    @State private var newFoodType: IngredientType = .produce
 
     @State var url: String = ""
     @State var company: String = ""
@@ -33,7 +39,6 @@ struct IngredientAdd: View {
     @State var consumptionUnit: Unit = .gram
     @State var consumptionGrams: Double = 1.0
 
-    @State var meat: Bool = false
     @State var adjustmentCount = 0
     @State var mealAdjustments: [MealAdjustment] = []
 
@@ -73,7 +78,7 @@ struct IngredientAdd: View {
                 lowConfidenceBanner(fields: prefill.lowConfidenceFields)
             }
             mainSections
-            meatSection
+            groupSection
             quickAddSection
             vitaminAndMineralsSection
         }
@@ -143,10 +148,15 @@ struct IngredientAdd: View {
                                  calcium: calcium,
                                  consumptionUnit: consumptionUnit,
                                  consumptionGrams: consumptionGrams,
-                                 meat: meat,
                                  meatAmount: 0,
                                  mealAdjustments: mealAdjustments,
-                                 verified: "")
+                                 verified: "",
+                                 foodName: foodName)
+            if !foodName.isEmpty {
+                foodMgr.ensure(name: foodName,
+                               defaultMember: name,
+                               type: foodMgr.getByName(name: foodName)?.type ?? newFoodType)
+            }
             if ingredientAdd {
                 mealIngredientMgr.create(name: name,
                                          amount: ingredientAmount,
@@ -268,31 +278,44 @@ extension IngredientAdd {
         }
     }
 
-    private var meatSection: some View {
-        Group {
-            Section {
-                NameValue("Meat", description: "main course", $meat, control: .toggle)
+    // Group / variant membership. Picking or creating a Food makes
+    // this ingredient a member once saved; mirrors IngredientEdit's
+    // groupSection. The "default variant" toggle is intentionally
+    // omitted here — it keys off a saved ingredient name, which a
+    // brand-new ingredient doesn't have until Save.
+    private var groupSection: some View {
+        Section(header: Text("Food"),
+                footer: Text("Optional. Ingredients sharing a Food are collapsed to one meal row; long-press that row in the meal to pick which variant.")
+                  .font(.caption2)) {
+
+            Picker("Food", selection: $foodName) {
+                Text("None").tag("")
+                ForEach(foodMgr.namesSorted, id: \.self) { g in
+                    Text(g).tag(g)
+                }
             }
 
-//            if meat {
-//                ForEach(0..<adjustmentCount, id: \.self) { index in
-//                    Section(header: Text("Base Meal Adjustment #" + String(index + 1))) {
-//                        // TODO: Update this to exclude existing meal adjustments, or, should this be fetching all ingredients (which is what it appears to do...)?
-//                        NameValue("Ingredient", $mealAdjustments[index].name, options: ingredientMgr.getNewMeatNames(existing: []), control: .picker)
-//                        if mealAdjustments[index].name.count > 0 {
-//                            NameValue("Amount", $mealAdjustments[index].amount, ingredientMgr.getIngredient(name: mealAdjustments[index].name)!.consumptionUnit, negative: true, edit: true)
-//                        }
-//                    }
-//                }
-//
-//                Button {
-//                    adjustmentCount += 1
-//                    let meadAdustment: MealAdjustment = MealAdjustment(name: "", amount: 0.0, consumptionUnit: .none)
-//                    mealAdjustments.append(meadAdustment)
-//                } label: {
-//                    Label("New Meal Ingredient Adjustment", systemImage: "plus.circle")
-//                }
-//            }
+            // Category only applies when creating a brand-new Food;
+            // selecting an existing Food inherits its category.
+            Picker("New Food Type", selection: $newFoodType) {
+                ForEach(IngredientType.allCases) { t in
+                    Text(t.label).tag(t)
+                }
+            }
+              .pickerStyle(.menu)
+
+            HStack {
+                TextField("New Food\u{2026}", text: $newGroupName)
+                  .autocorrectionDisabled()
+                Button("Create") {
+                    let trimmed = newGroupName.trimmingCharacters(in: .whitespaces)
+                    guard !trimmed.isEmpty else { return }
+                    foodName = trimmed
+                    newGroupName = ""
+                }
+                  .disabled(newGroupName.trimmingCharacters(in: .whitespaces).isEmpty)
+                  .foregroundColor(Color.theme.blueYellow)
+            }
         }
     }
 

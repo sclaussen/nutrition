@@ -23,8 +23,27 @@ struct IngredientList: View {
     enum PrepMode { case composite, food, ingredient }
     @State private var prepMode: PrepMode = .food
 
+    // Sort applied to all three tabs. Name is alphabetical; the
+    // others are per-100g (cost = price per 100g), highest first.
+    enum SortBy: String, CaseIterable, Identifiable {
+        case name = "Name"
+        case protein = "Protein"
+        case carbs = "Carbs"
+        case fat = "Fat"
+        case cost = "Cost/100g"
+        var id: String { rawValue }
+    }
+    @State private var sortBy: SortBy = .name
+
     // Non-nil while the new-composite builder sheet is shown.
     @State private var showCompositeBuilder = false
+
+    // Non-nil while editing an existing composite (chevron tapped).
+    @State private var editComposite: FoodComposite? = nil
+
+    // Drives the hidden NavigationLink that pushes IngredientAdd when
+    // the toolbar "Add" is tapped in Food / Ingredient mode.
+    @State private var showAdd = false
 
     // ============================================================
     // Scanner state. The toolbar camera button presents
@@ -69,18 +88,18 @@ struct IngredientList: View {
     }
 
     var body: some View {
-        List {
+        VStack(spacing: 0) {
 
-            IngredientRowHeader(showMacros: false, showAmount: false)
-              .listRowInsets(EdgeInsets(top: 8, leading: 10, bottom: 8, trailing: 10))
-
+            // Pinned header: stays put while the List below scrolls.
             Picker("View", selection: $prepMode) {
                 Text("Composite").tag(PrepMode.composite)
                 Text("Food").tag(PrepMode.food)
                 Text("Ingredient").tag(PrepMode.ingredient)
             }
               .pickerStyle(.segmented)
-              .listRowInsets(EdgeInsets(top: 4, leading: 10, bottom: 8, trailing: 10))
+              .padding(EdgeInsets(top: 4, leading: 16, bottom: 8, trailing: 16))
+
+            List {
 
             if prepMode == .composite {
                 compositeSection
@@ -166,6 +185,16 @@ struct IngredientList: View {
               .listRowInsets(EdgeInsets(top: 8, leading: 10, bottom: 8, trailing: 10))
               .border(Color.theme.red, width: 0)
             }
+            }
+              .listStyle(.plain)
+              .environment(\.defaultMinListRowHeight, 5)
+              // Composite mode is a short list (a handful of recipes);
+              // cap it at the top ~20% of the screen rather than
+              // letting it stretch full-height.
+              .frame(maxHeight: prepMode == .composite
+                                  ? UIScreen.main.bounds.height * 0.20
+                                  : .infinity)
+            if prepMode == .composite { Spacer() }
         }
           .alert("The meal ingredient must be deleted first.  It may be necessary to lock the meal ingredients prior to deletion so the meal ingredient is not readded as an adjustment.", isPresented: $deleteMealIngredientAlert) {
               Button("OK", role: .cancel) { }
@@ -173,8 +202,6 @@ struct IngredientList: View {
           .alert("The adjustment ingredient must be deleted first.", isPresented: $deleteAdjustmentAlert) {
               Button("OK", role: .cancel) { }
           }
-          .environment(\.defaultMinListRowHeight, 5)
-          .padding([.leading, .trailing], -20)
           .toolbar {
               ToolbarItem(placement: .principal) {
                   // Centered cluster: adjustments link + the LLM
@@ -186,17 +213,37 @@ struct IngredientList: View {
                           Image(systemName: "slider.horizontal.below.list.bulleted")
                       }
 
+                      Menu {
+                          Picker("Sort", selection: $sortBy) {
+                              ForEach(SortBy.allCases) { s in
+                                  Text(s.rawValue).tag(s)
+                              }
+                          }
+                      } label: {
+                          Image(systemName: "arrow.up.arrow.down")
+                      }
+
                       Button {
                           showCaptureSheet = true
                       } label: {
                           Image(systemName: "camera.viewfinder")
-                            .font(.system(size: 27))
+                            .font(.system(size: 24.3))
                       }
                   }
                     .foregroundColor(Color.theme.blueYellow)
               }
               ToolbarItem(placement: .primaryAction) {
-                  NavigationLink("Add", destination: IngredientAdd())
+                  // Add is contextual to the selected segment:
+                  //   Composite -> new-composite builder (same as the
+                  //                "New composite" row)
+                  //   Food / Ingredient -> IngredientAdd
+                  Button("Add") {
+                      if prepMode == .composite {
+                          showCompositeBuilder = true
+                      } else {
+                          showAdd = true
+                      }
+                  }
                     .foregroundColor(Color.theme.blueYellow)
               }
           }
@@ -215,14 +262,27 @@ struct IngredientList: View {
               }
           }
           .sheet(isPresented: $showCompositeBuilder) {
-              CompositeBuilder(foods: foodMgr.names) { name, components in
+              CompositeBuilder(foods: foodMgr.namesSorted) { name, components in
                   foodCompositeMgr.create(name: name, components: components)
+              }
+          }
+          .sheet(item: $editComposite) { comp in
+              CompositeBuilder(existing: comp, foods: foodMgr.namesSorted) { name, components in
+                  foodCompositeMgr.update(
+                      FoodComposite(id: comp.id, name: name, components: components))
+              } onDelete: {
+                  foodCompositeMgr.remove(name: comp.name)
               }
           }
           // Hidden NavigationLinks that fire when scan results route
           // to Add (with prefill) or Edit (with prefill + diff).
           .background(
               Group {
+                  NavigationLink(
+                      destination: IngredientAdd(),
+                      isActive: $showAdd
+                  ) { EmptyView() }
+
                   NavigationLink(
                       destination: Group {
                           if let p = addPrefill { IngredientAdd(prefill: p) }
@@ -272,29 +332,35 @@ struct IngredientList: View {
     // meal, like an ingredient row) plus a create entry.
     @ViewBuilder
     private var compositeSection: some View {
-        ForEach(foodCompositeMgr.composites) { comp in
+        ForEach(sortedComposites()) { comp in
             HStack(spacing: 8) {
                 Text(comp.name)
                   .font(.callout)
                   .foregroundColor(compositeInMeal(comp) ? Color.theme.manual
                                                          : Color.theme.blackWhite)
-                  .frame(maxWidth: .infinity, alignment: .leading)
                   .contentShape(Rectangle())
                   .onTapGesture { toggleComposite(comp) }
                 Text(comp.components.map { $0.foodName }.joined(separator: " + "))
                   .font(.caption2)
                   .foregroundColor(Color.theme.blackWhiteSecondary)
                   .lineLimit(1)
+                  .frame(maxWidth: .infinity, alignment: .trailing)
+                // Chevron → edit, mirroring the ingredient rows.
+                Button {
+                    editComposite = comp
+                } label: {
+                    Image(systemName: "chevron.right")
+                      .font(.caption2)
+                      .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .trailing)
+                      .contentShape(Rectangle())
+                }
+                  .buttonStyle(.borderless)
+                  .foregroundColor(Color.theme.blackWhiteSecondary)
+                  .frame(width: 30)
             }
+              .frame(height: 28)
               .listRowInsets(EdgeInsets(top: 8, leading: 10, bottom: 8, trailing: 10))
         }
-        Button {
-            showCompositeBuilder = true
-        } label: {
-            Label("New composite", systemImage: "plus.circle")
-              .foregroundColor(Color.theme.blueYellow)
-        }
-          .listRowInsets(EdgeInsets(top: 8, leading: 10, bottom: 8, trailing: 10))
     }
 
     private func compositeInMeal(_ c: FoodComposite) -> Bool {
@@ -302,7 +368,7 @@ struct IngredientList: View {
     }
 
     private func defaultVariant(forFood food: String) -> String {
-        foodMgr.getByName(name: food)?.defaultMemberName
+        foodMgr.getByName(name: food)?.currentIngredientName
             ?? ingredientMgr.getAll().first { $0.foodName == food }?.name
             ?? food
     }
@@ -328,7 +394,7 @@ struct IngredientList: View {
         if prepMode == .ingredient {
             // Expanded: every Ingredient, including each Food's
             // variants, shown under its own name.
-            return all.sorted { displayName($0) < displayName($1) }
+            return applySort(all)
         }
         var result: [Ingredient] = []
         var seenGroups = Set<String>()
@@ -340,13 +406,70 @@ struct IngredientList: View {
             if seenGroups.contains(ing.foodName) { continue }
             seenGroups.insert(ing.foodName)
             if let g = foodMgr.getByName(name: ing.foodName),
-               let def = ingredientMgr.getByName(name: g.defaultMemberName) {
+               let def = ingredientMgr.getByName(name: g.currentIngredientName) {
                 result.append(def)
             } else {
                 result.append(ing)
             }
         }
-        return result.sorted { displayName($0) < displayName($1) }
+        return applySort(result)
+    }
+
+
+    private func costPer100(_ ing: Ingredient) -> Double {
+        ing.totalGrams > 0 ? (ing.totalCost / ing.totalGrams) * 100 : 0
+    }
+
+    // The ingredient's category rank, resolved through its Food.
+    // Foodless ingredients sort last (Int.max).
+    private func typeRank(_ ing: Ingredient) -> Int {
+        foodMgr.type(of: ing)?.sortRank ?? Int.max
+    }
+
+    // Shared sort for the Food and Ingredient tabs. Name groups by
+    // the Food's category (sortRank) then name; protein / carbs /
+    // fat / cost are per-100g, highest first.
+    private func applySort(_ items: [Ingredient]) -> [Ingredient] {
+        switch sortBy {
+        case .name:
+            return items.sorted {
+                typeRank($0) != typeRank($1)
+                  ? typeRank($0) < typeRank($1)
+                  : displayName($0) < displayName($1)
+            }
+        case .protein: return items.sorted { $0.protein100  > $1.protein100 }
+        case .carbs:   return items.sorted { $0.netCarbs100  > $1.netCarbs100 }
+        case .fat:     return items.sorted { $0.fat100       > $1.fat100 }
+        case .cost:    return items.sorted { costPer100($0)  > costPer100($1) }
+        }
+    }
+
+    // Composite tab uses the same selector. The metric is the sum of
+    // each component's default variant's per-100g value (or per-100g
+    // cost); Name is alphabetical.
+    private func compositeMetric(_ c: FoodComposite) -> Double {
+        var total = 0.0
+        for comp in c.components {
+            guard let ing = ingredientMgr.getByName(
+                name: defaultVariant(forFood: comp.foodName)) else { continue }
+            switch sortBy {
+            case .protein: total += ing.protein100
+            case .carbs:   total += ing.netCarbs100
+            case .fat:     total += ing.fat100
+            case .cost:    total += costPer100(ing)
+            case .name:    break
+            }
+        }
+        return total
+    }
+
+    private func sortedComposites() -> [FoodComposite] {
+        if sortBy == .name {
+            return foodCompositeMgr.composites.sorted { $0.name < $1.name }
+        }
+        return foodCompositeMgr.composites.sorted {
+            compositeMetric($0) > compositeMetric($1)
+        }
     }
 
 
@@ -391,11 +514,12 @@ struct IngredientList: View {
     }
 
 
-    // Prep page color: green when the ingredient is an active
-    // member of its Food, black otherwise. No blue on this page
-    // (Done/lock + meat-blue remain a Meal-page concept).
+    // Prep page color: green only when this food/ingredient is in
+    // the meal list (whether the meal row is active or inactive);
+    // black otherwise. Mirrors the meal page's membership, not the
+    // foodActive flag.
     private func statusColor(for ingredient: Ingredient) -> Color {
-        ingredient.foodActive ? Color.theme.manual : Color.theme.blackWhite
+        isInMeal(ingredient) ? Color.theme.manual : Color.theme.blackWhite
     }
 
 
@@ -413,7 +537,7 @@ struct IngredientList: View {
     // chevron still navigates to IngredientEdit so the meat's data
     // is reachable.
     private func promote(_ ingredient: Ingredient) {
-        if ingredient.meat { return }
+        if foodMgr.isMeat(ingredient) { return }
         let key = mealKey(ingredient)
         if let mi = mealIngredientMgr.getByName(name: key) {
             mealIngredientMgr.delete(mi)
@@ -421,19 +545,18 @@ struct IngredientList: View {
             mealIngredientMgr.create(name: ingredient.name,
                                      amount: ingredient.defaultAmount,
                                      active: true,
-                                     isSupplement: ingredient.supplement)
+                                     isSupplement: foodMgr.isSupplement(ingredient))
         } else {
-            // Grouped: the meal row is the Food; seed it with the
-            // Food's default variant so macros/cost resolve, and use
-            // that variant's defaultAmount as the starting amount.
-            let member = foodMgr.getByName(name: ingredient.foodName)?.defaultMemberName
+            // The meal row is the Food; the ingredient resolves
+            // through the Food's current (global). Start amount from
+            // the current ingredient's preset.
+            let member = foodMgr.getByName(name: ingredient.foodName)?.currentIngredientName
                 ?? ingredient.name
             let amount = ingredientMgr.getByName(name: member)?.defaultAmount ?? 0
             mealIngredientMgr.create(name: ingredient.foodName,
                                      amount: amount,
                                      active: true,
-                                     isSupplement: ingredient.supplement,
-                                     selectedMemberName: member)
+                                     isSupplement: foodMgr.isSupplement(ingredient))
         }
     }
 
@@ -477,11 +600,23 @@ struct CompositeBuilder: View {
     @Environment(\.presentationMode) private var presentationMode
 
     let foods: [String]
+    let existing: FoodComposite?
     let onSave: (String, [CompositeComponent]) -> Void
+    let onDelete: (() -> Void)?
 
     @State private var name = ""
     @State private var included: Set<String> = []
     @State private var amounts: [String: Double] = [:]
+
+    init(existing: FoodComposite? = nil,
+         foods: [String],
+         onSave: @escaping (String, [CompositeComponent]) -> Void,
+         onDelete: (() -> Void)? = nil) {
+        self.existing = existing
+        self.foods = foods
+        self.onSave = onSave
+        self.onDelete = onDelete
+    }
 
     var body: some View {
         NavigationView {
@@ -522,9 +657,27 @@ struct CompositeBuilder: View {
                         }
                     }
                 }
+                if existing != nil, let onDelete = onDelete {
+                    Section {
+                        Button(role: .destructive) {
+                            onDelete()
+                            presentationMode.wrappedValue.dismiss()
+                        } label: {
+                            Label("Delete composite", systemImage: "trash")
+                              .foregroundColor(Color.theme.red)
+                        }
+                    }
+                }
             }
-              .navigationTitle("New composite")
+              .navigationTitle(existing == nil ? "New composite" : "Edit composite")
               .navigationBarTitleDisplayMode(.inline)
+              .onAppear {
+                  guard let e = existing, name.isEmpty, included.isEmpty else { return }
+                  name = e.name
+                  included = Set(e.components.map { $0.foodName })
+                  amounts = Dictionary(uniqueKeysWithValues:
+                      e.components.map { ($0.foodName, $0.amount) })
+              }
               .toolbar {
                   ToolbarItem(placement: .cancellationAction) {
                       Button("Cancel") { presentationMode.wrappedValue.dismiss() }

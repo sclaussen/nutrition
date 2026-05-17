@@ -25,9 +25,6 @@ struct app: App {
               .environmentObject(vitaminMineralMgr)
               .environmentObject(foodMgr)
               .environmentObject(foodCompositeMgr)
-              .onAppear {
-                  foodMgr.ensureSeededFoods(from: ingredientMgr.getAll())
-              }
         }
     }
 }

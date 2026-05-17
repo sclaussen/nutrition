@@ -37,7 +37,7 @@ class ProfileMgr: ObservableObject {
         components.year = 1967
         components.month = 9
         components.day = 27
-        self.profile = Profile(dateOfBirth: Calendar.current.date(from: components)!, gender: Gender.male, height: 72, bodyMassFromHealthKit: true, bodyMass: 222, bodyFatPercentageFromHealthKit: true, bodyFatPercentage: 20, activeCaloriesBurned: 600, proteinRatio: 1.2, calorieDeficit: 20, netCarbsMaximum: 20, proteins: [Protein(name: "Chicken", amount: 200)])
+        self.profile = Profile(dateOfBirth: Calendar.current.date(from: components)!, gender: Gender.male, height: 72, bodyMassFromHealthKit: true, bodyMass: 222, bodyFatPercentageFromHealthKit: true, bodyFatPercentage: 20, activeCaloriesBurned: 600, proteinRatio: 1.2, calorieDeficit: 20, netCarbsMaximum: 20, proteins: [Protein(name: "Chicken (Mary's Chicken)", amount: 200)])
     }
 
 
@@ -182,7 +182,7 @@ struct Profile: Codable {
             self.proteins = [Protein(name: meat, amount: meatAmount)]
         } else {
             // Existed-but-meatless or brand-new install with no data.
-            self.proteins = [Protein(name: "Chicken", amount: 200)]
+            self.proteins = [Protein(name: "Chicken (Mary's Chicken)", amount: 200)]
         }
     }
 

@@ -35,6 +35,10 @@ struct Gauge: View {
     var type: GaugeType
     var secondaryGoal: Double
     var secondaryGoalPrecision: Int
+    // When > 0, the actual value / unit / percent render red once
+    // actual reaches this percentage of goal (e.g. 100 for fat &
+    // protein, 80 for calories). 0 disables the behavior.
+    var redThresholdPct: Double
 
     init(title: String = "",
          titleFontColor: Color = Color.theme.blackWhite,
@@ -64,6 +68,7 @@ struct Gauge: View {
          // 80%-of-TDEE goal).  Set to 0 to omit.
          secondaryGoal: Double = 0,
          secondaryGoalPrecision: Int = 0,
+         redThresholdPct: Double = 0,
          scale: Double = 1.0) {
 
         self.title = title
@@ -91,6 +96,7 @@ struct Gauge: View {
         self.type = type
         self.secondaryGoal = secondaryGoal
         self.secondaryGoalPrecision = secondaryGoalPrecision
+        self.redThresholdPct = redThresholdPct
 
         if type == .value {
             self.titleOffset = 0 - (side / 2 + side * 0.05)
@@ -112,6 +118,8 @@ struct Gauge: View {
 
     var body: some View {
         let dialPercentageUsed = ((12 - startHour) + endHour) / 12
+        let overRed = redThresholdPct > 0 && goal > 0
+            && (actual / goal * 100) >= redThresholdPct
 
         return ZStack {
             Text(title)
@@ -144,12 +152,12 @@ struct Gauge: View {
 
             Group {
                 Text(format(actual, actualPrecision))
-                  .foregroundColor(annotationFontColor)
+                  .foregroundColor(overRed ? progressLineError : annotationFontColor)
                   .font(.system(size: actualFontSize))
                   .bold()
 
                 Text(unit)
-                  .foregroundColor(annotationFontColor)
+                  .foregroundColor(overRed ? progressLineError : annotationFontColor)
                   .font(.system(size: unitFontSize))
                   .offset(y: side * 0.2)
             }
@@ -169,7 +177,7 @@ struct Gauge: View {
                 let pct: Int = secondaryGoal > 0
                     ? Int((actual / secondaryGoal * 100).rounded())
                     : Int((actual / goal * 100).rounded())
-                let pctColor: Color = (type == .ceiling && pct > 100)
+                let pctColor: Color = (overRed || (type == .ceiling && pct > 100))
                     ? progressLineError
                     : annotationFontColor
                 let secondaryShift: Double = secondaryGoal > 0 ? goalFontSize * 0.85 / 2 : 0

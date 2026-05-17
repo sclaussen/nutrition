@@ -93,9 +93,13 @@ struct NameValue<T: ValueType>: View {
                     // TEXT/TEXTFIELD controls
                     if control == .text {
                         if !edit {
-                            // TEXT control for text values (VIEW)
-                            Text(value.formattedString(precision))
-                              .value(geo, wideValue, unit)
+                            // TEXT control for text values (VIEW).
+                            // Dollar reads as a prefix ("$6.29"); the
+                            // trailing unit is suppressed below.
+                            Text(unit == .dollar
+                                 ? "$" + value.formattedString(precision)
+                                 : value.formattedString(precision))
+                              .value(geo, wideValue, unit == .dollar ? .none : unit)
                               .foregroundColor(Color.theme.blackWhite)
                               .if (!description.isEmpty) { view in
                                   view.offset(x: -2)
@@ -149,11 +153,11 @@ struct NameValue<T: ValueType>: View {
                           .colorMultiply(Color.theme.blueYellow)
                     }
 
-                    // Unit
-                    if unit != .none {
+                    // Unit (dollar is shown as a left prefix instead)
+                    if unit != .none && unit != .dollar {
                         if value.singular() {
                             AnyView(Text(unit.singularForm)
-                                      .unit(geo)
+                                      .unit(geo, unit)
                                       .if (edit) { view in
                                           view.foregroundColor(Color.theme.blueYellowSecondary)
                                       }
@@ -166,7 +170,7 @@ struct NameValue<T: ValueType>: View {
                             )
                         } else {
                             AnyView(Text(unit.pluralForm)
-                                      .unit(geo)
+                                      .unit(geo, unit)
                                       .if (edit) { view in
                                           view.foregroundColor(Color.theme.blueYellowSecondary)
                                       }
@@ -270,7 +274,10 @@ struct NVTextField<T: ValueType>: View {
             if isEditing {
                 return editingString
             }
-            return $value.wrappedValue.formattedString(precision)
+            let s = $value.wrappedValue.formattedString(precision)
+            // Show "$" as a left prefix when not actively editing;
+            // the editing buffer stays digits-only so parsing works.
+            return unit == .dollar ? "$" + s : s
         },
                                       set: { string in
             editingString = string
@@ -297,7 +304,7 @@ struct NVTextField<T: ValueType>: View {
                       // print("editingString", editingString)
                       // print("value.wrappedValue", $value.wrappedValue)
                   })
-          .value(geo, valueString.count > 7, unit)
+          .value(geo, valueString.count > 7, unit == .dollar ? .none : unit)
           .onReceive(NotificationCenter.default.publisher(for: UITextField.textDidBeginEditingNotification)) { obj in
               if let textEdit = obj.object as? UITextField {
                   textEdit.selectedTextRange = textEdit.textRange(from: textEdit.beginningOfDocument, to: textEdit.endOfDocument)
