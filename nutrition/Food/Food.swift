@@ -77,9 +77,9 @@ class FoodMgr: ObservableObject {
         foods.append(Food(name: "Cauliflower", type: .produce, defaultAmount: 100, stepAmount: 5, consumptionUnit: .gram, consumptionGrams: 1, currentIngredientName: "Cauliflower (365 by Whole Foods M 12 Ounce)"))
 
         // Cook Eggs
-        foods.append(Food(name: "Coconut Oil", type: .oils, defaultAmount: 14, stepAmount: 5, consumptionUnit: .tablespoon, consumptionGrams: 14, currentIngredientName: "Coconut Oil (365 by Whole Foods M 14 Fl Oz)"))
+        foods.append(Food(name: "Coconut Oil", type: .oils, defaultAmount: 1, stepAmount: 1, consumptionUnit: .tablespoon, consumptionGrams: 14, currentIngredientName: "Coconut Oil (365 by Whole Foods M 14 Fl Oz)"))
         foods.append(Food(name: "Avocado Oil", type: .oils, consumptionUnit: .tablespoon, consumptionGrams: 14, currentIngredientName: "Avocado Oil"))
-        foods.append(Food(name: "Eggs", type: .proteins, defaultAmount: 50, stepAmount: 5, consumptionUnit: .egg, consumptionGrams: 50, currentIngredientName: "Eggs (365 by Whole Foods M 18 Count)"))
+        foods.append(Food(name: "Eggs", type: .proteins, defaultAmount: 2, stepAmount: 1, consumptionUnit: .egg, consumptionGrams: 50, currentIngredientName: "Eggs (365 by Whole Foods M 18 Count)"))
 
         // Salad
         foods.append(Food(name: "Romaine", type: .produce, stepAmount: 5, consumptionUnit: .gram, consumptionGrams: 1, currentIngredientName: "Romaine"))
@@ -92,13 +92,13 @@ class FoodMgr: ObservableObject {
         foods.append(Food(name: "Nuts", type: .nuts, defaultAmount: 30, stepAmount: 5, consumptionUnit: .gram, consumptionGrams: 1, currentIngredientName: "Macadamia Nuts (Aurora 6 OZ)"))
         foods.append(Food(name: "Mackerel", type: .proteins, consumptionUnit: .can, consumptionGrams: 85, currentIngredientName: "Mackerel (Skinless Boneless)"))
         foods.append(Food(name: "Sardines", type: .proteins, consumptionUnit: .can, consumptionGrams: 85, currentIngredientName: "Sardines (H2O)"))
-        foods.append(Food(name: "Tuna", type: .proteins, defaultAmount: 85, stepAmount: 5, consumptionUnit: .can, consumptionGrams: 85, currentIngredientName: "Tuna (Wild Planet 5 Ounce)"))
-        foods.append(Food(name: "Mustard", type: .carbs, defaultAmount: 5, stepAmount: 5, consumptionUnit: .tablespoon, consumptionGrams: 15, currentIngredientName: "Mustard (Organicville 12 oz)"))
+        foods.append(Food(name: "Tuna", type: .proteins, defaultAmount: 1, stepAmount: 1, consumptionUnit: .can, consumptionGrams: 85, currentIngredientName: "Tuna (Wild Planet 5 Ounce)"))
+        foods.append(Food(name: "Mustard", type: .carbs, defaultAmount: 1, stepAmount: 1, consumptionUnit: .tablespoon, consumptionGrams: 15, currentIngredientName: "Mustard (Organicville 12 oz)"))
         foods.append(Food(name: "Fish Oil", type: .supplement, consumptionUnit: .tablespoon, consumptionGrams: 14, currentIngredientName: "Fish Oil"))
         foods.append(Food(name: "Extra Virgin Olive Oil", type: .oils, consumptionUnit: .tablespoon, consumptionGrams: 14, currentIngredientName: "Extra Virgin Olive Oil"))
 
         // cheese
-        foods.append(Food(name: "Babybel Cheese", type: .cheese, defaultAmount: 20, stepAmount: 5, consumptionUnit: .piece, consumptionGrams: 21, currentIngredientName: "Babybel Cheese (Babybel 12 Count)"))
+        foods.append(Food(name: "Babybel Cheese", type: .cheese, defaultAmount: 1, stepAmount: 1, consumptionUnit: .piece, consumptionGrams: 21, currentIngredientName: "Babybel Cheese (Babybel 12 Count)"))
         foods.append(Food(name: "Cheese", type: .cheese, consumptionUnit: .gram, consumptionGrams: 1, currentIngredientName: "Manchego (Corcuera)"))
         foods.append(Food(name: "String Cheese", type: .cheese, consumptionUnit: .piece, consumptionGrams: 28, currentIngredientName: "String Cheese (365 by Whole Foods M 12 OZ)"))
 
@@ -112,8 +112,8 @@ class FoodMgr: ObservableObject {
 
         // carbs
         foods.append(Food(name: "Bread", type: .carbs, consumptionUnit: .gram, consumptionGrams: 1, currentIngredientName: "Bread (Food for Life 24 OZ)"))
-        foods.append(Food(name: "Sunflower Butter", type: .carbs, defaultAmount: 30, stepAmount: 5, consumptionUnit: .tablespoon, consumptionGrams: 15, currentIngredientName: "Sunflower Butter (Once Again)"))
-        foods.append(Food(name: "Peanut Butter", type: .carbs, defaultAmount: 30, stepAmount: 5, consumptionUnit: .tablespoon, consumptionGrams: 15, currentIngredientName: "Peanut Butter (Once Again)"))
+        foods.append(Food(name: "Sunflower Butter", type: .carbs, defaultAmount: 2, stepAmount: 1, consumptionUnit: .tablespoon, consumptionGrams: 15, currentIngredientName: "Sunflower Butter (Once Again)"))
+        foods.append(Food(name: "Peanut Butter", type: .carbs, defaultAmount: 2, stepAmount: 1, consumptionUnit: .tablespoon, consumptionGrams: 15, currentIngredientName: "Peanut Butter (Once Again)"))
         foods.append(Food(name: "Jelly", type: .carbs, consumptionUnit: .tablespoon, consumptionGrams: 18, currentIngredientName: "Jelly"))
         foods.append(Food(name: "Latte (Grande Hot)", type: .carbs, consumptionUnit: .cup, consumptionGrams: 1, currentIngredientName: "Latte (Grande Hot)"))
         foods.append(Food(name: "Latte (Venti Iced)", type: .carbs, consumptionUnit: .cup, consumptionGrams: 1, currentIngredientName: "Latte (Venti Iced)"))
