@@ -154,14 +154,18 @@ struct MealList: View {
                               // contentShape makes the full 50% zone hit-
                               // testable, not just the rendered glyphs.
                               .contentShape(Rectangle())
-                              // Double-tap ANY non-composite row to
-                              // duplicate it into a new independent row
-                              // (same member + amount, fresh identity).
-                              // Attached BEFORE the single-tap so
-                              // SwiftUI gives the 2-tap gesture priority.
-                              .onTapGesture(count: 2) {
-                                  mealIngredientMgr.replicate(id: mealIngredient.id)
-                                  generateMeal()
+                              // Double-tap duplicates the row into a new
+                              // independent row (same member + amount,
+                              // fresh identity) — ONLY for Foods with >1
+                              // member; duplicating a single-member Food
+                              // makes no sense (nothing to switch the
+                              // copy to). Attached before single-tap so
+                              // the 2-tap gesture gets priority.
+                              .if(groupMembers(mealIngredient).count > 1) { view in
+                                  view.onTapGesture(count: 2) {
+                                      mealIngredientMgr.replicate(id: mealIngredient.id)
+                                      generateMeal()
+                                  }
                               }
                               // Group rows: long-press immediately opens
                               // the variant picker (confirmationDialog
@@ -266,12 +270,36 @@ struct MealList: View {
                   // Prep page, not here.
                   // minus.circle.fill mirrors IngredientList's
                   // "Unlist" affordance (minus.circle) — same family.
+                  // Swipe exposes the otherwise-hidden gestures so they
+                  // are discoverable: full-swipe removes; Switch =
+                  // long-press member picker; Duplicate = double-tap
+                  // replicate (only when there's >1 member, matching
+                  // the double-tap rule).
                   .swipeActions(edge: .trailing) {
                       Button(role: .destructive) {
                           mealIngredientMgr.delete(mealIngredient)
                           generateMeal()
                       } label: {
                           Label("Remove", systemImage: "minus.circle.fill")
+                      }
+                      if !mealIngredient.isComposite && !mealIngredient.isFoodTypeSlot {
+                          if isGroupRow(mealIngredient) {
+                              Button {
+                                  memberPickerFor = mealIngredient
+                              } label: {
+                                  Label("Switch", systemImage: "arrow.triangle.2.circlepath")
+                              }
+                                .tint(Color.theme.blueYellow)
+                          }
+                          if groupMembers(mealIngredient).count > 1 {
+                              Button {
+                                  mealIngredientMgr.replicate(id: mealIngredient.id)
+                                  generateMeal()
+                              } label: {
+                                  Label("Duplicate", systemImage: "plus.square.on.square")
+                              }
+                                .tint(.indigo)
+                          }
                       }
                   }
             }
