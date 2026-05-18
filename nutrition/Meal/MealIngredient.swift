@@ -102,9 +102,6 @@ class MealIngredientMgr: ObservableObject {
         mealIngredients.append(MealIngredient(name: "String Cheese W", amount: 0, active: false))
         mealIngredients.append(MealIngredient(name: "Dubliner Cheese", amount: 30, active: false))
         mealIngredients.append(MealIngredient(name: "Manchego Cheese", amount: 30, active: false))
-        mealIngredients.append(MealIngredient(name: "Macadamia Nuts", amount: 0, active: false))
-        mealIngredients.append(MealIngredient(name: "Pecans", amount: 20, active: false))
-        mealIngredients.append(MealIngredient(name: "Walnuts", amount: 20, active: false))
         mealIngredients.append(MealIngredient(name: "Peanuts", amount: 20, active: false))
 
         // Berries — seeded inactive so they're easy to enable from
