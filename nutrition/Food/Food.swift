@@ -86,6 +86,7 @@ class FoodMgr: ObservableObject {
         foods.append(Food(name: "Spinach", type: .produce, defaultAmount: 85, stepAmount: 5, consumptionUnit: .gram, consumptionGrams: 1, currentIngredientName: "Spinach (365 by Whole Foods M 5 oz)"))
         foods.append(Food(name: "Arugula", type: .produce, defaultAmount: 20, stepAmount: 5, consumptionUnit: .gram, consumptionGrams: 1, currentIngredientName: "Arugula (365 by Whole Foods M 5 OZ)"))
         foods.append(Food(name: "Mushrooms", type: .produce, defaultAmount: 84, stepAmount: 5, consumptionUnit: .gram, consumptionGrams: 1, currentIngredientName: "Mushrooms (365 by Whole Foods M 8 Ounce)"))
+        foods.append(Food(name: "Brussels Sprouts", type: .produce, defaultAmount: 88, stepAmount: 5, consumptionUnit: .gram, consumptionGrams: 1, currentIngredientName: "Brussels Sprouts (Whole Foods Market 1 lb)"))
         foods.append(Food(name: "Radish", type: .produce, defaultAmount: 85, stepAmount: 5, consumptionUnit: .gram, consumptionGrams: 1, currentIngredientName: "Radish (Whole Foods Market 12 Oz)"))
         foods.append(Food(name: "Avocado", type: .produce, defaultAmount: 50, stepAmount: 5, consumptionUnit: .gram, consumptionGrams: 1, currentIngredientName: "Avocado (365 by Whole Foods M 4 Count)"))
         foods.append(Food(name: "Pumpkin Seeds", type: .nuts, defaultAmount: 28, stepAmount: 5, consumptionUnit: .gram, consumptionGrams: 1, currentIngredientName: "Pumpkin Seeds (365 by Whole Foods M 8 Ounce)"))
