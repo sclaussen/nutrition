@@ -1,16 +1,10 @@
 import SwiftUI
+import Charts
 
 
-// History sub-app: a scrollable list of every logged day plus
-// numeric trend summaries. Tap a day to drill into its full
-// snapshot (DayLogDetail).
-//
-// NOTE ON CHARTS: this project's iOS deployment target is 15.3.
-// Swift Charts (`import Charts`) requires iOS 16+, so per the
-// task's instruction we deliver numeric trend stats here (and a
-// note) rather than hand-rolling chart drawing. Bump
-// IPHONEOS_DEPLOYMENT_TARGET to 16.0 to enable a Swift Charts
-// section.
+// History sub-app: trend charts (Swift Charts, iOS 16+), numeric
+// trend deltas, and a scrollable list of every logged day. Tap a
+// day to drill into its full snapshot (DayLogDetail).
 struct HistoryView: View {
 
     @EnvironmentObject var dayLogMgr: DayLogMgr
@@ -33,6 +27,12 @@ struct HistoryView: View {
             } else {
                 List {
                     Section {
+                        TrendCharts(logs: sortedLogs)
+                    } header: {
+                        Text("Charts")
+                    }
+
+                    Section {
                         TrendSummary(logs: sortedLogs)
                     } header: {
                         Text("Trends")
@@ -47,7 +47,7 @@ struct HistoryView: View {
                     } header: {
                         Text("Logged Days (\(sortedLogs.count))")
                     } footer: {
-                        Text("Charts (weight / calories / cost / macros over time) require iOS 16+ Swift Charts; this build targets iOS 15.3. Numeric trends shown above.")
+                        Text("Tap a day for its full snapshot — every entry, all vitamins & minerals, and body params.")
                           .font(.caption2)
                           .foregroundColor(Color.theme.blackWhiteSecondary)
                     }
@@ -181,5 +181,107 @@ struct TrendSummary: View {
     private func format(_ v: Double, _ p: Int, _ dollar: Bool, _ unit: String) -> String {
         if dollar { return "$" + v.formattedString(p) }
         return v.formattedString(p) + " " + unit
+    }
+}
+
+
+// Swift Charts trends over the logged days (chronological,
+// oldest → newest). Requires iOS 16+ (project now targets 16.0).
+struct TrendCharts: View {
+    let logs: [DayLog]            // any order
+
+    private var chrono: [DayLog] { logs.sorted { $0.date < $1.date } }
+
+    var body: some View {
+        if chrono.count < 2 {
+            Text("Log at least two days to see charts.")
+              .font(.caption)
+              .foregroundColor(Color.theme.blackWhiteSecondary)
+        } else {
+            VStack(alignment: .leading, spacing: 18) {
+                weightChart
+                caloriesChart
+                costChart
+                macrosChart
+            }
+              .padding(.vertical, 4)
+        }
+    }
+
+    private func title(_ s: String) -> some View {
+        Text(s)
+          .font(.caption)
+          .foregroundColor(Color.theme.blackWhiteSecondary)
+    }
+
+    private var weightChart: some View {
+        let pts = chrono.filter { $0.body.weightLbs != nil }
+        return VStack(alignment: .leading, spacing: 4) {
+            title("Weight (lbs)")
+            if pts.count < 2 {
+                Text("Need ≥2 days with a weight.")
+                  .font(.caption2)
+                  .foregroundColor(Color.theme.blackWhiteSecondary)
+            } else {
+                Chart(pts) { d in
+                    LineMark(x: .value("Day", d.date),
+                             y: .value("lbs", d.body.weightLbs ?? 0))
+                    PointMark(x: .value("Day", d.date),
+                              y: .value("lbs", d.body.weightLbs ?? 0))
+                }
+                  .frame(height: 140)
+            }
+        }
+    }
+
+    private var caloriesChart: some View {
+        VStack(alignment: .leading, spacing: 4) {
+            title("Calories")
+            Chart(chrono) { d in
+                LineMark(x: .value("Day", d.date),
+                         y: .value("cal", d.totals.calories))
+                PointMark(x: .value("Day", d.date),
+                          y: .value("cal", d.totals.calories))
+            }
+              .frame(height: 140)
+        }
+    }
+
+    private var costChart: some View {
+        VStack(alignment: .leading, spacing: 4) {
+            title("Cost ($)")
+            Chart(chrono) { d in
+                LineMark(x: .value("Day", d.date),
+                         y: .value("$", d.totals.cost))
+                PointMark(x: .value("Day", d.date),
+                          y: .value("$", d.totals.cost))
+            }
+              .frame(height: 140)
+        }
+    }
+
+    private var macrosChart: some View {
+        VStack(alignment: .leading, spacing: 4) {
+            title("Macros (g)")
+            Chart(chrono) { d in
+                LineMark(x: .value("Day", d.date),
+                         y: .value("g", d.totals.protein),
+                         series: .value("Macro", "Protein"))
+                  .foregroundStyle(by: .value("Macro", "Protein"))
+                LineMark(x: .value("Day", d.date),
+                         y: .value("g", d.totals.netCarbs),
+                         series: .value("Macro", "Net Carbs"))
+                  .foregroundStyle(by: .value("Macro", "Net Carbs"))
+                LineMark(x: .value("Day", d.date),
+                         y: .value("g", d.totals.fat),
+                         series: .value("Macro", "Fat"))
+                  .foregroundStyle(by: .value("Macro", "Fat"))
+                LineMark(x: .value("Day", d.date),
+                         y: .value("g", d.totals.fiber),
+                         series: .value("Macro", "Fiber"))
+                  .foregroundStyle(by: .value("Macro", "Fiber"))
+            }
+              .frame(height: 160)
+        }
     }
 }
