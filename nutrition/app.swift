@@ -12,6 +12,7 @@ struct app: App {
     @StateObject var vitaminMineralMgr: VitaminMineralMgr = VitaminMineralMgr()
     @StateObject var foodMgr: FoodMgr = FoodMgr()
     @StateObject var foodCompositeMgr: FoodCompositeMgr = FoodCompositeMgr()
+    @StateObject var dayLogMgr: DayLogMgr = DayLogMgr()
 
 
     var body: some Scene {
@@ -25,6 +26,7 @@ struct app: App {
               .environmentObject(vitaminMineralMgr)
               .environmentObject(foodMgr)
               .environmentObject(foodCompositeMgr)
+              .environmentObject(dayLogMgr)
         }
     }
 }

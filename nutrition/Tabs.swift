@@ -35,6 +35,16 @@ struct Tabs: View {
 
 
             NavigationView {
+                HistoryView()
+                  .hiddenNavigationBarStyle()
+            }.tabItem {
+                Image(systemName: "chart.xyaxis.line")
+                Text("History")
+            }.tag("History")
+              .navigationViewStyle(StackNavigationViewStyle())
+
+
+            NavigationView {
                 ProfileEdit(tab: $tab)
                   .hiddenNavigationBarStyle()
                   // .navigationTitle("Profile")

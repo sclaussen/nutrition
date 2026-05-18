@@ -66,6 +66,10 @@
 		FE0200000000000000000002 /* IngredientCostDetail.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE0100000000000000000002 /* IngredientCostDetail.swift */; };
 		FE0200000000000000000003 /* Food.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE0100000000000000000003 /* Food.swift */; };
 		FE0200000000000000000004 /* GroupMemberPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE0100000000000000000004 /* GroupMemberPicker.swift */; };
+		FE0200000000000000000005 /* DayLog.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE0100000000000000000005 /* DayLog.swift */; };
+		FE0200000000000000000006 /* DayLogMgr.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE0100000000000000000006 /* DayLogMgr.swift */; };
+		FE0200000000000000000007 /* HistoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE0100000000000000000007 /* HistoryView.swift */; };
+		FE0200000000000000000008 /* DayLogDetail.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE0100000000000000000008 /* DayLogDetail.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -130,6 +134,10 @@
 		FE0100000000000000000002 /* IngredientCostDetail.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IngredientCostDetail.swift; sourceTree = "<group>"; };
 		FE0100000000000000000003 /* Food.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Food.swift; sourceTree = "<group>"; };
 		FE0100000000000000000004 /* GroupMemberPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupMemberPicker.swift; sourceTree = "<group>"; };
+		FE0100000000000000000005 /* DayLog.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DayLog.swift; sourceTree = "<group>"; };
+		FE0100000000000000000006 /* DayLogMgr.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DayLogMgr.swift; sourceTree = "<group>"; };
+		FE0100000000000000000007 /* HistoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryView.swift; sourceTree = "<group>"; };
+		FE0100000000000000000008 /* DayLogDetail.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DayLogDetail.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -187,6 +195,7 @@
 				349EE53027C99AC30072255A /* app.swift */,
 				349EE53227C99AC30072255A /* Tabs.swift */,
 				FE0100000000000000000010 /* Food */,
+				FE0100000000000000000011 /* History */,
 				34DE420627FA6DF40078448F /* Meal */,
 				34DE420727FA6E2F0078448F /* Adjustments */,
 				34DE420827FA6E910078448F /* Ingredients */,
@@ -232,6 +241,17 @@
 				FE0100000000000000000003 /* Food.swift */,
 			);
 			path = Food;
+			sourceTree = "<group>";
+		};
+		FE0100000000000000000011 /* History */ = {
+			isa = PBXGroup;
+			children = (
+				FE0100000000000000000005 /* DayLog.swift */,
+				FE0100000000000000000006 /* DayLogMgr.swift */,
+				FE0100000000000000000007 /* HistoryView.swift */,
+				FE0100000000000000000008 /* DayLogDetail.swift */,
+			);
+			path = History;
 			sourceTree = "<group>";
 		};
 		34DE420627FA6DF40078448F /* Meal */ = {
@@ -449,6 +469,10 @@
 				FE0200000000000000000002 /* IngredientCostDetail.swift in Sources */,
 				FE0200000000000000000003 /* Food.swift in Sources */,
 				FE0200000000000000000004 /* GroupMemberPicker.swift in Sources */,
+				FE0200000000000000000005 /* DayLog.swift in Sources */,
+				FE0200000000000000000006 /* DayLogMgr.swift in Sources */,
+				FE0200000000000000000007 /* HistoryView.swift in Sources */,
+				FE0200000000000000000008 /* DayLogDetail.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

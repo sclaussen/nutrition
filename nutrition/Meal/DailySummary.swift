@@ -10,6 +10,10 @@ struct DailySummary: View {
     @EnvironmentObject var ingredientMgr: IngredientMgr
     @EnvironmentObject var foodMgr: FoodMgr
     @EnvironmentObject var vitaminMineralMgr: VitaminMineralMgr
+    @EnvironmentObject var dayLogMgr: DayLogMgr
+
+    // Transient "saved" confirmation shown after Log Today.
+    @State private var loggedConfirmation = false
 
 
     private var todayString: String {
@@ -26,17 +30,117 @@ struct DailySummary: View {
     // Unpriced ingredients (totalGrams == 0) contribute 0.
     private func mealTotalCost() -> Double {
         mealIngredientMgr.mealIngredients
-          .reduce(0) { running, mi in
-              // Category placeholders are not real foods — zero cost.
-              if mi.isFoodTypeSlot { return running }
-              if mi.isComposite {
-                  return running + compositeCost(mi, ingredientMgr, foodMgr)
-              }
-              guard let ing = ingredientMgr.getByName(name: mi.name),
-                    ing.totalGrams > 0 else { return running }
-              let costPerGram = ing.totalCost / ing.totalGrams
-              return running + costPerGram * (mi.amount * foodMgr.consumptionGrams(for: ing))
+          .reduce(0) { running, mi in running + mealRowCost(mi) }
+    }
+
+
+    // Cost of a single meal row, using the exact same formula
+    // mealTotalCost() applied inline before; extracting it lets the
+    // Log Today snapshot capture per-row cost without duplicating
+    // the math. Behavior of mealTotalCost() is unchanged (it now
+    // sums this).
+    private func mealRowCost(_ mi: MealIngredient) -> Double {
+        // Category placeholders are not real foods — zero cost.
+        if mi.isFoodTypeSlot { return 0 }
+        if mi.isComposite {
+            return compositeCost(mi, ingredientMgr, foodMgr)
+        }
+        guard let ing = ingredientMgr.getByName(name: mi.name),
+              ing.totalGrams > 0 else { return 0 }
+        let costPerGram = ing.totalCost / ing.totalGrams
+        return costPerGram * (mi.amount * foodMgr.consumptionGrams(for: ing))
+    }
+
+
+    // Display unit string for a meal row (resolved ingredient's
+    // consumption unit), mirroring how the meal list labels amounts.
+    private func mealRowUnit(_ mi: MealIngredient) -> String {
+        if mi.isFoodTypeSlot { return "" }
+        if mi.isComposite { return Unit.piece.pluralForm }
+        guard let ing = ingredientMgr.getByName(name: mi.name) else { return "" }
+        let unit = foodMgr.consumptionUnit(for: ing)
+        return mi.amount.singular() ? unit.singularForm : unit.pluralForm
+    }
+
+
+    // Assemble today's snapshot from the SAME values this view
+    // already displays — macrosMgr.macros for totals, mealRowCost /
+    // mealTotalCost for cost, and computeVitaminMineralActuals
+    // (identical to vitaminMineralRedRows()'s call) for V&M. No
+    // formula is reinvented here.
+    private func logToday() {
+        let macros = macrosMgr.macros
+        let profile = profileMgr.profile
+
+        // Per-row entries. Skip category placeholders (not real
+        // foods) — same exclusion the cost/V&M math uses.
+        let entries: [DayLogEntry] = mealIngredientMgr.mealIngredients
+          .filter { !$0.isFoodTypeSlot }
+          .map { mi in
+              let resolved = mi.selectedMemberName.isEmpty
+                ? mi.name : mi.selectedMemberName
+              return DayLogEntry(
+                  id: mi.id,
+                  foodName: mi.name,
+                  resolvedName: resolved,
+                  amount: mi.amount,
+                  unit: mealRowUnit(mi),
+                  calories: mi.calories,
+                  fat: mi.fat,
+                  fiber: mi.fiber,
+                  netCarbs: mi.netcarbs,
+                  protein: mi.protein,
+                  cost: mealRowCost(mi)
+              )
           }
+
+        let totals = DayLogTotals(
+            calories: macros.calories,
+            fat: macros.fat,
+            fiber: macros.fiber,
+            netCarbs: macros.netCarbs,
+            protein: macros.protein,
+            cost: mealTotalCost()
+        )
+
+        // Identical call to the one vitaminMineralRedRows() makes.
+        let actuals = computeVitaminMineralActuals(
+            mealIngredients: mealIngredientMgr.mealIngredients,
+            ingredientMgr: ingredientMgr,
+            foodMgr: foodMgr
+        )
+        let age = profile.age
+        let gender = profile.gender
+        let vitamins: [DayLogVM] = vitaminMineralOrder.map { type in
+            let vm = VitaminMineral(name: type, age: age, gender: gender)
+            let actual = actuals[type] ?? 0
+            let min = vm.min()
+            let pct = min > 0 ? (actual / min) * 100 : 0
+            return DayLogVM(
+                name: vm.name.formattedString(0),
+                amount: actual,
+                unit: vm.unit().singularForm,
+                percentOfMin: pct
+            )
+        }
+
+        let body = DayLogBody(
+            weightLbs: profile.bodyMass,
+            age: profile.age,
+            // TODO: source real HealthKit active-energy here; for
+            // now reuse the Profile field DailySummary displays.
+            activeEnergy: profile.activeCaloriesBurned
+        )
+
+        dayLogMgr.logToday(entries: entries,
+                           totals: totals,
+                           vitamins: vitamins,
+                           body: body)
+
+        withAnimation { loggedConfirmation = true }
+        DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+            withAnimation { loggedConfirmation = false }
+        }
     }
 
 
@@ -151,10 +255,34 @@ struct DailySummary: View {
               .navigationTitle(todayString)
               .navigationBarTitleDisplayMode(.inline)
               .toolbar {
+                  ToolbarItem(placement: .navigationBarLeading) {
+                      Button {
+                          logToday()
+                      } label: {
+                          Label("Log Today", systemImage: "square.and.arrow.down")
+                      }
+                  }
                   ToolbarItem(placement: .primaryAction) {
                       Button("Done") {
                           presentationMode.wrappedValue.dismiss()
                       }
+                  }
+              }
+              .overlay(alignment: .bottom) {
+                  if loggedConfirmation {
+                      HStack(spacing: 6) {
+                          Image(systemName: "checkmark.circle.fill")
+                            .foregroundColor(Color.theme.green)
+                          Text("Logged to History")
+                            .font(.callout)
+                            .foregroundColor(Color.theme.blackWhite)
+                      }
+                        .padding(.horizontal, 16)
+                        .padding(.vertical, 10)
+                        .background(Color.theme.blackWhite.opacity(0.08))
+                        .cornerRadius(10)
+                        .padding(.bottom, 24)
+                        .transition(.opacity)
                   }
               }
         }
