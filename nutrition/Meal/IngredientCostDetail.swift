@@ -56,7 +56,7 @@ struct IngredientCostDetail: View {
     private func sortedRows() -> [(mealIngredient: MealIngredient, cost: Double)] {
         let pairs: [(mealIngredient: MealIngredient, cost: Double)] =
             mealIngredientMgr.mealIngredients
-              .filter { $0.active && $0.amount > 0 }
+              .filter { $0.amount > 0 }
               .compactMap { mi in
                 // Category placeholders are not real foods — exclude.
                 if mi.isFoodTypeSlot { return nil }

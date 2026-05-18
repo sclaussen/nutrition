@@ -174,25 +174,14 @@ struct IngredientList: View {
                   .frame(height: 28)
 
                   .swipeActions(edge: .trailing) {
-                      // Delete from the database entirely.
+                      // Delete from the database entirely. (Removing a
+                      // Food from the meal is done on the Meal page;
+                      // this page only manages the database + the
+                      // repertoire-active flag via long-press.)
                       Button(role: .destructive) {
                           delete(ingredient)
                       } label: {
                           Label("Delete", systemImage: "trash.fill")
-                      }
-
-                      // Remove from the meal list (back to black /
-                      // not-in-meal) without deleting from the
-                      // database. Only shown when the ingredient is
-                      // actually in the meal. Redundant with the tap-
-                      // toggle, but kept as a discoverable affordance.
-                      if isInMeal(ingredient) {
-                          Button {
-                              removeFromMeal(ingredient)
-                          } label: {
-                              Label("Unlist", systemImage: "minus.circle")
-                          }
-                            .tint(.red)
                       }
                   }
             }
@@ -418,7 +407,7 @@ struct IngredientList: View {
                               amount: comp.amount)
         }
         mealIngredientMgr.create(name: c.name, amount: 0,
-                                 adjustment: Constants.Manual, active: true,
+                                 adjustment: Constants.Manual,
                                  compositeParts: parts)
     }
 
@@ -596,65 +585,33 @@ struct IngredientList: View {
         }
     }
 
-    // Two states on the prep page — the ingredient is either in the
-    // current meal or it isn't. Active/inactive is the meal page's
-    // concern, not this one.
-    private func isInMeal(_ ingredient: Ingredient) -> Bool {
-        mealIngredientMgr.getByName(name: mealKey(ingredient)) != nil
+    // Prep page color: green when this Food/ingredient is active in
+    // the repertoire (its Ingredient.foodActive flag is on — the
+    // flag the long-press toggles, and the flag that gates whether
+    // the Food appears in the Meal page's eye add-list); black
+    // otherwise. Meal membership is the Meal page's concern now, not
+    // this one. A collapsed Food row resolves through the Food's
+    // current member ingredient.
+    private func foodActive(for ingredient: Ingredient) -> Bool {
+        if prepMode == .ingredient { return ingredient.foodActive }
+        if ingredient.foodName.isEmpty { return ingredient.foodActive }
+        // Collapsed Food row: active if ANY member is foodActive.
+        return ingredientMgr.getAll().contains {
+            $0.foodName == ingredient.foodName && $0.foodActive
+        }
     }
 
 
-    // Prep page color: green only when this food/ingredient is in
-    // the meal list (whether the meal row is active or inactive);
-    // black otherwise. Mirrors the meal page's membership, not the
-    // foodActive flag.
     private func statusColor(for ingredient: Ingredient) -> Color {
-        isInMeal(ingredient) ? Color.theme.manual : Color.theme.blackWhite
+        foodActive(for: ingredient) ? Color.theme.manual : Color.theme.blackWhite
     }
 
 
-    // Prep tap: flip this ingredient's active-in-its-Food state.
+    // Prep long-press: flip ONLY this ingredient's repertoire-active
+    // (foodActive) flag. It does NOT add or remove a meal row —
+    // adding a Food to the meal is the Meal page's eye affordance.
     private func toggleFoodActive(_ ingredient: Ingredient) {
         ingredientMgr.toggleFoodActive(name: ingredient.name)
-    }
-
-
-    // Toggle the ingredient in/out of the meal:
-    //   black -> green  (added to meal, active: true)
-    //   green -> black  (removed from meal)
-    //
-    // Meat is no longer special — it's an ordinary grouped Food and
-    // is added/removed here exactly like any other Food.
-    private func promote(_ ingredient: Ingredient) {
-        let key = mealKey(ingredient)
-        if let mi = mealIngredientMgr.getByName(name: key) {
-            mealIngredientMgr.delete(mi)
-        } else if ingredient.foodName.isEmpty {
-            mealIngredientMgr.create(name: ingredient.name,
-                                     amount: foodMgr.effectiveDefaultAmount(for: ingredient),
-                                     active: true,
-                                     isSupplement: foodMgr.isSupplement(ingredient))
-        } else {
-            // The meal row is the Food; the ingredient resolves
-            // through the Food's current (global). Start amount from
-            // the current ingredient's effective preset (ingredient
-            // override wins, else the Food-level default).
-            let member = foodMgr.getByName(name: ingredient.foodName)?.currentIngredientName
-                ?? ingredient.name
-            let amount = ingredientMgr.getByName(name: member)
-                .map { foodMgr.effectiveDefaultAmount(for: $0) } ?? 0
-            mealIngredientMgr.create(name: ingredient.foodName,
-                                     amount: amount,
-                                     active: true,
-                                     isSupplement: foodMgr.isSupplement(ingredient))
-        }
-    }
-
-
-    private func removeFromMeal(_ ingredient: Ingredient) {
-        if let mi = mealIngredientMgr.getByName(name: mealKey(ingredient)) {
-            mealIngredientMgr.delete(mi)
-        }
     }
 
 

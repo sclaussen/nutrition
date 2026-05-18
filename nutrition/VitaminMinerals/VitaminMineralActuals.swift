@@ -11,11 +11,11 @@ let vitaminMineralOrder: [VitaminMineralType] = [
 ]
 
 
-// Total each vitamin/mineral across all *active* meal ingredients.
-// Returns a dictionary keyed by VitaminMineralType.  Inactive
-// ingredients are skipped.  Ingredients referenced by name but not
-// found in the database are skipped (no crash).  Values are in the
-// same units as the corresponding fields on Ingredient.
+// Total each vitamin/mineral across all meal ingredients (a meal is
+// exactly the rows present). Returns a dictionary keyed by
+// VitaminMineralType.  Ingredients referenced by name but not found
+// in the database are skipped (no crash).  Values are in the same
+// units as the corresponding fields on Ingredient.
 func computeVitaminMineralActuals(
     mealIngredients: [MealIngredient],
     ingredientMgr: IngredientMgr,
@@ -24,7 +24,7 @@ func computeVitaminMineralActuals(
 
     var totals: [VitaminMineralType: Double] = [:]
 
-    for mealIngredient in mealIngredients where mealIngredient.active {
+    for mealIngredient in mealIngredients {
         // Category placeholders are not real foods — contribute no
         // vitamins/minerals.
         if mealIngredient.isFoodTypeSlot { continue }
@@ -66,7 +66,7 @@ func contributorsTo(
 
     var contributions: [VitaminMineralContribution] = []
 
-    for mealIngredient in mealIngredients where mealIngredient.active {
+    for mealIngredient in mealIngredients {
         // Category placeholders are not real foods — no contribution.
         if mealIngredient.isFoodTypeSlot { continue }
         guard let ingredient = ingredientMgr.getByName(name: mealIngredient.name) else {

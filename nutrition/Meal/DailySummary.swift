@@ -20,13 +20,12 @@ struct DailySummary: View {
     }
 
 
-    // Sum of cost contributions across the active meal ingredients:
+    // Sum of cost contributions across the meal ingredients:
     //   (ingredient.totalCost / ingredient.totalGrams)
     //     × (mealIngredient.amount × ingredient.consumptionGrams)
     // Unpriced ingredients (totalGrams == 0) contribute 0.
     private func mealTotalCost() -> Double {
         mealIngredientMgr.mealIngredients
-          .filter { $0.active }
           .reduce(0) { running, mi in
               // Category placeholders are not real foods — zero cost.
               if mi.isFoodTypeSlot { return running }

@@ -19,18 +19,13 @@ struct MealList: View {
     // Non-nil while the category-placeholder Food picker is shown.
     @State private var foodTypePickerFor: MealIngredient? = nil
 
-    // Both toggles intentionally non-persistent — supplements default
-    // hidden on every launch (you only enable them when you want to look),
-    // and inactive items behave the same way.
-    @State private var showInactive: Bool = false
-    // When the eye toggle flips ON, this captures the names of rows
-    // that were inactive at that moment. While showInactive is true,
-    // the list is filtered to ONLY this snapshot — so activating a
-    // row from the snapshot doesn't make it vanish from the list
-    // (you keep seeing it until you toggle the eye off). Cleared
-    // when the eye goes back off.
-    @State private var inactiveSnapshot: Set<String> = []
+    // Non-persistent — supplements default hidden on every launch
+    // (you only enable them when you want to look).
     @State private var showSupplements: Bool = false
+    // Drives the "add a Food to the meal" picker sheet (the eye
+    // affordance). When true, the sheet lists every active Food not
+    // currently in the meal; tapping one adds a normal meal row.
+    @State private var showAddFoodPicker: Bool = false
     @State var amount: Double = 0
     @State var mealConfigureActive = false
     @State var resetMealIngredientsAlert = false
@@ -203,7 +198,7 @@ struct MealList: View {
                             // are disabled. Manual rows (black) still allow
                             // amount changes; the stepper stays visible and
                             // active for those.
-                            isLocked: mealIngredient.active && mealIngredient.adjustment == Constants.Done,
+                            isLocked: mealIngredient.adjustment == Constants.Done,
                             isAuto:   isInAutoMode(mealIngredient),
                             decrementWidth: w * 0.10,
                             pillWidth:      w * 0.20,
@@ -243,7 +238,6 @@ struct MealList: View {
                       }
                     }
                       // Color tells you which mode the row is in:
-                      //   Red    — inactive
                       //   Green  — Auto mode: either Automatic (was just
                       //            auto-adjusted) OR Default with an
                       //            adjustment rule targeting it (auto-
@@ -255,38 +249,29 @@ struct MealList: View {
                       // color (applied on the inner HStack above) —
                       // the mode-color logic doesn't apply to them.
                       .foregroundColor(mealIngredient.isFoodTypeSlot ? Color.theme.blackWhiteSecondary :
-                                        (!mealIngredient.active ? Color.theme.red :
                                         (isInAutoMode(mealIngredient) ? Color.theme.manual :
                                            (mealIngredient.adjustment == Constants.Done ? Color.theme.blueYellow :
-                                              Color.theme.blackWhite))))
+                                              Color.theme.blackWhite)))
                 }
                   // Explicit row height — GeometryReader has no intrinsic
                   // height inside a List row, so without this the row
                   // would collapse. 26.6pt = 28 × 0.95 (5% reduction).
                   .frame(height: 26.6)
 
-                  // Swipe-trailing — single button that flips the row
-                  // to inactive (active = false). It doesn't delete
-                  // the meal ingredient; the row just moves out of
-                  // the active view and is reachable again via the
-                  // eye (inactive-snapshot) toggle.
-                  //
-                  // Suppressed in two cases (be defensive but minimal):
-                  //   * snapshot view (eye on) — that mode is for
-                  //     re-activating; swipe-to-deactivate doesn't
-                  //     belong there.
-                  //   * row is already inactive — no-op, would just
-                  //     confuse.
+                  // Swipe-trailing — remove this row from the meal
+                  // outright (a meal is exactly the rows present). The
+                  // Food remains in the repertoire and can be re-added
+                  // any time via the eye add-list. The separate
+                  // destructive "delete from database" lives on the
+                  // Prep page, not here.
                   // minus.circle.fill mirrors IngredientList's
                   // "Unlist" affordance (minus.circle) — same family.
                   .swipeActions(edge: .trailing) {
-                      if !showInactive && mealIngredient.active {
-                          Button(role: .destructive) {
-                              _ = mealIngredientMgr.toggleActive(mealIngredient)
-                              generateMeal()
-                          } label: {
-                              Label("Inactive", systemImage: "minus.circle.fill")
-                          }
+                      Button(role: .destructive) {
+                          mealIngredientMgr.delete(mealIngredient)
+                          generateMeal()
+                      } label: {
+                          Label("Remove", systemImage: "minus.circle.fill")
                       }
                   }
             }
@@ -347,29 +332,17 @@ struct MealList: View {
 
                       Spacer()
 
-                      // Show inactive / show supplements / V&M list.
-                      // Eye on  → list = the snapshot of names that
-                      //   were inactive at the moment of toggle. Stays
-                      //   stable as user activates entries.
-                      // Eye off → list = currently-active rows, snapshot
-                      //   cleared.
+                      // Add a Food to the meal. Opens a picker of every
+                      // active Food (≥1 member with foodActive == true)
+                      // that is NOT already in the meal; tapping one
+                      // adds a normal meal row for it.
                       Button {
-                          if showInactive {
-                              showInactive = false
-                              inactiveSnapshot = []
-                          } else {
-                              inactiveSnapshot = Set(
-                                  mealIngredientMgr.mealIngredients
-                                    .filter { !$0.active }
-                                    .map { $0.name }
-                              )
-                              showInactive = true
-                          }
+                          showAddFoodPicker = true
                       } label: {
-                          Image(systemName: showInactive ? "eye.fill" : "eye")
+                          Image(systemName: "eye")
                       }
                         .frame(width: 44)
-                        .foregroundColor(showInactive ? Color.theme.blueYellow : Color.theme.blackWhiteSecondary)
+                        .foregroundColor(Color.theme.blackWhiteSecondary)
 
                       // Fixed 18pt spacers between the middle three
                       // icons — roughly doubles the visible glyph-to-
@@ -484,6 +457,11 @@ struct MealList: View {
                     .environmentObject(ingredientMgr)
                     .environmentObject(mealIngredientMgr)
                     .environmentObject(foodMgr)
+              }
+          }
+          .sheet(isPresented: $showAddFoodPicker) {
+              AddFoodToMealSheet(foods: addableActiveFoods()) { foodName in
+                  addFoodToMeal(foodName)
               }
           }
           .sheet(item: $entrySheetFor) { mi in
@@ -638,18 +616,7 @@ struct MealList: View {
     //
     //   Auto-eligible:   Green → Black → Blue → (Green again)
     //   Manual-only:     Black → Blue → Black
-    //
-    // Special case: when the inactive-snapshot view is open (eye
-    // on), tap-name is a plain active toggle (red ↔ black/colored).
-    // The Auto/Manual/Done cycle is suspended in this mode so the
-    // user can scan the inactive set and flip the ones they want
-    // without juggling lock state.
     func toggleLock(_ mi: MealIngredient) {
-        if showInactive {
-            _ = mealIngredientMgr.toggleActive(mi)
-            generateMeal()
-            return
-        }
         if isInAutoMode(mi) {
             // Green → Black: enter manual mode. Auto-adjust will
             // skip the row from here on. mi.amount captures whatever
@@ -671,21 +638,11 @@ struct MealList: View {
     }
 
 
-    // The list of rows the ForEach should render right now.
-    //   Eye off → currently-active rows.
-    //   Eye on  → exactly the rows the user could see when they
-    //             flipped the eye on (the snapshot). Activating one
-    //             keeps it in the snapshot, so it stays visible.
-    // Supplement filter applies to both cases.
+    // The list of rows the ForEach should render right now. A meal is
+    // exactly the rows present; the only view filter is the
+    // supplement hide/show toggle.
     func displayedMealIngredients() -> [MealIngredient] {
-        let base: [MealIngredient]
-        if showInactive {
-            base = mealIngredientMgr.mealIngredients.filter { inactiveSnapshot.contains($0.name) }
-        } else {
-            base = mealIngredientMgr.mealIngredients.filter { $0.active }
-        }
-        // Supplement hide/show is unchanged — only the visible set is
-        // affected.
+        let base = mealIngredientMgr.mealIngredients
         let visible = base.filter { showSupplements || !$0.isSupplement }
         // Ordered PURELY by each row's Food position in the Food.swift
         // seed array (the user's salad-building order). Category
@@ -715,13 +672,12 @@ struct MealList: View {
     }
 
 
-    // Is this row visually green? True when the row is active AND
-    // either was actually auto-adjusted this cycle (Automatic) OR is
-    // a Default row that has an Adjustment rule targeting it (auto-
-    // eligible — auto may not have fired due to macro limits, but
-    // the user's mental model is still "this row is in auto mode").
+    // Is this row visually green? True when the row either was
+    // actually auto-adjusted this cycle (Automatic) OR is a Default
+    // row that has an Adjustment rule targeting it (auto-eligible —
+    // auto may not have fired due to macro limits, but the user's
+    // mental model is still "this row is in auto mode").
     func isInAutoMode(_ mi: MealIngredient) -> Bool {
-        guard mi.active else { return false }
         if mi.adjustment == Constants.Automatic { return true }
         if mi.adjustment == Constants.Default {
             return adjustmentMgr.adjustments.contains { $0.name == mi.name }
@@ -764,7 +720,7 @@ struct MealList: View {
         // the total macros for all ingredients.  These will all be
         // updated later in this algorithm.
         mealIngredientMgr.setMacroActualsToZero()
-        for mealIngredient in mealIngredientMgr.getActive(includeInactive: true) {
+        for mealIngredient in mealIngredientMgr.getAllMealIngredients() {
             setMacroActualsAndUpdateMealMacroActuals(mealIngredient)
         }
 
@@ -855,16 +811,12 @@ struct MealList: View {
         let mealIngredient = mealIngredientMgr.getByName(name: adjustment.name)
 
 
-        // Skip Manual / Done / inactive — all three are explicit
-        // user signals to leave the row alone:
-        //   Manual / Done = user controls the amount; auto stays out.
-        //   inactive      = user removed the row from today's meal;
-        //                   auto must NOT silently reactivate it,
-        //                   otherwise the trash-can swipe ping-pongs.
+        // Skip Manual / Done — both are explicit user signals to
+        // leave the row alone (user controls the amount; auto stays
+        // out).
         if let mi = mealIngredient,
            mi.adjustment == Constants.Manual
-           || mi.adjustment == Constants.Done
-           || !mi.active {
+           || mi.adjustment == Constants.Done {
             return false
         }
 
@@ -955,7 +907,6 @@ struct MealList: View {
 
         let name = mi.name
         let amount = amountOverride ?? Double(mi.amount)
-        let active = mi.active
 
         // Composite row: macros are the sum of each component's
         // selected variant at the component's amount.
@@ -972,9 +923,7 @@ struct MealList: View {
                 p  += ing.protein  * servings
             }
             mealIngredientMgr.setMacroActuals(id: mi.id, calories: c, fat: f, fiber: fi, netcarbs: nc, protein: p)
-            if active {
-                macrosMgr.addMacroActuals(name: name, calories: c, fat: f, fiber: fi, netCarbs: nc, protein: p)
-            }
+            macrosMgr.addMacroActuals(name: name, calories: c, fat: f, fiber: fi, netCarbs: nc, protein: p)
             return
         }
 
@@ -1006,10 +955,8 @@ struct MealList: View {
         mealIngredientMgr.setMacroActuals(id: mi.id, calories: calories, fat: fat, fiber: fiber, netcarbs: netcarbs, protein: protein)
 
         // Add the meal ingredient's macro values to the overall meal actuals
-        if active {
-            // print("\(name): c: \(calories) f: \(fat) f: \(fiber) n: \(netcarbs) p: \(protein)")
-            macrosMgr.addMacroActuals(name: name, calories: calories, fat: fat, fiber: fiber, netCarbs: netcarbs, protein: protein)
-        }
+        // print("\(name): c: \(calories) f: \(fat) f: \(fiber) n: \(netcarbs) p: \(protein)")
+        macrosMgr.addMacroActuals(name: name, calories: calories, fat: fat, fiber: fiber, netCarbs: netcarbs, protein: protein)
     }
 
 
@@ -1259,7 +1206,40 @@ struct MealList: View {
             .map { foodMgr.effectiveDefaultAmount(for: $0) } ?? 0
         mealIngredientMgr.create(name: food.name,
                                  amount: amount,
-                                 active: true,
+                                 isSupplement: food.type == .supplement)
+        generateMeal()
+    }
+
+
+    // The eye add-list source: every ACTIVE Food not currently in
+    // the meal. "Active Food" = a Food with ≥1 member ingredient
+    // whose Ingredient.foodActive == true. "In the meal" = some
+    // present MealIngredient.name == Food.name (a Food already
+    // present is not offered; duplicate it via the row double-tap
+    // instead). Presented in the normal Food sort order.
+    func addableActiveFoods() -> [Food] {
+        let inMeal = Set(mealIngredientMgr.mealIngredients.map { $0.name })
+        return foodMgr.foodsSorted.filter { food in
+            if inMeal.contains(food.name) { return false }
+            return ingredientMgr.getAll().contains {
+                $0.foodName == food.name && $0.foodActive
+            }
+        }
+    }
+
+
+    // Add a normal meal row for `foodName` — the same code path the
+    // category-placeholder picker uses (IngredientList.promote's
+    // grouped-Food branch): the row's `name` is the Food name, the
+    // amount is the Food's current ingredient's effective default,
+    // and isSupplement follows the Food's category.
+    func addFoodToMeal(_ foodName: String) {
+        guard let food = foodMgr.getByName(name: foodName) else { return }
+        let member = food.currentIngredientName
+        let amount = ingredientMgr.getByName(name: member)
+            .map { foodMgr.effectiveDefaultAmount(for: $0) } ?? 0
+        mealIngredientMgr.create(name: food.name,
+                                 amount: amount,
                                  isSupplement: food.type == .supplement)
         generateMeal()
     }
@@ -1292,7 +1272,6 @@ struct MealList: View {
         mealIngredientMgr.create(name: composite.name,
                                  amount: 0,
                                  adjustment: Constants.Manual,
-                                 active: true,
                                  compositeParts: parts)
         generateMeal()
     }
@@ -1389,5 +1368,68 @@ struct CompositeEditor: View {
 
     private func amountText(_ v: Double) -> String {
         v == v.rounded() ? String(Int(v)) : String(format: "%.1f", v)
+    }
+}
+
+
+// ============================================================
+// AddFoodToMealSheet — the eye affordance's picker. Lists every
+// active Food not currently in the meal (computed by the caller);
+// tapping one adds a normal meal row for it and dismisses. Styled
+// to match the rest of the Meal page (plain list, blueYellow
+// accents, brand-style secondary subtext on the category).
+// ============================================================
+struct AddFoodToMealSheet: View {
+
+    @Environment(\.presentationMode) private var presentationMode
+
+    let foods: [Food]
+    let onPick: (String) -> Void
+
+    var body: some View {
+        NavigationView {
+            Group {
+                if foods.isEmpty {
+                    Text("Every active Food is already in the meal.")
+                      .font(.callout)
+                      .foregroundColor(Color.theme.blackWhiteSecondary)
+                      .multilineTextAlignment(.center)
+                      .padding()
+                      .frame(maxWidth: .infinity, maxHeight: .infinity)
+                } else {
+                    List {
+                        ForEach(foods) { food in
+                            HStack(spacing: 8) {
+                                Text(food.name)
+                                  .font(.callout)
+                                  .foregroundColor(Color.theme.blackWhite)
+                                Spacer(minLength: 0)
+                                Text(food.type.label)
+                                  .font(.caption2)
+                                  .foregroundColor(Color.theme.blackWhiteSecondary)
+                            }
+                              .frame(height: 28)
+                              .contentShape(Rectangle())
+                              .onTapGesture {
+                                  onPick(food.name)
+                                  presentationMode.wrappedValue.dismiss()
+                              }
+                        }
+                          .listRowInsets(EdgeInsets(top: 8, leading: 10, bottom: 8, trailing: 10))
+                    }
+                      .listStyle(.plain)
+                }
+            }
+              .navigationTitle("Add to Meal")
+              .navigationBarTitleDisplayMode(.inline)
+              .toolbar {
+                  ToolbarItem(placement: .cancellationAction) {
+                      Button("Done") {
+                          presentationMode.wrappedValue.dismiss()
+                      }
+                        .foregroundColor(Color.theme.blueYellow)
+                  }
+              }
+        }
     }
 }

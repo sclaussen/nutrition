@@ -159,8 +159,7 @@ struct IngredientAdd: View {
             }
             if ingredientAdd {
                 mealIngredientMgr.create(name: name,
-                                         amount: ingredientAmount,
-                                         active: false)
+                                         amount: ingredientAmount)
             }
             if adjustmentAdd {
                 adjustmentMgr.create(name: name,
