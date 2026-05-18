@@ -294,6 +294,7 @@ extension IngredientEdit {
                 NameValue("Name", variantBinding, edit: true)
             }
             Section(header: Text("Optional Product Details")) {
+                NameValue("URL", $ingredient.url, edit: true)
                 NameValue("Brand", $ingredient.brand, edit: true)
                 NameValue("Cost", $ingredient.totalCost, .dollar, precision: 2, edit: true)
                 NameValue("Grams", description: "total ingredient grams in the product", $ingredient.totalGrams, edit: true)
