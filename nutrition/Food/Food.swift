@@ -109,6 +109,8 @@ class FoodMgr: ObservableObject {
         // fruit
         foods.append(Food(name: "Blackberries", type: .fruit, defaultAmount: 72, stepAmount: 5, consumptionUnit: .gram, consumptionGrams: 1, currentIngredientName: "Blackberries (Whole Foods Market 6 oz)"))
         foods.append(Food(name: "Blueberries", type: .fruit, defaultAmount: 140, stepAmount: 5, consumptionUnit: .gram, consumptionGrams: 1, currentIngredientName: "Blueberries (365 by Whole Foods M 32 Ounce)"))
+        foods.append(Food(name: "Strawberries", type: .fruit, defaultAmount: 72, stepAmount: 5, consumptionUnit: .gram, consumptionGrams: 1, currentIngredientName: "Strawberries (Whole Foods Market 1 lb)"))
+        foods.append(Food(name: "Raspberries", type: .fruit, defaultAmount: 72, stepAmount: 5, consumptionUnit: .gram, consumptionGrams: 1, currentIngredientName: "Raspberries (Whole Foods Market 6 oz)"))
 
         // carbs
         foods.append(Food(name: "Bread", type: .carbs, consumptionUnit: .gram, consumptionGrams: 1, currentIngredientName: "Bread (Food for Life 24 OZ)"))
