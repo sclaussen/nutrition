@@ -757,14 +757,14 @@ struct MealIngredient: Codable, Identifiable {
 // Total cost of a composite meal row: sum of each component's
 // selected variant cost-per-gram × grams consumed. Components
 // without pricing (totalGrams == 0) contribute 0.
-func compositeCost(_ mi: MealIngredient, _ ingredientMgr: IngredientMgr) -> Double {
+func compositeCost(_ mi: MealIngredient, _ ingredientMgr: IngredientMgr, _ foodMgr: FoodMgr) -> Double {
     var total = 0.0
     for part in mi.compositeParts {
         guard let ing = ingredientMgr.getByName(name: part.selectedVariantName) else { continue }
         let grams = ing.effectiveTotalGrams
         guard grams > 0 else { continue }
         let costPerGram = ing.totalCost / grams
-        total += costPerGram * (part.amount * ing.consumptionGrams)
+        total += costPerGram * (part.amount * foodMgr.consumptionGrams(for: ing))
     }
     return total
 }

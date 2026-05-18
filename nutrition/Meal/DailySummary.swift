@@ -8,6 +8,7 @@ struct DailySummary: View {
     @EnvironmentObject var macrosMgr: MacrosMgr
     @EnvironmentObject var mealIngredientMgr: MealIngredientMgr
     @EnvironmentObject var ingredientMgr: IngredientMgr
+    @EnvironmentObject var foodMgr: FoodMgr
     @EnvironmentObject var vitaminMineralMgr: VitaminMineralMgr
 
 
@@ -30,12 +31,12 @@ struct DailySummary: View {
               // Category placeholders are not real foods — zero cost.
               if mi.isFoodTypeSlot { return running }
               if mi.isComposite {
-                  return running + compositeCost(mi, ingredientMgr)
+                  return running + compositeCost(mi, ingredientMgr, foodMgr)
               }
               guard let ing = ingredientMgr.getByName(name: mi.name),
                     ing.totalGrams > 0 else { return running }
               let costPerGram = ing.totalCost / ing.totalGrams
-              return running + costPerGram * (mi.amount * ing.consumptionGrams)
+              return running + costPerGram * (mi.amount * foodMgr.consumptionGrams(for: ing))
           }
     }
 
@@ -206,7 +207,8 @@ struct DailySummary: View {
     private func vitaminMineralRedRows() -> [VMRedRow] {
         let actuals = computeVitaminMineralActuals(
             mealIngredients: mealIngredientMgr.mealIngredients,
-            ingredientMgr: ingredientMgr
+            ingredientMgr: ingredientMgr,
+            foodMgr: foodMgr
         )
         let age = profileMgr.profile.age
         let gender = profileMgr.profile.gender

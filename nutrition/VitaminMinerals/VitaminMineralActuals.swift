@@ -18,7 +18,8 @@ let vitaminMineralOrder: [VitaminMineralType] = [
 // same units as the corresponding fields on Ingredient.
 func computeVitaminMineralActuals(
     mealIngredients: [MealIngredient],
-    ingredientMgr: IngredientMgr
+    ingredientMgr: IngredientMgr,
+    foodMgr: FoodMgr
 ) -> [VitaminMineralType: Double] {
 
     var totals: [VitaminMineralType: Double] = [:]
@@ -31,7 +32,7 @@ func computeVitaminMineralActuals(
             continue
         }
         guard ingredient.servingSize > 0 else { continue }
-        let servings = (mealIngredient.amount * ingredient.consumptionGrams) / ingredient.servingSize
+        let servings = (mealIngredient.amount * foodMgr.consumptionGrams(for: ingredient)) / ingredient.servingSize
 
         for type in vitaminMineralOrder {
             totals[type, default: 0] += nutrientValue(of: ingredient, for: type) * servings
@@ -59,7 +60,8 @@ struct VitaminMineralContribution: Identifiable {
 func contributorsTo(
     nutrient: VitaminMineralType,
     mealIngredients: [MealIngredient],
-    ingredientMgr: IngredientMgr
+    ingredientMgr: IngredientMgr,
+    foodMgr: FoodMgr
 ) -> [VitaminMineralContribution] {
 
     var contributions: [VitaminMineralContribution] = []
@@ -71,7 +73,7 @@ func contributorsTo(
             continue
         }
         guard ingredient.servingSize > 0 else { continue }
-        let servings = (mealIngredient.amount * ingredient.consumptionGrams) / ingredient.servingSize
+        let servings = (mealIngredient.amount * foodMgr.consumptionGrams(for: ingredient)) / ingredient.servingSize
         let contribution = nutrientValue(of: ingredient, for: nutrient) * servings
 
         if contribution > 0 {
@@ -79,7 +81,7 @@ func contributorsTo(
                 id: mealIngredient.id,
                 ingredientName: mealIngredient.name,
                 amount: mealIngredient.amount,
-                consumptionUnit: ingredient.consumptionUnit,
+                consumptionUnit: foodMgr.consumptionUnit(for: ingredient),
                 contribution: contribution
             ))
         }

@@ -5,6 +5,7 @@ struct MealAdd: View {
     @Environment(\.presentationMode) var presentationMode
     @EnvironmentObject var mealIngredientMgr: MealIngredientMgr
     @EnvironmentObject var ingredientMgr: IngredientMgr
+    @EnvironmentObject var foodMgr: FoodMgr
 
     @State var name: String = ""
     @State var defaultAmount: Double = 0
@@ -58,8 +59,18 @@ struct MealAdd: View {
         }
     }
 
+    // `name` is a Food name (a meal row targets a Food). Resolve via
+    // FoodMgr to the Food's current member; never force-unwraps (the
+    // bare canonical ingredients are gone).
     func getConsumptionUnit(_ name: String) -> Unit {
-        return ingredientMgr.getByName(name: name)!.consumptionUnit
+        if let f = foodMgr.getByName(name: name),
+           let ing = ingredientMgr.getByName(name: f.currentIngredientName) {
+            return foodMgr.consumptionUnit(for: ing)
+        }
+        if let ing = ingredientMgr.getByName(name: name) {
+            return foodMgr.consumptionUnit(for: ing)
+        }
+        return .gram
     }
 }
 

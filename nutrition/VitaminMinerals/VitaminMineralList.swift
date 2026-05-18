@@ -23,12 +23,14 @@ struct VitaminMineralList: View {
     @EnvironmentObject var vitaminMineralMgr: VitaminMineralMgr
     @EnvironmentObject var mealIngredientMgr: MealIngredientMgr
     @EnvironmentObject var ingredientMgr: IngredientMgr
+    @EnvironmentObject var foodMgr: FoodMgr
 
 
     var body: some View {
         let actuals = computeVitaminMineralActuals(
             mealIngredients: mealIngredientMgr.mealIngredients,
-            ingredientMgr: ingredientMgr
+            ingredientMgr: ingredientMgr,
+            foodMgr: foodMgr
         )
 
         return List {

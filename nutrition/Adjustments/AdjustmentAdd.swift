@@ -6,6 +6,7 @@ struct AdjustmentAdd: View {
     @Environment(\.presentationMode) var presentationMode
     @EnvironmentObject var adjustmentMgr: AdjustmentMgr
     @EnvironmentObject var ingredientMgr: IngredientMgr
+    @EnvironmentObject var foodMgr: FoodMgr
 
     @State var name: String = ""
     @State var amount: Double = 0
@@ -72,8 +73,18 @@ struct AdjustmentAdd: View {
     }
 
 
+    // `name` is a Food name (an adjustment targets a Food). Resolve
+    // via FoodMgr to the Food's current member; never force-unwraps
+    // (the bare canonical ingredients are gone).
     func getConsumptionUnit(_ name: String) -> Unit {
-        return ingredientMgr.getByName(name: name)!.consumptionUnit
+        if let f = foodMgr.getByName(name: name),
+           let ing = ingredientMgr.getByName(name: f.currentIngredientName) {
+            return foodMgr.consumptionUnit(for: ing)
+        }
+        if let ing = ingredientMgr.getByName(name: name) {
+            return foodMgr.consumptionUnit(for: ing)
+        }
+        return .gram
     }
 }
 

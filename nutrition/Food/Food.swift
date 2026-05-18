@@ -24,6 +24,16 @@ struct Food: Codable, Identifiable, Equatable {
     // inherit / no Food-level value.
     var defaultAmount: Double
     var stepAmount: Double
+    // The consumption unit (tablespoon / egg / can / gram …) and the
+    // grams that one such unit weighs. Unlike defaultAmount these are
+    // ALWAYS authoritative on the Food: every member ingredient of
+    // the Food is prepped/consumed in the same unit, so there is no
+    // "0 = none" sentinel. Member ingredients still carry their own
+    // stored consumptionUnit/consumptionGrams (raw value edited on
+    // the ingredient form), but meal math reads the Food's value via
+    // FoodMgr.consumptionUnit(for:) / .consumptionGrams(for:).
+    var consumptionUnit: Unit
+    var consumptionGrams: Double
     var currentIngredientName: String
 
     init(id: String = UUID().uuidString,
@@ -31,12 +41,16 @@ struct Food: Codable, Identifiable, Equatable {
          type: IngredientType,
          defaultAmount: Double = 0,
          stepAmount: Double = 0,
+         consumptionUnit: Unit = .gram,
+         consumptionGrams: Double = 1,
          currentIngredientName: String) {
         self.id = id
         self.name = name
         self.type = type
         self.defaultAmount = defaultAmount
         self.stepAmount = stepAmount
+        self.consumptionUnit = consumptionUnit
+        self.consumptionGrams = consumptionGrams
         self.currentIngredientName = currentIngredientName
     }
 }
@@ -59,71 +73,71 @@ class FoodMgr: ObservableObject {
         // each group.
 
         // Boil Broccoli & Cauliflower
-        foods.append(Food(name: "Broccoli", type: .produce, defaultAmount: 85, stepAmount: 5, currentIngredientName: "Broccoli (365 by Whole Foods M 32 Ounce)"))
-        foods.append(Food(name: "Cauliflower", type: .produce, defaultAmount: 100, stepAmount: 5, currentIngredientName: "Cauliflower (365 by Whole Foods M 12 Ounce)"))
+        foods.append(Food(name: "Broccoli", type: .produce, defaultAmount: 85, stepAmount: 5, consumptionUnit: .gram, consumptionGrams: 1, currentIngredientName: "Broccoli (365 by Whole Foods M 32 Ounce)"))
+        foods.append(Food(name: "Cauliflower", type: .produce, defaultAmount: 100, stepAmount: 5, consumptionUnit: .gram, consumptionGrams: 1, currentIngredientName: "Cauliflower (365 by Whole Foods M 12 Ounce)"))
 
         // Cook Eggs
-        foods.append(Food(name: "Coconut Oil", type: .oils, defaultAmount: 14, stepAmount: 5, currentIngredientName: "Coconut Oil (365 by Whole Foods M 14 Fl Oz)"))
-        foods.append(Food(name: "Avocado Oil", type: .oils, currentIngredientName: "Avocado Oil"))
-        foods.append(Food(name: "Eggs", type: .proteins, defaultAmount: 50, stepAmount: 5, currentIngredientName: "Eggs (365 by Whole Foods M 18 Count)"))
+        foods.append(Food(name: "Coconut Oil", type: .oils, defaultAmount: 14, stepAmount: 5, consumptionUnit: .tablespoon, consumptionGrams: 14, currentIngredientName: "Coconut Oil (365 by Whole Foods M 14 Fl Oz)"))
+        foods.append(Food(name: "Avocado Oil", type: .oils, consumptionUnit: .tablespoon, consumptionGrams: 14, currentIngredientName: "Avocado Oil"))
+        foods.append(Food(name: "Eggs", type: .proteins, defaultAmount: 50, stepAmount: 5, consumptionUnit: .egg, consumptionGrams: 50, currentIngredientName: "Eggs (365 by Whole Foods M 18 Count)"))
 
         // Salad
-        foods.append(Food(name: "Romaine", type: .produce, stepAmount: 5, currentIngredientName: "Romaine"))
-        foods.append(Food(name: "Spinach", type: .produce, defaultAmount: 85, stepAmount: 5, currentIngredientName: "Spinach (365 by Whole Foods M 5 oz)"))
-        foods.append(Food(name: "Arugula", type: .produce, defaultAmount: 20, stepAmount: 5, currentIngredientName: "Arugula (365 by Whole Foods M 5 OZ)"))
-        foods.append(Food(name: "Mushrooms", type: .produce, defaultAmount: 84, stepAmount: 5, currentIngredientName: "Mushrooms (365 by Whole Foods M 8 Ounce)"))
-        foods.append(Food(name: "Radish", type: .produce, defaultAmount: 85, stepAmount: 5, currentIngredientName: "Radish (Whole Foods Market 12 Oz)"))
-        foods.append(Food(name: "Avocado", type: .produce, defaultAmount: 50, stepAmount: 5, currentIngredientName: "Avocado (365 by Whole Foods M 4 Count)"))
-        foods.append(Food(name: "Pumpkin Seeds", type: .nuts, defaultAmount: 28, stepAmount: 5, currentIngredientName: "Pumpkin Seeds (365 by Whole Foods M 8 Ounce)"))
-        foods.append(Food(name: "Nuts", type: .nuts, defaultAmount: 30, stepAmount: 5, currentIngredientName: "Macadamia Nuts (Aurora 6 OZ)"))
-        foods.append(Food(name: "Mackerel", type: .proteins, currentIngredientName: "Mackerel (Skinless Boneless)"))
-        foods.append(Food(name: "Sardines", type: .proteins, currentIngredientName: "Sardines (H2O)"))
-        foods.append(Food(name: "Tuna", type: .proteins, defaultAmount: 85, stepAmount: 5, currentIngredientName: "Tuna (Wild Planet 5 Ounce)"))
-        foods.append(Food(name: "Mustard", type: .carbs, defaultAmount: 5, stepAmount: 5, currentIngredientName: "Mustard (Organicville 12 oz)"))
-        foods.append(Food(name: "Fish Oil", type: .supplement, currentIngredientName: "Fish Oil"))
-        foods.append(Food(name: "Extra Virgin Olive Oil", type: .oils, currentIngredientName: "Extra Virgin Olive Oil"))
+        foods.append(Food(name: "Romaine", type: .produce, stepAmount: 5, consumptionUnit: .gram, consumptionGrams: 1, currentIngredientName: "Romaine"))
+        foods.append(Food(name: "Spinach", type: .produce, defaultAmount: 85, stepAmount: 5, consumptionUnit: .gram, consumptionGrams: 1, currentIngredientName: "Spinach (365 by Whole Foods M 5 oz)"))
+        foods.append(Food(name: "Arugula", type: .produce, defaultAmount: 20, stepAmount: 5, consumptionUnit: .gram, consumptionGrams: 1, currentIngredientName: "Arugula (365 by Whole Foods M 5 OZ)"))
+        foods.append(Food(name: "Mushrooms", type: .produce, defaultAmount: 84, stepAmount: 5, consumptionUnit: .gram, consumptionGrams: 1, currentIngredientName: "Mushrooms (365 by Whole Foods M 8 Ounce)"))
+        foods.append(Food(name: "Radish", type: .produce, defaultAmount: 85, stepAmount: 5, consumptionUnit: .gram, consumptionGrams: 1, currentIngredientName: "Radish (Whole Foods Market 12 Oz)"))
+        foods.append(Food(name: "Avocado", type: .produce, defaultAmount: 50, stepAmount: 5, consumptionUnit: .gram, consumptionGrams: 1, currentIngredientName: "Avocado (365 by Whole Foods M 4 Count)"))
+        foods.append(Food(name: "Pumpkin Seeds", type: .nuts, defaultAmount: 28, stepAmount: 5, consumptionUnit: .gram, consumptionGrams: 1, currentIngredientName: "Pumpkin Seeds (365 by Whole Foods M 8 Ounce)"))
+        foods.append(Food(name: "Nuts", type: .nuts, defaultAmount: 30, stepAmount: 5, consumptionUnit: .gram, consumptionGrams: 1, currentIngredientName: "Macadamia Nuts (Aurora 6 OZ)"))
+        foods.append(Food(name: "Mackerel", type: .proteins, consumptionUnit: .can, consumptionGrams: 85, currentIngredientName: "Mackerel (Skinless Boneless)"))
+        foods.append(Food(name: "Sardines", type: .proteins, consumptionUnit: .can, consumptionGrams: 85, currentIngredientName: "Sardines (H2O)"))
+        foods.append(Food(name: "Tuna", type: .proteins, defaultAmount: 85, stepAmount: 5, consumptionUnit: .can, consumptionGrams: 85, currentIngredientName: "Tuna (Wild Planet 5 Ounce)"))
+        foods.append(Food(name: "Mustard", type: .carbs, defaultAmount: 5, stepAmount: 5, consumptionUnit: .tablespoon, consumptionGrams: 15, currentIngredientName: "Mustard (Organicville 12 oz)"))
+        foods.append(Food(name: "Fish Oil", type: .supplement, consumptionUnit: .tablespoon, consumptionGrams: 14, currentIngredientName: "Fish Oil"))
+        foods.append(Food(name: "Extra Virgin Olive Oil", type: .oils, consumptionUnit: .tablespoon, consumptionGrams: 14, currentIngredientName: "Extra Virgin Olive Oil"))
 
         // cheese
-        foods.append(Food(name: "Babybel Cheese", type: .cheese, defaultAmount: 20, stepAmount: 5, currentIngredientName: "Babybel Cheese (Babybel 12 Count)"))
-        foods.append(Food(name: "Cheese", type: .cheese, currentIngredientName: "Manchego (Corcuera)"))
-        foods.append(Food(name: "String Cheese", type: .cheese, currentIngredientName: "String Cheese (365 by Whole Foods M 12 OZ)"))
+        foods.append(Food(name: "Babybel Cheese", type: .cheese, defaultAmount: 20, stepAmount: 5, consumptionUnit: .piece, consumptionGrams: 21, currentIngredientName: "Babybel Cheese (Babybel 12 Count)"))
+        foods.append(Food(name: "Cheese", type: .cheese, consumptionUnit: .gram, consumptionGrams: 1, currentIngredientName: "Manchego (Corcuera)"))
+        foods.append(Food(name: "String Cheese", type: .cheese, consumptionUnit: .piece, consumptionGrams: 28, currentIngredientName: "String Cheese (365 by Whole Foods M 12 OZ)"))
 
         // proteins
-        foods.append(Food(name: "Starbucks Protein Box", type: .proteins, currentIngredientName: "Eggs & Cheddar Protein Box"))
-        foods.append(Food(name: "Turkey", type: .proteins, currentIngredientName: "Turkey W"))
+        foods.append(Food(name: "Starbucks Protein Box", type: .proteins, consumptionUnit: .piece, consumptionGrams: 247, currentIngredientName: "Eggs & Cheddar Protein Box"))
+        foods.append(Food(name: "Turkey", type: .proteins, consumptionUnit: .slice, consumptionGrams: 28, currentIngredientName: "Turkey W"))
 
         // fruit
-        foods.append(Food(name: "Blackberries", type: .fruit, defaultAmount: 72, stepAmount: 5, currentIngredientName: "Blackberries (Whole Foods Market 6 oz)"))
-        foods.append(Food(name: "Blueberries", type: .fruit, defaultAmount: 140, stepAmount: 5, currentIngredientName: "Blueberries (365 by Whole Foods M 32 Ounce)"))
+        foods.append(Food(name: "Blackberries", type: .fruit, defaultAmount: 72, stepAmount: 5, consumptionUnit: .gram, consumptionGrams: 1, currentIngredientName: "Blackberries (Whole Foods Market 6 oz)"))
+        foods.append(Food(name: "Blueberries", type: .fruit, defaultAmount: 140, stepAmount: 5, consumptionUnit: .gram, consumptionGrams: 1, currentIngredientName: "Blueberries (365 by Whole Foods M 32 Ounce)"))
 
         // carbs
-        foods.append(Food(name: "Bread", type: .carbs, currentIngredientName: "Bread (Food for Life 24 OZ)"))
-        foods.append(Food(name: "Sunflower Butter", type: .carbs, defaultAmount: 30, stepAmount: 5, currentIngredientName: "Sunflower Butter (Once Again)"))
-        foods.append(Food(name: "Peanut Butter", type: .carbs, defaultAmount: 30, stepAmount: 5, currentIngredientName: "Peanut Butter (Once Again)"))
-        foods.append(Food(name: "Jelly", type: .carbs, currentIngredientName: "Jelly"))
-        foods.append(Food(name: "Latte (Grande Hot)", type: .carbs, currentIngredientName: "Latte (Grande Hot)"))
-        foods.append(Food(name: "Latte (Venti Iced)", type: .carbs, currentIngredientName: "Latte (Venti Iced)"))
-        foods.append(Food(name: "Starbucks Breakfast Sandwich", type: .carbs, currentIngredientName: "Bacon, Gouda & Egg Sandwich"))
-        foods.append(Food(name: "Starbucks Sandwich", type: .carbs, currentIngredientName: "Ham & Swiss on Baguette"))
+        foods.append(Food(name: "Bread", type: .carbs, consumptionUnit: .gram, consumptionGrams: 1, currentIngredientName: "Bread (Food for Life 24 OZ)"))
+        foods.append(Food(name: "Sunflower Butter", type: .carbs, defaultAmount: 30, stepAmount: 5, consumptionUnit: .tablespoon, consumptionGrams: 15, currentIngredientName: "Sunflower Butter (Once Again)"))
+        foods.append(Food(name: "Peanut Butter", type: .carbs, defaultAmount: 30, stepAmount: 5, consumptionUnit: .tablespoon, consumptionGrams: 15, currentIngredientName: "Peanut Butter (Once Again)"))
+        foods.append(Food(name: "Jelly", type: .carbs, consumptionUnit: .tablespoon, consumptionGrams: 18, currentIngredientName: "Jelly"))
+        foods.append(Food(name: "Latte (Grande Hot)", type: .carbs, consumptionUnit: .cup, consumptionGrams: 1, currentIngredientName: "Latte (Grande Hot)"))
+        foods.append(Food(name: "Latte (Venti Iced)", type: .carbs, consumptionUnit: .cup, consumptionGrams: 1, currentIngredientName: "Latte (Venti Iced)"))
+        foods.append(Food(name: "Starbucks Breakfast Sandwich", type: .carbs, consumptionUnit: .piece, consumptionGrams: 120, currentIngredientName: "Bacon, Gouda & Egg Sandwich"))
+        foods.append(Food(name: "Starbucks Sandwich", type: .carbs, consumptionUnit: .piece, consumptionGrams: 176, currentIngredientName: "Ham & Swiss on Baguette"))
 
         // meats
-        foods.append(Food(name: "Beef", type: .meat, defaultAmount: 113, stepAmount: 5, currentIngredientName: "Beef (ButcherBox)"))
-        foods.append(Food(name: "Bison", type: .meat, currentIngredientName: "Bison"))
-        foods.append(Food(name: "Chicken", type: .meat, defaultAmount: 112, stepAmount: 5, currentIngredientName: "Chicken (Mary's Chicken)"))
-        foods.append(Food(name: "Lamb", type: .meat, currentIngredientName: "Lamb"))
-        foods.append(Food(name: "Pork Chop", type: .meat, currentIngredientName: "Pork Chop"))
-        foods.append(Food(name: "Salmon", type: .meat, defaultAmount: 113, stepAmount: 5, currentIngredientName: "Salmon (Whole Foods Market)"))
-        foods.append(Food(name: "Top Sirloin Cap", type: .meat, currentIngredientName: "Top Sirloin Cap"))
+        foods.append(Food(name: "Beef", type: .meat, defaultAmount: 113, stepAmount: 5, consumptionUnit: .gram, consumptionGrams: 1, currentIngredientName: "Beef (ButcherBox)"))
+        foods.append(Food(name: "Bison", type: .meat, consumptionUnit: .gram, consumptionGrams: 1, currentIngredientName: "Bison"))
+        foods.append(Food(name: "Chicken", type: .meat, defaultAmount: 112, stepAmount: 5, consumptionUnit: .gram, consumptionGrams: 1, currentIngredientName: "Chicken (Mary's Chicken)"))
+        foods.append(Food(name: "Lamb", type: .meat, consumptionUnit: .gram, consumptionGrams: 1, currentIngredientName: "Lamb"))
+        foods.append(Food(name: "Pork Chop", type: .meat, consumptionUnit: .gram, consumptionGrams: 1, currentIngredientName: "Pork Chop"))
+        foods.append(Food(name: "Salmon", type: .meat, defaultAmount: 113, stepAmount: 5, consumptionUnit: .gram, consumptionGrams: 1, currentIngredientName: "Salmon (Whole Foods Market)"))
+        foods.append(Food(name: "Top Sirloin Cap", type: .meat, consumptionUnit: .gram, consumptionGrams: 1, currentIngredientName: "Top Sirloin Cap"))
 
         // supplements
-        foods.append(Food(name: "Thorne Basic Nutrients 2/Day", type: .supplement, currentIngredientName: "Thorne Basic Nutrients 2/Day"))
-        foods.append(Food(name: "Creatine", type: .supplement, currentIngredientName: "Creatine HCl"))
-        foods.append(Food(name: "Glycine", type: .supplement, currentIngredientName: "Glycine"))
-        foods.append(Food(name: "Apigenin", type: .supplement, currentIngredientName: "Apigenin"))
-        foods.append(Food(name: "L-Theanine", type: .supplement, currentIngredientName: "L-Theanine"))
-        foods.append(Food(name: "SlowMag", type: .supplement, currentIngredientName: "SlowMag"))
-        foods.append(Food(name: "Taurine", type: .supplement, currentIngredientName: "Taurine"))
-        foods.append(Food(name: "Vitamin D3 (1000 IU)", type: .supplement, currentIngredientName: "Vitamin D3 (1000 IU)"))
+        foods.append(Food(name: "Thorne Basic Nutrients 2/Day", type: .supplement, consumptionUnit: .pill, consumptionGrams: 1, currentIngredientName: "Thorne Basic Nutrients 2/Day"))
+        foods.append(Food(name: "Creatine", type: .supplement, consumptionUnit: .pill, consumptionGrams: 0.75, currentIngredientName: "Creatine HCl"))
+        foods.append(Food(name: "Glycine", type: .supplement, consumptionUnit: .pill, consumptionGrams: 3, currentIngredientName: "Glycine"))
+        foods.append(Food(name: "Apigenin", type: .supplement, consumptionUnit: .pill, consumptionGrams: 0.05, currentIngredientName: "Apigenin"))
+        foods.append(Food(name: "L-Theanine", type: .supplement, consumptionUnit: .pill, consumptionGrams: 0.2, currentIngredientName: "L-Theanine"))
+        foods.append(Food(name: "SlowMag", type: .supplement, consumptionUnit: .pill, consumptionGrams: 1, currentIngredientName: "SlowMag"))
+        foods.append(Food(name: "Taurine", type: .supplement, consumptionUnit: .pill, consumptionGrams: 1, currentIngredientName: "Taurine"))
+        foods.append(Food(name: "Vitamin D3 (1000 IU)", type: .supplement, consumptionUnit: .pill, consumptionGrams: 1, currentIngredientName: "Vitamin D3 (1000 IU)"))
     }
 
 
@@ -170,6 +184,22 @@ class FoodMgr: ObservableObject {
     // the step call site (AmountStepper.effectiveStep).
     func foodStepAmount(for i: Ingredient) -> Double {
         getByName(name: i.foodName)?.stepAmount ?? 0
+    }
+
+
+    // Consumption-unit resolution. Unlike defaultAmount the Food is
+    // the authoritative source — every member of a Food is consumed
+    // in the same unit, so there is no ingredient-level override that
+    // "wins". The ingredient's own stored value is used only as a
+    // defensive fallback if the Food can't be found (e.g. an
+    // ungrouped ingredient with empty foodName), mirroring the shape
+    // of effectiveDefaultAmount(for:).
+    func consumptionUnit(for i: Ingredient) -> Unit {
+        getByName(name: i.foodName)?.consumptionUnit ?? i.consumptionUnit
+    }
+
+    func consumptionGrams(for i: Ingredient) -> Double {
+        getByName(name: i.foodName)?.consumptionGrams ?? i.consumptionGrams
     }
 
 

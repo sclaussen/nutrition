@@ -24,10 +24,11 @@ func effectiveStep(for ingredient: Ingredient, foodMgr: FoodMgr) -> Double {
     // Proteins step by 10g — the generic gram heuristic (25 for
     // servingSize > 35) is too coarse for tuning a chicken or
     // salmon portion. 10g hits the sweet spot.
-    if foodMgr.isMeat(ingredient) && ingredient.consumptionUnit == .gram {
+    let unit = foodMgr.consumptionUnit(for: ingredient)
+    if foodMgr.isMeat(ingredient) && unit == .gram {
         return 10
     }
-    switch ingredient.consumptionUnit {
+    switch unit {
     case .piece, .egg, .can, .whole, .slice, .cup:
         return 1
     case .tablespoon:

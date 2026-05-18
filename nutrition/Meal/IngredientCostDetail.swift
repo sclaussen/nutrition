@@ -61,7 +61,7 @@ struct IngredientCostDetail: View {
                 // Category placeholders are not real foods — exclude.
                 if mi.isFoodTypeSlot { return nil }
                 if mi.isComposite {
-                    return (mi, compositeCost(mi, ingredientMgr))
+                    return (mi, compositeCost(mi, ingredientMgr, foodMgr))
                 }
                 // Meal rows are Food names; resolve to the Food's
                 // current ingredient (where the price lives).
@@ -77,7 +77,7 @@ struct IngredientCostDetail: View {
         let grams = ing.effectiveTotalGrams
         guard grams > 0 else { return 0 }
         let costPerGram = ing.totalCost / grams
-        let gramsConsumed = mi.amount * ing.consumptionGrams
+        let gramsConsumed = mi.amount * foodMgr.consumptionGrams(for: ing)
         return costPerGram * gramsConsumed
     }
 

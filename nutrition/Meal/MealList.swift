@@ -896,7 +896,7 @@ struct MealList: View {
         guard let ingredient = ingredientMgr.getByName(name: resolvedName) else {
             return false
         }
-        let servings = (adjustment.amount * ingredient.consumptionGrams) / ingredient.servingSize
+        let servings = (adjustment.amount * foodMgr.consumptionGrams(for: ingredient)) / ingredient.servingSize
 
         let fat: Double = Double(ingredient.fat * servings)
         let netCarbs: Double = Double(ingredient.netCarbs * servings)
@@ -964,7 +964,7 @@ struct MealList: View {
             for part in mi.compositeParts {
                 guard let ing = ingredientMgr.getByName(name: part.selectedVariantName),
                       ing.servingSize > 0 else { continue }
-                let servings = (part.amount * ing.consumptionGrams) / ing.servingSize
+                let servings = (part.amount * foodMgr.consumptionGrams(for: ing)) / ing.servingSize
                 c  += ing.calories * servings
                 f  += ing.fat      * servings
                 fi += ing.fiber    * servings
@@ -990,7 +990,7 @@ struct MealList: View {
             print("  resolution failed for \(name) (lookup \(currentName(mi)))")
             return
         }
-        let servings = (amount * ingredient.consumptionGrams) / ingredient.servingSize
+        let servings = (amount * foodMgr.consumptionGrams(for: ingredient)) / ingredient.servingSize
 
         // Determine the calories and macros by multiplying the
         // calories/macros per serving times the number of servings
@@ -1129,7 +1129,8 @@ struct MealList: View {
 
 
     func getConsumptionUnit(_ mi: MealIngredient) -> Unit {
-        return resolvedIngredient(mi)?.consumptionUnit ?? .gram
+        guard let ing = resolvedIngredient(mi) else { return .gram }
+        return foodMgr.consumptionUnit(for: ing)
     }
 
 

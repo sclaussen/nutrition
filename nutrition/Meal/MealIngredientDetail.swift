@@ -39,12 +39,12 @@ struct MealIngredientDetail: View {
                 HStack {
                     Text(mealIngredient.name)
                     Spacer()
-                    Text("\(mealIngredient.amount.formattedString(1)) \(ingredient?.consumptionUnit.pluralForm ?? "")")
+                    Text("\(mealIngredient.amount.formattedString(1)) \(ingredient.map { foodMgr.consumptionUnit(for: $0).pluralForm } ?? "")")
                 }
                 if let ing = ingredient {
                     // servings = amount in grams ÷ serving size;
                     // costs derive from the resolved ingredient.
-                    let grams = mealIngredient.amount * ing.consumptionGrams
+                    let grams = mealIngredient.amount * foodMgr.consumptionGrams(for: ing)
                     let servings = ing.servingSize > 0 ? grams / ing.servingSize : 0
                     let hasCost = ing.effectiveTotalGrams > 0
                     let costPerGram = hasCost ? ing.totalCost / ing.effectiveTotalGrams : 0
@@ -152,7 +152,7 @@ struct MealIngredientDetail: View {
     // contribution, in `vitaminMineralOrder`.
     private func vitaminMineralEntries(for ingredient: Ingredient) -> [VMEntry] {
         let servings = ingredient.servingSize > 0
-            ? (mealIngredient.amount * ingredient.consumptionGrams) / ingredient.servingSize
+            ? (mealIngredient.amount * foodMgr.consumptionGrams(for: ingredient)) / ingredient.servingSize
             : 0
         if servings == 0 { return [] }
 

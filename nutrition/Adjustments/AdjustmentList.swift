@@ -5,6 +5,7 @@ struct AdjustmentList: View {
 
     @EnvironmentObject var ingredientMgr: IngredientMgr
     @EnvironmentObject var adjustmentMgr: AdjustmentMgr
+    @EnvironmentObject var foodMgr: FoodMgr
 
     @State var showInactive: Bool = false
 
@@ -80,8 +81,20 @@ struct AdjustmentList: View {
     }
 
 
+    // `name` is a Food name (an adjustment targets a Food). Resolve
+    // it to the Food's current member and read the Food-level unit
+    // via FoodMgr. Falls back to a same-named plain ingredient, then
+    // .gram — never force-unwraps (the bare canonical ingredients
+    // that used to back Food names no longer exist).
     func getConsumptionUnit(_ name: String) -> Unit {
-        return ingredientMgr.getByName(name: name)!.consumptionUnit
+        if let f = foodMgr.getByName(name: name),
+           let ing = ingredientMgr.getByName(name: f.currentIngredientName) {
+            return foodMgr.consumptionUnit(for: ing)
+        }
+        if let ing = ingredientMgr.getByName(name: name) {
+            return foodMgr.consumptionUnit(for: ing)
+        }
+        return .gram
     }
 }
 
