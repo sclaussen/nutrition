@@ -1037,7 +1037,7 @@ class IngredientMgr: ObservableObject {
                                       url: "https://www.wholefoodsmarket.com/grocery/product/b0bkcvlygx",
                                       totalCost: 25.00,
                                       totalGrams: 67.5,  // 90 ct (WF title) × 0.75 g/cap
-                                      servingSize: 1,
+                                      servingSize: 0.75,  // = g/cap so costPerServing = cost/cap
                                       calories: 0,
                                       fat: 0,
                                       fiber: 0,
@@ -1048,7 +1048,7 @@ class IngredientMgr: ObservableObject {
                                       verified: "5/10/2026"))
 
         ingredients.append(Ingredient(name: "Taurine",
-                                      brand: "Thorne",
+                                      brand: "Pure Encapsulations",
                                       foodName: "Taurine",
                                       totalCost: 22.00,
                                       totalGrams: 120,  // 120 caps (Amazon B0016D1ROS, Pure Encap) × 1 g/cap
@@ -1068,7 +1068,7 @@ class IngredientMgr: ObservableObject {
                                       url: "https://www.wholefoodsmarket.com/grocery/product/b000vyrroc",
                                       totalCost: 19.00,
                                       totalGrams: 750,  // 250 capsules (WF title) × 3 g/cap
-                                      servingSize: 1,
+                                      servingSize: 3,  // = g/cap so costPerServing = cost/cap
                                       calories: 0,
                                       fat: 0,
                                       fiber: 0,
@@ -1083,7 +1083,7 @@ class IngredientMgr: ObservableObject {
                                       foodName: "L-Theanine",
                                       totalCost: 31.00,
                                       totalGrams: 18,  // 90 caps (Amazon B0797BLW59, Thorne) × 0.2 g/cap
-                                      servingSize: 1,
+                                      servingSize: 0.2,  // = g/cap so costPerServing = cost/cap
                                       calories: 0,
                                       fat: 0,
                                       fiber: 0,
@@ -1098,7 +1098,7 @@ class IngredientMgr: ObservableObject {
                                       foodName: "Apigenin",
                                       totalCost: 19.95,
                                       totalGrams: 4.5,  // 90 caps (Amazon B001TEIJIQ, Swanson) × 0.05 g/cap
-                                      servingSize: 1,
+                                      servingSize: 0.05,  // = g/cap so costPerServing = cost/cap
                                       calories: 0,
                                       fat: 0,
                                       fiber: 0,
@@ -2071,7 +2071,7 @@ class IngredientMgr: ObservableObject {
                                       brand: "Whole Foods Market",
                                       foodName: "Raspberries",
                                       url: "https://www.wholefoodsmarket.com/grocery/product/fresh-produce-red-raspberries-6-oz-b000p6g12u",
-                                      totalCost: 0,
+                                      totalCost: 4.49,  // est: WF exposes no price for fresh produce; ~6 oz berry comp (blackberries 6 oz $3.29)
                                       totalGrams: 170.1,
                                       servingSize: 72.0,
                                       calories: 37.0,
