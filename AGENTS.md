@@ -124,3 +124,59 @@ The README.md contains extensive feature prioritization (P0-P4) including:
 - Manual testing via iOS Simulator
 - Ingredient data verification tracked via `verified` field
 - Debug logging throughout adjustment calculations
+
+## Data Tooling — Whole Foods price/nutrition scripts (`scripts/`)
+
+Ingredient cost is gram-based:
+
+```
+costPerGram    = totalCost / effectiveTotalGrams   (effectiveTotalGrams = totalGrams if > 0, else parsed from the name)
+costPerServing = costPerGram × servingSize
+meal-row cost  = costPerGram × (amount × consumptionGrams)
+```
+
+So **`totalGrams` must be the net grams of the whole container**. For
+pill/capsule supplements `consumptionGrams` is grams *per pill*, so
+`totalGrams = containerPillCount × consumptionGrams`. A placeholder
+like `totalGrams: 1` makes every pill cost a whole bottle — that was a
+real bug; don't reintroduce it.
+
+**Setup (one-time; system python3 lacks pip):**
+
+```
+/Users/shane/.pyenv/versions/3.10.4/bin/python3 -m venv scripts/.venv
+scripts/.venv/bin/python -m pip install playwright
+scripts/.venv/bin/python -m playwright install chromium
+```
+
+**`scripts/wf_refresh.py`** — Whole Foods price + macro fetcher. WF
+serves price/nutrition in the page's `__NEXT_DATA__.aapiData`, pinned
+to the store in the `wfm_store_d8` cookie (San Mateo); the path is
+bot-protected so it drives headless Chromium via Playwright. Regular
+price = `basisPriceAmount ?? priceAmount` (never the sale price).
+
+```
+# look up ONE (or a few) products directly — ignores the seed and the
+# cached JSON; prints parsed price+nutrition JSON to stdout, progress
+# to stderr (pipeable). Use this when given a single URL.
+scripts/.venv/bin/python scripts/wf_refresh.py --url "<wf-product-url>" ["<url2>" ...]
+
+scripts/.venv/bin/python scripts/wf_refresh.py                  # dry run, all seed WF URLs -> scripts/wf_refresh_out.json
+scripts/.venv/bin/python scripts/wf_refresh.py --apply prices    # write refreshed totalCost back (writes .bak)
+```
+
+Not every product exposes WF data (third-party/marketplace items
+return no price/nutrition) — but the WF product **title** usually
+states the container count. For non-WF supplements, read the Amazon
+listing (WebFetch, or the headless browser if WebFetch 500s) for the
+capsule count.
+
+**`scripts/fix_total_grams.py`** — fills `totalGrams` for priced
+items that have **none** (`totalGrams == 0`; it intentionally skips
+`> 0`, so a bogus `totalGrams: 1` is NOT auto-fixed — correct those
+by hand). Uses the captured `scripts/wf_refresh_out.json`.
+`--apply` to write (`.grams.bak`).
+
+**`scripts/fix_food_units.py`** — propagates each Food's canonical
+member `consumptionUnit`/`consumptionGrams` to every brand variant.
+`--apply` to write (`.units.bak`).

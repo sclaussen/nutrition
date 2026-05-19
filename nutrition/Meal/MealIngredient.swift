@@ -547,9 +547,6 @@ struct MealIngredient: Codable, Identifiable {
 
 
     func manualAdjustment(amount: Double) -> MealIngredient {
-        if adjustment == Constants.Automatic {
-            undoAdjustment()
-        }
         var c = self
         c.amount = amount
         c.adjustment = Constants.Manual

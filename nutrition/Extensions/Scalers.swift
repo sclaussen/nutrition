@@ -1,7 +1,7 @@
 import Foundation
 import SwiftUI
 
-extension Double: ValueType {
+extension Double: ValueType, @retroactive CaseIterable {
     func singular() -> Bool {
         return self.round(0) == 1.0
     }
@@ -29,7 +29,7 @@ extension Double: ValueType {
     }
 }
 
-extension Int: ValueType {
+extension Int: ValueType, @retroactive CaseIterable {
     func formattedString(_ max: Int = -1) -> String {
         return self.description
     }
@@ -47,7 +47,7 @@ extension Int: ValueType {
     }
 }
 
-extension String: ValueType {
+extension String: ValueType, @retroactive CaseIterable {
     func formattedString(_ max: Int = -1) -> String {
         return self
     }
@@ -92,7 +92,7 @@ extension String: ValueType {
 //     }
 // }
 
-extension Bool: ValueType {
+extension Bool: ValueType, @retroactive CaseIterable {
     func formattedString(_ max: Int = -1) -> String {
         return self.description
     }
@@ -106,7 +106,7 @@ extension Bool: ValueType {
     }
 }
 
-extension Date: ValueType {
+extension Date: ValueType, @retroactive CaseIterable {
     func formattedString(_ max: Int = -1) -> String {
         return self.description
     }

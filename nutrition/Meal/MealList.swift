@@ -498,7 +498,12 @@ struct MealList: View {
                   title: "\(mi.name) (\(unit.pluralForm))",
                   initialValue: mi.amount
               ) { newAmount in
-                  applyAmount(mi, newAmount: newAmount)
+                  // Entering an explicit amount is a deliberate
+                  // choice — auto-lock the row (Done / blue) so the
+                  // next generateMeal won't auto-adjust it away.
+                  // Mirrors toggleLock's Black → Blue path.
+                  mealIngredientMgr.doneAdjustment(id: mi.id, amount: newAmount)
+                  generateMeal()
               }
           }
           .sheet(item: $compositeEditorFor) { mi in
@@ -1414,6 +1419,10 @@ struct AddFoodToMealSheet: View {
     let foods: [Food]
     let onPick: (String) -> Void
 
+    // Names tapped (green) but not yet committed. Done adds them all;
+    // dismissing without Done discards the selection.
+    @State private var selected: Set<String> = []
+
     var body: some View {
         NavigationView {
             Group {
@@ -1430,7 +1439,9 @@ struct AddFoodToMealSheet: View {
                             HStack(spacing: 8) {
                                 Text(food.name)
                                   .font(.callout)
-                                  .foregroundColor(Color.theme.blackWhite)
+                                  .foregroundColor(selected.contains(food.name)
+                                                   ? Color.theme.green
+                                                   : Color.theme.blackWhite)
                                 Spacer(minLength: 0)
                                 Text(food.type.label)
                                   .font(.caption2)
@@ -1439,8 +1450,11 @@ struct AddFoodToMealSheet: View {
                               .frame(height: 28)
                               .contentShape(Rectangle())
                               .onTapGesture {
-                                  onPick(food.name)
-                                  presentationMode.wrappedValue.dismiss()
+                                  if selected.contains(food.name) {
+                                      selected.remove(food.name)
+                                  } else {
+                                      selected.insert(food.name)
+                                  }
                               }
                         }
                           .listRowInsets(EdgeInsets(top: 8, leading: 10, bottom: 8, trailing: 10))
@@ -1453,6 +1467,11 @@ struct AddFoodToMealSheet: View {
               .toolbar {
                   ToolbarItem(placement: .cancellationAction) {
                       Button("Done") {
+                          // Add every green-selected Food, in the
+                          // sheet's display order, then go back.
+                          for food in foods where selected.contains(food.name) {
+                              onPick(food.name)
+                          }
                           presentationMode.wrappedValue.dismiss()
                       }
                         .foregroundColor(Color.theme.blueYellow)

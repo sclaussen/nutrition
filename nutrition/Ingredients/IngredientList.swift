@@ -616,11 +616,11 @@ struct IngredientList: View {
 
 
     func delete(_ ingredient: Ingredient) {
-        if let mealIngredient = mealIngredientMgr.getByName(name: ingredient.name) {
+        if mealIngredientMgr.getByName(name: ingredient.name) != nil {
             deleteMealIngredientAlert = true
             return
         }
-        if let adjustment = adjustmentMgr.getByName(name: ingredient.name) {
+        if adjustmentMgr.getByName(name: ingredient.name) != nil {
             deleteAdjustmentAlert = true
             return
         }

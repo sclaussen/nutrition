@@ -97,6 +97,19 @@ APPEND = "ingredients.append(Ingredient("
 NAME_RE = re.compile(r'name:\s*"((?:[^"\\]|\\.)*)"')
 URL_RE = re.compile(r'url:\s*"(https://www\.wholefoodsmarket\.com/[^"]+)"')
 ASIN_RE = re.compile(r'/([0-9a-z]{10})/?(?:\?|$)')
+# WF product URLs are .../product/<slug>-<asin>[?...]; the ASIN is the
+# trailing 10-char [0-9a-z] token of the path (preceded by '/' or '-').
+ASIN_ANY_RE = re.compile(r'[/-]([0-9a-z]{10})(?:[/?#]|$)')
+
+
+def asin_from_url(url):
+    path = url.split("?")[0].rstrip("/")
+    m = ASIN_ANY_RE.search(path + "?")
+    return m.group(1) if m else path.rsplit("/", 1)[-1][:32]
+
+
+def slug_from_url(url):
+    return url.split("?")[0].rstrip("/").rsplit("/", 1)[-1]
 
 
 def parse_seed(text):
@@ -112,15 +125,17 @@ def parse_seed(text):
         nm = NAME_RE.search(block)
         um = URL_RE.search(block)
         if nm and um:
-            am = ASIN_RE.search(um.group(1).split("?")[0])
-            if am:
-                rows.append({
-                    "name": nm.group(1),
-                    "url": um.group(1),
-                    "asin": am.group(1),
-                    "start": start,
-                    "end": start + len(block),
-                })
+            # asin_from_url handles both plain (/b07fycb4wx) and
+            # slug (fresh-produce-...-b000se9nug) WF URLs; the old
+            # ASIN_RE missed slug URLs, silently excluding those
+            # entries from the price refresh.
+            rows.append({
+                "name": nm.group(1),
+                "url": um.group(1),
+                "asin": asin_from_url(um.group(1)),
+                "start": start,
+                "end": start + len(block),
+            })
         idx = start + len(APPEND)
     return rows
 
@@ -165,7 +180,8 @@ def fetch_all(rows, headed=False):
                 rec["error"] = f"{type(e).__name__}: {e}"
             results.append(rec)
             print(f"[{i}/{len(rows)}] {r['name']}: "
-                  f"{rec.get('regularPrice', rec.get('error'))}")
+                  f"{rec.get('regularPrice', rec.get('error'))}",
+                  file=sys.stderr)
             page.wait_for_timeout(900)  # be polite
         browser.close()
     return results
@@ -239,7 +255,21 @@ def main():
                     help="Show the browser (debugging).")
     ap.add_argument("--limit", type=int, default=0,
                     help="Only the first N entries (smoke test).")
+    ap.add_argument("--url", nargs="+", metavar="URL", default=None,
+                    help="Fetch one or more WF product URLs directly "
+                         "(ignores the seed and wf_refresh_out.json). "
+                         "Prints parsed price + nutrition as JSON.")
     args = ap.parse_args()
+
+    # ---- single / small-set URL mode -------------------------------
+    # No seed parse, no cache read/write. Use this to look up an
+    # individual product (e.g. before adding a new Ingredient).
+    if args.url:
+        rows = [{"name": slug_from_url(u), "url": u,
+                 "asin": asin_from_url(u)} for u in args.url]
+        results = fetch_all(rows, headed=args.headed)
+        print(json.dumps(results, indent=2))
+        return
 
     text = open(SEED, encoding="utf-8").read()
     rows = parse_seed(text)
