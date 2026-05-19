@@ -42,37 +42,46 @@ struct MealIngredientDetail: View {
                     Text("\(mealIngredient.amount.formattedString(1)) \(ingredient.map { foodMgr.consumptionUnit(for: $0).pluralForm } ?? "")")
                 }
                 if let ing = ingredient {
-                    // servings = amount in grams ÷ serving size;
-                    // costs derive from the resolved ingredient.
-                    let grams = mealIngredient.amount * foodMgr.consumptionGrams(for: ing)
-                    let servings = ing.servingSize > 0 ? grams / ing.servingSize : 0
+                    let unit = foodMgr.consumptionUnit(for: ing)
+                    let cg = foodMgr.consumptionGrams(for: ing)
+                    let counted = unit != .gram
+                    let grams = mealIngredient.amount * cg
                     let hasCost = ing.effectiveTotalGrams > 0
                     let costPerGram = hasCost ? ing.totalCost / ing.effectiveTotalGrams : 0
-                    let costPerServing = costPerGram * ing.servingSize
                     let contributed = costPerGram * grams
+                    // Weighed foods stay gram-based; counted foods
+                    // (pills, drinks, eggs…) are shown per unit — $/g
+                    // and gram serving sizes are meaningless there.
+                    let perUnitCost = counted ? costPerGram * cg
+                                              : costPerGram * ing.servingSize
+                    let count = counted
+                        ? mealIngredient.amount
+                        : (ing.servingSize > 0 ? grams / ing.servingSize : 0)
                     HStack {
-                        Text("Serving size")
+                        Text(counted ? "Unit" : "Serving size")
                         Spacer()
-                        Text("\(ing.servingSize.formattedString(1)) g")
+                        Text(counted ? "1 \(unit.singularForm)"
+                                      : "\(ing.servingSize.formattedString(1)) g")
                           .foregroundColor(Color.theme.blackWhiteSecondary)
                     }
                     if hasCost {
                         HStack {
-                            Text("Cost per serving")
+                            Text(counted ? "Cost per \(unit.singularForm)"
+                                          : "Cost per serving")
                             Spacer()
-                            Text(String(format: "$%.2f", costPerServing))
+                            Text(String(format: "$%.2f", perUnitCost))
                               .foregroundColor(Color.theme.blackWhiteSecondary)
                         }
                     }
                     HStack {
-                        Text("Servings")
+                        Text(counted ? unit.pluralForm.capitalized : "Servings")
                         Spacer()
-                        Text(servings.formattedString(2))
+                        Text(count.formattedString(2))
                           .foregroundColor(Color.theme.blackWhiteSecondary)
                     }
                     if hasCost {
                         HStack {
-                            Text("Serving cost")
+                            Text(counted ? "Total cost" : "Serving cost")
                             Spacer()
                             Text(String(format: "$%.2f", contributed))
                               .foregroundColor(Color.theme.blueYellow)

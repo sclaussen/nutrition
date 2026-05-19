@@ -150,7 +150,8 @@ struct IngredientList: View {
                     // Far-right value of whatever metric we're sorted
                     // by (none when sorted by name/category).
                     if let m = metricText(sortMetric(forRow: ingredient,
-                                                     mode: sortBy)) {
+                                                     mode: sortBy),
+                                          unit: foodMgr.consumptionUnit(for: ingredient)) {
                         Text(m)
                           .font(.caption)
                           .foregroundColor(Color.theme.blackWhiteSecondary)
@@ -449,11 +450,12 @@ struct IngredientList: View {
     // Single source of truth for the sortable metric.
     //
     // The macro metrics are per-100g (matching the original sort and
-    // the on-screen "highest first" intent). Cost uses the project-
-    // wide cost-per-serving basis — `Ingredient.costPerServing`
-    // (= totalCost / effectiveTotalGrams * servingSize), the same
-    // basis MealIngredientDetail displays — so the sort key and the
-    // number shown on the row are always the same value.
+    // the on-screen "highest first" intent). Cost is per the unit the
+    // food is actually consumed in: weighed foods (consumptionUnit
+    // .gram) use the cost-per-serving basis; counted foods (pills,
+    // drinks, eggs…) use cost per ONE consumption unit
+    // (costPerGram × consumptionGrams) — $/g is meaningless for those.
+    // The sort key and the number shown on the row are the same value.
     //
     // `nil` means "no value for this row + mode" (e.g. name mode, or
     // an unresolvable Food). Callers display nothing and sort these
@@ -465,7 +467,10 @@ struct IngredientList: View {
         case .protein: return ing.protein100
         case .carbs:   return ing.netCarbs100
         case .fat:     return ing.fat100
-        case .cost:    return ing.costPerServing
+        case .cost:
+            return foodMgr.consumptionUnit(for: ing) == .gram
+                ? ing.costPerServing
+                : ing.costPerGram * foodMgr.consumptionGrams(for: ing)
         }
     }
 
@@ -500,9 +505,16 @@ struct IngredientList: View {
     // Right-aligned trailing label for a row, or nil when the active
     // sort has no per-row number (name/category). Macros -> "12.3 g",
     // cost -> "$1.23".
-    private func metricText(_ value: Double?) -> String? {
+    private func metricText(_ value: Double?, unit: Unit? = nil) -> String? {
         guard let value = value else { return nil }
-        if sortBy == .cost { return String(format: "$%.2f", value) }
+        if sortBy == .cost {
+            // Counted foods read "$0.34/cap"; weighed foods and
+            // composites (unit nil/.gram) stay a bare "$1.23".
+            if let u = unit, u != .gram {
+                return String(format: "$%.2f/%@", value, u.singularForm)
+            }
+            return String(format: "$%.2f", value)
+        }
         return "\(value.formattedString(1)) g"
     }
 

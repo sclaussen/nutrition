@@ -1235,12 +1235,12 @@ class IngredientMgr: ObservableObject {
                                       verified: "5/16/2026",
                                       stepAmount: 5,
                                       defaultAmount: 28))
-        ingredients.append(Ingredient(name: "Blueberries (Whole Foods Market)",
+        ingredients.append(Ingredient(name: "Blueberries (Whole Foods Market Organic 1 Pint)",
                                       brand: "Whole Foods Market",
                                       foodName: "Blueberries",
                                       url: "https://www.wholefoodsmarket.com/grocery/product/b077n7tr5g",
                                       totalCost: 7.49,
-                                      totalGrams: 459.7,
+                                      totalGrams: 296.0,  // WF label: 2 servings × 1 cup (~148g); was 459.7 (unit-price lb artifact)
                                       servingSize: 148.0,
                                       calories: 84.0,
                                       fat: 0.49,
