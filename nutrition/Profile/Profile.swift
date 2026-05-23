@@ -160,6 +160,21 @@ class ProfileMgr: ObservableObject {
     }
 
 
+    // Set / clear this profile's per-Food default amount. amount > 0
+    // sets an override; <= 0 removes it so the Ingredient/Food-level
+    // fallback applies again. Reassigning `profile` triggers didSet
+    // which mirrors into `profiles` and persists.
+    func setDefault(foodName: String, amount: Double) {
+        var p = profile
+        if amount > 0 {
+            p.defaults[foodName] = amount
+        } else {
+            p.defaults.removeValue(forKey: foodName)
+        }
+        profile = p
+    }
+
+
     // TODO: Update once the health kit active calories algorithm is demystified
     // func setActiveCaloriesBurned(activeCaloriesBurned: Double) {
     //     self.profile = profile.setActiveCaloriesBurned(activeCaloriesBurned: activeCaloriesBurned)
@@ -196,6 +211,10 @@ struct Profile: Codable, Identifiable, Equatable {
     var proteinRatio: Double
     var calorieDeficit: Int
     var netCarbsMaximum: Double
+    // Per-profile overrides of a Food's defaultAmount (the seed amount
+    // when that Food is added to a meal). Keyed by Food name. Empty for
+    // older persisted profiles (custom decoder defaults to [:]).
+    var defaults: [String: Double]
 
 
     // Memberwise init. The `proteins` subsystem was removed; Codable
@@ -209,7 +228,8 @@ struct Profile: Codable, Identifiable, Equatable {
          bodyMassFromHealthKit: Bool, bodyMass: Double,
          bodyFatPercentageFromHealthKit: Bool, bodyFatPercentage: Double,
          activeCaloriesBurned: Double, proteinRatio: Double,
-         calorieDeficit: Int, netCarbsMaximum: Double) {
+         calorieDeficit: Int, netCarbsMaximum: Double,
+         defaults: [String: Double] = [:]) {
         self.id = id
         self.name = name
         self.dateOfBirth = dateOfBirth
@@ -223,13 +243,14 @@ struct Profile: Codable, Identifiable, Equatable {
         self.proteinRatio = proteinRatio
         self.calorieDeficit = calorieDeficit
         self.netCarbsMaximum = netCarbsMaximum
+        self.defaults = defaults
     }
 
 
     // Custom decoder — Swift's auto-synthesized decoder requires every
-    // property to be present in the JSON, but id/name are new. Read
-    // them with decodeIfPresent so pre-multi-profile JSON keeps
-    // loading; ProfileMgr stamps the migration values in init().
+    // property to be present in the JSON, but id/name/defaults are
+    // new. Read them with decodeIfPresent so pre-multi-profile JSON
+    // keeps loading; ProfileMgr stamps the migration values in init().
     init(from decoder: Decoder) throws {
         let c = try decoder.container(keyedBy: CodingKeys.self)
         self.id = (try? c.decode(String.self, forKey: .id)) ?? UUID().uuidString
@@ -245,6 +266,7 @@ struct Profile: Codable, Identifiable, Equatable {
         self.proteinRatio = try c.decode(Double.self, forKey: .proteinRatio)
         self.calorieDeficit = try c.decode(Int.self, forKey: .calorieDeficit)
         self.netCarbsMaximum = try c.decode(Double.self, forKey: .netCarbsMaximum)
+        self.defaults = (try? c.decode([String: Double].self, forKey: .defaults)) ?? [:]
     }
 
 

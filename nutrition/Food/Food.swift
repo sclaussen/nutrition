@@ -174,10 +174,18 @@ class FoodMgr: ObservableObject {
     // Portion-config resolution. The Food owns the primary value;
     // an ingredient's own value is an override that wins when != 0.
 
-    // Effective seed amount for a new meal row: ingredient override
-    // (!= 0) else the Food-level default (0 = no preset).
-    func effectiveDefaultAmount(for i: Ingredient) -> Double {
-        i.defaultAmount != 0 ? i.defaultAmount : (getByName(name: i.foodName)?.defaultAmount ?? 0)
+    // Effective seed amount for a new meal row. Resolution order:
+    //   1. profile per-Food override (profile.defaults[foodName]) — the
+    //      ACTIVE profile gets its own meal default per Food. Caller
+    //      passes profileMgr.profile so meal-add code can be profile-
+    //      aware without coupling Food to ProfileMgr.
+    //   2. ingredient.defaultAmount (variant-level override, != 0)
+    //   3. Food.defaultAmount (group-level baseline, 0 = no preset)
+    func effectiveDefaultAmount(for i: Ingredient, profile: Profile? = nil) -> Double {
+        if let p = profile?.defaults[i.foodName], p > 0 { return p }
+        return i.defaultAmount != 0
+            ? i.defaultAmount
+            : (getByName(name: i.foodName)?.defaultAmount ?? 0)
     }
 
     // Raw Food-level step for this ingredient's Food (0 if none).

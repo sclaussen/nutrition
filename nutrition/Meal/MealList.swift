@@ -1196,7 +1196,7 @@ struct MealList: View {
         // wins, else the Food-level default. Skip when there's no
         // preset so a user's hand-set amount is preserved.
         if let memberIng = ingredientMgr.getByName(name: member) {
-            let amt = foodMgr.effectiveDefaultAmount(for: memberIng)
+            let amt = foodMgr.effectiveDefaultAmount(for: memberIng, profile: profileMgr.profile)
             if amt > 0 {
                 mealIngredientMgr.setAmount(id: mi.id, amount: amt)
             }
@@ -1236,7 +1236,7 @@ struct MealList: View {
         // preset (ingredient override wins, else Food-level default).
         let member = food.currentIngredientName
         let amount = ingredientMgr.getByName(name: member)
-            .map { foodMgr.effectiveDefaultAmount(for: $0) } ?? 0
+            .map { foodMgr.effectiveDefaultAmount(for: $0, profile: profileMgr.profile) } ?? 0
         mealIngredientMgr.create(name: food.name,
                                  amount: amount,
                                  isSupplement: food.type == .supplement)
@@ -1270,7 +1270,7 @@ struct MealList: View {
         guard let food = foodMgr.getByName(name: foodName) else { return }
         let member = food.currentIngredientName
         let amount = ingredientMgr.getByName(name: member)
-            .map { foodMgr.effectiveDefaultAmount(for: $0) } ?? 0
+            .map { foodMgr.effectiveDefaultAmount(for: $0, profile: profileMgr.profile) } ?? 0
         mealIngredientMgr.create(name: food.name,
                                  amount: amount,
                                  isSupplement: food.type == .supplement)

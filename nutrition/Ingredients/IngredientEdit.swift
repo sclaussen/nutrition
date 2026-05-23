@@ -6,6 +6,7 @@ struct IngredientEdit: View {
     @EnvironmentObject var ingredientMgr: IngredientMgr
     @EnvironmentObject var adjustmentMgr: AdjustmentMgr
     @EnvironmentObject var foodMgr: FoodMgr
+    @EnvironmentObject var profileMgr: ProfileMgr
 
     @State private var newGroupName = ""
     // Category for a brand-new Food created from this screen. An
@@ -312,6 +313,18 @@ extension IngredientEdit {
                 NameValue("Consumption Unit", description: "preferred meal prep/consumption unit", $ingredient.consumptionUnit, options: Unit.ingredientOptions(), control: .picker)
                 NameValue("Grams / Consumption Unit", description: "grams per each prep/consumption unit", $ingredient.consumptionGrams, edit: true)
                 NameValue("Step amount", description: "0 = auto by unit & serving size", $ingredient.stepAmount, ingredient.consumptionUnit, edit: true)
+                // Per-profile default. Keyed by Food name so every
+                // variant of the same Food shows the active profile's
+                // single shared value. 0 here = no override -> falls
+                // back to ingredient.defaultAmount then Food default.
+                NameValue("Default amount (\(profileMgr.profile.name))",
+                          description: "seed amount when this Food is added to a meal; per active profile",
+                          Binding(
+                            get: { profileMgr.profile.defaults[ingredient.foodName] ?? 0 },
+                            set: { profileMgr.setDefault(foodName: ingredient.foodName, amount: $0) }
+                          ),
+                          ingredient.consumptionUnit,
+                          edit: true)
             }
         }
     }
