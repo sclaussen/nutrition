@@ -108,6 +108,8 @@ class FoodMgr: ObservableObject {
         foods.append(Food(name: "Blueberries", type: .fruit, defaultAmount: 50, stepAmount: 5, consumptionUnit: .gram, consumptionGrams: 1, currentIngredientName: "Blueberries (365 by Whole Foods M 32 Ounce)"))
         foods.append(Food(name: "Strawberries", type: .fruit, defaultAmount: 50, stepAmount: 5, consumptionUnit: .gram, consumptionGrams: 1, currentIngredientName: "Strawberries (Whole Foods Market 1 lb)"))
         foods.append(Food(name: "Raspberries", type: .fruit, defaultAmount: 50, stepAmount: 5, consumptionUnit: .gram, consumptionGrams: 1, currentIngredientName: "Raspberries (Whole Foods Market 6 oz)"))
+        foods.append(Food(name: "Orange", type: .fruit, defaultAmount: 140, stepAmount: 5, consumptionUnit: .gram, consumptionGrams: 1, currentIngredientName: "Navel Orange (Whole Foods Market)"))
+        foods.append(Food(name: "Clementine", type: .fruit, defaultAmount: 74, stepAmount: 5, consumptionUnit: .gram, consumptionGrams: 1, currentIngredientName: "Clementine (Whole Foods Market 3 lb Bag)"))
 
         // carbs
         foods.append(Food(name: "Bread", type: .carbs, consumptionUnit: .gram, consumptionGrams: 1, currentIngredientName: "Bread (Food for Life 24 OZ)"))
@@ -120,13 +122,13 @@ class FoodMgr: ObservableObject {
         foods.append(Food(name: "Starbucks Sandwich", type: .carbs, consumptionUnit: .piece, consumptionGrams: 176, currentIngredientName: "Ham & Swiss on Baguette"))
 
         // meats
-        foods.append(Food(name: "Beef", type: .meat, defaultAmount: 113, stepAmount: 5, consumptionUnit: .gram, consumptionGrams: 1, currentIngredientName: "Beef (ButcherBox)"))
-        foods.append(Food(name: "Bison", type: .meat, consumptionUnit: .gram, consumptionGrams: 1, currentIngredientName: "Bison"))
-        foods.append(Food(name: "Chicken", type: .meat, defaultAmount: 112, stepAmount: 5, consumptionUnit: .gram, consumptionGrams: 1, currentIngredientName: "Chicken (Mary's Chicken)"))
-        foods.append(Food(name: "Lamb", type: .meat, consumptionUnit: .gram, consumptionGrams: 1, currentIngredientName: "Lamb"))
-        foods.append(Food(name: "Pork Chop", type: .meat, consumptionUnit: .gram, consumptionGrams: 1, currentIngredientName: "Pork Chop"))
-        foods.append(Food(name: "Salmon", type: .meat, defaultAmount: 113, stepAmount: 5, consumptionUnit: .gram, consumptionGrams: 1, currentIngredientName: "Salmon (Whole Foods Market)"))
-        foods.append(Food(name: "Top Sirloin Cap", type: .meat, consumptionUnit: .gram, consumptionGrams: 1, currentIngredientName: "Top Sirloin Cap"))
+        foods.append(Food(name: "Beef", type: .meat, defaultAmount: 200, stepAmount: 5, consumptionUnit: .gram, consumptionGrams: 1, currentIngredientName: "Beef (ButcherBox)"))
+        foods.append(Food(name: "Bison", type: .meat, defaultAmount: 400, stepAmount: 5, consumptionUnit: .gram, consumptionGrams: 1, currentIngredientName: "Bison"))
+        foods.append(Food(name: "Chicken", type: .meat, defaultAmount: 450, stepAmount: 5, consumptionUnit: .gram, consumptionGrams: 1, currentIngredientName: "Chicken (Mary's Chicken)"))
+        foods.append(Food(name: "Lamb", type: .meat, defaultAmount: 400, stepAmount: 5, consumptionUnit: .gram, consumptionGrams: 1, currentIngredientName: "Lamb"))
+        foods.append(Food(name: "Pork Chop", type: .meat, defaultAmount: 450, stepAmount: 5, consumptionUnit: .gram, consumptionGrams: 1, currentIngredientName: "Pork Chop"))
+        foods.append(Food(name: "Salmon", type: .meat, defaultAmount: 425, stepAmount: 5, consumptionUnit: .gram, consumptionGrams: 1, currentIngredientName: "Salmon (Whole Foods Market)"))
+        foods.append(Food(name: "Top Sirloin Cap", type: .meat, defaultAmount: 425, stepAmount: 5, consumptionUnit: .gram, consumptionGrams: 1, currentIngredientName: "Top Sirloin Cap"))
 
         // supplements
         foods.append(Food(name: "Thorne Basic Nutrients 2/Day", type: .supplement, consumptionUnit: .pill, consumptionGrams: 1, currentIngredientName: "Thorne Basic Nutrients 2/Day"))

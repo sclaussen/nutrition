@@ -1905,7 +1905,7 @@ class IngredientMgr: ObservableObject {
                                       consumptionGrams: 1,
                                       verified: "5/16/2026",
                                       stepAmount: 5,
-                                      defaultAmount: 112))
+                                      defaultAmount: 450))
         ingredients.append(Ingredient(name: "Sunflower Butter (Once Again)",
                                       brand: "Once Again",
                                       foodName: "Sunflower Butter",

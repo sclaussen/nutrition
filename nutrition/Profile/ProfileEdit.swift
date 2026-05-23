@@ -18,6 +18,23 @@ struct ProfileEdit: View {
                 NavigationLink("Scanner Settings", destination: SettingsView())
                 NavigationLink("Verify All Ingredients", destination: VerifyAllWalkthrough())
             }
+            // Profile switcher. The Base/Daily/Derived sections below
+            // all read $profileMgr.profile.X, so changing the active
+            // profile here makes the rest of the page reflect it.
+            Section(header: Text("Profile")) {
+                Picker("Active", selection: Binding(
+                    get: { profileMgr.profile.id },
+                    set: { profileMgr.switchToProfile($0) })) {
+                    ForEach(profileMgr.profiles) { p in
+                        Text(p.name.isEmpty ? "(unnamed)" : p.name).tag(p.id)
+                    }
+                }
+                NameValue("Name", $profileMgr.profile.name, edit: true)
+                Button(action: { profileMgr.addProfile() }) {
+                    Label("Add Profile", systemImage: "plus.circle")
+                }
+                  .foregroundColor(Color.theme.blueYellow)
+            }
             Section(header: Text("Base")) {
                 NameValue("Date of Birth", $profileMgr.profile.dateOfBirth, control: .date)
                 NameValue("Gender", $profileMgr.profile.gender, options: Gender.allCases, control: .picker)

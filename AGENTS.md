@@ -152,8 +152,15 @@ scripts/.venv/bin/python -m playwright install chromium
 **`scripts/wf_refresh.py`** — Whole Foods price + macro fetcher. WF
 serves price/nutrition in the page's `__NEXT_DATA__.aapiData`, pinned
 to the store in the `wfm_store_d8` cookie (San Mateo); the path is
-bot-protected so it drives headless Chromium via Playwright. Regular
-price = `basisPriceAmount ?? priceAmount` (never the sale price).
+bot-protected so it drives headless Chromium via Playwright.
+
+> **Rule: never use sale prices.** When pulling any price (this script,
+> a manual page read, an Amazon listing — anything) the seed
+> `totalCost` must be the **regular** price. WF exposes both: regular
+> = `offerDetails.price.basisPriceAmount` when on sale, else
+> `priceAmount`. The script already enforces this; if you ever read a
+> page by hand, ignore the displayed sale/"current" price and use the
+> crossed-out / "regular" figure.
 
 ```
 # look up ONE (or a few) products directly — ignores the seed and the
