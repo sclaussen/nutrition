@@ -443,7 +443,7 @@ struct MealList: View {
                             caloriesGoalUnadjusted: profileMgr.profile.caloriesGoalUnadjusted,
                             calories: macrosMgr.macros.calories,
                             fatGoal: profileMgr.profile.fatGoal,
-                            netCarbsMaximum: profileMgr.profile.netCarbsMaximum,
+                            netCarbsMaximum: profileMgr.profile.effectiveNetCarbsMaximum,
                             proteinGoal: profileMgr.profile.proteinGoal,
                             fat: macrosMgr.macros.fat,
                             netCarbs: macrosMgr.macros.netCarbs,
@@ -741,7 +741,7 @@ struct MealList: View {
         // Set (or reset) the daily macro goals:
         // - reflects any changes in the manually updated profile
         // - reflects any changes to the automatically updated profile fields
-        macrosMgr.setDailyMacroGoals(caloriesGoalUnadjusted: profileMgr.profile.caloriesGoalUnadjusted, caloriesGoal: profileMgr.profile.caloriesGoal, fatGoal: profileMgr.profile.fatGoal, fiberMinimum: profileMgr.profile.fiberMinimum, netCarbsMaximum: profileMgr.profile.netCarbsMaximum, proteinGoal: profileMgr.profile.proteinGoal)
+        macrosMgr.setDailyMacroGoals(caloriesGoalUnadjusted: profileMgr.profile.caloriesGoalUnadjusted, caloriesGoal: profileMgr.profile.caloriesGoal, fatGoal: profileMgr.profile.fatGoal, fiberMinimum: profileMgr.profile.fiberMinimum, netCarbsMaximum: profileMgr.profile.effectiveNetCarbsMaximum, proteinGoal: profileMgr.profile.proteinGoal)
 
         // Undo all the auto adjustments (so we can reapply them
         // with a clean slate).  Removal will result in:

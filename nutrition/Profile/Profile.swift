@@ -98,7 +98,11 @@ class ProfileMgr: ObservableObject {
             activeCaloriesBurned: 700,
             proteinRatio: 1.2,
             calorieDeficit: 0,
-            netCarbsMaximum: 325)
+            // netCarbsMaximum is unused in ratio modes (kept non-zero
+            // so a future mode switch back to .keto has a sane starting
+            // ceiling). The active math is driven by macroMode.
+            netCarbsMaximum: 325,
+            macroMode: .balanced)
     }
 
 
@@ -195,6 +199,61 @@ class ProfileMgr: ObservableObject {
 }
 
 
+// =============================================================
+// MacroMode — selects how protein/carbs/fat goals are derived.
+//
+//   .keto: legacy carb-ceiling algorithm. Protein from LBM x ratio,
+//          netCarbsMaximum is a hard ceiling, fat absorbs the rest.
+//
+//   ratio modes: fat goal = caloricGoal x preset_fat% / 9. Protein
+//          uses LBM x ratio as a FLOOR (so a growing kid never
+//          undershoots growth-protein) and the preset's protein%
+//          can raise it; if so, the extra protein eats carbs first
+//          (fat stays at the preset %). Net carbs becomes a derived
+//          target, not an editable ceiling.
+//
+// Splits below come from the AMDR adolescent envelope (10-30 / 45-65
+// / 25-35) crossed with diet-religion conventions. See MacroModeDetail
+// (chevron on the ProfileEdit Base section) for the research notes.
+// =============================================================
+enum MacroMode: String, ValueType, Identifiable {
+    case keto
+    case lowCarb
+    case mediterranean
+    case balanced
+    case athlete
+
+    var id: String { rawValue }
+
+    // ValueType requirements (Picker uses formattedString as the
+    // row label).
+    func formattedString(_ precision: Int) -> String { label }
+    func singular() -> Bool { true }
+
+    var label: String {
+        switch self {
+        case .keto:          return "Keto"
+        case .lowCarb:       return "Low-Carb (non-keto)"
+        case .mediterranean: return "Mediterranean"
+        case .balanced:      return "Balanced (USDA)"
+        case .athlete:       return "Athlete / Performance"
+        }
+    }
+
+    // (protein%, carbs%, fat%) for ratio modes. Keto returns nil so
+    // callers know to use the legacy carb-ceiling math.
+    var split: (protein: Double, carbs: Double, fat: Double)? {
+        switch self {
+        case .keto:          return nil
+        case .lowCarb:       return (25, 30, 45)
+        case .mediterranean: return (18, 42, 40)
+        case .balanced:      return (20, 55, 25)
+        case .athlete:       return (20, 60, 20)
+        }
+    }
+}
+
+
 struct Profile: Codable, Identifiable, Equatable {
     // id + name are new (multi-profile support). Both are filled in
     // on migration of older single-profile JSON via init(from:).
@@ -215,6 +274,11 @@ struct Profile: Codable, Identifiable, Equatable {
     // when that Food is added to a meal). Keyed by Food name. Empty for
     // older persisted profiles (custom decoder defaults to [:]).
     var defaults: [String: Double]
+    // Which macro algorithm drives this profile's goals. Existing
+    // single-profile JSON has no value -> custom decoder defaults to
+    // .keto (preserves prior behavior). Newly added profiles default
+    // to .balanced (safer for non-keto humans).
+    var macroMode: MacroMode
 
 
     // Memberwise init. The `proteins` subsystem was removed; Codable
@@ -229,7 +293,8 @@ struct Profile: Codable, Identifiable, Equatable {
          bodyFatPercentageFromHealthKit: Bool, bodyFatPercentage: Double,
          activeCaloriesBurned: Double, proteinRatio: Double,
          calorieDeficit: Int, netCarbsMaximum: Double,
-         defaults: [String: Double] = [:]) {
+         defaults: [String: Double] = [:],
+         macroMode: MacroMode = .keto) {
         self.id = id
         self.name = name
         self.dateOfBirth = dateOfBirth
@@ -244,13 +309,16 @@ struct Profile: Codable, Identifiable, Equatable {
         self.calorieDeficit = calorieDeficit
         self.netCarbsMaximum = netCarbsMaximum
         self.defaults = defaults
+        self.macroMode = macroMode
     }
 
 
     // Custom decoder — Swift's auto-synthesized decoder requires every
-    // property to be present in the JSON, but id/name/defaults are
-    // new. Read them with decodeIfPresent so pre-multi-profile JSON
-    // keeps loading; ProfileMgr stamps the migration values in init().
+    // property to be present in the JSON, but id/name/defaults/
+    // macroMode are new. Read them with decodeIfPresent so pre-
+    // multi-profile JSON keeps loading; ProfileMgr stamps migration
+    // values in init() and macroMode defaults to .keto (preserves
+    // prior carb-ceiling behavior for existing profiles).
     init(from decoder: Decoder) throws {
         let c = try decoder.container(keyedBy: CodingKeys.self)
         self.id = (try? c.decode(String.self, forKey: .id)) ?? UUID().uuidString
@@ -267,6 +335,7 @@ struct Profile: Codable, Identifiable, Equatable {
         self.calorieDeficit = try c.decode(Int.self, forKey: .calorieDeficit)
         self.netCarbsMaximum = try c.decode(Double.self, forKey: .netCarbsMaximum)
         self.defaults = (try? c.decode([String: Double].self, forKey: .defaults)) ?? [:]
+        self.macroMode = (try? c.decode(MacroMode.self, forKey: .macroMode)) ?? .keto
     }
 
 
@@ -377,7 +446,12 @@ struct Profile: Codable, Identifiable, Equatable {
         set {
         }
         get {
-            (self.caloriesGoalUnadjusted - ((self.proteinGoalUnadjusted + self.netCarbsMaximum) * 4)) / 9
+            // .keto: derived (cals − protein·4 − netCarbs·4) / 9.
+            // ratio: cals × preset_fat% / 9.
+            if let s = macroMode.split {
+                return self.caloriesGoalUnadjusted * s.fat / 100 / 9
+            }
+            return (self.caloriesGoalUnadjusted - ((self.proteinGoalUnadjusted + self.netCarbsMaximum) * 4)) / 9
         }
     }
 
@@ -395,8 +469,29 @@ struct Profile: Codable, Identifiable, Equatable {
         set {
         }
         get {
-            self.leanBodyMass * self.proteinRatio
+            // LBM × ratio is always a FLOOR. In ratio modes the preset
+            // protein% may demand more — take the larger value so
+            // growing/lifting profiles never undershoot protein.
+            let lbmFloor = self.leanBodyMass * self.proteinRatio
+            if let s = macroMode.split {
+                let presetProtein = self.caloriesGoalUnadjusted * s.protein / 100 / 4
+                return max(lbmFloor, presetProtein)
+            }
+            return lbmFloor
         }
+    }
+
+
+    // Effective carb target in grams. Keto: the stored ceiling. Ratio
+    // modes: whatever's left after protein and fat (= cals × c% / 4 if
+    // protein doesn't blow past its preset %; otherwise smaller).
+    var effectiveNetCarbsMaximumUnadjusted: Double {
+        if macroMode.split != nil {
+            let pCals = self.proteinGoalUnadjusted * 4
+            let fCals = self.fatGoalUnadjusted * 9
+            return max(0, self.caloriesGoalUnadjusted - pCals - fCals) / 4
+        }
+        return self.netCarbsMaximum
     }
 
 
@@ -413,7 +508,7 @@ struct Profile: Codable, Identifiable, Equatable {
         set {
         }
         get {
-            ((self.netCarbsMaximum * 4) / self.caloriesGoalUnadjusted) * 100
+            ((self.effectiveNetCarbsMaximumUnadjusted * 4) / self.caloriesGoalUnadjusted) * 100
         }
     }
 
@@ -449,7 +544,12 @@ struct Profile: Codable, Identifiable, Equatable {
         set {
         }
         get {
-            self.leanBodyMass * self.proteinRatio
+            let lbmFloor = self.leanBodyMass * self.proteinRatio
+            if let s = macroMode.split {
+                let presetProtein = self.caloriesGoal * s.protein / 100 / 4
+                return max(lbmFloor, presetProtein)
+            }
+            return lbmFloor
         }
     }
 
@@ -458,8 +558,23 @@ struct Profile: Codable, Identifiable, Equatable {
         set {
         }
         get {
-            (self.caloriesGoal - ((self.proteinGoal + self.netCarbsMaximum) * 4)) / 9
+            if let s = macroMode.split {
+                return self.caloriesGoal * s.fat / 100 / 9
+            }
+            return (self.caloriesGoal - ((self.proteinGoal + self.netCarbsMaximum) * 4)) / 9
         }
+    }
+
+
+    // Net (deficit-applied) effective carb target — used by the dashboard
+    // and macrosMgr as the daily carb-goal scale.
+    var effectiveNetCarbsMaximum: Double {
+        if macroMode.split != nil {
+            let pCals = self.proteinGoal * 4
+            let fCals = self.fatGoal * 9
+            return max(0, self.caloriesGoal - pCals - fCals) / 4
+        }
+        return self.netCarbsMaximum
     }
 
 
@@ -476,7 +591,7 @@ struct Profile: Codable, Identifiable, Equatable {
         set {
         }
         get {
-            ((self.netCarbsMaximum * 4) / self.caloriesGoal) * 100
+            ((self.effectiveNetCarbsMaximum * 4) / self.caloriesGoal) * 100
         }
     }
 

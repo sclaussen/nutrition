@@ -39,8 +39,31 @@ struct ProfileEdit: View {
                 NameValue("Date of Birth", $profileMgr.profile.dateOfBirth, control: .date)
                 NameValue("Gender", $profileMgr.profile.gender, options: Gender.allCases, control: .picker)
                 NameValue("Height", $profileMgr.profile.height, .inch, edit: true)
-                NameValue("Net Carbs Maximum", description: "daily consumption maximum (carbs - fiber)", $profileMgr.profile.netCarbsMaximum, edit: true)
-                NameValue("Protein Ratio", description: "daily protein grams required / lb of lean body mass", $profileMgr.profile.proteinRatio, precision: 2, edit: true)
+                // Macro Mode — picker selects the algorithm; chevron
+                // opens the research-backed explanation page.
+                NameValue("Macro Mode", description: "algorithm driving daily protein/carb/fat goals",
+                          $profileMgr.profile.macroMode,
+                          options: MacroMode.allCases, control: .picker)
+                NavigationLink(destination: MacroModeDetail(profile: profileMgr.profile)) {
+                    HStack {
+                        Text("About macro modes")
+                          .font(.callout)
+                        Spacer()
+                        Text(profileMgr.profile.macroMode.label)
+                          .font(.caption)
+                          .foregroundColor(Color.theme.blackWhiteSecondary)
+                    }
+                }
+                // Net Carbs Maximum is the editable ceiling in .keto;
+                // in ratio modes the carb grams are derived, so we
+                // show a read-only target row instead.
+                if profileMgr.profile.macroMode == .keto {
+                    NameValue("Net Carbs Maximum", description: "daily consumption maximum (carbs - fiber)", $profileMgr.profile.netCarbsMaximum, edit: true)
+                } else {
+                    NameValue("Net Carbs Target", description: "computed from macro mode (cals × carbs%)",
+                              .constant(profileMgr.profile.effectiveNetCarbsMaximum))
+                }
+                NameValue("Protein Ratio", description: "daily protein grams required / lb of lean body mass (floor in ratio modes)", $profileMgr.profile.proteinRatio, precision: 2, edit: true)
                 NameValue("Caloric Deficit", description: "percentage to adjust daily caloric and macro goals", $profileMgr.profile.calorieDeficit, .percentage, edit: true)
             }
             Section(header: Text("Daily Metrics")) {
@@ -85,7 +108,7 @@ struct ProfileEdit: View {
                         NameValue("Fiber Minimum", description: "14g fiber/1k consumed calories", $profileMgr.profile.fiberMinimumUnadjusted)
                     }
                     NavigationLink(destination: ProfileMetricDetail(metric: .netCarbsMaximum, profile: profileMgr.profile)) {
-                        NameValue("Net Carbs Maximum", description: "consumption max (carbs - fiber)", $profileMgr.profile.netCarbsMaximum)
+                        NameValue("Net Carbs Maximum", description: "consumption max (carbs - fiber)", .constant(profileMgr.profile.effectiveNetCarbsMaximumUnadjusted))
                     }
                     NavigationLink(destination: ProfileMetricDetail(metric: .proteinGoal, profile: profileMgr.profile)) {
                         NameValue("Protein Goal", description: "lean body mass * protein ratio", $profileMgr.profile.proteinGoalUnadjusted)
@@ -118,7 +141,7 @@ struct ProfileEdit: View {
                     NameValue("Fiber Minimum", description: "14g fiber/1000 consumed cal", $profileMgr.profile.fiberMinimum)
                 }
                 NavigationLink(destination: ProfileMetricDetail(metric: .netCarbsMaximum, profile: profileMgr.profile)) {
-                    NameValue("Net Carbs Maximum", description: "consumption max (carbs - fiber)", $profileMgr.profile.netCarbsMaximum)
+                    NameValue("Net Carbs Maximum", description: "consumption max (carbs - fiber)", .constant(profileMgr.profile.effectiveNetCarbsMaximum))
                 }
                 NavigationLink(destination: ProfileMetricDetail(metric: .proteinGoal, profile: profileMgr.profile)) {
                     NameValue("Protein Goal", description: "lean body mass * protein ratio", $profileMgr.profile.proteinGoal)
@@ -371,6 +394,19 @@ func profileMetricDoc(_ metric: ProfileMetric, profile: Profile) -> ProfileMetri
         )
 
     case .fatGoalGross:
+        if let s = profile.macroMode.split {
+            return ProfileMetricDoc(
+              title: "Fat Goal (Gross)",
+              result: grams(profile.fatGoalUnadjusted),
+              what: "Grams of fat per day at the gross caloric goal. In '\(profile.macroMode.label)' mode fat is a fixed percentage of calories (the preset).",
+              formula: "Caloric Goal × Fat% / 9",
+              inputs: [
+                ("caloric goal", cals(profile.caloriesGoalUnadjusted)),
+                ("fat %",        "\(Int(s.fat))%"),
+              ],
+              notes: "Fat is 9 cal/g. The preset's protein/carbs/fat % is the source of truth for the split; LBM × ProteinRatio still acts as a protein FLOOR (the larger of the two wins for protein)."
+            )
+        }
         return ProfileMetricDoc(
           title: "Fat Goal (Gross)",
           result: grams(profile.fatGoalUnadjusted),
@@ -379,12 +415,25 @@ func profileMetricDoc(_ metric: ProfileMetric, profile: Profile) -> ProfileMetri
           inputs: [
             ("caloric goal", cals(profile.caloriesGoalUnadjusted)),
             ("protein",      grams(profile.proteinGoalUnadjusted)),
-            ("net carbs",    grams(profile.netCarbsMaximum)),
+            ("net carbs",    grams(profile.effectiveNetCarbsMaximumUnadjusted)),
           ],
           notes: "Fat is 9 cal/g; protein and net-carbs are 4 cal/g. On keto, fat is the elastic macro — it absorbs whatever caloric room is left."
         )
 
     case .fatGoalNet:
+        if let s = profile.macroMode.split {
+            return ProfileMetricDoc(
+              title: "Fat Goal (Net)",
+              result: grams(profile.fatGoal),
+              what: "Grams of fat per day at the net (after-deficit) caloric goal. In '\(profile.macroMode.label)' mode fat is a fixed percentage of net calories.",
+              formula: "Net Caloric Goal × Fat% / 9",
+              inputs: [
+                ("net caloric goal", cals(profile.caloriesGoal)),
+                ("fat %",            "\(Int(s.fat))%"),
+              ],
+              notes: "Fat is 9 cal/g. With a caloric deficit applied, the preset % is held constant against the smaller net goal — protein floor still wins if larger."
+            )
+        }
         return ProfileMetricDoc(
           title: "Fat Goal (Net)",
           result: grams(profile.fatGoal),
@@ -393,7 +442,7 @@ func profileMetricDoc(_ metric: ProfileMetric, profile: Profile) -> ProfileMetri
           inputs: [
             ("net caloric goal", cals(profile.caloriesGoal)),
             ("protein",          grams(profile.proteinGoal)),
-            ("net carbs",        grams(profile.netCarbsMaximum)),
+            ("net carbs",        grams(profile.effectiveNetCarbsMaximum)),
           ],
           notes: "Fat absorbs the deficit. Protein and net-carb caps stay the same regardless of how aggressive the deficit is."
         )
@@ -423,6 +472,21 @@ func profileMetricDoc(_ metric: ProfileMetric, profile: Profile) -> ProfileMetri
         )
 
     case .netCarbsMaximum:
+        if let s = profile.macroMode.split {
+            return ProfileMetricDoc(
+              title: "Net Carbs Target",
+              result: grams(profile.effectiveNetCarbsMaximum),
+              what: "Daily carb target in '\(profile.macroMode.label)' mode. Derived from the caloric goal and the preset carbs % (whatever's left after protein + fat absorb their pieces).",
+              formula: "(Net Caloric Goal − Protein·4 − Fat·9) / 4",
+              inputs: [
+                ("net caloric goal", cals(profile.caloriesGoal)),
+                ("protein",          grams(profile.proteinGoal)),
+                ("fat",              grams(profile.fatGoal)),
+                ("preset carbs %",   "\(Int(s.carbs))%"),
+              ],
+              notes: "In ratio modes this is a target, not a ceiling. Going over occasionally is fine on a non-keto plan; the preset is the day's structure, not a hard line."
+            )
+        }
         return ProfileMetricDoc(
           title: "Net Carbs Maximum",
           result: grams(profile.netCarbsMaximum),
@@ -433,6 +497,25 @@ func profileMetricDoc(_ metric: ProfileMetric, profile: Profile) -> ProfileMetri
         )
 
     case .proteinGoal:
+        if let s = profile.macroMode.split {
+            let lbmFloor = profile.leanBodyMass * profile.proteinRatio
+            let presetProtein = profile.caloriesGoalUnadjusted * s.protein / 100 / 4
+            let chosen = lbmFloor >= presetProtein ? "LBM floor wins" : "preset % wins"
+            return ProfileMetricDoc(
+              title: "Protein Goal",
+              result: grams(profile.proteinGoalUnadjusted),
+              what: "Daily protein target. In '\(profile.macroMode.label)' mode, the larger of LBM × ratio (floor) and Caloric Goal × Protein% wins — \(chosen).",
+              formula: "max( Lean Body Mass · Protein Ratio , Caloric Goal · Protein% / 4 )",
+              inputs: [
+                ("lean body mass", "\(profile.leanBodyMass.formattedString(1)) lb"),
+                ("protein ratio",  "\(profile.proteinRatio.formattedString(2)) g/lb LBM"),
+                ("LBM floor",      grams(lbmFloor)),
+                ("preset protein %", "\(Int(s.protein))%"),
+                ("preset grams",   grams(presetProtein)),
+              ],
+              notes: "Range: 0.8–1.2 g/lb LBM. Higher for muscle-building or older adults guarding against sarcopenia; lower for sedentary or very lean. The LBM floor stays in force across all modes — it's the protein safety net for growth and recovery."
+            )
+        }
         return ProfileMetricDoc(
           title: "Protein Goal",
           result: grams(profile.proteinGoalUnadjusted),
@@ -478,7 +561,7 @@ func profileMetricDoc(_ metric: ProfileMetric, profile: Profile) -> ProfileMetri
           what: "Share of gross calories coming from net carbs. Should be small on keto — a single-digit number.",
           formula: "(Net Carbs · 4) / Caloric Goal · 100",
           inputs: [
-            ("net carbs",    grams(profile.netCarbsMaximum)),
+            ("net carbs",    grams(profile.effectiveNetCarbsMaximumUnadjusted)),
             ("caloric goal", cals(profile.caloriesGoalUnadjusted)),
           ],
           notes: nil
@@ -491,7 +574,7 @@ func profileMetricDoc(_ metric: ProfileMetric, profile: Profile) -> ProfileMetri
           what: "Share of net (after-deficit) calories coming from net carbs.",
           formula: "(Net Carbs · 4) / Net Caloric Goal · 100",
           inputs: [
-            ("net carbs",        grams(profile.netCarbsMaximum)),
+            ("net carbs",        grams(profile.effectiveNetCarbsMaximum)),
             ("net caloric goal", cals(profile.caloriesGoal)),
           ],
           notes: "Same gram cap, smaller denominator — this percentage rises slightly with deeper deficits."
@@ -522,5 +605,133 @@ func profileMetricDoc(_ metric: ProfileMetric, profile: Profile) -> ProfileMetri
           ],
           notes: "A rising protein-% during a cut is by design — it's the muscle-protective effect of holding protein constant while cutting calories."
         )
+    }
+}
+
+
+// =============================================================
+// MacroModeDetail — opened from the chevron on the Base section's
+// "About macro modes" row. Comprehensive reference for the five
+// modes: what they are, when to pick them, research basis, and a
+// live preview of what the active profile looks like under each.
+//
+// The page also addresses the protein-basis confusion (g/lb LBM vs
+// g/kg BW vs g/lb BW vs % cals) by showing all four equivalents
+// computed against the active profile.
+// =============================================================
+struct MacroModeDetail: View {
+
+    let profile: Profile
+
+
+    var body: some View {
+        Form {
+            Section("Active mode") {
+                HStack {
+                    Text(profile.macroMode.label)
+                      .font(.callout)
+                    Spacer()
+                    if let s = profile.macroMode.split {
+                        Text("\(Int(s.protein)) / \(Int(s.carbs)) / \(Int(s.fat))")
+                          .font(.body.monospacedDigit())
+                          .foregroundColor(Color.theme.blueYellow)
+                    } else {
+                        Text("carb-ceiling")
+                          .font(.body.monospacedDigit())
+                          .foregroundColor(Color.theme.blueYellow)
+                    }
+                }
+                Text("(P / C / F %)")
+                  .font(.caption)
+                  .foregroundColor(Color.theme.blackWhiteSecondary)
+            }
+
+            Section("Today's numbers for \(profile.name)") {
+                rowG("Caloric goal (net)",  cals(profile.caloriesGoal))
+                rowG("Protein",             "\(grams(profile.proteinGoal)) (\(Int(profile.proteinGoalPercentage))%)")
+                rowG("Carbs",               "\(grams(profile.effectiveNetCarbsMaximum)) (\(Int(profile.netCarbsMaximumPercentage))%)")
+                rowG("Fat",                 "\(grams(profile.fatGoal)) (\(Int(profile.fatGoalPercentage))%)")
+            }
+
+            Section("The five modes") {
+                modeRow(.keto,
+                        "Carb-ceiling algorithm. Protein from LBM × ratio; netCarbs is a hard daily ceiling; fat absorbs the rest. The original keto math.",
+                        "20g net carbs is the standard threshold; lower for stricter ketosis. Fat ends up dominant (~70–75% of calories) by arithmetic, not by design.")
+                modeRow(.lowCarb,
+                        "Atkins-maintenance feel. Moderate fat, low-but-real carbs, somewhat-elevated protein. Useful as a step-down from keto.",
+                        "Inside the AMDR fat band (25–35%) only at the upper end. Sustainable for adults; not ideal for high-volume training or growing kids.")
+                modeRow(.mediterranean,
+                        "Heart-health gold standard: lean protein, plenty of produce + whole grains, olive oil & nuts for fat. Most-studied long-term diet for cardiovascular outcomes.",
+                        "Sits at the top of the AMDR fat band. Family-friendly and sustainable; slightly fat-heavier than performance-optimal for daily-training kids.")
+                modeRow(.balanced,
+                        "USDA / AMDR midpoint — the official 'default-healthy' for adolescents and active adults. Strong carb base for glycogen, fat above the 25% floor.",
+                        "Best general-purpose pick for an active adolescent. Inside every relevant guideline envelope (IOM AMDR, ACSM, AAP).")
+                modeRow(.athlete,
+                        "Endurance/team-sport split — glycogen-heavy carbs, protein for recovery, fat at the floor of the safe band.",
+                        "Pick for high training volume. Don't go lower on fat (20% is the adolescent floor — below risks hormones, fat-soluble vitamin absorption, RED-S).")
+            }
+
+            Section("Protein ratio — same number, four units") {
+                Text("LBM × ProteinRatio is the source of truth in this app; the equivalents below let you cross-reference with whatever convention you're used to (clinical literature uses g/kg BW; US practice uses g/lb BW; bodybuilding uses g/lb LBM; dietary guidelines use % of cals). All four values describe the same daily protein floor for this profile.")
+                  .font(.caption)
+                rowG("Stored: g/lb LBM",      "\(profile.proteinRatio.formattedString(2))")
+                rowG("LBM",                   "\(profile.leanBodyMass.formattedString(1)) lb")
+                rowG("Daily protein floor",   grams(profile.leanBodyMass * profile.proteinRatio))
+                let dailyFloor = profile.leanBodyMass * profile.proteinRatio
+                rowG("= g/kg body weight",    "\((dailyFloor / profile.bodyMassKg).formattedString(2))")
+                rowG("= g/lb body weight",    "\((dailyFloor / profile.bodyMass).formattedString(2))")
+                rowG("= % of net calories",   "\(Int((dailyFloor * 4) / profile.caloriesGoal * 100))%")
+            }
+
+            Section("Where the numbers come from") {
+                Text("• **IOM AMDR (ages 4–18):** protein 10–30%, carbs 45–65%, fat 25–35%. Official US adolescent reference.")
+                  .font(.caption)
+                Text("• **ACSM / IOC sports nutrition:** protein 1.2–2.0 g/kg/day for active people; carbs 5–7 g/kg/day moderate, up to 8 g/kg on heavy training days; fat ≥25% of calories.")
+                  .font(.caption)
+                Text("• **Adolescent floors:** fat below ~20% impairs hormone production, fat-soluble vitamin absorption, and (in athletes) risks RED-S. Treat 20% as the bottom of the safe band for a growing kid.")
+                  .font(.caption)
+                Text("• **The LBM-floor invariant:** in all ratio modes, LBM × ProteinRatio acts as a minimum. If the preset's protein % would give less, we take the floor. Growing/training profiles never undershoot growth protein.")
+                  .font(.caption)
+            }
+        }
+          .navigationTitle("Macro Modes")
+          .navigationBarTitleDisplayMode(.inline)
+    }
+
+
+    @ViewBuilder
+    private func rowG(_ label: String, _ value: String) -> some View {
+        HStack {
+            Text(label).font(.callout)
+            Spacer()
+            Text(value)
+              .font(.body.monospacedDigit())
+              .foregroundColor(Color.theme.blackWhiteSecondary)
+        }
+    }
+
+
+    @ViewBuilder
+    private func modeRow(_ mode: MacroMode, _ what: String, _ when: String) -> some View {
+        VStack(alignment: .leading, spacing: 4) {
+            HStack {
+                Text(mode.label)
+                  .font(.callout)
+                  .foregroundColor(mode == profile.macroMode ? Color.theme.blueYellow : Color.theme.blackWhite)
+                Spacer()
+                if let s = mode.split {
+                    Text("\(Int(s.protein)) / \(Int(s.carbs)) / \(Int(s.fat))")
+                      .font(.caption.monospacedDigit())
+                      .foregroundColor(Color.theme.blackWhiteSecondary)
+                } else {
+                    Text("ceiling")
+                      .font(.caption.monospacedDigit())
+                      .foregroundColor(Color.theme.blackWhiteSecondary)
+                }
+            }
+            Text(what).font(.caption)
+            Text(when).font(.caption2).foregroundColor(Color.theme.blackWhiteSecondary)
+        }
+          .padding(.vertical, 2)
     }
 }
