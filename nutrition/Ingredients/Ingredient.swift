@@ -978,6 +978,78 @@ class IngredientMgr: ObservableObject {
                                       consumptionUnit: Unit.cup,
                                       consumptionGrams: 240,
                                       verified: "label 5/23/2026"))
+        ingredients.append(Ingredient(name: "Bell Peppers (Whole Foods Market Red)",
+                                      brand: "Whole Foods Market",
+                                      foodName: "Bell Peppers",
+                                      url: "https://www.wholefoodsmarket.com/grocery/product/fresh-produce-red-bell-peppers-b08ds45y8w",
+                                      totalCost: 3.99,  // WF: $3.99/each
+                                      totalGrams: 150,  // ~1 medium-large red bell pepper
+                                      servingSize: 75,  // 0.5 cup chopped
+                                      calories: 23,
+                                      fat: 0.23,
+                                      saturatedFat: 0,
+                                      sodium: 3,
+                                      carbohydrates: 4.5,
+                                      fiber: 1.6,
+                                      sugar: 3.15,
+                                      netCarbs: 2.9,
+                                      protein: 0.75,
+                                      vitaminC: 95,
+                                      vitaminA: 118,  // mcg RAE
+                                      potassium: 158,
+                                      iron: 0.32,
+                                      calcium: 5,
+                                      consumptionUnit: Unit.piece,
+                                      consumptionGrams: 150,
+                                      verified: "USDA est 5/23/2026"))
+        ingredients.append(Ingredient(name: "Bell Peppers (Whole Foods Market Organic Green)",
+                                      brand: "Whole Foods Market",
+                                      foodName: "Bell Peppers",
+                                      url: "https://www.wholefoodsmarket.com/grocery/product/fresh-produce-organic-green-bell-pepper-b000p6j14k",
+                                      totalCost: 2.99,  // WF page exposed no price; organic green ~$2.99/each
+                                      totalGrams: 150,  // ~1 medium green bell pepper
+                                      servingSize: 75,  // WF label: 0.5 cup, 2 servings/container
+                                      calories: 9,
+                                      fat: 0.08,
+                                      saturatedFat: 0.03,
+                                      sodium: 1.4,
+                                      carbohydrates: 2.1,
+                                      fiber: 0.78,
+                                      sugar: 1.1,
+                                      netCarbs: 1.3,
+                                      protein: 0.4,
+                                      vitaminC: 37,
+                                      vitaminA: 170,  // mcg per WF label
+                                      potassium: 81,
+                                      iron: 0.16,
+                                      calcium: 4.6,
+                                      consumptionUnit: Unit.piece,
+                                      consumptionGrams: 150,
+                                      verified: "label 5/23/2026"))
+        ingredients.append(Ingredient(name: "Bell Peppers (Whole Foods Market Orange)",
+                                      brand: "Whole Foods Market",
+                                      foodName: "Bell Peppers",
+                                      url: "https://www.wholefoodsmarket.com/grocery/product/fresh-produce-orange-bell-pepper-b000p6j1a4",
+                                      totalCost: 3.99,  // WF: $3.99/each
+                                      totalGrams: 150,
+                                      servingSize: 75,
+                                      calories: 21,
+                                      fat: 0.16,
+                                      saturatedFat: 0,
+                                      sodium: 1,
+                                      carbohydrates: 4.7,
+                                      fiber: 0.7,
+                                      sugar: 3.75,
+                                      netCarbs: 4.0,
+                                      protein: 0.75,
+                                      vitaminC: 138,  // orange has highest vit C of the colors
+                                      vitaminA: 8,
+                                      potassium: 158,
+                                      iron: 0.32,
+                                      calcium: 5,
+                                      consumptionUnit: Unit.piece,
+                                      consumptionGrams: 150,
+                                      verified: "USDA est 5/23/2026"))
         ingredients.append(Ingredient(name: "Cheddar Cheese W",
                                       brand: "Tillamook",
                                       foodName: "Cheese",
