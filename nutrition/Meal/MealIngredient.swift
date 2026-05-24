@@ -148,10 +148,30 @@ class MealIngredientMgr: ObservableObject {
         // Caden gets an empty meal — open the meal page's eye picker
         // to build it up, or just append rows here.
         case "Caden":
-            // Example: mealIngredients.append(MealIngredient(name: "Eggs", amount: 3))
-            // (Append your Caden defaults here. If you leave this
-            // empty, Caden starts with no rows — handy while you're
-            // still deciding what his standard meal looks like.)
+            mealIngredients.append(MealIngredient(name: "Avocado Oil", amount: 1))
+            mealIngredients.append(MealIngredient(name: "Eggs", amount: 3))
+            mealIngredients.append(MealIngredient(name: "Bread", amount: 2, selectedMemberName: "Dave's Killer Bread Powerseed Thin (20.5 oz)"))
+            mealIngredients.append(MealIngredient(name: "Ham", amount: 2))
+            mealIngredients.append(MealIngredient(name: "Bell Peppers", amount: 2))
+            mealIngredients.append(MealIngredient(name: "Mushrooms", amount: 2))
+            mealIngredients.append(MealIngredient(name: "Jelly", amount: 2))
+            // Breakfast fruit picker — tap to pick any Food of type
+            // .fruit; replaces this placeholder with a real row.
+            mealIngredients.append(MealIngredient(name: IngredientType.fruit.label,
+                                                  amount: 0,
+                                                  foodType: IngredientType.fruit.rawValue))
+
+            mealIngredients.append(MealIngredient(name: "Bread", amount: 4, selectedMemberName: "Dave's Killer Bread Powerseed Thin (20.5 oz)"))
+            mealIngredients.append(MealIngredient(name: "Turkey", amount: 4))
+            mealIngredients.append(MealIngredient(name: "Cheese Slice", amount: 4))
+            mealIngredients.append(MealIngredient(name: "Lettuce", amount: 4))
+            mealIngredients.append(MealIngredient(name: "Mustard", amount: 4))
+
+            mealIngredients.append(MealIngredient(name: "Cucumber", amount: 150))
+            mealIngredients.append(MealIngredient(name: "String Cheese", amount: 2))
+            mealIngredients.append(MealIngredient(name: IngredientType.meat.label,
+                                                  amount: 0,
+                                                  foodType: IngredientType.meat.rawValue))
             break
 
         // ---- Shane (and any unrecognized profile name) ----------

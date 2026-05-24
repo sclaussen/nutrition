@@ -1742,6 +1742,27 @@ class IngredientMgr: ObservableObject {
                                       verified: "5/16/2026",
                                       stepAmount: 5,
                                       defaultAmount: 34))
+        ingredients.append(Ingredient(name: "Dave's Killer Bread Powerseed Thin (20.5 oz)",
+                                      brand: "Dave's Killer Bread",
+                                      foodName: "Bread",
+                                      url: "https://www.wholefoodsmarket.com/grocery/product/dave-s-killer-bread-dave-s-killer-bread-powerseed-thin-sliced-seeded-organic-bread-20-5-oz-loaf-b0714d2l3g",
+                                      totalCost: 5.99,  // WF page exposed no price; estimated at the other Dave's variants' shelf price
+                                      totalGrams: 588.0,  // WF label: 21 servings × 28 g/slice (= 20.5 oz)
+                                      servingSize: 28.0,
+                                      calories: 60.0,
+                                      fat: 1.5,
+                                      saturatedFat: 0.0,
+                                      sodium: 90.0,
+                                      carbohydrates: 12.0,
+                                      fiber: 3.0,
+                                      sugar: 2.0,
+                                      netCarbs: 9.0,
+                                      protein: 3.0,
+                                      consumptionUnit: Unit.gram,
+                                      consumptionGrams: 1,
+                                      verified: "WF 5/23/2026",
+                                      stepAmount: 5,
+                                      defaultAmount: 28))
         ingredients.append(Ingredient(name: "Arugula (organicgirl 5 Oz)",
                                       brand: "organicgirl",
                                       foodName: "Arugula",
