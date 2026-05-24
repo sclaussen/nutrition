@@ -160,9 +160,10 @@ class MealIngredientMgr: ObservableObject {
             mealIngredients.append(MealIngredient(name: IngredientType.fruit.label,
                                                   amount: 0,
                                                   foodType: IngredientType.fruit.rawValue))
+            mealIngredients.append(MealIngredient(name: "Milk", amount: 1))
 
             mealIngredients.append(MealIngredient(name: "Bread", amount: 4, selectedMemberName: "Dave's Killer Bread Powerseed Thin (20.5 oz)"))
-            mealIngredients.append(MealIngredient(name: "Turkey", amount: 4))
+            mealIngredients.append(MealIngredient(name: "Turkey", amount: 4, selectedMemberName: "Turkey (Trader Joe's Organic Hickory Smoked, 6 oz)"))
             mealIngredients.append(MealIngredient(name: "Cheese Slice", amount: 4))
             mealIngredients.append(MealIngredient(name: "Lettuce", amount: 4))
             mealIngredients.append(MealIngredient(name: "Mustard", amount: 4))

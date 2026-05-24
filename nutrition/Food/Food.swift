@@ -98,10 +98,12 @@ class FoodMgr: ObservableObject {
         // cheese
         foods.append(Food(name: "Cheese", type: .cheese, defaultAmount: 25, stepAmount: 5, consumptionUnit: .gram, consumptionGrams: 1, currentIngredientName: "Manchego (Corcuera)"))
         foods.append(Food(name: "String Cheese", type: .cheese, defaultAmount: 5, stepAmount: 1, consumptionUnit: .piece, consumptionGrams: 28, currentIngredientName: "String Cheese (365 by Whole Foods M 12 OZ)"))
+        foods.append(Food(name: "Cheese Slice", type: .cheese, defaultAmount: 4, stepAmount: 1, consumptionUnit: .slice, consumptionGrams: 28, currentIngredientName: "Cheese Slice (Trader Joe's Colby Jack, 12 oz)"))
 
         // proteins
         foods.append(Food(name: "Starbucks Protein Box", type: .proteins, defaultAmount: 1, stepAmount: 1, consumptionUnit: .piece, consumptionGrams: 247, currentIngredientName: "Eggs & Cheddar Protein Box"))
         foods.append(Food(name: "Turkey", type: .proteins, defaultAmount: 1, stepAmount: 1, consumptionUnit: .slice, consumptionGrams: 28, currentIngredientName: "Turkey W"))
+        foods.append(Food(name: "Milk", type: .proteins, defaultAmount: 1, stepAmount: 1, consumptionUnit: .cup, consumptionGrams: 240, currentIngredientName: "Milk (Clover Sonoma Pasture Raised Organic Whole, 1 Gal)"))
 
         // fruit
         foods.append(Food(name: "Blackberries", type: .fruit, defaultAmount: 50, stepAmount: 5, consumptionUnit: .gram, consumptionGrams: 1, currentIngredientName: "Blackberries (Whole Foods Market 6 oz)"))

@@ -922,6 +922,62 @@ class IngredientMgr: ObservableObject {
                                       consumptionUnit: Unit.slice,
                                       consumptionGrams: 28,
                                       verified: "7/3/2025"))
+        ingredients.append(Ingredient(name: "Turkey (Trader Joe's Organic Hickory Smoked, 6 oz)",
+                                      brand: "Trader Joe's",
+                                      foodName: "Turkey",
+                                      totalCost: 5.99,  // TJ shelf est
+                                      totalGrams: 170,  // 6 oz
+                                      servingSize: 56,  // 2 slices
+                                      calories: 60,
+                                      fat: 1,
+                                      saturatedFat: 0,
+                                      sodium: 400,
+                                      fiber: 0,
+                                      netCarbs: 0,
+                                      protein: 12,
+                                      potassium: 188,  // 4% DV
+                                      consumptionUnit: Unit.slice,
+                                      consumptionGrams: 28,  // 1 slice
+                                      verified: "label 5/23/2026"))
+        ingredients.append(Ingredient(name: "Cheese Slice (Trader Joe's Colby Jack, 12 oz)",
+                                      brand: "Trader Joe's",
+                                      foodName: "Cheese Slice",
+                                      totalCost: 3.99,  // TJ shelf est
+                                      totalGrams: 340,  // 12 oz
+                                      servingSize: 28,  // 1 slice
+                                      calories: 110,
+                                      fat: 9,
+                                      saturatedFat: 6,
+                                      sodium: 190,
+                                      fiber: 0,
+                                      netCarbs: 0,
+                                      protein: 7,
+                                      potassium: 30,
+                                      calcium: 195,
+                                      consumptionUnit: Unit.slice,
+                                      consumptionGrams: 28,
+                                      verified: "label 5/23/2026"))
+        ingredients.append(Ingredient(name: "Milk (Clover Sonoma Pasture Raised Organic Whole, 1 Gal)",
+                                      brand: "Clover Sonoma",
+                                      foodName: "Milk",
+                                      totalCost: 10.99,  // WF Bay Area est for organic gallon
+                                      totalGrams: 3840,  // 16 servings × 240 g/cup
+                                      servingSize: 240,  // 1 cup
+                                      calories: 160,
+                                      fat: 9,
+                                      saturatedFat: 5,
+                                      sodium: 125,
+                                      carbohydrates: 12,
+                                      fiber: 0,
+                                      sugar: 12,
+                                      netCarbs: 12,
+                                      protein: 9,
+                                      vitaminD: 2.5,
+                                      potassium: 410,
+                                      calcium: 300,
+                                      consumptionUnit: Unit.cup,
+                                      consumptionGrams: 240,
+                                      verified: "label 5/23/2026"))
         ingredients.append(Ingredient(name: "Cheddar Cheese W",
                                       brand: "Tillamook",
                                       foodName: "Cheese",
