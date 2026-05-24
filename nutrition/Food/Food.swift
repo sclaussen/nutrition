@@ -87,6 +87,7 @@ class FoodMgr: ObservableObject {
         foods.append(Food(name: "Radish", type: .produce, defaultAmount: 50, stepAmount: 5, consumptionUnit: .gram, consumptionGrams: 1, currentIngredientName: "Radish (Whole Foods Market 12 Oz)"))
         foods.append(Food(name: "Avocado", type: .produce, defaultAmount: 140, stepAmount: 5, consumptionUnit: .gram, consumptionGrams: 1, currentIngredientName: "Avocado (365 by Whole Foods M 4 Count)"))
         foods.append(Food(name: "Bell Peppers", type: .produce, defaultAmount: 2, stepAmount: 1, consumptionUnit: .piece, consumptionGrams: 150, currentIngredientName: "Bell Peppers (Whole Foods Market Red)"))
+        foods.append(Food(name: "Cucumber", type: .produce, defaultAmount: 150, stepAmount: 25, consumptionUnit: .gram, consumptionGrams: 1, currentIngredientName: "Cucumber (Wholesum Organic Mini, 1 lb)"))
         foods.append(Food(name: "Pumpkin Seeds", type: .nuts, defaultAmount: 30, stepAmount: 5, consumptionUnit: .gram, consumptionGrams: 1, currentIngredientName: "Pumpkin Seeds (365 by Whole Foods M 8 Ounce)"))
         foods.append(Food(name: "Nuts", type: .nuts, defaultAmount: 20, stepAmount: 5, consumptionUnit: .gram, consumptionGrams: 1, currentIngredientName: "Macadamia Nuts (Aurora 6 OZ)"))
         foods.append(Food(name: "Mackerel", type: .proteins, defaultAmount: 1, stepAmount: 1, consumptionUnit: .can, consumptionGrams: 85, currentIngredientName: "Mackerel (Skinless Boneless)"))

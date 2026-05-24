@@ -1026,6 +1026,30 @@ class IngredientMgr: ObservableObject {
                                       consumptionUnit: Unit.piece,
                                       consumptionGrams: 150,
                                       verified: "label 5/23/2026"))
+        ingredients.append(Ingredient(name: "Cucumber (Wholesum Organic Mini, 1 lb)",
+                                      brand: "Wholesum",
+                                      foodName: "Cucumber",
+                                      url: "https://www.wholefoodsmarket.com/grocery/product/wholesum-organic-mini-cucumbers-1-lb-b07ftywccd",
+                                      totalCost: 4.43,
+                                      totalGrams: 453.6,  // 1 lb
+                                      servingSize: 100,  // ~1 small snack portion
+                                      calories: 15,
+                                      fat: 0.11,
+                                      saturatedFat: 0,
+                                      sodium: 2,
+                                      carbohydrates: 3.6,
+                                      fiber: 0.5,
+                                      sugar: 1.7,
+                                      netCarbs: 3.1,
+                                      protein: 0.65,
+                                      vitaminC: 2.8,
+                                      vitaminA: 5,  // mcg RAE
+                                      potassium: 147,
+                                      iron: 0.28,
+                                      calcium: 16,
+                                      consumptionUnit: Unit.gram,
+                                      consumptionGrams: 1,
+                                      verified: "USDA est 5/23/2026"))
         ingredients.append(Ingredient(name: "Bell Peppers (Whole Foods Market Orange)",
                                       brand: "Whole Foods Market",
                                       foodName: "Bell Peppers",
