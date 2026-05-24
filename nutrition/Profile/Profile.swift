@@ -144,11 +144,12 @@ class ProfileMgr: ObservableObject {
 
 
     // Callback fired when the active profile changes. app.swift
-    // installs a handler that calls reload(forProfileId:) on every
-    // per-profile manager (MealIngredientMgr, AdjustmentMgr,
-    // FoodCompositeMgr) so their data swaps in lock-step with the
-    // active profile.
-    var onProfileSwitch: ((String) -> Void)?
+    // installs a handler that calls reload(...) on every per-profile
+    // manager (MealIngredientMgr, AdjustmentMgr, FoodCompositeMgr) so
+    // their data swaps in lock-step. The full Profile is passed (not
+    // just id) because MealIngredientMgr.resetMealIngredients()
+    // branches its default-meal seed by name.
+    var onProfileSwitch: ((Profile) -> Void)?
 
 
     // Switch the active profile by id. Any in-flight edits to the
@@ -159,7 +160,7 @@ class ProfileMgr: ObservableObject {
         guard let next = profiles.first(where: { $0.id == id }) else { return }
         self.profile = next
         UserDefaults.standard.set(id, forKey: "activeProfileId")
-        onProfileSwitch?(id)
+        onProfileSwitch?(next)
     }
 
 

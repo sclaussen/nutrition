@@ -32,6 +32,12 @@ class MealIngredientMgr: ObservableObject {
     // repoint the manager when the active profile changes.
     private(set) var profileId: String
 
+    // The active profile's display name. Carried alongside profileId
+    // so resetMealIngredients() can branch its seed defaults by
+    // profile (profileId is a UUID — not human-stable across fresh
+    // installs — so the seed switch keys on name instead).
+    private(set) var profileName: String
+
     // Per-profile storage key. Reads and writes go through this so
     // every profile keeps its own meal data under "mealIngredient.<id>".
     // The base string "mealIngredient" is preserved as the prefix for
@@ -46,23 +52,26 @@ class MealIngredientMgr: ObservableObject {
     }
 
 
-    // Per-profile init: set profileId FIRST so storageKey resolves,
-    // then load from per-profile storage (with one-time legacy
-    // migration — see load(forProfileId:)). If empty afterwards, seed
-    // the default starter meal — same shape as the original
-    // single-profile init's resetMealIngredients() call.
-    init(profileId: String) {
+    // Per-profile init: set profileId/Name FIRST so storageKey
+    // resolves and resetMealIngredients() can branch by name, then
+    // load from per-profile storage (with one-time legacy migration
+    // — see load(forProfileId:)). If empty afterwards, seed the
+    // default starter meal.
+    init(profileId: String, profileName: String) {
         self.profileId = profileId
+        self.profileName = profileName
         self.mealIngredients = MealIngredientMgr.load(forProfileId: profileId)
         if mealIngredients.isEmpty { resetMealIngredients() }
     }
 
 
-    // Repoint this manager at a different profile: swap profileId,
-    // reload from that profile's storage, seed defaults if empty so
-    // newly-added profiles never land on a blank meal page.
-    func reload(forProfileId newId: String) {
+    // Repoint this manager at a different profile: swap profileId +
+    // profileName, reload from that profile's storage, seed defaults
+    // (per-profile via name) if empty so newly-added profiles never
+    // land on a blank meal page.
+    func reload(forProfileId newId: String, profileName newName: String) {
         self.profileId = newId
+        self.profileName = newName
         self.mealIngredients = MealIngredientMgr.load(forProfileId: newId)
         if mealIngredients.isEmpty { resetMealIngredients() }
     }
@@ -124,55 +133,75 @@ class MealIngredientMgr: ObservableObject {
 
 
     func resetMealIngredients() {
-        print("RESETTING Meal Ingredients")
+        print("RESETTING Meal Ingredients for \(profileName)")
 
         mealIngredients = []
 
-        // The default meal is exactly the rows below. Foods that used
-        // to be seeded as inactive "repertoire" placeholders (extra
-        // sardine/mackerel variants, String Cheese W, the other
-        // cheeses, Peanuts, the berries) are NOT seeded — they are
-        // still reachable any day via the Meal page's eye add-list
-        // (any active Food not currently in the meal).
+        // Default meal seed branches on profileName so each profile
+        // can have its own starter set. Add a new `case` for each
+        // additional profile; the `default` arm is the canonical
+        // Shane/original seed.
+        switch profileName {
 
-        mealIngredients.append(MealIngredient(name: "Coconut Oil", amount: 0.5))
-        mealIngredients.append(MealIngredient(name: "Eggs", amount: 5))
-        mealIngredients.append(MealIngredient(name: "Broccoli", amount: 150))
-        mealIngredients.append(MealIngredient(name: "Cauliflower", amount: 100))
-        mealIngredients.append(MealIngredient(name: "Romaine", amount: 175))
-        mealIngredients.append(MealIngredient(name: "Spinach", amount: 50))
-        mealIngredients.append(MealIngredient(name: "Arugula", amount: 50))
-        mealIngredients.append(MealIngredient(name: "Mushrooms", amount: 125))
-        mealIngredients.append(MealIngredient(name: "Radish", amount: 70))
-        mealIngredients.append(MealIngredient(name: "Avocado", amount: 225))
-        mealIngredients.append(MealIngredient(name: "Mustard", amount: 3))
-        mealIngredients.append(MealIngredient(name: "Fish Oil", amount: 1))
-        mealIngredients.append(MealIngredient(name: "Extra Virgin Olive Oil", amount: 2))
-        mealIngredients.append(MealIngredient(name: "Pumpkin Seeds", amount: 30))
-        mealIngredients.append(MealIngredient(name: "String Cheese", amount: 0))
+        // ---- Caden ----------------------------------------------
+        // TODO: customize Caden's starter meal. Until populated,
+        // Caden gets an empty meal — open the meal page's eye picker
+        // to build it up, or just append rows here.
+        case "Caden":
+            // Example: mealIngredients.append(MealIngredient(name: "Eggs", amount: 3))
+            // (Append your Caden defaults here. If you leave this
+            // empty, Caden starts with no rows — handy while you're
+            // still deciding what his standard meal looks like.)
+            break
 
-        // Supplements — hidden from the meal list by default, but
-        // active and counted toward daily V&M (and macros).  Toggle
-        // 'Show supplements' in the toolbar to see them.  Order matches
-        // the user's preferred display order, not time-of-day.
-        mealIngredients.append(MealIngredient(name: "Thorne Basic Nutrients 2/Day", amount: 2, isSupplement: true))
-        mealIngredients.append(MealIngredient(name: "Creatine HCl",         amount: 2, isSupplement: true))
-        mealIngredients.append(MealIngredient(name: "Glycine",              amount: 1, isSupplement: true))
-        mealIngredients.append(MealIngredient(name: "Vitamin D3 (1000 IU)", amount: 1, isSupplement: true))
-        mealIngredients.append(MealIngredient(name: "SlowMag",              amount: 2, isSupplement: true))
-        mealIngredients.append(MealIngredient(name: "L-Theanine",           amount: 1, isSupplement: true))
-        mealIngredients.append(MealIngredient(name: "Apigenin",             amount: 1, isSupplement: true))
+        // ---- Shane (and any unrecognized profile name) ----------
+        default:
+            // The default meal is exactly the rows below. Foods that
+            // used to be seeded as inactive "repertoire" placeholders
+            // (extra sardine/mackerel variants, String Cheese W, the
+            // other cheeses, Peanuts, the berries) are NOT seeded —
+            // they are still reachable any day via the Meal page's
+            // eye add-list (any active Food not currently in the
+            // meal).
+            mealIngredients.append(MealIngredient(name: "Coconut Oil", amount: 0.5))
+            mealIngredients.append(MealIngredient(name: "Eggs", amount: 5))
+            mealIngredients.append(MealIngredient(name: "Broccoli", amount: 150))
+            mealIngredients.append(MealIngredient(name: "Cauliflower", amount: 100))
+            mealIngredients.append(MealIngredient(name: "Romaine", amount: 175))
+            mealIngredients.append(MealIngredient(name: "Spinach", amount: 50))
+            mealIngredients.append(MealIngredient(name: "Arugula", amount: 50))
+            mealIngredients.append(MealIngredient(name: "Mushrooms", amount: 125))
+            mealIngredients.append(MealIngredient(name: "Radish", amount: 70))
+            mealIngredients.append(MealIngredient(name: "Avocado", amount: 225))
+            mealIngredients.append(MealIngredient(name: "Mustard", amount: 3))
+            mealIngredients.append(MealIngredient(name: "Fish Oil", amount: 1))
+            mealIngredients.append(MealIngredient(name: "Extra Virgin Olive Oil", amount: 2))
+            mealIngredients.append(MealIngredient(name: "Pumpkin Seeds", amount: 30))
+            mealIngredients.append(MealIngredient(name: "String Cheese", amount: 0))
 
-        // Category placeholder — a "pick a meat" slot that always
-        // renders at the very end of the meal list (sentinel sort
-        // rank). It contributes ZERO macros and never resolves to an
-        // ingredient. Tapping it lists every Food of type .meat;
-        // picking one replaces the placeholder with a normal Food
-        // row. It is part of the default meal pattern, so it comes
-        // back on Reset Meal even after it's been consumed.
-        mealIngredients.append(MealIngredient(name: IngredientType.meat.label,
-                                              amount: 0,
-                                              foodType: IngredientType.meat.rawValue))
+            // Supplements — hidden from the meal list by default, but
+            // active and counted toward daily V&M (and macros).  Toggle
+            // 'Show supplements' in the toolbar to see them.  Order matches
+            // the user's preferred display order, not time-of-day.
+            mealIngredients.append(MealIngredient(name: "Thorne Basic Nutrients 2/Day", amount: 2, isSupplement: true))
+            mealIngredients.append(MealIngredient(name: "Creatine HCl",         amount: 2, isSupplement: true))
+            mealIngredients.append(MealIngredient(name: "Glycine",              amount: 1, isSupplement: true))
+            mealIngredients.append(MealIngredient(name: "Vitamin D3 (1000 IU)", amount: 1, isSupplement: true))
+            mealIngredients.append(MealIngredient(name: "SlowMag",              amount: 2, isSupplement: true))
+            mealIngredients.append(MealIngredient(name: "L-Theanine",           amount: 1, isSupplement: true))
+            mealIngredients.append(MealIngredient(name: "Apigenin",             amount: 1, isSupplement: true))
+
+            // Category placeholder — a "pick a meat" slot that always
+            // renders at the very end of the meal list (sentinel sort
+            // rank). It contributes ZERO macros and never resolves to an
+            // ingredient. Tapping it lists every Food of type .meat;
+            // picking one replaces the placeholder with a normal Food
+            // row. It is part of the default meal pattern, so it comes
+            // back on Reset Meal even after it's been consumed.
+            mealIngredients.append(MealIngredient(name: IngredientType.meat.label,
+                                                  amount: 0,
+                                                  foodType: IngredientType.meat.rawValue))
+        }
     }
 
 

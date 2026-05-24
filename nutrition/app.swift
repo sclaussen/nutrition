@@ -25,17 +25,17 @@ struct app: App {
 
     init() {
         let pm = ProfileMgr()
-        let activeId = pm.profile.id
-        let mim = MealIngredientMgr(profileId: activeId)
-        let am  = AdjustmentMgr(profileId: activeId)
-        let fcm = FoodCompositeMgr(profileId: activeId)
+        let active = pm.profile
+        let mim = MealIngredientMgr(profileId: active.id, profileName: active.name)
+        let am  = AdjustmentMgr(profileId: active.id)
+        let fcm = FoodCompositeMgr(profileId: active.id)
         // [weak] avoids retaining the managers via the closure they
         // hand to ProfileMgr (each is already retained by the
         // StateObject wrappers below).
-        pm.onProfileSwitch = { [weak mim, weak am, weak fcm] newId in
-            mim?.reload(forProfileId: newId)
-            am?.reload(forProfileId: newId)
-            fcm?.reload(forProfileId: newId)
+        pm.onProfileSwitch = { [weak mim, weak am, weak fcm] next in
+            mim?.reload(forProfileId: next.id, profileName: next.name)
+            am?.reload(forProfileId: next.id)
+            fcm?.reload(forProfileId: next.id)
         }
         _profileMgr        = StateObject(wrappedValue: pm)
         _mealIngredientMgr = StateObject(wrappedValue: mim)
