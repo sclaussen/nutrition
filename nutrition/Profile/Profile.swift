@@ -70,10 +70,24 @@ class ProfileMgr: ObservableObject {
         // this path; the flag stops us re-adding after a rename/delete).
         let backfillKey = "didSeedSecondaryProfile.caden"
         if !UserDefaults.standard.bool(forKey: backfillKey) {
-            if !profiles.contains(where: { $0.name == "Caden Claussen" }) {
+            if !profiles.contains(where: { $0.name == "Caden" }) {
                 profiles.append(Self.cadenSeed())
             }
             UserDefaults.standard.set(true, forKey: backfillKey)
+        }
+
+        // One-shot fix-up for existing data: rename the previously-
+        // seeded "Caden Claussen" -> "Caden" and bump bodyMass from
+        // the placeholder 120 -> 129. Idempotent via the flag so a
+        // later user-driven rename/reweigh isn't bulldozed.
+        let cadenFixupKey = "didFixupCaden.nameAndWeight.v1"
+        if !UserDefaults.standard.bool(forKey: cadenFixupKey) {
+            UserDefaults.standard.set(true, forKey: cadenFixupKey)
+            if let i = profiles.firstIndex(where: { $0.name == "Caden Claussen" }) {
+                profiles[i].name = "Caden"
+                if profiles[i].bodyMass == 120 { profiles[i].bodyMass = 129 }
+                if profile.id == profiles[i].id { profile = profiles[i] }
+            }
         }
     }
 
@@ -90,10 +104,10 @@ class ProfileMgr: ObservableObject {
         // body comp; fat absorbs the remainder (~88g / ~30%); protein
         // ~127g / ~20% via the 1.2 g/lb LBM ratio.
         return Profile(
-            name: "Caden Claussen",
+            name: "Caden",
             dateOfBirth: Calendar.current.date(from: c)!,
             gender: .male, height: 70,
-            bodyMassFromHealthKit: false, bodyMass: 120,
+            bodyMassFromHealthKit: false, bodyMass: 129,
             bodyFatPercentageFromHealthKit: false, bodyFatPercentage: 12,
             activeCaloriesBurned: 700,
             proteinRatio: 1.2,
