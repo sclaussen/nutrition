@@ -203,6 +203,20 @@ class ProfileMgr: ObservableObject {
     }
 
 
+    // Set / clear this profile's preferred variant for a Food.
+    // ingredientName empty/nil removes the override so the Food's
+    // global currentIngredientName applies again.
+    func setFoodMember(foodName: String, ingredientName: String?) {
+        var p = profile
+        if let name = ingredientName, !name.isEmpty {
+            p.foodMember[foodName] = name
+        } else {
+            p.foodMember.removeValue(forKey: foodName)
+        }
+        profile = p
+    }
+
+
     // TODO: Update once the health kit active calories algorithm is demystified
     // func setActiveCaloriesBurned(activeCaloriesBurned: Double) {
     //     self.profile = profile.setActiveCaloriesBurned(activeCaloriesBurned: activeCaloriesBurned)
@@ -298,6 +312,13 @@ struct Profile: Codable, Identifiable, Equatable {
     // when that Food is added to a meal). Keyed by Food name. Empty for
     // older persisted profiles (custom decoder defaults to [:]).
     var defaults: [String: Double]
+    // Per-profile preferred member (variant) for each Food. Keyed by
+    // Food name; value is an Ingredient name. When set, this profile's
+    // meal rows resolve to that variant instead of the Food's global
+    // currentIngredientName. Per-row `selectedMemberName` still wins
+    // over this (explicit beats default). Empty for older persisted
+    // profiles (custom decoder defaults to [:]).
+    var foodMember: [String: String]
     // Which macro algorithm drives this profile's goals. Existing
     // single-profile JSON has no value -> custom decoder defaults to
     // .keto (preserves prior behavior). Newly added profiles default
@@ -318,7 +339,8 @@ struct Profile: Codable, Identifiable, Equatable {
          activeCaloriesBurned: Double, proteinRatio: Double,
          calorieDeficit: Int, netCarbsMaximum: Double,
          defaults: [String: Double] = [:],
-         macroMode: MacroMode = .keto) {
+         macroMode: MacroMode = .keto,
+         foodMember: [String: String] = [:]) {
         self.id = id
         self.name = name
         self.dateOfBirth = dateOfBirth
@@ -334,6 +356,7 @@ struct Profile: Codable, Identifiable, Equatable {
         self.netCarbsMaximum = netCarbsMaximum
         self.defaults = defaults
         self.macroMode = macroMode
+        self.foodMember = foodMember
     }
 
 
@@ -360,6 +383,7 @@ struct Profile: Codable, Identifiable, Equatable {
         self.netCarbsMaximum = try c.decode(Double.self, forKey: .netCarbsMaximum)
         self.defaults = (try? c.decode([String: Double].self, forKey: .defaults)) ?? [:]
         self.macroMode = (try? c.decode(MacroMode.self, forKey: .macroMode)) ?? .keto
+        self.foodMember = (try? c.decode([String: String].self, forKey: .foodMember)) ?? [:]
     }
 
 

@@ -325,6 +325,23 @@ extension IngredientEdit {
                           ),
                           ingredient.consumptionUnit,
                           edit: true)
+                // Per-profile preferred variant. When ON, this profile
+                // resolves the "\(ingredient.foodName)" Food to THIS
+                // variant in meal rows, eye-picker adds, and auto-
+                // adjust — overriding the Food's global default
+                // (Food.currentIngredientName). Per-row
+                // selectedMemberName still wins over this.
+                NameValue("Default variant for \(ingredient.foodName) (\(profileMgr.profile.name))",
+                          description: "use this variant whenever this Food is added or auto-adjusted",
+                          Binding<Bool>(
+                            get: { profileMgr.profile.foodMember[ingredient.foodName] == ingredient.name },
+                            set: { isOn in
+                                profileMgr.setFoodMember(
+                                    foodName: ingredient.foodName,
+                                    ingredientName: isOn ? ingredient.name : nil)
+                            }
+                          ),
+                          control: .toggle)
             }
         }
     }

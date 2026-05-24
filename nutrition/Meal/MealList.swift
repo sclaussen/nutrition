@@ -1118,13 +1118,19 @@ struct MealList: View {
     // ingredient this SPECIFIC row should use:
     //   1. the row's own selectedMemberName (per-row choice) if it
     //      still names a real ingredient,
-    //   2. else the Food's global currentIngredientName default,
-    //   3. else the literal name (plain ungrouped ingredient row).
+    //   2. else the ACTIVE PROFILE's preferred variant for this Food
+    //      (profile.foodMember[foodName]) if it names a real ingredient,
+    //   3. else the Food's global currentIngredientName default,
+    //   4. else the literal name (plain ungrouped ingredient row).
     // Fallbacks keep it crash-proof if data is inconsistent.
     func currentName(_ mi: MealIngredient) -> String {
         if !mi.selectedMemberName.isEmpty,
            ingredientMgr.getByName(name: mi.selectedMemberName) != nil {
             return mi.selectedMemberName
+        }
+        if let preferred = profileMgr.profile.foodMember[mi.name],
+           ingredientMgr.getByName(name: preferred) != nil {
+            return preferred
         }
         if let f = foodMgr.getByName(name: mi.name),
            ingredientMgr.getByName(name: f.currentIngredientName) != nil {
@@ -1136,7 +1142,12 @@ struct MealList: View {
 
     // Name-only resolution (no per-row member). Used by the auto-
     // adjust engine, which targets Foods by name, not specific rows.
+    // Honors the active profile's preferred variant the same way.
     func currentName(forFoodName foodOrName: String) -> String {
+        if let preferred = profileMgr.profile.foodMember[foodOrName],
+           ingredientMgr.getByName(name: preferred) != nil {
+            return preferred
+        }
         if let f = foodMgr.getByName(name: foodOrName),
            ingredientMgr.getByName(name: f.currentIngredientName) != nil {
             return f.currentIngredientName
