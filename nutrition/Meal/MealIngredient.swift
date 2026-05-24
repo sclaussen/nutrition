@@ -44,6 +44,16 @@ class MealIngredientMgr: ObservableObject {
     // back-compat with the legacy unkeyed key (see migration in load).
     private var storageKey: String { "mealIngredient.\(profileId)" }
 
+    // BUMP THIS WHENEVER YOU EDIT resetMealIngredients() (Shane's
+    // default arm, Caden's case arm, or add new profile cases). On
+    // the next launch each profile whose stored applied-version is
+    // < seedVersion gets its meal data wiped and re-seeded from the
+    // current code. Profiles with no stored version (= existing
+    // users on first encounter) are treated as already at the
+    // current version, so this never bulldozes pre-existing data on
+    // first rollout — only your subsequent edits matter.
+    static let seedVersion: Int = 1
+
 
     @Published var mealIngredients: [MealIngredient] = [] {
         didSet {
@@ -54,26 +64,47 @@ class MealIngredientMgr: ObservableObject {
 
     // Per-profile init: set profileId/Name FIRST so storageKey
     // resolves and resetMealIngredients() can branch by name, then
-    // load from per-profile storage (with one-time legacy migration
-    // — see load(forProfileId:)). If empty afterwards, seed the
-    // default starter meal.
+    // either reseed (if the stored applied-version is older than
+    // seedVersion) or load existing data + seed-if-empty.
     init(profileId: String, profileName: String) {
         self.profileId = profileId
         self.profileName = profileName
-        self.mealIngredients = MealIngredientMgr.load(forProfileId: profileId)
-        if mealIngredients.isEmpty { resetMealIngredients() }
+        loadOrReseed()
     }
 
 
-    // Repoint this manager at a different profile: swap profileId +
-    // profileName, reload from that profile's storage, seed defaults
-    // (per-profile via name) if empty so newly-added profiles never
-    // land on a blank meal page.
+    // Repoint this manager at a different profile. Same load-or-
+    // reseed logic so a profile that hasn't been touched since the
+    // last seedVersion bump gets fresh defaults on the swap.
     func reload(forProfileId newId: String, profileName newName: String) {
         self.profileId = newId
         self.profileName = newName
-        self.mealIngredients = MealIngredientMgr.load(forProfileId: newId)
+        loadOrReseed()
+    }
+
+
+    // Shared init/reload body. Bumping `seedVersion` in code makes
+    // every profile reseed on next launch (or next profile swap),
+    // unconditionally clearing their persisted meal data first.
+    private func loadOrReseed() {
+        let appliedKey = "mealIngredient.appliedSeedVersion.\(profileId)"
+        // Treat ABSENT as "already at current version" so existing
+        // users on first rollout aren't wiped. Future bumps (stored
+        // < current) trigger the reseed.
+        let applied = UserDefaults.standard.object(forKey: appliedKey) as? Int ?? Self.seedVersion
+        if applied < Self.seedVersion {
+            UserDefaults.standard.removeObject(forKey: storageKey)
+            UserDefaults.standard.removeObject(forKey: "mealIngredient.migrated.\(profileId)")
+            self.mealIngredients = []
+            resetMealIngredients()
+            UserDefaults.standard.set(Self.seedVersion, forKey: appliedKey)
+            return
+        }
+        self.mealIngredients = MealIngredientMgr.load(forProfileId: profileId)
         if mealIngredients.isEmpty { resetMealIngredients() }
+        // Stamp the version for new profiles that didn't have it
+        // before, so a future bump can detect "stale".
+        UserDefaults.standard.set(Self.seedVersion, forKey: appliedKey)
     }
 
 
