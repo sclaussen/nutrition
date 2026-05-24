@@ -89,6 +89,31 @@ class ProfileMgr: ObservableObject {
                 if profile.id == profiles[i].id { profile = profiles[i] }
             }
         }
+
+        // One-shot fix-up for the early-refactor data leak: the
+        // per-profile data refactor (commit 3d0ecd0) landed BEFORE
+        // the profileName-aware default-meal seeding (commit 9b8bb3e),
+        // so Caden's empty meal got seeded with Shane's defaults under
+        // his per-profile key. Clear those keys for Caden so the next
+        // reload re-seeds via the new switch-on-profileName branch.
+        // Flag-gated: cannot bulldoze later edits.
+        let reseedKey = "didReseedCadenStaleSeedData.v1"
+        if !UserDefaults.standard.bool(forKey: reseedKey) {
+            UserDefaults.standard.set(true, forKey: reseedKey)
+            if let caden = profiles.first(where: { $0.name == "Caden" }) {
+                let id = caden.id
+                for key in [
+                    "mealIngredient.\(id)",
+                    "mealIngredient.migrated.\(id)",
+                    "adjustment.\(id)",
+                    "adjustment.migrated.\(id)",
+                    "foodComposite.\(id)",
+                    "foodComposite.migrated.\(id)",
+                ] {
+                    UserDefaults.standard.removeObject(forKey: key)
+                }
+            }
+        }
     }
 
 
