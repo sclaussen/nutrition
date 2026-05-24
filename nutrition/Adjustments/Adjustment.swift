@@ -2,6 +2,12 @@ import Foundation
 
 class AdjustmentMgr: ObservableObject {
 
+    // The profile this manager is currently bound to. All persistence
+    // is namespaced by this id via `storageKey`.
+    private(set) var profileId: String
+
+    private var storageKey: String { "adjustment.\(profileId)" }
+
 
     @Published var adjustments: [Adjustment] = [] {
         didSet {
@@ -10,7 +16,57 @@ class AdjustmentMgr: ObservableObject {
     }
 
 
-    init() {
+    // Per-profile init. Adjustment rules are stored per profile under
+    // "adjustment.<profileId>" so switching profile swaps rule sets.
+    // On first load for a given profile we one-time migrate from the
+    // legacy unkeyed "adjustment" UserDefaults entry (the legacy key
+    // is left intact as a safety net). If no stored data exists for
+    // the profile (and no legacy data to migrate), the same default
+    // seeds the original init used are applied.
+    init(profileId: String) {
+        self.profileId = profileId
+        loadForCurrentProfile()
+    }
+
+
+    // Re-bind this manager to a different profile and reload its
+    // adjustments from per-profile storage (or seed/migrate as needed).
+    func reload(forProfileId newId: String) {
+        self.profileId = newId
+        loadForCurrentProfile()
+    }
+
+
+    // Load adjustments for `profileId`. Order:
+    //   1. Try the per-profile key.
+    //   2. If empty and not yet migrated, try the legacy "adjustment"
+    //      key, adopt it as the per-profile data, mark migrated, and
+    //      persist forward under the per-profile key.
+    //   3. If still empty, apply the original default seeds.
+    private func loadForCurrentProfile() {
+        if let data = UserDefaults.standard.data(forKey: storageKey),
+           let savedItems = try? JSONDecoder().decode([Adjustment].self, from: data) {
+            self.adjustments = savedItems
+            return
+        }
+
+        let migratedFlagKey = "adjustment.migrated.\(profileId)"
+        let legacyConsumedKey = "adjustment.legacyConsumed"
+        if !UserDefaults.standard.bool(forKey: migratedFlagKey) {
+            UserDefaults.standard.set(true, forKey: migratedFlagKey)
+            // Only the FIRST profile to load post-refactor consumes
+            // the legacy unkeyed data; later profiles fall through to
+            // the default seed below.
+            if !UserDefaults.standard.bool(forKey: legacyConsumedKey),
+               let legacyData = UserDefaults.standard.data(forKey: "adjustment"),
+               let legacyItems = try? JSONDecoder().decode([Adjustment].self, from: legacyData) {
+                self.adjustments = legacyItems   // didSet -> serialize() writes to storageKey
+                UserDefaults.standard.set(true, forKey: legacyConsumedKey)
+                return
+            }
+        }
+
+        // No stored or legacy data — seed defaults (matches original init).
         // adjustments.append(Adjustment(name: "Dubliner Cheese", amount: 5, constraints: true, maximum: 100))
         // adjustments.append(Adjustment(name: "Sardines (H2O)", amount: 1, group: "fish", constraints: true, maximum: 2))
         // adjustments.append(Adjustment(name: "Sardines (SB)", amount: 1, group: "fish", constraints: true, maximum: 2))
@@ -20,25 +76,27 @@ class AdjustmentMgr: ObservableObject {
         // adjustments.append(Adjustment(name: "Mack (Smk)", amount: 1, group: "fish", constraints: true, maximum: 2))
         // adjustments.append(Adjustment(name: "Eggs", amount: 1, constraints: true, maximum: 7))
 
-        adjustments.append(Adjustment(name: "String Cheese", amount: 1, constraints: true, maximum: 8))
-        // adjustments.append(Adjustment(name: "Broccoli", amount: 10, group: "vegefat", constraints: true, maximum: 250))
-        // adjustments.append(Adjustment(name: "Cauliflower", amount: 10, group: "vegefat", constraints: true, maximum: 100))
-        // adjustments.append(Adjustment(name: "Extra Virgin Olive Oil", amount: 0.5, constraints: true, maximum: 2))
-        adjustments.append(Adjustment(name: "Pumpkin Seeds", amount: 5, group: "vegefat"));
-        // adjustments.append(Adjustment(name: "Macadamia Nuts", amount: 5, group: "vegefat", constraints: true, maximum: 100));
+        var seeded: [Adjustment] = []
+        seeded.append(Adjustment(name: "String Cheese", amount: 1, constraints: true, maximum: 8))
+        // seeded.append(Adjustment(name: "Broccoli", amount: 10, group: "vegefat", constraints: true, maximum: 250))
+        // seeded.append(Adjustment(name: "Cauliflower", amount: 10, group: "vegefat", constraints: true, maximum: 100))
+        // seeded.append(Adjustment(name: "Extra Virgin Olive Oil", amount: 0.5, constraints: true, maximum: 2))
+        seeded.append(Adjustment(name: "Pumpkin Seeds", amount: 5, group: "vegefat"))
+        // seeded.append(Adjustment(name: "Macadamia Nuts", amount: 5, group: "vegefat", constraints: true, maximum: 100))
+        self.adjustments = seeded
     }
 
 
     func serialize() {
         if let encodedData = try? JSONEncoder().encode(adjustments) {
-            UserDefaults.standard.set(encodedData, forKey: "adjustment")
+            UserDefaults.standard.set(encodedData, forKey: storageKey)
         }
     }
 
 
     func deserialize() {
         guard
-          let data = UserDefaults.standard.data(forKey: "adjustment"),
+          let data = UserDefaults.standard.data(forKey: storageKey),
           let savedItems = try? JSONDecoder().decode([Adjustment].self, from: data)
         else {
             return

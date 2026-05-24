@@ -27,6 +27,18 @@ enum Constants {
 class MealIngredientMgr: ObservableObject {
 
 
+    // Per-profile id; meal data is namespaced under this id so
+    // switching profile swaps meal data. Mutable so `reload` can
+    // repoint the manager when the active profile changes.
+    private(set) var profileId: String
+
+    // Per-profile storage key. Reads and writes go through this so
+    // every profile keeps its own meal data under "mealIngredient.<id>".
+    // The base string "mealIngredient" is preserved as the prefix for
+    // back-compat with the legacy unkeyed key (see migration in load).
+    private var storageKey: String { "mealIngredient.\(profileId)" }
+
+
     @Published var mealIngredients: [MealIngredient] = [] {
         didSet {
             serialize()
@@ -34,21 +46,74 @@ class MealIngredientMgr: ObservableObject {
     }
 
 
-    init() {
-        resetMealIngredients()
+    // Per-profile init: set profileId FIRST so storageKey resolves,
+    // then load from per-profile storage (with one-time legacy
+    // migration — see load(forProfileId:)). If empty afterwards, seed
+    // the default starter meal — same shape as the original
+    // single-profile init's resetMealIngredients() call.
+    init(profileId: String) {
+        self.profileId = profileId
+        self.mealIngredients = MealIngredientMgr.load(forProfileId: profileId)
+        if mealIngredients.isEmpty { resetMealIngredients() }
+    }
+
+
+    // Repoint this manager at a different profile: swap profileId,
+    // reload from that profile's storage, seed defaults if empty so
+    // newly-added profiles never land on a blank meal page.
+    func reload(forProfileId newId: String) {
+        self.profileId = newId
+        self.mealIngredients = MealIngredientMgr.load(forProfileId: newId)
+        if mealIngredients.isEmpty { resetMealIngredients() }
+    }
+
+
+    // Load meal ingredients for `profileId`.
+    //   1. Per-profile data exists? Use it.
+    //   2. Else, if this profile hasn't tried migration AND the GLOBAL
+    //      "mealIngredient.legacyConsumed" flag is false, try the
+    //      legacy unkeyed "mealIngredient" key. The first profile to
+    //      load post-refactor claims it; the global flag prevents
+    //      other profiles from also claiming it.
+    //   3. Else, return [] — caller seeds defaults.
+    // Legacy key is never deleted (safety net).
+    private static func load(forProfileId profileId: String) -> [MealIngredient] {
+        let key = "mealIngredient.\(profileId)"
+        let migratedKey = "mealIngredient.migrated.\(profileId)"
+        let legacyConsumedKey = "mealIngredient.legacyConsumed"
+
+        if let data = UserDefaults.standard.data(forKey: key),
+           let savedItems = try? JSONDecoder().decode([MealIngredient].self, from: data) {
+            return savedItems
+        }
+
+        if !UserDefaults.standard.bool(forKey: migratedKey) {
+            UserDefaults.standard.set(true, forKey: migratedKey)
+            if !UserDefaults.standard.bool(forKey: legacyConsumedKey),
+               let legacyData = UserDefaults.standard.data(forKey: "mealIngredient"),
+               let legacyItems = try? JSONDecoder().decode([MealIngredient].self, from: legacyData) {
+                if let encoded = try? JSONEncoder().encode(legacyItems) {
+                    UserDefaults.standard.set(encoded, forKey: key)
+                }
+                UserDefaults.standard.set(true, forKey: legacyConsumedKey)
+                return legacyItems
+            }
+        }
+
+        return []
     }
 
 
     func serialize() {
         if let encodedData = try? JSONEncoder().encode(mealIngredients) {
-            UserDefaults.standard.set(encodedData, forKey: "mealIngredient")
+            UserDefaults.standard.set(encodedData, forKey: storageKey)
         }
     }
 
 
     func deserialize() {
         guard
-          let data = UserDefaults.standard.data(forKey: "mealIngredient"),
+          let data = UserDefaults.standard.data(forKey: storageKey),
           let savedItems = try? JSONDecoder().decode([MealIngredient].self, from: data)
         else {
             return

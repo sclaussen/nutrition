@@ -129,14 +129,23 @@ class ProfileMgr: ObservableObject {
     }
 
 
+    // Callback fired when the active profile changes. app.swift
+    // installs a handler that calls reload(forProfileId:) on every
+    // per-profile manager (MealIngredientMgr, AdjustmentMgr,
+    // FoodCompositeMgr) so their data swaps in lock-step with the
+    // active profile.
+    var onProfileSwitch: ((String) -> Void)?
+
+
     // Switch the active profile by id. Any in-flight edits to the
     // previous profile have already been mirrored into `profiles` via
     // profile.didSet, so swapping is just a pointer move + persisting
-    // the new active id.
+    // the new active id + notifying per-profile managers.
     func switchToProfile(_ id: String) {
         guard let next = profiles.first(where: { $0.id == id }) else { return }
         self.profile = next
         UserDefaults.standard.set(id, forKey: "activeProfileId")
+        onProfileSwitch?(id)
     }
 
 

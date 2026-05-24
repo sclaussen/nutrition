@@ -94,7 +94,7 @@ struct AdjustmentCreate_Previews: PreviewProvider {
     static var previews: some View {
         NavigationView {
             AdjustmentAdd()
-              .environmentObject(AdjustmentMgr())
+              .environmentObject(AdjustmentMgr(profileId: "preview"))
         }
     }
 }

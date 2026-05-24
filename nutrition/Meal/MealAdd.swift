@@ -78,7 +78,7 @@ struct MealIngredientCreate_Previews: PreviewProvider {
     static var previews: some View {
         NavigationView {
             MealAdd()
-              .environmentObject(MealIngredientMgr())
+              .environmentObject(MealIngredientMgr(profileId: "preview"))
         }
     }
 }

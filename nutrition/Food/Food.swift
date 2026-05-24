@@ -312,7 +312,23 @@ class FoodCompositeMgr: ObservableObject {
         didSet { serialize() }
     }
 
-    init() {
+    private(set) var profileId: String
+
+    // Per-profile pattern: composites are stored under a per-profile
+    // UserDefaults key ("foodComposite.<profileId>") so switching the
+    // active profile swaps the composite library. On first load for a
+    // given profile, we attempt a one-shot migration from the legacy
+    // unkeyed "foodComposite" store (gated by a per-profile flag), then
+    // seed defaults if still empty. Use reload(forProfileId:) to swap
+    // the active profile at runtime.
+    init(profileId: String) {
+        self.profileId = profileId
+        deserialize()
+        if composites.isEmpty { seed() }
+    }
+
+    func reload(forProfileId newId: String) {
+        self.profileId = newId
         deserialize()
         if composites.isEmpty { seed() }
     }
@@ -364,18 +380,40 @@ class FoodCompositeMgr: ObservableObject {
         ]
     }
 
-    private let key = "foodComposite"
+    private var storageKey: String { "foodComposite.\(profileId)" }
 
     func serialize() {
         if let data = try? JSONEncoder().encode(composites) {
-            UserDefaults.standard.set(data, forKey: key)
+            UserDefaults.standard.set(data, forKey: storageKey)
         }
     }
 
     func deserialize() {
-        guard let data = UserDefaults.standard.data(forKey: key),
-              let saved = try? JSONDecoder().decode([FoodComposite].self, from: data)
-        else { return }
-        self.composites = saved
+        if let data = UserDefaults.standard.data(forKey: storageKey),
+           let saved = try? JSONDecoder().decode([FoodComposite].self, from: data) {
+            self.composites = saved
+            return
+        }
+        // One-shot migration from the legacy unkeyed "foodComposite"
+        // store. Only the FIRST profile to load post-refactor consumes
+        // it (gated by the global "foodComposite.legacyConsumed" flag);
+        // later profiles fall through to seed() defaults via the
+        // caller's "if composites.isEmpty { seed() }" path.
+        let migratedFlagKey = "foodComposite.migrated.\(profileId)"
+        let legacyConsumedKey = "foodComposite.legacyConsumed"
+        if !UserDefaults.standard.bool(forKey: migratedFlagKey) {
+            UserDefaults.standard.set(true, forKey: migratedFlagKey)
+            if !UserDefaults.standard.bool(forKey: legacyConsumedKey),
+               let legacyData = UserDefaults.standard.data(forKey: "foodComposite"),
+               let legacy = try? JSONDecoder().decode([FoodComposite].self, from: legacyData) {
+                self.composites = legacy
+                UserDefaults.standard.set(true, forKey: legacyConsumedKey)
+                if let data = try? JSONEncoder().encode(legacy) {
+                    UserDefaults.standard.set(data, forKey: storageKey)
+                }
+                return
+            }
+        }
+        self.composites = []
     }
 }

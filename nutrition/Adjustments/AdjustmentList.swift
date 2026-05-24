@@ -103,7 +103,7 @@ struct AdjustmentList_Previews: PreviewProvider {
     static var previews: some View {
         NavigationView {
             AdjustmentList()
-              .environmentObject(AdjustmentMgr())
+              .environmentObject(AdjustmentMgr(profileId: "preview"))
         }
     }
 }
