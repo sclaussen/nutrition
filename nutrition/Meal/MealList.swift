@@ -82,236 +82,7 @@ struct MealList: View {
     // Actions:
     // - Manually updating amount removes the pending compensation if it exists
     var body: some View {
-        List {
-            // Dashboard moved out of the List and into the .safeAreaInset
-            // header below so the toolbar+macros+calories area is fixed
-            // and never scrolls with the meal rows.
-            //
-            // Ingredient / Amount column header removed — the row's
-            // own affordances (name on the left, stepper + chevron on
-            // the right) communicate the columns without a label row.
-
-            ForEach(displayedMealIngredients()) { mealIngredient in
-                // Row layout is strict proportional: name 50%, left
-                // triangle 10%, pill 20%, right triangle 10%, chevron
-                // 10%. Each segment's entire allocated width is its
-                // tap zone (via contentShape) so taps on whitespace
-                // adjacent to a symbol still hit the right control.
-                GeometryReader { geo in
-                    let w = geo.size.width
-                    HStack(spacing: 0) {
-                      if mealIngredient.isFoodTypeSlot {
-                        // CATEGORY PLACEHOLDER — visually distinct
-                        // "pick something" affordance. No stepper, no
-                        // macros, contributes zero calories. Tapping
-                        // anywhere on the row opens a Food picker for
-                        // this category (confirmationDialog below).
-                        // The #1 gestures (double-tap replicate,
-                        // long-press member picker, single-tap lock)
-                        // are intentionally NOT attached here.
-                        HStack(spacing: 6) {
-                            Image(systemName: "plus.circle.dashed")
-                              .font(.callout)
-                            Text("\(mealIngredient.name) — tap to choose")
-                              .font(.callout)
-                              .italic()
-                            Spacer(minLength: 0)
-                            Image(systemName: "chevron.down")
-                              .font(.caption2)
-                        }
-                          .foregroundColor(Color.theme.blackWhiteSecondary)
-                          .frame(width: w, alignment: .leading)
-                          .contentShape(Rectangle())
-                          .onTapGesture {
-                              foodTypePickerFor = mealIngredient
-                          }
-                      } else {
-                        // Just the name — IngredientRow is overkill here
-                        // (its showMacros/showAmount are both off, and
-                        // its inner GeometryReader+frame(height: 9) was
-                        // glueing the text to the top of the 28pt row).
-                        // Plain Text centers vertically via the HStack's
-                        // default .center alignment, matching the
-                        // stepper and chevron.
-                        if mealIngredient.isComposite {
-                            // Composite row: long-press opens the
-                            // dedicated multi-component editor (too
-                            // complex for an inline dropdown). Single
-                            // tap still cycles the lock state.
-                            mealNameLabel(mealIngredient)
-                              .frame(width: w * 0.50, alignment: .leading)
-                              .contentShape(Rectangle())
-                              .onLongPressGesture {
-                                  compositeEditorFor = mealIngredient
-                              }
-                              .onTapGesture {
-                                  toggleLock(mealIngredient)
-                              }
-                        } else {
-                            mealNameLabel(mealIngredient)
-                              .frame(width: w * 0.50, alignment: .leading)
-                              // contentShape makes the full 50% zone hit-
-                              // testable, not just the rendered glyphs.
-                              .contentShape(Rectangle())
-                              // Double-tap duplicates the row into a new
-                              // independent row (same member + amount,
-                              // fresh identity) — ONLY for Foods with >1
-                              // member; duplicating a single-member Food
-                              // makes no sense (nothing to switch the
-                              // copy to). Attached before single-tap so
-                              // the 2-tap gesture gets priority.
-                              .if(groupMembers(mealIngredient).count > 1) { view in
-                                  view.onTapGesture(count: 2) {
-                                      mealIngredientMgr.replicate(id: mealIngredient.id)
-                                      generateMeal()
-                                  }
-                              }
-                              // Group rows: long-press immediately opens
-                              // the variant picker (confirmationDialog
-                              // below). Lock stays on the single-tap
-                              // cycle. The picked member changes ONLY
-                              // this row.
-                              .if(isGroupRow(mealIngredient)) { view in
-                                  view.onLongPressGesture {
-                                      memberPickerFor = mealIngredient
-                                  }
-                              }
-                              .onTapGesture {
-                                  toggleLock(mealIngredient)
-                              }
-                        }
-                        if mealIngredient.isComposite {
-                            // Composites have no single amount; the
-                            // stepper slot shows the summed calories
-                            // and opens the component editor on tap.
-                            Button {
-                                compositeEditorFor = mealIngredient
-                            } label: {
-                                Text("\(Int(mealIngredient.calories)) cals")
-                                  .font(.callout)
-                                  .frame(width: w * 0.40, alignment: .center)
-                                  .contentShape(Rectangle())
-                            }
-                              .buttonStyle(.borderless)
-                        } else {
-                            AmountStepper(
-                            amount: mealIngredient.amount,
-                            unit: getConsumptionUnit(mealIngredient),
-                            // "Locked" here means Done (blue): inc/dec/pill
-                            // are disabled. Manual rows (black) still allow
-                            // amount changes; the stepper stays visible and
-                            // active for those.
-                            isLocked: mealIngredient.adjustment == Constants.Done,
-                            isAuto:   isInAutoMode(mealIngredient),
-                            decrementWidth: w * 0.10,
-                            pillWidth:      w * 0.20,
-                            incrementWidth: w * 0.10,
-                            onDecrement:       { stepAmount(mealIngredient, direction: -1) },
-                            onIncrement:       { stepAmount(mealIngredient, direction: +1) },
-                            // Hold the ◀ triangle: zero the amount AND
-                            // lock the row (Done / blue) in one shot.
-                            // doneAdjustment(…, amount: 0) sets both,
-                            // so the row immediately renders as the
-                            // locked "0 <unit>" blue pill and stops
-                            // being auto-adjusted. Same lock path as
-                            // the Black → Blue tap-name transition.
-                            onDecrementToZero: {
-                                mealIngredientMgr.doneAdjustment(id: mealIngredient.id, amount: 0)
-                                generateMeal()
-                            },
-                            onPillTap:         { entrySheetFor = mealIngredient }
-                            )
-                        }
-
-                        Button {
-                            detailFor = mealIngredient
-                        } label: {
-                            Image(systemName: "chevron.right")
-                              .font(.caption2)
-                              // Glyph sits at the right edge (alignment:
-                              // .trailing) but the whole 10% zone stays
-                              // tappable because contentShape covers
-                              // the full frame.
-                              .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .trailing)
-                              .contentShape(Rectangle())
-                        }
-                          .buttonStyle(.borderless)
-                          .foregroundColor(Color.theme.blackWhiteSecondary)
-                          .frame(width: w * 0.10)
-                      }
-                    }
-                      // Color tells you which mode the row is in:
-                      //   Green  — Auto mode: either Automatic (was just
-                      //            auto-adjusted) OR Default with an
-                      //            adjustment rule targeting it (auto-
-                      //            eligible, may not have fired this
-                      //            cycle if macros are full)
-                      //   Blue   — Done (Constants.Done)
-                      //   Black  — Manual, or Default without an auto-rule
-                      // Placeholders keep their own muted/secondary
-                      // color (applied on the inner HStack above) —
-                      // the mode-color logic doesn't apply to them.
-                      .foregroundColor(mealIngredient.isFoodTypeSlot ? Color.theme.blackWhiteSecondary :
-                                        (isInAutoMode(mealIngredient) ? Color.theme.manual :
-                                           (mealIngredient.adjustment == Constants.Done ? Color.theme.blueYellow :
-                                              Color.theme.blackWhite)))
-                }
-                  // Explicit row height — GeometryReader has no intrinsic
-                  // height inside a List row, so without this the row
-                  // would collapse. 26.6pt = 28 × 0.95 (5% reduction).
-                  .frame(height: 26.6)
-
-                  // Swipe-trailing — remove this row from the meal
-                  // outright (a meal is exactly the rows present). The
-                  // Food remains in the repertoire and can be re-added
-                  // any time via the eye add-list. The separate
-                  // destructive "delete from database" lives on the
-                  // Prep page, not here.
-                  // minus.circle.fill mirrors IngredientList's
-                  // "Unlist" affordance (minus.circle) — same family.
-                  // Swipe exposes the otherwise-hidden gestures so they
-                  // are discoverable: full-swipe removes; Switch =
-                  // long-press member picker; Duplicate = double-tap
-                  // replicate (only when there's >1 member, matching
-                  // the double-tap rule).
-                  .swipeActions(edge: .trailing) {
-                      Button(role: .destructive) {
-                          mealIngredientMgr.delete(mealIngredient)
-                          generateMeal()
-                      } label: {
-                          Label("Remove", systemImage: "minus.circle.fill")
-                      }
-                      if !mealIngredient.isComposite && !mealIngredient.isFoodTypeSlot {
-                          if isGroupRow(mealIngredient) {
-                              Button {
-                                  memberPickerFor = mealIngredient
-                              } label: {
-                                  Label("Switch", systemImage: "arrow.triangle.2.circlepath")
-                              }
-                                .tint(Color.theme.blueYellow)
-                          }
-                          if groupMembers(mealIngredient).count > 1 {
-                              Button {
-                                  mealIngredientMgr.replicate(id: mealIngredient.id)
-                                  generateMeal()
-                              } label: {
-                                  Label("Duplicate", systemImage: "plus.square.on.square")
-                              }
-                                .tint(.indigo)
-                          }
-                      }
-                  }
-            }
-              // .onMove(perform: moveAction)
-              .onDelete(perform: deleteAction)
-              .border(Color.theme.green, width: 0)
-              // Compressed vertical insets — fits more ingredients per
-              // screen without shrinking the content fonts themselves.
-              // Horizontal insets define the row's usable width that
-              // GeometryReader sees, which then splits into the
-              // 50 / 10 / 20 / 10 / 10 segments above.
-              .listRowInsets(EdgeInsets(top: 6, leading: 10, bottom: 6, trailing: 10))
-        }
+        mealListView
           // Plain list style + an explicit grey background eliminates
           // .insetGrouped's mandatory ~35pt section padding above the
           // first row and below the last.  Combined with the fixed
@@ -340,122 +111,7 @@ struct MealList: View {
           // primary ask.
           .navigationBarHidden(true)
           .safeAreaInset(edge: .top, spacing: 0) {
-              // Spacing 10 — doubles the prior ~10pt visible gap to
-              // ~20pt between toolbar icons and the macro titles.
-              VStack(spacing: 10) {
-
-                  // ----- Custom compact toolbar -----
-                  HStack(spacing: 0) {
-
-                      // Reset (was the navigation-slot Edit button).
-                      Button {
-                          resetMealIngredientsAlert = true
-                      } label: {
-                          Image(systemName: "arrow.uturn.backward")
-                      }
-                        .frame(width: 44)
-                        .foregroundColor(Color.theme.blueYellow)
-
-                      Spacer()
-
-                      // Add a Food to the meal. Opens a picker of every
-                      // active Food (≥1 member with foodActive == true)
-                      // that is NOT already in the meal; tapping one
-                      // adds a normal meal row for it.
-                      Button {
-                          showAddFoodPicker = true
-                      } label: {
-                          Image(systemName: "eye")
-                      }
-                        .frame(width: 44)
-                        .foregroundColor(Color.theme.blackWhiteSecondary)
-
-                      // Fixed 18pt spacers between the middle three
-                      // icons — roughly doubles the visible glyph-to-
-                      // glyph gap (was ~18.5pt of empty room inside the
-                      // 44pt frames; +18 makes it ~37pt).
-                      Spacer().frame(width: 18)
-                      Button {
-                          showSupplements.toggle()
-                      } label: {
-                          Image(systemName: showSupplements ? "leaf.fill" : "leaf")
-                      }
-                        .frame(width: 44)
-                        .foregroundColor(showSupplements ? Color.theme.blueYellow : Color.theme.blackWhiteSecondary)
-
-                      Spacer().frame(width: 18)
-                      Button {
-                          vmListActive = true
-                      } label: {
-                          Image(systemName: "pills")
-                      }
-                        .frame(width: 44)
-                        .foregroundColor(Color.theme.blueYellow)
-
-                      Spacer().frame(width: 18)
-                      // LLM scanner — rendered 50% larger than the
-                      // other cluster glyphs (the inherited toolbar
-                      // size is 25.5; 25.5 × 1.5 ≈ 38) since it's the
-                      // primary action. Same scanner reachable from
-                      // the Prep page's centered toolbar.
-                      Button {
-                          showCaptureSheet = true
-                      } label: {
-                          Image(systemName: "camera.viewfinder")
-                            .font(.system(size: 34.2))
-                      }
-                        .frame(width: 56)
-                        .foregroundColor(Color.theme.blueYellow)
-
-                      Spacer().frame(width: 18)
-                      // Meal cost breakdown — every meal ingredient
-                      // sorted by its cost contribution (cost/gram ×
-                      // grams consumed), most expensive first.
-                      Button {
-                          costDetailActive = true
-                      } label: {
-                          Image(systemName: "dollarsign.circle")
-                      }
-                        .frame(width: 44)
-                        .foregroundColor(Color.theme.blueYellow)
-
-                      Spacer()
-
-                      // Settings (was the primaryAction Add link).
-                      Button {
-                          mealConfigureActive.toggle()
-                      } label: {
-                          Image(systemName: "gear")
-                      }
-                        .frame(width: 44)
-                        .foregroundColor(Color.theme.blueYellow)
-                  }
-                    .font(.system(size: 22.95))
-                    .padding(.horizontal, 8)
-                    .padding(.vertical, 2)
-
-                  // ----- Dashboard (macros + calories bar) -----
-                  // Pulled out of the List so it stays fixed at the top
-                  // alongside the toolbar.
-                  Dashboard(caloriesGoal: profileMgr.profile.caloriesGoal,
-                            caloriesGoalUnadjusted: profileMgr.profile.caloriesGoalUnadjusted,
-                            calories: macrosMgr.macros.calories,
-                            fatGoal: profileMgr.profile.fatGoal,
-                            netCarbsMaximum: profileMgr.profile.effectiveNetCarbsMaximum,
-                            proteinGoal: profileMgr.profile.proteinGoal,
-                            fat: macrosMgr.macros.fat,
-                            netCarbs: macrosMgr.macros.netCarbs,
-                            protein: macrosMgr.macros.protein,
-                            showSummary: $showSummary)
-                    // Dropped 160 → 151pt — halves remaining grey
-                    // space between the Goal/TDEE labels and the
-                    // first meal row below.
-                    .frame(height: 151)
-              }
-                // Single grey backdrop spans the whole fixed header
-                // (toolbar + dashboard).  Same color as the List below,
-                // so transitions are seamless.
-                .background(Color(UIColor.systemGroupedBackground))
+              headerView
           }
           .onAppear {
               generateMeal()
@@ -613,6 +269,227 @@ struct MealList: View {
                   EmptyView()
               }
           )
+    }
+
+
+    // ----- List of meal rows -----
+    // The scrolling meal rows. Each row is delegated to MealRowView,
+    // which receives the per-row bindings/closures it needs (the
+    // parent retains ownership of all @State). The ForEach identity
+    // and ordering are unchanged — displayedMealIngredients() is the
+    // single source of truth for what's shown and in what order.
+    @ViewBuilder
+    private var mealListView: some View {
+        List {
+            // Dashboard moved out of the List and into the .safeAreaInset
+            // header below so the toolbar+macros+calories area is fixed
+            // and never scrolls with the meal rows.
+            //
+            // Ingredient / Amount column header removed — the row's
+            // own affordances (name on the left, stepper + chevron on
+            // the right) communicate the columns without a label row.
+
+            ForEach(displayedMealIngredients()) { mealIngredient in
+                MealRowView(
+                    mealIngredient: mealIngredient,
+                    isComposite: mealIngredient.isComposite,
+                    isFoodTypeSlot: mealIngredient.isFoodTypeSlot,
+                    isGroupRow: isGroupRow(mealIngredient),
+                    groupMemberCount: groupMembers(mealIngredient).count,
+                    consumptionUnit: getConsumptionUnit(mealIngredient),
+                    isAuto: isInAutoMode(mealIngredient),
+                    nameLabel: { mealNameLabel(mealIngredient) },
+                    memberPickerFor: $memberPickerFor,
+                    compositeEditorFor: $compositeEditorFor,
+                    foodTypePickerFor: $foodTypePickerFor,
+                    detailFor: $detailFor,
+                    entrySheetFor: $entrySheetFor,
+                    onReplicate: {
+                        mealIngredientMgr.replicate(id: mealIngredient.id)
+                        generateMeal()
+                    },
+                    onToggleLock: { toggleLock(mealIngredient) },
+                    onStep: { direction in stepAmount(mealIngredient, direction: direction) },
+                    onDecrementToZero: {
+                        mealIngredientMgr.doneAdjustment(id: mealIngredient.id, amount: 0)
+                        generateMeal()
+                    }
+                )
+                  // Swipe-trailing — remove this row from the meal
+                  // outright (a meal is exactly the rows present). The
+                  // Food remains in the repertoire and can be re-added
+                  // any time via the eye add-list. The separate
+                  // destructive "delete from database" lives on the
+                  // Prep page, not here.
+                  // minus.circle.fill mirrors IngredientList's
+                  // "Unlist" affordance (minus.circle) — same family.
+                  // Swipe exposes the otherwise-hidden gestures so they
+                  // are discoverable: full-swipe removes; Switch =
+                  // long-press member picker; Duplicate = double-tap
+                  // replicate (only when there's >1 member, matching
+                  // the double-tap rule).
+                  .swipeActions(edge: .trailing) {
+                      Button(role: .destructive) {
+                          mealIngredientMgr.delete(mealIngredient)
+                          generateMeal()
+                      } label: {
+                          Label("Remove", systemImage: "minus.circle.fill")
+                      }
+                      if !mealIngredient.isComposite && !mealIngredient.isFoodTypeSlot {
+                          if isGroupRow(mealIngredient) {
+                              Button {
+                                  memberPickerFor = mealIngredient
+                              } label: {
+                                  Label("Switch", systemImage: "arrow.triangle.2.circlepath")
+                              }
+                                .tint(Color.theme.blueYellow)
+                          }
+                          if groupMembers(mealIngredient).count > 1 {
+                              Button {
+                                  mealIngredientMgr.replicate(id: mealIngredient.id)
+                                  generateMeal()
+                              } label: {
+                                  Label("Duplicate", systemImage: "plus.square.on.square")
+                              }
+                                .tint(.indigo)
+                          }
+                      }
+                  }
+            }
+              // .onMove(perform: moveAction)
+              .onDelete(perform: deleteAction)
+              .border(Color.theme.green, width: 0)
+              // Compressed vertical insets — fits more ingredients per
+              // screen without shrinking the content fonts themselves.
+              // Horizontal insets define the row's usable width that
+              // GeometryReader sees, which then splits into the
+              // 50 / 10 / 20 / 10 / 10 segments above.
+              .listRowInsets(EdgeInsets(top: 6, leading: 10, bottom: 6, trailing: 10))
+        }
+    }
+
+
+    // ----- Fixed header (toolbar + Dashboard) -----
+    // Injected via .safeAreaInset(edge: .top) so it stays pinned while
+    // the meal rows scroll beneath it.
+    @ViewBuilder
+    private var headerView: some View {
+        // Spacing 10 — doubles the prior ~10pt visible gap to
+        // ~20pt between toolbar icons and the macro titles.
+        VStack(spacing: 10) {
+
+            // ----- Custom compact toolbar -----
+            HStack(spacing: 0) {
+
+                // Reset (was the navigation-slot Edit button).
+                Button {
+                    resetMealIngredientsAlert = true
+                } label: {
+                    Image(systemName: "arrow.uturn.backward")
+                }
+                  .frame(width: 44)
+                  .foregroundColor(Color.theme.blueYellow)
+
+                Spacer()
+
+                // Add a Food to the meal. Opens a picker of every
+                // active Food (≥1 member with foodActive == true)
+                // that is NOT already in the meal; tapping one
+                // adds a normal meal row for it.
+                Button {
+                    showAddFoodPicker = true
+                } label: {
+                    Image(systemName: "eye")
+                }
+                  .frame(width: 44)
+                  .foregroundColor(Color.theme.blackWhiteSecondary)
+
+                // Fixed 18pt spacers between the middle three
+                // icons — roughly doubles the visible glyph-to-
+                // glyph gap (was ~18.5pt of empty room inside the
+                // 44pt frames; +18 makes it ~37pt).
+                Spacer().frame(width: 18)
+                Button {
+                    showSupplements.toggle()
+                } label: {
+                    Image(systemName: showSupplements ? "leaf.fill" : "leaf")
+                }
+                  .frame(width: 44)
+                  .foregroundColor(showSupplements ? Color.theme.blueYellow : Color.theme.blackWhiteSecondary)
+
+                Spacer().frame(width: 18)
+                Button {
+                    vmListActive = true
+                } label: {
+                    Image(systemName: "pills")
+                }
+                  .frame(width: 44)
+                  .foregroundColor(Color.theme.blueYellow)
+
+                Spacer().frame(width: 18)
+                // LLM scanner — rendered 50% larger than the
+                // other cluster glyphs (the inherited toolbar
+                // size is 25.5; 25.5 × 1.5 ≈ 38) since it's the
+                // primary action. Same scanner reachable from
+                // the Prep page's centered toolbar.
+                Button {
+                    showCaptureSheet = true
+                } label: {
+                    Image(systemName: "camera.viewfinder")
+                      .font(.system(size: 34.2))
+                }
+                  .frame(width: 56)
+                  .foregroundColor(Color.theme.blueYellow)
+
+                Spacer().frame(width: 18)
+                // Meal cost breakdown — every meal ingredient
+                // sorted by its cost contribution (cost/gram ×
+                // grams consumed), most expensive first.
+                Button {
+                    costDetailActive = true
+                } label: {
+                    Image(systemName: "dollarsign.circle")
+                }
+                  .frame(width: 44)
+                  .foregroundColor(Color.theme.blueYellow)
+
+                Spacer()
+
+                // Settings (was the primaryAction Add link).
+                Button {
+                    mealConfigureActive.toggle()
+                } label: {
+                    Image(systemName: "gear")
+                }
+                  .frame(width: 44)
+                  .foregroundColor(Color.theme.blueYellow)
+            }
+              .font(.system(size: 22.95))
+              .padding(.horizontal, 8)
+              .padding(.vertical, 2)
+
+            // ----- Dashboard (macros + calories bar) -----
+            // Pulled out of the List so it stays fixed at the top
+            // alongside the toolbar.
+            Dashboard(caloriesGoal: profileMgr.profile.caloriesGoal,
+                      caloriesGoalUnadjusted: profileMgr.profile.caloriesGoalUnadjusted,
+                      calories: macrosMgr.macros.calories,
+                      fatGoal: profileMgr.profile.fatGoal,
+                      netCarbsMaximum: profileMgr.profile.effectiveNetCarbsMaximum,
+                      proteinGoal: profileMgr.profile.proteinGoal,
+                      fat: macrosMgr.macros.fat,
+                      netCarbs: macrosMgr.macros.netCarbs,
+                      protein: macrosMgr.macros.protein,
+                      showSummary: $showSummary)
+              // Dropped 160 → 151pt — halves remaining grey
+              // space between the Goal/TDEE labels and the
+              // first meal row below.
+              .frame(height: 151)
+        }
+          // Single grey backdrop spans the whole fixed header
+          // (toolbar + dashboard).  Same color as the List below,
+          // so transitions are seamless.
+          .background(Color(UIColor.systemGroupedBackground))
     }
 
 
@@ -1303,6 +1180,208 @@ struct MealList: View {
                                  adjustment: Constants.Manual,
                                  compositeParts: parts)
         generateMeal()
+    }
+}
+
+
+// ============================================================
+// MealRowView — a single meal row. Extracted from MealList's
+// body verbatim; the parent owns all @State and threads in only
+// the per-row bindings and closures this row needs. Pre-resolved
+// derived values (isGroupRow, groupMemberCount, consumptionUnit,
+// isAuto, the name label, …) are passed in rather than recomputed
+// here so resolution stays centralized in MealList and behavior is
+// byte-for-byte identical to the inline version.
+//
+// Row layout is strict proportional: name 50%, left triangle 10%,
+// pill 20%, right triangle 10%, chevron 10%. Each segment's entire
+// allocated width is its tap zone (via contentShape) so taps on
+// whitespace adjacent to a symbol still hit the right control.
+// ============================================================
+struct MealRowView<NameLabel: View>: View {
+
+    let mealIngredient: MealIngredient
+    let isComposite: Bool
+    let isFoodTypeSlot: Bool
+    let isGroupRow: Bool
+    let groupMemberCount: Int
+    let consumptionUnit: Unit
+    let isAuto: Bool
+    @ViewBuilder let nameLabel: () -> NameLabel
+
+    @Binding var memberPickerFor: MealIngredient?
+    @Binding var compositeEditorFor: MealIngredient?
+    @Binding var foodTypePickerFor: MealIngredient?
+    @Binding var detailFor: MealIngredient?
+    @Binding var entrySheetFor: MealIngredient?
+
+    let onReplicate: () -> Void
+    let onToggleLock: () -> Void
+    let onStep: (Double) -> Void
+    let onDecrementToZero: () -> Void
+
+    var body: some View {
+        GeometryReader { geo in
+            let w = geo.size.width
+            HStack(spacing: 0) {
+              if isFoodTypeSlot {
+                // CATEGORY PLACEHOLDER — visually distinct
+                // "pick something" affordance. No stepper, no
+                // macros, contributes zero calories. Tapping
+                // anywhere on the row opens a Food picker for
+                // this category (confirmationDialog below).
+                // The #1 gestures (double-tap replicate,
+                // long-press member picker, single-tap lock)
+                // are intentionally NOT attached here.
+                HStack(spacing: 6) {
+                    Image(systemName: "plus.circle.dashed")
+                      .font(.callout)
+                    Text("\(mealIngredient.name) — tap to choose")
+                      .font(.callout)
+                      .italic()
+                    Spacer(minLength: 0)
+                    Image(systemName: "chevron.down")
+                      .font(.caption2)
+                }
+                  .foregroundColor(Color.theme.blackWhiteSecondary)
+                  .frame(width: w, alignment: .leading)
+                  .contentShape(Rectangle())
+                  .onTapGesture {
+                      foodTypePickerFor = mealIngredient
+                  }
+              } else {
+                // Just the name — IngredientRow is overkill here
+                // (its showMacros/showAmount are both off, and
+                // its inner GeometryReader+frame(height: 9) was
+                // glueing the text to the top of the 28pt row).
+                // Plain Text centers vertically via the HStack's
+                // default .center alignment, matching the
+                // stepper and chevron.
+                if isComposite {
+                    // Composite row: long-press opens the
+                    // dedicated multi-component editor (too
+                    // complex for an inline dropdown). Single
+                    // tap still cycles the lock state.
+                    nameLabel()
+                      .frame(width: w * 0.50, alignment: .leading)
+                      .contentShape(Rectangle())
+                      .onLongPressGesture {
+                          compositeEditorFor = mealIngredient
+                      }
+                      .onTapGesture {
+                          onToggleLock()
+                      }
+                } else {
+                    nameLabel()
+                      .frame(width: w * 0.50, alignment: .leading)
+                      // contentShape makes the full 50% zone hit-
+                      // testable, not just the rendered glyphs.
+                      .contentShape(Rectangle())
+                      // Double-tap duplicates the row into a new
+                      // independent row (same member + amount,
+                      // fresh identity) — ONLY for Foods with >1
+                      // member; duplicating a single-member Food
+                      // makes no sense (nothing to switch the
+                      // copy to). Attached before single-tap so
+                      // the 2-tap gesture gets priority.
+                      .if(groupMemberCount > 1) { view in
+                          view.onTapGesture(count: 2) {
+                              onReplicate()
+                          }
+                      }
+                      // Group rows: long-press immediately opens
+                      // the variant picker (confirmationDialog
+                      // below). Lock stays on the single-tap
+                      // cycle. The picked member changes ONLY
+                      // this row.
+                      .if(isGroupRow) { view in
+                          view.onLongPressGesture {
+                              memberPickerFor = mealIngredient
+                          }
+                      }
+                      .onTapGesture {
+                          onToggleLock()
+                      }
+                }
+                if isComposite {
+                    // Composites have no single amount; the
+                    // stepper slot shows the summed calories
+                    // and opens the component editor on tap.
+                    Button {
+                        compositeEditorFor = mealIngredient
+                    } label: {
+                        Text("\(Int(mealIngredient.calories)) cals")
+                          .font(.callout)
+                          .frame(width: w * 0.40, alignment: .center)
+                          .contentShape(Rectangle())
+                    }
+                      .buttonStyle(.borderless)
+                } else {
+                    AmountStepper(
+                    amount: mealIngredient.amount,
+                    unit: consumptionUnit,
+                    // "Locked" here means Done (blue): inc/dec/pill
+                    // are disabled. Manual rows (black) still allow
+                    // amount changes; the stepper stays visible and
+                    // active for those.
+                    isLocked: mealIngredient.adjustment == Constants.Done,
+                    isAuto:   isAuto,
+                    decrementWidth: w * 0.10,
+                    pillWidth:      w * 0.20,
+                    incrementWidth: w * 0.10,
+                    onDecrement:       { onStep(-1) },
+                    onIncrement:       { onStep(+1) },
+                    // Hold the ◀ triangle: zero the amount AND
+                    // lock the row (Done / blue) in one shot.
+                    // doneAdjustment(…, amount: 0) sets both,
+                    // so the row immediately renders as the
+                    // locked "0 <unit>" blue pill and stops
+                    // being auto-adjusted. Same lock path as
+                    // the Black → Blue tap-name transition.
+                    onDecrementToZero: {
+                        onDecrementToZero()
+                    },
+                    onPillTap:         { entrySheetFor = mealIngredient }
+                    )
+                }
+
+                Button {
+                    detailFor = mealIngredient
+                } label: {
+                    Image(systemName: "chevron.right")
+                      .font(.caption2)
+                      // Glyph sits at the right edge (alignment:
+                      // .trailing) but the whole 10% zone stays
+                      // tappable because contentShape covers
+                      // the full frame.
+                      .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .trailing)
+                      .contentShape(Rectangle())
+                }
+                  .buttonStyle(.borderless)
+                  .foregroundColor(Color.theme.blackWhiteSecondary)
+                  .frame(width: w * 0.10)
+              }
+            }
+              // Color tells you which mode the row is in:
+              //   Green  — Auto mode: either Automatic (was just
+              //            auto-adjusted) OR Default with an
+              //            adjustment rule targeting it (auto-
+              //            eligible, may not have fired this
+              //            cycle if macros are full)
+              //   Blue   — Done (Constants.Done)
+              //   Black  — Manual, or Default without an auto-rule
+              // Placeholders keep their own muted/secondary
+              // color (applied on the inner HStack above) —
+              // the mode-color logic doesn't apply to them.
+              .foregroundColor(isFoodTypeSlot ? Color.theme.blackWhiteSecondary :
+                                (isAuto ? Color.theme.manual :
+                                   (mealIngredient.adjustment == Constants.Done ? Color.theme.blueYellow :
+                                      Color.theme.blackWhite)))
+        }
+          // Explicit row height — GeometryReader has no intrinsic
+          // height inside a List row, so without this the row
+          // would collapse. 26.6pt = 28 × 0.95 (5% reduction).
+          .frame(height: 26.6)
     }
 }
 
