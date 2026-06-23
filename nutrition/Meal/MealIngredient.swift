@@ -33,26 +33,20 @@ class MealIngredientMgr: ObservableObject {
     private(set) var profileId: String
 
     // The active profile's display name. Carried alongside profileId
-    // so resetMealIngredients() can branch its seed defaults by
-    // profile (profileId is a UUID — not human-stable across fresh
-    // installs — so the seed switch keys on name instead).
+    // so resetMealIngredients() can seed defaults from config keyed by
+    // this profile's slug (profileName.lowercased()). profileId is a
+    // UUID — not human-stable across fresh installs — so the config
+    // lookup keys on the slug derived from the name instead.
     private(set) var profileName: String
 
-    // Per-profile storage key. Reads and writes go through this so
-    // every profile keeps its own meal data under "mealIngredient.<id>".
-    // The base string "mealIngredient" is preserved as the prefix for
-    // back-compat with the legacy unkeyed key (see migration in load).
-    private var storageKey: String { "mealIngredient.\(profileId)" }
+    // The profile's config slug: meals/supplements in ConfigStore are
+    // keyed by the lowercased profile name (e.g. "shane", "caden").
+    private var profileSlug: String { profileName.lowercased() }
 
-    // BUMP THIS WHENEVER YOU EDIT resetMealIngredients() (Shane's
-    // default arm, Caden's case arm, or add new profile cases). On
-    // the next launch each profile whose stored applied-version is
-    // < seedVersion gets its meal data wiped and re-seeded from the
-    // current code. Profiles with no stored version (= existing
-    // users on first encounter) are treated as already at the
-    // current version, so this never bulldozes pre-existing data on
-    // first rollout — only your subsequent edits matter.
-    static let seedVersion: Int = 1
+    // Per-profile storage key. Reads and writes go through this so
+    // every profile keeps its own EDITED meal data under
+    // "mealIngredient.<id>", so user edits persist between launches.
+    private var storageKey: String { "mealIngredient.\(profileId)" }
 
 
     @Published var mealIngredients: [MealIngredient] = [] {
@@ -62,84 +56,44 @@ class MealIngredientMgr: ObservableObject {
     }
 
 
-    // Per-profile init: set profileId/Name FIRST so storageKey
-    // resolves and resetMealIngredients() can branch by name, then
-    // either reseed (if the stored applied-version is older than
-    // seedVersion) or load existing data + seed-if-empty.
+    // Per-profile init: set profileId/Name FIRST so storageKey and
+    // profileSlug resolve, then load the user's saved (edited) meal
+    // data; if none exists yet (fresh profile), seed it from config.
     init(profileId: String, profileName: String) {
         self.profileId = profileId
         self.profileName = profileName
-        loadOrReseed()
+        loadOrSeed()
     }
 
 
-    // Repoint this manager at a different profile. Same load-or-
-    // reseed logic so a profile that hasn't been touched since the
-    // last seedVersion bump gets fresh defaults on the swap.
+    // Repoint this manager at a different profile. Same load-or-seed
+    // logic: load the target profile's saved meals, or seed from
+    // config if that profile has none yet.
     func reload(forProfileId newId: String, profileName newName: String) {
         self.profileId = newId
         self.profileName = newName
-        loadOrReseed()
+        loadOrSeed()
     }
 
 
-    // Shared init/reload body. Bumping `seedVersion` in code makes
-    // every profile reseed on next launch (or next profile swap),
-    // unconditionally clearing their persisted meal data first.
-    private func loadOrReseed() {
-        let appliedKey = "mealIngredient.appliedSeedVersion.\(profileId)"
-        // Treat ABSENT as "already at current version" so existing
-        // users on first rollout aren't wiped. Future bumps (stored
-        // < current) trigger the reseed.
-        let applied = UserDefaults.standard.object(forKey: appliedKey) as? Int ?? Self.seedVersion
-        if applied < Self.seedVersion {
-            UserDefaults.standard.removeObject(forKey: storageKey)
-            UserDefaults.standard.removeObject(forKey: "mealIngredient.migrated.\(profileId)")
-            self.mealIngredients = []
-            resetMealIngredients()
-            UserDefaults.standard.set(Self.seedVersion, forKey: appliedKey)
-            return
-        }
+    // Shared init/reload body. If the profile has saved (user-edited)
+    // meal data, load it so edits persist between launches. Otherwise
+    // (first run / fresh profile) seed the meals from ConfigStore.
+    private func loadOrSeed() {
         self.mealIngredients = MealIngredientMgr.load(forProfileId: profileId)
         if mealIngredients.isEmpty { resetMealIngredients() }
-        // Stamp the version for new profiles that didn't have it
-        // before, so a future bump can detect "stale".
-        UserDefaults.standard.set(Self.seedVersion, forKey: appliedKey)
     }
 
 
-    // Load meal ingredients for `profileId`.
-    //   1. Per-profile data exists? Use it.
-    //   2. Else, if this profile hasn't tried migration AND the GLOBAL
-    //      "mealIngredient.legacyConsumed" flag is false, try the
-    //      legacy unkeyed "mealIngredient" key. The first profile to
-    //      load post-refactor claims it; the global flag prevents
-    //      other profiles from also claiming it.
-    //   3. Else, return [] — caller seeds defaults.
-    // Legacy key is never deleted (safety net).
+    // Load the saved (user-edited) meal ingredients for `profileId`
+    // from per-profile UserDefaults. Returns [] when none are saved
+    // yet (caller seeds defaults from config).
     private static func load(forProfileId profileId: String) -> [MealIngredient] {
         let key = "mealIngredient.\(profileId)"
-        let migratedKey = "mealIngredient.migrated.\(profileId)"
-        let legacyConsumedKey = "mealIngredient.legacyConsumed"
-
         if let data = UserDefaults.standard.data(forKey: key),
            let savedItems = try? JSONDecoder().decode([MealIngredient].self, from: data) {
             return savedItems
         }
-
-        if !UserDefaults.standard.bool(forKey: migratedKey) {
-            UserDefaults.standard.set(true, forKey: migratedKey)
-            if !UserDefaults.standard.bool(forKey: legacyConsumedKey),
-               let legacyData = UserDefaults.standard.data(forKey: "mealIngredient"),
-               let legacyItems = try? JSONDecoder().decode([MealIngredient].self, from: legacyData) {
-                if let encoded = try? JSONEncoder().encode(legacyItems) {
-                    UserDefaults.standard.set(encoded, forKey: key)
-                }
-                UserDefaults.standard.set(true, forKey: legacyConsumedKey)
-                return legacyItems
-            }
-        }
-
         return []
     }
 
@@ -163,95 +117,54 @@ class MealIngredientMgr: ObservableObject {
     }
 
 
+    // Seed this profile's meal from ConfigStore, keyed by the
+    // profile's slug (profileName.lowercased()). Each ConfigMealRow is
+    // mapped to a MealIngredient by which fields it carries:
+    //   • category placeholder (row.category != nil) — a "pick a X"
+    //     slot: name = the category label, foodType = the type raw
+    //     value. Contributes ZERO macros, never resolves to an
+    //     ingredient, and is replaced by a real Food row when the user
+    //     picks one.
+    //   • composite (row.composite != nil) — name = the composite
+    //     food, with its resolved parts.
+    //   • group (row.member != nil) — name = the group food, with the
+    //     currently selected member.
+    //   • ordinary — name = the food, at its amount.
+    // Supplements (hidden from the meal list by default, but counted
+    // toward daily V&M and macros) are appended after the meals.
     func resetMealIngredients() {
-        mealIngredients = []
+        var rows: [MealIngredient] = []
 
-        // Default meal seed branches on profileName so each profile
-        // can have its own starter set. Add a new `case` for each
-        // additional profile; the `default` arm is the canonical
-        // Shane/original seed.
-        switch profileName {
-
-        // ---- Caden ----------------------------------------------
-        // TODO: customize Caden's starter meal. Until populated,
-        // Caden gets an empty meal — open the meal page's eye picker
-        // to build it up, or just append rows here.
-        case "Caden":
-            mealIngredients.append(MealIngredient(name: "Avocado Oil", amount: 1))
-            mealIngredients.append(MealIngredient(name: "Eggs", amount: 3))
-            mealIngredients.append(MealIngredient(name: "Bread", amount: 2, selectedMemberName: "Dave's Killer Bread Powerseed Thin (20.5 oz)"))
-            mealIngredients.append(MealIngredient(name: "Ham", amount: 2))
-            mealIngredients.append(MealIngredient(name: "Bell Peppers", amount: 2))
-            mealIngredients.append(MealIngredient(name: "Mushrooms", amount: 2))
-            mealIngredients.append(MealIngredient(name: "Jelly", amount: 2))
-            // Breakfast fruit picker — tap to pick any Food of type
-            // .fruit; replaces this placeholder with a real row.
-            mealIngredients.append(MealIngredient(name: IngredientType.fruit.label,
-                                                  amount: 0,
-                                                  foodType: IngredientType.fruit.rawValue))
-            mealIngredients.append(MealIngredient(name: "Milk", amount: 1))
-
-            mealIngredients.append(MealIngredient(name: "Bread", amount: 4, selectedMemberName: "Dave's Killer Bread Powerseed Thin (20.5 oz)"))
-            mealIngredients.append(MealIngredient(name: "Turkey", amount: 4, selectedMemberName: "Turkey (Trader Joe's Organic Hickory Smoked, 6 oz)"))
-            mealIngredients.append(MealIngredient(name: "Cheese Slice", amount: 4))
-            mealIngredients.append(MealIngredient(name: "Romaine", amount: 30))  // sandwich lettuce ≈ 2–3 leaves
-            mealIngredients.append(MealIngredient(name: "Mustard", amount: 4))
-
-            mealIngredients.append(MealIngredient(name: "Cucumber", amount: 150))
-            mealIngredients.append(MealIngredient(name: "String Cheese", amount: 2))
-            mealIngredients.append(MealIngredient(name: IngredientType.meat.label,
-                                                  amount: 0,
-                                                  foodType: IngredientType.meat.rawValue))
-            break
-
-        // ---- Shane (and any unrecognized profile name) ----------
-        default:
-            // The default meal is exactly the rows below. Foods that
-            // used to be seeded as inactive "repertoire" placeholders
-            // (extra sardine/mackerel variants, String Cheese W, the
-            // other cheeses, Peanuts, the berries) are NOT seeded —
-            // they are still reachable any day via the Meal page's
-            // eye add-list (any active Food not currently in the
-            // meal).
-            mealIngredients.append(MealIngredient(name: "Coconut Oil", amount: 0.5))
-            mealIngredients.append(MealIngredient(name: "Eggs", amount: 5))
-            mealIngredients.append(MealIngredient(name: "Broccoli", amount: 150))
-            mealIngredients.append(MealIngredient(name: "Cauliflower", amount: 100))
-            mealIngredients.append(MealIngredient(name: "Romaine", amount: 175))
-            mealIngredients.append(MealIngredient(name: "Spinach", amount: 50))
-            mealIngredients.append(MealIngredient(name: "Arugula", amount: 50))
-            mealIngredients.append(MealIngredient(name: "Mushrooms", amount: 125))
-            mealIngredients.append(MealIngredient(name: "Radish", amount: 70))
-            mealIngredients.append(MealIngredient(name: "Avocado", amount: 225))
-            mealIngredients.append(MealIngredient(name: "Mustard", amount: 3))
-            mealIngredients.append(MealIngredient(name: "Fish Oil", amount: 1))
-            mealIngredients.append(MealIngredient(name: "Extra Virgin Olive Oil", amount: 2))
-            mealIngredients.append(MealIngredient(name: "Pumpkin Seeds", amount: 30))
-            mealIngredients.append(MealIngredient(name: "String Cheese", amount: 0))
-
-            // Supplements — hidden from the meal list by default, but
-            // active and counted toward daily V&M (and macros).  Toggle
-            // 'Show supplements' in the toolbar to see them.  Order matches
-            // the user's preferred display order, not time-of-day.
-            mealIngredients.append(MealIngredient(name: "Thorne Basic Nutrients 2/Day", amount: 2, isSupplement: true))
-            mealIngredients.append(MealIngredient(name: "Creatine HCl",         amount: 2, isSupplement: true))
-            mealIngredients.append(MealIngredient(name: "Glycine",              amount: 1, isSupplement: true))
-            mealIngredients.append(MealIngredient(name: "Vitamin D3 (1000 IU)", amount: 1, isSupplement: true))
-            mealIngredients.append(MealIngredient(name: "SlowMag",              amount: 2, isSupplement: true))
-            mealIngredients.append(MealIngredient(name: "L-Theanine",           amount: 1, isSupplement: true))
-            mealIngredients.append(MealIngredient(name: "Apigenin",             amount: 1, isSupplement: true))
-
-            // Category placeholder — a "pick a meat" slot that always
-            // renders at the very end of the meal list (sentinel sort
-            // rank). It contributes ZERO macros and never resolves to an
-            // ingredient. Tapping it lists every Food of type .meat;
-            // picking one replaces the placeholder with a normal Food
-            // row. It is part of the default meal pattern, so it comes
-            // back on Reset Meal even after it's been consumed.
-            mealIngredients.append(MealIngredient(name: IngredientType.meat.label,
-                                                  amount: 0,
-                                                  foodType: IngredientType.meat.rawValue))
+        for row in ConfigStore.shared.mealRows(forSlug: profileSlug) {
+            if let category = row.category {
+                rows.append(MealIngredient(name: category,
+                                           amount: 0,
+                                           foodType: row.foodType ?? ""))
+            } else if let composite = row.composite {
+                rows.append(MealIngredient(name: row.food ?? "",
+                                           amount: row.amount ?? 0,
+                                           compositeParts: composite.map {
+                                               MealCompositePart(foodName: $0.food,
+                                                                 selectedVariantName: $0.variant,
+                                                                 amount: $0.amount)
+                                           }))
+            } else if let member = row.member {
+                rows.append(MealIngredient(name: row.food ?? "",
+                                           amount: row.amount ?? 0,
+                                           selectedMemberName: member))
+            } else {
+                rows.append(MealIngredient(name: row.food ?? "",
+                                           amount: row.amount ?? 0))
+            }
         }
+
+        for supp in ConfigStore.shared.supplements(forSlug: profileSlug) {
+            rows.append(MealIngredient(name: supp.name,
+                                       amount: supp.amount,
+                                       isSupplement: true))
+        }
+
+        mealIngredients = rows
     }
 
 

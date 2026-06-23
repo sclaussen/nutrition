@@ -24,6 +24,11 @@ struct app: App {
 
 
     init() {
+        // Load the config data set (bundled YAML on first launch, the last
+        // successful GitHub refresh thereafter) BEFORE constructing the managers,
+        // which now seed themselves from ConfigStore instead of in-code literals.
+        ConfigStore.shared.loadInitial()
+
         let pm = ProfileMgr()
         let active = pm.profile
         let mim = MealIngredientMgr(profileId: active.id, profileName: active.name)

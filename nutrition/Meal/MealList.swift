@@ -381,6 +381,11 @@ struct MealList: View {
             // ----- Custom compact toolbar -----
             HStack(spacing: 0) {
 
+                // App-level actions (configure GitHub token, refresh data from
+                // the nutrition-config repo). More header items move under here later.
+                HamburgerMenu()
+                  .frame(width: 44)
+
                 // Reset (was the navigation-slot Edit button).
                 Button {
                     resetMealIngredientsAlert = true
