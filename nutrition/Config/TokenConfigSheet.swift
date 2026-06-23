@@ -31,6 +31,7 @@ struct TokenConfigSheet: View {
                 Section(header: Text("GitHub token"),
                         footer: Text("A Personal Access Token with read access to the nutrition-config repo. Stored in the iOS Keychain on this device.")) {
                     SecureField("ghp_\u{2026}", text: $token)
+                      .textContentType(.password)
                       .textInputAutocapitalization(.never)
                       .autocorrectionDisabled()
 

@@ -66,6 +66,21 @@ struct app: App {
               .environmentObject(foodMgr)
               .environmentObject(foodCompositeMgr)
               .environmentObject(dayLogMgr)
+              .task {
+                  #if DEBUG
+                  // Test harness: when launched with a GITHUB_API_KEY in the
+                  // environment, fetch the live config from the repo on startup
+                  // so the Simulator can verify the network load path without a
+                  // manual Refresh tap. Compiled out of release builds.
+                  guard ProcessInfo.processInfo.environment["GITHUB_API_KEY"] != nil else { return }
+                  do {
+                      let result = try await ConfigSync.refresh()
+                      print("[DEBUG auto-refresh] \(result)")
+                  } catch {
+                      print("[DEBUG auto-refresh] FAILED: \(error)")
+                  }
+                  #endif
+              }
         }
     }
 }

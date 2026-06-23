@@ -366,7 +366,20 @@ enum ConfigKeychain {
 
     /// The stored GitHub personal access token, or nil if none is set.
     static func githubToken() -> String? {
-        read(account: githubAccount)
+        #if DEBUG
+        // Test override: a token supplied via the launch environment
+        // (SIMCTL_CHILD_GITHUB_API_KEY in the Simulator) takes precedence so we
+        // can exercise refresh without pasting into a SecureField — and without
+        // a stale Keychain entry shadowing it. Never compiled into release.
+        if let env = ProcessInfo.processInfo.environment["GITHUB_API_KEY"],
+           !env.isEmpty {
+            return env
+        }
+        #endif
+        if let stored = read(account: githubAccount), !stored.isEmpty {
+            return stored
+        }
+        return nil
     }
 
     /// Store (or clear, when empty) the GitHub personal access token.
