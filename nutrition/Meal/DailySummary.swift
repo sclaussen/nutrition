@@ -156,13 +156,13 @@ struct DailySummary: View {
                 // at-a-glance picture.
                 HStack(spacing: 0) {
                     Spacer()
-                    Gauge(title: "Fat",      titleFontColor: Color.theme.blackWhite, titleFontSize: 17, macros.fat,                          actualFontSize: 18,                     macros.fatGoal,         annotationFontColor: Color.theme.blueYellow, unit: "grams", progressLineBackground: Color("ProgressLineBackground"),                 scale: 1.18)
+                    Gauge(title: "Fat",      titleFontColor: Color.theme.blackWhite, titleFontSize: 17, macros.fat,                          actualFontSize: 18,                     macros.fatGoal,         annotationFontColor: Color.theme.blueYellow, unit: "grams", progressLineBackground: Color.theme.progressLineBackground,                 scale: 1.18)
                     Spacer()
-                    Gauge(title: "NCarbs",   titleFontColor: Color.theme.blackWhite, titleFontSize: 17, macros.netCarbs, actualFontSize: 18, actualPrecision: 1, macros.netCarbsMaximum, annotationFontColor: Color.theme.blueYellow, unit: "grams", progressLineBackground: Color("ProgressLineBackground"), type: .ceiling, scale: 1.18)
+                    Gauge(title: "NCarbs",   titleFontColor: Color.theme.blackWhite, titleFontSize: 17, macros.netCarbs, actualFontSize: 18, actualPrecision: 1, macros.netCarbsMaximum, annotationFontColor: Color.theme.blueYellow, unit: "grams", progressLineBackground: Color.theme.progressLineBackground, type: .ceiling, scale: 1.18)
                     Spacer()
-                    Gauge(title: "Protein",  titleFontColor: Color.theme.blackWhite, titleFontSize: 17, macros.protein,                      actualFontSize: 18,                     macros.proteinGoal,     annotationFontColor: Color.theme.blueYellow, unit: "grams", progressLineBackground: Color("ProgressLineBackground"),                 scale: 1.18)
+                    Gauge(title: "Protein",  titleFontColor: Color.theme.blackWhite, titleFontSize: 17, macros.protein,                      actualFontSize: 18,                     macros.proteinGoal,     annotationFontColor: Color.theme.blueYellow, unit: "grams", progressLineBackground: Color.theme.progressLineBackground,                 scale: 1.18)
                     Spacer()
-                    Gauge(title: "Calories", titleFontColor: Color.theme.blackWhite, titleFontSize: 17, macros.calories,                     actualFontSize: 18,                     profile.caloriesGoal,   annotationFontColor: Color.theme.blueYellow, unit: "cal",   progressLineBackground: Color("ProgressLineBackground"),                 secondaryGoal: profile.caloriesGoalUnadjusted, scale: 1.18)
+                    Gauge(title: "Calories", titleFontColor: Color.theme.blackWhite, titleFontSize: 17, macros.calories,                     actualFontSize: 18,                     profile.caloriesGoal,   annotationFontColor: Color.theme.blueYellow, unit: "cal",   progressLineBackground: Color.theme.progressLineBackground,                 showGoalDelta: true, secondaryGoal: profile.caloriesGoalUnadjusted, scale: 1.18)
                     Spacer()
                 }
                   .frame(height: 165)
@@ -171,12 +171,12 @@ struct DailySummary: View {
                 // removed since each gauge already has its own title.
                 HStack(spacing: 0) {
                     Spacer()
-                    Gauge(title: "Weight",   titleFontColor: Color.theme.blackWhite, profile.bodyMass,                actualPrecision: 1, annotationFontColor: Color.theme.blueYellow, unit: "lbs",   progressLineBackground: Color("ProgressLineBackground"), type: .value, scale: 0.7)
-                    Gauge(title: "Fat %",    titleFontColor: Color.theme.blackWhite, profile.bodyFatPercentage,       actualPrecision: 1, annotationFontColor: Color.theme.blueYellow, unit: "%",     progressLineBackground: Color("ProgressLineBackground"), type: .value, scale: 0.7)
-                    Gauge(title: "BMI",      titleFontColor: Color.theme.blackWhite, profile.bodyMassIndex,           actualPrecision: 1, annotationFontColor: Color.theme.blueYellow,                progressLineBackground: Color("ProgressLineBackground"), type: .value, scale: 0.7)
-                    Gauge(title: "Activity", titleFontColor: Color.theme.blackWhite, profile.activeCaloriesBurned,                        annotationFontColor: Color.theme.blueYellow, unit: "cal",   progressLineBackground: Color("ProgressLineBackground"), type: .value, scale: 0.7)
-                    Gauge(title: "Deficit",  titleFontColor: Color.theme.blackWhite, Double(profile.calorieDeficit),                      annotationFontColor: Color.theme.blueYellow, unit: "%",     progressLineBackground: Color("ProgressLineBackground"), type: .value, scale: 0.7)
-                    Gauge(title: "Ratio",    titleFontColor: Color.theme.blackWhite, profile.proteinRatio,            actualPrecision: 2, annotationFontColor: Color.theme.blueYellow, unit: "g/lbm", progressLineBackground: Color("ProgressLineBackground"), type: .value, scale: 0.7)
+                    Gauge(title: "Weight",   titleFontColor: Color.theme.blackWhite, profile.bodyMass,                actualPrecision: 1, annotationFontColor: Color.theme.blueYellow, unit: "lbs",   progressLineBackground: Color.theme.progressLineBackground, type: .value, scale: 0.7)
+                    Gauge(title: "Fat %",    titleFontColor: Color.theme.blackWhite, profile.bodyFatPercentage,       actualPrecision: 1, annotationFontColor: Color.theme.blueYellow, unit: "%",     progressLineBackground: Color.theme.progressLineBackground, type: .value, scale: 0.7)
+                    Gauge(title: "BMI",      titleFontColor: Color.theme.blackWhite, profile.bodyMassIndex,           actualPrecision: 1, annotationFontColor: Color.theme.blueYellow,                progressLineBackground: Color.theme.progressLineBackground, type: .value, scale: 0.7)
+                    Gauge(title: "Activity", titleFontColor: Color.theme.blackWhite, profile.activeCaloriesBurned,                        annotationFontColor: Color.theme.blueYellow, unit: "cal",   progressLineBackground: Color.theme.progressLineBackground, type: .value, scale: 0.7)
+                    Gauge(title: "Deficit",  titleFontColor: Color.theme.blackWhite, Double(profile.calorieDeficit),                      annotationFontColor: Color.theme.blueYellow, unit: "%",     progressLineBackground: Color.theme.progressLineBackground, type: .value, scale: 0.7)
+                    Gauge(title: "Ratio",    titleFontColor: Color.theme.blackWhite, profile.proteinRatio,            actualPrecision: 2, annotationFontColor: Color.theme.blueYellow, unit: "g/lbm", progressLineBackground: Color.theme.progressLineBackground, type: .value, scale: 0.7)
                     Spacer()
                 }
                   .frame(height: 70)

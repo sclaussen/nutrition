@@ -1323,7 +1323,7 @@ class IngredientMgr: ObservableObject {
                                       consumptionUnit: Unit.egg,
                                       consumptionGrams: 50,
                                       verified: "5/16/2026",
-                                      stepAmount: 5,
+                                      stepAmount: 1,
                                       defaultAmount: 44))
         ingredients.append(Ingredient(name: "String Cheese (365 by Whole Foods M 12 OZ)",
                                       brand: "365 by Whole Foods Market",
@@ -1344,7 +1344,7 @@ class IngredientMgr: ObservableObject {
                                       consumptionUnit: Unit.piece,
                                       consumptionGrams: 28,
                                       verified: "5/16/2026",
-                                      stepAmount: 5,
+                                      stepAmount: 1,
                                       defaultAmount: 28))
         ingredients.append(Ingredient(name: "Tuna (Wild Planet 5 Ounce)",
                                       brand: "Wild Planet",
@@ -1363,7 +1363,7 @@ class IngredientMgr: ObservableObject {
                                       consumptionUnit: Unit.can,
                                       consumptionGrams: 85,
                                       verified: "5/16/2026",
-                                      stepAmount: 5,
+                                      stepAmount: 1,
                                       defaultAmount: 85))
         ingredients.append(Ingredient(name: "Pumpkin Seeds (365 by Whole Foods M 8 Ounce)",
                                       brand: "365 by Whole Foods Market",
@@ -1429,7 +1429,7 @@ class IngredientMgr: ObservableObject {
                                       consumptionUnit: Unit.tablespoon,
                                       consumptionGrams: 15,
                                       verified: "5/16/2026",
-                                      stepAmount: 5,
+                                      stepAmount: 1,
                                       defaultAmount: 5))
         ingredients.append(Ingredient(name: "Pecans (Aurora 14 Ounce)",
                                       brand: "Aurora",
@@ -1611,7 +1611,7 @@ class IngredientMgr: ObservableObject {
                                       consumptionGrams: 1,
                                       verified: "5/16/2026",
                                       stepAmount: 5,
-                                      defaultAmount: 85))
+                                      defaultAmount: 50))
         ingredients.append(Ingredient(name: "Spinach (365 by Whole Foods M 5 OZ)",
                                       brand: "365 by Whole Foods Market",
                                       foodName: "Spinach",
@@ -1658,7 +1658,7 @@ class IngredientMgr: ObservableObject {
                                       consumptionUnit: Unit.tablespoon,
                                       consumptionGrams: 15,
                                       verified: "5/16/2026",
-                                      stepAmount: 5,
+                                      stepAmount: 1,
                                       defaultAmount: 30))
         ingredients.append(Ingredient(name: "Avocado (Whole Foods Market 6 Count)",
                                       brand: "Whole Foods Market",
@@ -1702,7 +1702,7 @@ class IngredientMgr: ObservableObject {
                                       consumptionUnit: Unit.tablespoon,
                                       consumptionGrams: 14,
                                       verified: "5/16/2026",
-                                      stepAmount: 5,
+                                      stepAmount: 0.5,
                                       defaultAmount: 14))
         ingredients.append(Ingredient(name: "String Cheese (365 by Whole Foods M 8 Ounce)",
                                       brand: "365 by Whole Foods Market",
@@ -1723,7 +1723,7 @@ class IngredientMgr: ObservableObject {
                                       consumptionUnit: Unit.piece,
                                       consumptionGrams: 28,
                                       verified: "5/16/2026",
-                                      stepAmount: 5,
+                                      stepAmount: 1,
                                       defaultAmount: 28))
         ingredients.append(Ingredient(name: "Babybel Cheese (Babybel 12 Count)",
                                       brand: "Babybel",
@@ -1810,7 +1810,7 @@ class IngredientMgr: ObservableObject {
                                       consumptionUnit: Unit.egg,
                                       consumptionGrams: 50,
                                       verified: "5/16/2026",
-                                      stepAmount: 5,
+                                      stepAmount: 1,
                                       defaultAmount: 50))
         ingredients.append(Ingredient(name: "Eggs (365 by Whole Foods M 18 Count)",
                                       brand: "365 by Whole Foods Market",
@@ -1829,7 +1829,7 @@ class IngredientMgr: ObservableObject {
                                       consumptionUnit: Unit.egg,
                                       consumptionGrams: 50,
                                       verified: "5/16/2026",
-                                      stepAmount: 5,
+                                      stepAmount: 1,
                                       defaultAmount: 50))
         ingredients.append(Ingredient(name: "Radish (Whole Foods Market 12 Oz)",
                                       brand: "Whole Foods Market",
@@ -1853,7 +1853,7 @@ class IngredientMgr: ObservableObject {
                                       consumptionGrams: 1,
                                       verified: "5/16/2026",
                                       stepAmount: 5,
-                                      defaultAmount: 85))
+                                      defaultAmount: 50))
         ingredients.append(Ingredient(name: "Arugula (Earthbound Farm 4 OZ)",
                                       brand: "Earthbound Farm",
                                       foodName: "Arugula",
@@ -2097,7 +2097,7 @@ class IngredientMgr: ObservableObject {
                                       consumptionUnit: Unit.tablespoon,
                                       consumptionGrams: 15,
                                       verified: "5/16/2026",
-                                      stepAmount: 5,
+                                      stepAmount: 1,
                                       defaultAmount: 30))
         ingredients.append(Ingredient(name: "Tuna (Wild Planet 5 Oz)",
                                       brand: "Wild Planet",
@@ -2116,7 +2116,7 @@ class IngredientMgr: ObservableObject {
                                       consumptionUnit: Unit.can,
                                       consumptionGrams: 85,
                                       verified: "5/16/2026",
-                                      stepAmount: 5,
+                                      stepAmount: 1,
                                       defaultAmount: 85))
         ingredients.append(Ingredient(name: "Eggs (Vital Farms 18 Count)",
                                       brand: "Vital Farms",
@@ -2139,7 +2139,7 @@ class IngredientMgr: ObservableObject {
                                       consumptionUnit: Unit.egg,
                                       consumptionGrams: 50,
                                       verified: "5/16/2026",
-                                      stepAmount: 5,
+                                      stepAmount: 1,
                                       defaultAmount: 50))
         ingredients.append(Ingredient(name: "Blueberries (Driscoll's 11 Oz)",
                                       brand: "Driscoll's",
@@ -2951,7 +2951,7 @@ struct Ingredient: Codable, Identifiable {
         set {
         }
         get {
-            (calories * 100) / servingSize
+            servingSize > 0 ? (calories * 100) / servingSize : 0
         }
     }
 
@@ -2959,7 +2959,7 @@ struct Ingredient: Codable, Identifiable {
         set {
         }
         get {
-            (fat * 100) / servingSize
+            servingSize > 0 ? (fat * 100) / servingSize : 0
         }
     }
 
@@ -2967,7 +2967,7 @@ struct Ingredient: Codable, Identifiable {
         set {
         }
         get {
-            (fiber * 100) / servingSize
+            servingSize > 0 ? (fiber * 100) / servingSize : 0
         }
     }
 
@@ -2975,7 +2975,7 @@ struct Ingredient: Codable, Identifiable {
         set {
         }
         get {
-            (netCarbs * 100) / servingSize
+            servingSize > 0 ? (netCarbs * 100) / servingSize : 0
         }
     }
 
@@ -2983,7 +2983,7 @@ struct Ingredient: Codable, Identifiable {
         set {
         }
         get {
-            (protein * 100) / servingSize
+            servingSize > 0 ? (protein * 100) / servingSize : 0
         }
     }
 

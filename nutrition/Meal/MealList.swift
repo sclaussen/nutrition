@@ -26,7 +26,6 @@ struct MealList: View {
     // affordance). When true, the sheet lists every active Food not
     // currently in the meal; tapping one adds a normal meal row.
     @State private var showAddFoodPicker: Bool = false
-    @State var amount: Double = 0
     @State var mealConfigureActive = false
     @State var resetMealIngredientsAlert = false
     @State private var showSummary = false
@@ -350,7 +349,6 @@ struct MealList: View {
 
                       // Reset (was the navigation-slot Edit button).
                       Button {
-                          print("Reset button tapped — flipping alert binding to true")
                           resetMealIngredientsAlert = true
                       } label: {
                           Image(systemName: "arrow.uturn.backward")
@@ -465,13 +463,10 @@ struct MealList: View {
           .alert("Reset Meal Ingredients?",
                  isPresented: $resetMealIngredientsAlert) {
               Button("Cancel", role: .cancel) {
-                  print("Reset alert: Cancel tapped")
               }
               Button("Reset", role: .destructive) {
-                  print("Reset alert: Reset tapped — calling resetMealIngredients()")
                   mealIngredientMgr.resetMealIngredients()
                   generateMeal()
-                  print("Reset alert: done. mealIngredients count = \(mealIngredientMgr.mealIngredients.count)")
               }
           } message: {
               Text("This will replace your current meal ingredient amounts with the defaults. This can't be undone.")
@@ -731,8 +726,6 @@ struct MealList: View {
 
     func generateMeal() {
 
-        print("\n\n\nGENERATE MEAL\n================================================================================\n")
-
         // Attempt to retrieve the body weight and body fat percentage
         // from Health Kit and update the profile if new values are
         // available.
@@ -757,7 +750,6 @@ struct MealList: View {
             setMacroActualsAndUpdateMealMacroActuals(mealIngredient)
         }
 
-        print("\nAdding Automatic Adjustments")
         var failedCount = 0
         while failedCount < 10 {
             while tryAddingAdjustments() {
@@ -881,7 +873,9 @@ struct MealList: View {
         guard let ingredient = ingredientMgr.getByName(name: resolvedName) else {
             return false
         }
-        let servings = (adjustment.amount * foodMgr.consumptionGrams(for: ingredient)) / ingredient.servingSize
+        let servings = ingredient.servingSize > 0
+            ? (adjustment.amount * foodMgr.consumptionGrams(for: ingredient)) / ingredient.servingSize
+            : 0
 
         let fat: Double = Double(ingredient.fat * servings)
         let netCarbs: Double = Double(ingredient.netCarbs * servings)
@@ -965,14 +959,14 @@ struct MealList: View {
         // For a GROUP row the meal ingredient is stored under the
         // group name; nutrition must come from THIS row's selected
         // member (currentName(mi) is row-aware).
-        print(name);
         guard let ingredient = ingredientMgr.getByName(name: currentName(mi)) else {
             // Group member deleted / unresolved — contribute nothing
             // rather than crashing on a force-unwrap.
-            print("  resolution failed for \(name) (lookup \(currentName(mi)))")
             return
         }
-        let servings = (amount * foodMgr.consumptionGrams(for: ingredient)) / ingredient.servingSize
+        let servings = ingredient.servingSize > 0
+            ? (amount * foodMgr.consumptionGrams(for: ingredient)) / ingredient.servingSize
+            : 0
 
         // Determine the calories and macros by multiplying the
         // calories/macros per serving times the number of servings
@@ -1033,11 +1027,8 @@ struct MealList: View {
             }
 
             let bodyMass = sample.quantity.doubleValue(for: HKUnit.pound())
-            print("Weight (healthkit): \(bodyMass)")
-            print("Weight (profile): \(profileMgr.profile.bodyMass)")
 
             if bodyMass != Double(profileMgr.profile.bodyMass) {
-                print("Updating body mass...")
                 profileMgr.setBodyMass(bodyMass: bodyMass)
             }
         }
@@ -1060,11 +1051,8 @@ struct MealList: View {
             }
 
             let bodyFatPercentage = (sample.quantity.doubleValue(for: HKUnit.percent())) * 100
-            print("Body Fat % (health kit): \(bodyFatPercentage)")
-            print("Body Fat % (profile): \(profileMgr.profile.bodyFatPercentage)")
 
             if bodyFatPercentage != Double(profileMgr.profile.bodyFatPercentage) {
-                print("Updating body fat percentage...")
                 profileMgr.setBodyFatPercentage(bodyFatPercentage: bodyFatPercentage)
             }
         }
@@ -1079,9 +1067,8 @@ struct MealList: View {
         }
 
         let calendar = Calendar.current
-        var startDateComponents = calendar.dateComponents([.year, .month, .day], from: Date())
-        startDateComponents.month = startDateComponents.month! - 1
-        let startDate = calendar.date(from: startDateComponents)!
+        let now = Date()
+        let startDate = calendar.date(byAdding: .month, value: -1, to: now) ?? now
 
         // let energySampleType = HKSampleType.quantityTypeForIdentifier(HKQuantityTypeIdentifierActiveEnergyBurned)
         // let predicate = HKQuery.predicateForSamplesWithStartDate(startDate, endDate: endDate, options: .None)
@@ -1095,9 +1082,7 @@ struct MealList: View {
                 return
             }
 
-            let activeCaloriesBurned = sample.quantity.doubleValue(for: HKUnit.kilocalorie())
-            print("Active energy burned (health kit): \(activeCaloriesBurned)")
-            print("Active energy burned (profile): \(profileMgr.profile.activeCaloriesBurned)")
+            _ = sample.quantity.doubleValue(for: HKUnit.kilocalorie())
 
             // TODO: Update once the health kit active calories algorithm is demystified
             // if activeCaloriesBurned != profileMgr.profile.activeCaloriesBurned {

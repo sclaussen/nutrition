@@ -211,6 +211,22 @@ class FoodMgr: ObservableObject {
         getByName(name: i.foodName)?.consumptionUnit ?? i.consumptionUnit
     }
 
+
+    // `name` is a Food name (meal rows / adjustments target a Food).
+    // Resolve via the Food's current member; never force-unwraps (the
+    // bare canonical ingredients are gone). Shared by AdjustmentAdd,
+    // AdjustmentEdit, and MealAdd, which previously copy-pasted this.
+    func consumptionUnit(for name: String, ingredientMgr: IngredientMgr) -> Unit {
+        if let f = getByName(name: name),
+           let ing = ingredientMgr.getByName(name: f.currentIngredientName) {
+            return consumptionUnit(for: ing)
+        }
+        if let ing = ingredientMgr.getByName(name: name) {
+            return consumptionUnit(for: ing)
+        }
+        return .gram
+    }
+
     func consumptionGrams(for i: Ingredient) -> Double {
         getByName(name: i.foodName)?.consumptionGrams ?? i.consumptionGrams
     }

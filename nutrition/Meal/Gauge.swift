@@ -33,12 +33,17 @@ struct Gauge: View {
     var warningThreshold: Double
     var errorThreshold: Double
     var type: GaugeType
+    // When true, the goal line renders as "<pct>% / <goal> (<delta>)"
+    // with delta = goal - actual (positive = still need to eat that
+    // many, negative = over by that many). Calorie numbers in this
+    // mode also drop the thousands separator. Off everywhere except
+    // the Calories gauge.
+    var showGoalDelta: Bool
+    // Optional reference total rendered as a second line beneath the
+    // goal line, in the same "<pct>% / <value> (<delta>)" shape — used
+    // by the Calories gauge to show progress toward unadjusted TDEE
+    // alongside the deficit-adjusted goal. 0 omits the line.
     var secondaryGoal: Double
-    var secondaryGoalPrecision: Int
-    // When > 0, the actual value / unit / percent render red once
-    // actual reaches this percentage of goal (e.g. 100 for fat &
-    // protein, 80 for calories). 0 disables the behavior.
-    var redThresholdPct: Double
 
     init(title: String = "",
          titleFontColor: Color = Color.theme.blackWhite,
@@ -63,12 +68,8 @@ struct Gauge: View {
          warningThreshold: Double = 5,
          errorThreshold: Double = 10,
          type: GaugeType = GaugeType.goal,
-         // Optional reference value rendered as a smaller line below
-         // the goal value (e.g. TDEE/maintenance calories below the
-         // 80%-of-TDEE goal).  Set to 0 to omit.
+         showGoalDelta: Bool = false,
          secondaryGoal: Double = 0,
-         secondaryGoalPrecision: Int = 0,
-         redThresholdPct: Double = 0,
          scale: Double = 1.0) {
 
         self.title = title
@@ -94,9 +95,8 @@ struct Gauge: View {
         self.warningThreshold = warningThreshold
         self.errorThreshold = errorThreshold
         self.type = type
+        self.showGoalDelta = showGoalDelta
         self.secondaryGoal = secondaryGoal
-        self.secondaryGoalPrecision = secondaryGoalPrecision
-        self.redThresholdPct = redThresholdPct
 
         if type == .value {
             self.titleOffset = 0 - (side / 2 + side * 0.05)
@@ -118,8 +118,10 @@ struct Gauge: View {
 
     var body: some View {
         let dialPercentageUsed = ((12 - startHour) + endHour) / 12
-        let overRed = redThresholdPct > 0 && goal > 0
-            && (actual / goal * 100) >= redThresholdPct
+        // Actual value / unit / percent track the dial color (red /
+        // yellow / green) so the text reinforces the ring's state at
+        // a glance instead of disagreeing with it.
+        let progressColor = getProgressColor()
 
         return ZStack {
             Text(title)
@@ -151,35 +153,38 @@ struct Gauge: View {
               .frame(width: side, height: side)
 
             Group {
-                Text(format(actual, actualPrecision))
-                  .foregroundColor(overRed ? progressLineError : annotationFontColor)
+                Text(format(actual, actualPrecision, useGrouping: !showGoalDelta))
+                  .foregroundColor(progressColor)
                   .font(.system(size: actualFontSize))
                   .bold()
 
                 Text(unit)
-                  .foregroundColor(overRed ? progressLineError : annotationFontColor)
+                  .foregroundColor(progressColor)
                   .font(.system(size: unitFontSize))
                   .offset(y: side * 0.2)
             }
               .offset(y: actualOffset)
 
             if goal > 0 {
-                // Percentage rendered to the LEFT of the goal value
-                // ("73% / 2,303").  pct is %-of-TDEE for the Calories
-                // gauge (where secondaryGoal = TDEE), %-of-goal for the
-                // other gauges.  For .ceiling gauges (NCarbs), the %
-                // turns red once it crosses 100% — visual cue that you
-                // went over your hard limit.
+                // "Goal" label with a "<pct>% / <goal>" line beneath
+                // it. pct is always %-of-goal — for the Calories gauge
+                // this means hitting the deficit-adjusted target reads
+                // as 100% (not 75% the way it would if the denominator
+                // were unadjusted TDEE).
                 //
-                // VStack offset shifted DOWN by half the secondary line's
-                // height (only when secondaryGoal is shown) so the "Goal"
-                // label stays y-aligned with the other gauges in the row.
-                let pct: Int = secondaryGoal > 0
-                    ? Int((actual / secondaryGoal * 100).rounded())
-                    : Int((actual / goal * 100).rounded())
-                let pctColor: Color = (overRed || (type == .ceiling && pct > 100))
-                    ? progressLineError
-                    : annotationFontColor
+                // When showGoalDelta is on (Calories), a "(delta)" is
+                // appended where delta = goal - actual: positive when
+                // you still need to eat that many to hit goal, negative
+                // (with leading minus) when you've gone over.
+                //
+                // When secondaryGoal > 0 (also Calories — the
+                // unadjusted TDEE), a second smaller line below repeats
+                // the same shape against that total: "<pct2>% /
+                // <secondaryGoal> (<delta2>)". The whole VStack is
+                // shifted DOWN by half the secondary line's height so
+                // the "Goal" label stays y-aligned with the other
+                // gauges in the row.
+                let pct = Int((actual / goal * 100).rounded())
                 let secondaryShift: Double = secondaryGoal > 0 ? goalFontSize * 0.85 / 2 : 0
                 VStack(spacing: 0) {
                     Text("Goal")
@@ -188,25 +193,30 @@ struct Gauge: View {
                     HStack(spacing: 0) {
                         Text("\(pct)%")
                           .bold()
-                          .foregroundColor(pctColor)
-                        Text(" / \(format(goal, goalPrecision))")
+                          .foregroundColor(progressColor)
+                        Text(" / \(format(goal, goalPrecision, useGrouping: !showGoalDelta))")
                           .bold()
                           .foregroundColor(annotationFontColor)
+                        if showGoalDelta {
+                            let delta = (goal - actual).rounded()
+                            Text(" (\(format(delta, 0, useGrouping: false)))")
+                              .bold()
+                              .foregroundColor(annotationFontColor)
+                        }
                     }
                       .font(.system(size: goalFontSize))
                       .lineLimit(1)
                       .fixedSize(horizontal: true, vertical: false)
                     if secondaryGoal > 0 {
-                        // "<actual - TDEE> / <TDEE>" — negative when you
-                        // still have room under TDEE (e.g. "-2,091 /
-                        // 2,879"), positive when you've gone over.  The
-                        // sign comes for free from NumberFormatter, so
-                        // values above TDEE render without a leading
-                        // minus per the requested behavior.
-                        let diff = (actual - secondaryGoal).rounded()
-                        Text("\(format(diff, 0)) / \(format(secondaryGoal, secondaryGoalPrecision))")
-                          .foregroundColor(annotationFontColor)
+                        let pct2 = Int((actual / secondaryGoal * 100).rounded())
+                        let delta2 = (secondaryGoal - actual).rounded()
+                        HStack(spacing: 0) {
+                            Text("\(pct2)% / \(format(secondaryGoal, 0, useGrouping: !showGoalDelta)) (\(format(delta2, 0, useGrouping: false)))")
+                              .foregroundColor(annotationFontColor)
+                        }
                           .font(.system(size: goalFontSize * 0.85))
+                          .lineLimit(1)
+                          .fixedSize(horizontal: true, vertical: false)
                     }
                 }
                   // +4pt nudge — pushes "Goal" (and the percent line
@@ -217,12 +227,13 @@ struct Gauge: View {
         }.frame(width: side * 1.25)
     }
 
-    func format(_ f: Double, _ precision: Int) -> String {
+    func format(_ f: Double, _ precision: Int, useGrouping: Bool = true) -> String {
         let formatter = NumberFormatter()
         formatter.minimumFractionDigits = 0
         formatter.maximumFractionDigits = precision
         formatter.roundingMode = .halfEven
         formatter.numberStyle = .decimal
+        formatter.usesGroupingSeparator = useGrouping
         return formatter.string(for: f) ?? ""
     }
 

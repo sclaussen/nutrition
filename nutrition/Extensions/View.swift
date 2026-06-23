@@ -63,7 +63,6 @@ struct NameViewModifier: ViewModifier {
           .lineLimit(1)
           .font(.callout)
           .frame(minWidth: width, minHeight: 32, alignment: .leading)
-          .border(Color.theme.red, width: 0)
     }
 }
 
@@ -81,7 +80,6 @@ struct ValueViewModifier: ViewModifier {
           .font(.callout)
           .multilineTextAlignment(.trailing)
           .frame(minWidth: width, minHeight: 32, alignment: .trailing)
-          .border(Color.theme.red, width: 0)
     }
 }
 
@@ -97,7 +95,6 @@ struct UnitViewModifier: ViewModifier {
           .lineLimit(1)
           .font(unit == .dollar ? .callout : .caption2)
           .frame(minWidth: geo.size.width * 0.10, minHeight: 32, alignment: .leading)
-          .border(Color.theme.red, width: 0)
           .offset(x: 4, y: 2)
     }
 }
@@ -110,7 +107,6 @@ struct DescriptionViewModifier: ViewModifier {
           .lineLimit(1)
           .font(.caption2)
           .frame(minWidth: geo.size.width * 1 + 5, minHeight: 10, alignment: .leading)
-          .border(Color.theme.red, width: 0)
     }
 }
 

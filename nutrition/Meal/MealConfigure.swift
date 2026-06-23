@@ -34,28 +34,12 @@ struct MealConfigure: View {
             // it; switch a row's member via long-press.
         }
           .padding([.leading, .trailing], -20)
-          .navigationBarBackButtonHidden(true)
           .onAppear {
               DispatchQueue.main.asyncAfter(deadline: .now() + 0.75) {
                   self.focusedField = .activeCaloriesBurned
               }
           }
-          .toolbar {
-              ToolbarItem(placement: .navigation) {
-                  Button("Cancel", action: cancel)
-                    .foregroundColor(Color.theme.blueYellow)
-              }
-              ToolbarItem(placement: .primaryAction) {
-                  Button("Save", action: save)
-                    .foregroundColor(Color.theme.blueYellow)
-              }
-              ToolbarItemGroup(placement: .keyboard) {
-                  DismissKeyboard()
-                  Spacer()
-                  Button("Save", action: save)
-                    .foregroundColor(Color.theme.blueYellow)
-              }
-          }
+          .cancelSaveToolbar(onCancel: cancel, onSave: save)
     }
 
     func cancel() {

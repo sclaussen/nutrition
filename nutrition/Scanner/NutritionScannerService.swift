@@ -24,6 +24,7 @@ enum NutritionScannerError: LocalizedError {
     case server(status: Int, body: String)
     case noToolUseInResponse
     case decoding(Error)
+    case encoding(Error)
     case transport(Error)
 
     var errorDescription: String? {
@@ -38,6 +39,8 @@ enum NutritionScannerError: LocalizedError {
             return "Model didn't return a structured result. Try again or with a clearer photo."
         case .decoding(let err):
             return "Couldn't decode the model's reply: \(err.localizedDescription)"
+        case .encoding(let err):
+            return "Couldn't build the request: \(err.localizedDescription)"
         case .transport(let err):
             return "Network error: \(err.localizedDescription)"
         }
@@ -86,8 +89,8 @@ struct NutritionScannerService {
             throw NutritionScannerError.missingApiKey
         }
 
-        let payload = buildRequestBody(images: images, existingNames: existingNames)
-        let request = buildURLRequest(apiKey: apiKey, body: payload)
+        let payload = try buildRequestBody(images: images, existingNames: existingNames)
+        let request = try buildURLRequest(apiKey: apiKey, body: payload)
 
         // Use a 60s timeout — vision calls on Sonnet are typically
         // 3-10s but cold connections can be slower.
@@ -125,7 +128,7 @@ struct NutritionScannerService {
         }
 
         let payload = buildVerifyBody(ingredient: ingredient)
-        let request = buildURLRequest(apiKey: apiKey, body: payload)
+        let request = try buildURLRequest(apiKey: apiKey, body: payload)
 
         let (data, response): (Data, URLResponse)
         do {
@@ -238,7 +241,7 @@ struct NutritionScannerService {
     // Anthropic /v1/messages request body. Each image is JPEG-
     // encoded and base64'd; existing-ingredient context is text.
     private static func buildRequestBody(images: [UIImage],
-                                         existingNames: [String]) -> [String: Any] {
+                                         existingNames: [String]) throws -> [String: Any] {
 
         // Build the user message content blocks: one image block
         // per photo, then a text block with instructions and the
@@ -258,6 +261,12 @@ struct NutritionScannerService {
                     "data": base64
                 ]
             ])
+        }
+
+        // If every image failed JPEG conversion we'd otherwise send a
+        // request with no images at all; fail clearly instead.
+        guard !content.isEmpty else {
+            throw NutritionScannerError.invalidResponse
         }
 
         let namesText: String
@@ -339,14 +348,20 @@ struct NutritionScannerService {
 
 
     private static func buildURLRequest(apiKey: String,
-                                        body: [String: Any]) -> URLRequest {
+                                        body: [String: Any]) throws -> URLRequest {
         var req = URLRequest(url: URL(string: "https://api.anthropic.com/v1/messages")!)
         req.httpMethod = "POST"
         req.timeoutInterval = 60
         req.setValue("application/json", forHTTPHeaderField: "Content-Type")
         req.setValue(apiKey, forHTTPHeaderField: "x-api-key")
         req.setValue("2023-06-01", forHTTPHeaderField: "anthropic-version")
-        req.httpBody = try? JSONSerialization.data(withJSONObject: body)
+        // A serialization failure here would otherwise yield a nil body
+        // and a confusing server 400; surface it as a clear error.
+        do {
+            req.httpBody = try JSONSerialization.data(withJSONObject: body)
+        } catch {
+            throw NutritionScannerError.encoding(error)
+        }
         return req
     }
 
@@ -358,8 +373,20 @@ struct NutritionScannerService {
     // dict and JSONDecoder it into ParsedIngredient.
     // ============================================================
     private static func decodeToolUse(from data: Data) throws -> ParsedIngredient {
-        guard let root = try? JSONSerialization.jsonObject(with: data) as? [String: Any],
-              let blocks = root["content"] as? [[String: Any]] else {
+        let root: [String: Any]
+        do {
+            guard let parsed = try JSONSerialization.jsonObject(with: data) as? [String: Any] else {
+                throw NutritionScannerError.invalidResponse
+            }
+            root = parsed
+        } catch let err as NutritionScannerError {
+            throw err
+        } catch {
+            // Preserve the underlying JSON error so a malformed top-level
+            // response is diagnosable rather than an opaque "invalid".
+            throw NutritionScannerError.decoding(error)
+        }
+        guard let blocks = root["content"] as? [[String: Any]] else {
             throw NutritionScannerError.invalidResponse
         }
 

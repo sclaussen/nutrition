@@ -4,26 +4,53 @@ import Foundation
 class ProfileMgr: ObservableObject {
 
 
-    // Full set of profiles. UI binds to `profile` (the active one); the
-    // array here is the source of truth for persistence and lets the
-    // Profile page switch between them.
+    // SINGLE source of truth: the full set of profiles plus the id of
+    // the active one. The array here is the source of truth for
+    // persistence and lets the Profile page switch between them.
     @Published var profiles: [Profile] = [] {
         didSet { saveProfiles() }
     }
 
 
-    // The active profile. Existing call sites continue to read
-    // `profileMgr.profile.X` and bind `$profileMgr.profile.X` —
-    // unchanged. The didSet mirrors any edit back into `profiles[i]`
-    // so the list stays in lock-step (and the change persists via
-    // profiles' own didSet).
-    @Published var profile: Profile {
+    // Id of the active profile. Published so SwiftUI re-renders when the
+    // active profile is switched. Persisted to UserDefaults via didSet.
+    @Published var activeProfileId: String = "" {
         didSet {
-            guard let i = profiles.firstIndex(where: { $0.id == profile.id }) else {
-                profiles.append(profile)
-                return
+            UserDefaults.standard.set(activeProfileId, forKey: "activeProfileId")
+        }
+    }
+
+
+    // The active profile, as a COMPUTED view over the single source of
+    // truth (`profiles` + `activeProfileId`). Existing call sites
+    // continue to read `profileMgr.profile.X` and bind
+    // `$profileMgr.profile.X` — unchanged. Reads return the active
+    // element; writes splice the new value back into `profiles[i]`
+    // (which persists via profiles' own didSet). A Binding into this
+    // computed property is fine in SwiftUI because it has a setter.
+    var profile: Profile {
+        get {
+            if let p = profiles.first(where: { $0.id == activeProfileId }) {
+                return p
             }
-            if profiles[i] != profile { profiles[i] = profile }
+            return profiles.first ?? Profile(
+                dateOfBirth: Date(), gender: .male, height: 0,
+                bodyMassFromHealthKit: false, bodyMass: 0,
+                bodyFatPercentageFromHealthKit: false, bodyFatPercentage: 0,
+                activeCaloriesBurned: 0, proteinRatio: 0,
+                calorieDeficit: 0, netCarbsMaximum: 0)
+        }
+        set {
+            if let i = profiles.firstIndex(where: { $0.id == newValue.id }) {
+                profiles[i] = newValue
+            } else {
+                profiles.append(newValue)
+            }
+            // Keep the active id pointing at the written profile (covers
+            // an id change made through this setter).
+            if activeProfileId != newValue.id {
+                activeProfileId = newValue.id
+            }
         }
     }
 
@@ -33,7 +60,7 @@ class ProfileMgr: ObservableObject {
         if let arr = Self.loadProfiles(), !arr.isEmpty {
             self.profiles = arr
             let activeId = UserDefaults.standard.string(forKey: "activeProfileId")
-            self.profile = arr.first(where: { $0.id == activeId }) ?? arr[0]
+            self.activeProfileId = arr.first(where: { $0.id == activeId })?.id ?? arr[0].id
         }
         // 2. Migrate from the old single-profile schema (key "profile").
         // The custom Profile.init(from:) handles the missing id/name.
@@ -42,7 +69,7 @@ class ProfileMgr: ObservableObject {
             if migrated.id.isEmpty { migrated.id = UUID().uuidString }
             if migrated.name.isEmpty { migrated.name = "Shane" }
             self.profiles = [migrated]
-            self.profile = migrated
+            self.activeProfileId = migrated.id
             UserDefaults.standard.set(migrated.id, forKey: "activeProfileId")
         }
         // 3. Fresh install — seed Shane's default profile.
@@ -61,7 +88,7 @@ class ProfileMgr: ObservableObject {
                 activeCaloriesBurned: 600,
                 proteinRatio: 1.2, calorieDeficit: 20, netCarbsMaximum: 20)
             self.profiles = [seed]
-            self.profile = seed
+            self.activeProfileId = seed.id
             UserDefaults.standard.set(seed.id, forKey: "activeProfileId")
         }
 
@@ -159,11 +186,12 @@ class ProfileMgr: ObservableObject {
 
 
     // Revert in-flight edits — used by ProfileEdit's Cancel button.
+    // Reloads the last-persisted profiles and re-points the active id.
     func cancel() {
         if let arr = Self.loadProfiles(), !arr.isEmpty {
             self.profiles = arr
             let activeId = UserDefaults.standard.string(forKey: "activeProfileId")
-            self.profile = arr.first(where: { $0.id == activeId }) ?? arr[0]
+            self.activeProfileId = arr.first(where: { $0.id == activeId })?.id ?? arr[0].id
         }
     }
 
@@ -177,14 +205,13 @@ class ProfileMgr: ObservableObject {
     var onProfileSwitch: ((Profile) -> Void)?
 
 
-    // Switch the active profile by id. Any in-flight edits to the
-    // previous profile have already been mirrored into `profiles` via
-    // profile.didSet, so swapping is just a pointer move + persisting
-    // the new active id + notifying per-profile managers.
+    // Switch the active profile by id. With `profile` now a computed
+    // view over `profiles` + `activeProfileId`, in-flight edits already
+    // live in `profiles`, so switching is just re-pointing the active id
+    // (which persists via its didSet) + notifying per-profile managers.
     func switchToProfile(_ id: String) {
         guard let next = profiles.first(where: { $0.id == id }) else { return }
-        self.profile = next
-        UserDefaults.standard.set(id, forKey: "activeProfileId")
+        self.activeProfileId = id
         onProfileSwitch?(next)
     }
 
@@ -249,15 +276,14 @@ class ProfileMgr: ObservableObject {
     // }
 
 
-    // Force a persist now. profile.didSet has already mirrored the
-    // active edit into `profiles` (which writes JSON via its didSet);
-    // this also re-stamps the active id and is kept for callers that
-    // rely on an explicit flush (e.g. ProfileEdit's Save).
+    // Force a persist now. With the single-source-of-truth model, every
+    // edit to `profile` already wrote into `profiles` (which writes JSON
+    // via its didSet) and `activeProfileId` already persisted via its
+    // didSet. This explicit flush is kept for callers that rely on it
+    // (e.g. ProfileEdit's Save) and re-stamps the active id defensively.
     func serialize() {
-        if let i = profiles.firstIndex(where: { $0.id == profile.id }) {
-            profiles[i] = profile
-        }
-        UserDefaults.standard.set(profile.id, forKey: "activeProfileId")
+        saveProfiles()
+        UserDefaults.standard.set(activeProfileId, forKey: "activeProfileId")
     }
 }
 
@@ -434,255 +460,356 @@ struct Profile: Codable, Identifiable, Equatable {
     // }
 
 
+    // ---------------------------------------------------------------
+    // Metric / goal accessors. The actual math now lives in the
+    // ProfileMetrics value type (below), computed once from a Profile
+    // snapshot. These thin accessors delegate to ProfileMetrics(self)
+    // so existing call sites (profile.bmi, profile.proteinGoal, …) keep
+    // working unchanged. The no-op setters are retained because several
+    // ProfileEdit rows bind `$profileMgr.profile.X` even for read-only
+    // derived values; the binding requires a settable property.
+    // ---------------------------------------------------------------
+
     var age: Double {
-        set {
-        }
-        get {
-            return Double(Calendar.current.dateComponents([.month], from: self.dateOfBirth, to: Date()).month ?? 0) / 12.0
-        }
+        set {}
+        get { ProfileMetrics(self).age }
     }
 
 
     var bodyMassKg: Double {
-        set {
-        }
-        get {
-            (self.bodyMass * 0.453592).round(1)
-        }
+        set {}
+        get { ProfileMetrics(self).bodyMassKg }
     }
 
 
     var heightCm: Double {
-        set {
-        }
-        get {
-            Double(self.height) * 2.54
-        }
+        set {}
+        get { ProfileMetrics(self).heightCm }
     }
 
 
     var bodyMassIndex: Double {
-        set {
-        }
-        get {
-            (self.bodyMass / Double(self.height * self.height)) * 703
-        }
+        set {}
+        get { ProfileMetrics(self).bodyMassIndex }
     }
 
 
     var fatMass: Double {
-        set {
-        }
-        get {
-            (self.bodyMass * (self.bodyFatPercentage / 100)).round(1)
-        }
+        set {}
+        get { ProfileMetrics(self).fatMass }
     }
 
 
     var leanBodyMass: Double {
-        set {
-        }
-        get {
-            (self.bodyMass - self.fatMass).round(1)
-        }
+        set {}
+        get { ProfileMetrics(self).leanBodyMass }
     }
 
 
     var caloriesBaseMetabolicRate: Double {
-        set {
-        }
-        get {
-            return gender == Gender.male ? (self.bodyMassKg * 9.99) + (self.heightCm * 6.25) - (self.age * 4.92 + 5) : (self.bodyMassKg * 9.99) + (self.heightCm * 6.25) - (self.age * 4.92 - 161)
-        }
+        set {}
+        get { ProfileMetrics(self).caloriesBaseMetabolicRate }
     }
 
 
     var caloriesResting: Double {
-        set {
-        }
-        get {
-            self.caloriesBaseMetabolicRate * 1.2
-        }
+        set {}
+        get { ProfileMetrics(self).caloriesResting }
     }
 
 
     var caloriesGoalUnadjusted: Double {
-        set {
-        }
-        get {
-            self.caloriesResting + Double(self.activeCaloriesBurned)
-        }
+        set {}
+        get { ProfileMetrics(self).caloriesGoalUnadjusted }
     }
 
 
     var fatGoalUnadjusted: Double {
-        set {
-        }
-        get {
-            // .keto: derived (cals − protein·4 − netCarbs·4) / 9.
-            // ratio: cals × preset_fat% / 9.
-            if let s = macroMode.split {
-                return self.caloriesGoalUnadjusted * s.fat / 100 / 9
-            }
-            return (self.caloriesGoalUnadjusted - ((self.proteinGoalUnadjusted + self.netCarbsMaximum) * 4)) / 9
-        }
+        set {}
+        get { ProfileMetrics(self).fatGoalUnadjusted }
     }
 
 
     var fiberMinimumUnadjusted: Double {
-        set {
-        }
-        get {
-            (self.caloriesGoalUnadjusted / 1000) * 14
-        }
+        set {}
+        get { ProfileMetrics(self).fiberMinimumUnadjusted }
     }
 
 
     var proteinGoalUnadjusted: Double {
-        set {
-        }
-        get {
-            // LBM × ratio is always a FLOOR. In ratio modes the preset
-            // protein% may demand more — take the larger value so
-            // growing/lifting profiles never undershoot protein.
-            let lbmFloor = self.leanBodyMass * self.proteinRatio
-            if let s = macroMode.split {
-                let presetProtein = self.caloriesGoalUnadjusted * s.protein / 100 / 4
-                return max(lbmFloor, presetProtein)
-            }
-            return lbmFloor
-        }
+        set {}
+        get { ProfileMetrics(self).proteinGoalUnadjusted }
     }
 
 
-    // Effective carb target in grams. Keto: the stored ceiling. Ratio
-    // modes: whatever's left after protein and fat (= cals × c% / 4 if
-    // protein doesn't blow past its preset %; otherwise smaller).
     var effectiveNetCarbsMaximumUnadjusted: Double {
-        if macroMode.split != nil {
-            let pCals = self.proteinGoalUnadjusted * 4
-            let fCals = self.fatGoalUnadjusted * 9
-            return max(0, self.caloriesGoalUnadjusted - pCals - fCals) / 4
-        }
-        return self.netCarbsMaximum
+        ProfileMetrics(self).effectiveNetCarbsMaximumUnadjusted
     }
 
 
     var fatGoalPercentageUnadjusted: Double {
-        set {
-        }
-        get {
-            ((self.fatGoalUnadjusted * 9) / self.caloriesGoalUnadjusted) * 100
-        }
+        set {}
+        get { ProfileMetrics(self).fatGoalPercentageUnadjusted }
     }
 
 
     var netCarbsMaximumPercentageUnadjusted: Double {
-        set {
-        }
-        get {
-            ((self.effectiveNetCarbsMaximumUnadjusted * 4) / self.caloriesGoalUnadjusted) * 100
-        }
+        set {}
+        get { ProfileMetrics(self).netCarbsMaximumPercentageUnadjusted }
     }
 
 
     var proteinGoalPercentageUnadjusted: Double {
-        set {
-        }
-        get {
-            ((self.proteinGoalUnadjusted * 4) / self.caloriesGoalUnadjusted) * 100
-        }
+        set {}
+        get { ProfileMetrics(self).proteinGoalPercentageUnadjusted }
     }
 
 
     var caloriesGoal: Double {
-        set {
-        }
-        get {
-            self.caloriesGoalUnadjusted - (self.caloriesGoalUnadjusted * (Double(self.calorieDeficit) / 100))
-        }
+        set {}
+        get { ProfileMetrics(self).caloriesGoal }
     }
 
 
     var fiberMinimum: Double {
-        set {
-        }
-        get {
-            (self.caloriesGoal / 1000) * 14
-        }
+        set {}
+        get { ProfileMetrics(self).fiberMinimum }
     }
 
 
     var proteinGoal: Double {
-        set {
-        }
-        get {
-            let lbmFloor = self.leanBodyMass * self.proteinRatio
-            if let s = macroMode.split {
-                let presetProtein = self.caloriesGoal * s.protein / 100 / 4
-                return max(lbmFloor, presetProtein)
-            }
-            return lbmFloor
-        }
+        set {}
+        get { ProfileMetrics(self).proteinGoal }
     }
 
 
     var fatGoal: Double {
-        set {
-        }
-        get {
-            if let s = macroMode.split {
-                return self.caloriesGoal * s.fat / 100 / 9
-            }
-            return (self.caloriesGoal - ((self.proteinGoal + self.netCarbsMaximum) * 4)) / 9
-        }
+        set {}
+        get { ProfileMetrics(self).fatGoal }
     }
 
 
-    // Net (deficit-applied) effective carb target — used by the dashboard
-    // and macrosMgr as the daily carb-goal scale.
     var effectiveNetCarbsMaximum: Double {
-        if macroMode.split != nil {
-            let pCals = self.proteinGoal * 4
-            let fCals = self.fatGoal * 9
-            return max(0, self.caloriesGoal - pCals - fCals) / 4
-        }
-        return self.netCarbsMaximum
+        ProfileMetrics(self).effectiveNetCarbsMaximum
     }
 
 
     var fatGoalPercentage: Double {
-        set {
-        }
-        get {
-            ((self.fatGoal * 9) / self.caloriesGoal) * 100
-        }
+        set {}
+        get { ProfileMetrics(self).fatGoalPercentage }
     }
 
 
     var netCarbsMaximumPercentage: Double {
-        set {
-        }
-        get {
-            ((self.effectiveNetCarbsMaximum * 4) / self.caloriesGoal) * 100
-        }
+        set {}
+        get { ProfileMetrics(self).netCarbsMaximumPercentage }
     }
 
 
     var proteinGoalPercentage: Double {
-        set {
-        }
-        get {
-            ((self.proteinGoal * 4) / self.caloriesGoal) * 100
-        }
+        set {}
+        get { ProfileMetrics(self).proteinGoalPercentage }
     }
 
 
     var waterLiters: Double {
-        set {
+        set {}
+        get { ProfileMetrics(self).waterLiters }
+    }
+}
+
+
+// =============================================================
+// ProfileMetrics — all BMI / Mifflin-St-Jeor BMR / TDEE / body-comp /
+// macro-goal math for a Profile, computed from a single immutable
+// snapshot. Profile's metric accessors delegate here so the math lives
+// in one place. Pure value type, no persistence, no @Published — cheap
+// to construct on demand (it just copies the scalar inputs).
+//
+// Numeric behavior is identical to the prior inline computed properties
+// on Profile; only the location of the formulas changed.
+// =============================================================
+struct ProfileMetrics {
+
+    // Snapshot inputs copied from the source Profile.
+    let dateOfBirth: Date
+    let gender: Gender
+    let height: Int
+    let bodyMass: Double
+    let bodyFatPercentage: Double
+    let activeCaloriesBurned: Double
+    let proteinRatio: Double
+    let calorieDeficit: Int
+    let netCarbsMaximum: Double
+    let macroMode: MacroMode
+
+
+    init(_ p: Profile) {
+        self.dateOfBirth = p.dateOfBirth
+        self.gender = p.gender
+        self.height = p.height
+        self.bodyMass = p.bodyMass
+        self.bodyFatPercentage = p.bodyFatPercentage
+        self.activeCaloriesBurned = p.activeCaloriesBurned
+        self.proteinRatio = p.proteinRatio
+        self.calorieDeficit = p.calorieDeficit
+        self.netCarbsMaximum = p.netCarbsMaximum
+        self.macroMode = p.macroMode
+    }
+
+
+    // ---- Body composition ----
+
+    var age: Double {
+        Double(Calendar.current.dateComponents([.month], from: self.dateOfBirth, to: Date()).month ?? 0) / 12.0
+    }
+
+    var bodyMassKg: Double {
+        (self.bodyMass * 0.453592).round(1)
+    }
+
+    var heightCm: Double {
+        Double(self.height) * 2.54
+    }
+
+    var bodyMassIndex: Double {
+        (self.bodyMass / Double(self.height * self.height)) * 703
+    }
+
+    var fatMass: Double {
+        (self.bodyMass * (self.bodyFatPercentage / 100)).round(1)
+    }
+
+    var leanBodyMass: Double {
+        (self.bodyMass - self.fatMass).round(1)
+    }
+
+
+    // ---- Energy ----
+
+    var caloriesBaseMetabolicRate: Double {
+        return gender == Gender.male ? (self.bodyMassKg * 9.99) + (self.heightCm * 6.25) - (self.age * 4.92 + 5) : (self.bodyMassKg * 9.99) + (self.heightCm * 6.25) - (self.age * 4.92 - 161)
+    }
+
+    var caloriesResting: Double {
+        self.caloriesBaseMetabolicRate * 1.2
+    }
+
+    var caloriesGoalUnadjusted: Double {
+        self.caloriesResting + Double(self.activeCaloriesBurned)
+    }
+
+    var caloriesGoal: Double {
+        self.caloriesGoalUnadjusted - (self.caloriesGoalUnadjusted * (Double(self.calorieDeficit) / 100))
+    }
+
+
+    // ---- Macro goals ----
+    //
+    // The protein / fat / net-carb goals share one parameterized
+    // formula set keyed on a caloric goal. `macroGoals(forCalories:)`
+    // computes all three at once; the unadjusted variant feeds it the
+    // gross caloric goal, the adjusted variant feeds it the net (post-
+    // deficit) goal. This is the single source of the macro math.
+
+    struct MacroGoals {
+        let protein: Double      // grams
+        let fat: Double          // grams
+        let netCarbs: Double     // grams (effective target / ceiling)
+    }
+
+
+    // Compute protein / fat / net-carb grams for a given caloric goal.
+    //   .keto:  protein = LBM × ratio (floor only);
+    //           netCarbs = stored ceiling;
+    //           fat absorbs the remainder.
+    //   ratio:  fat  = cals × fat% / 9;
+    //           protein = max(LBM × ratio, cals × protein% / 4);
+    //           netCarbs = whatever's left after protein + fat.
+    func macroGoals(forCalories cals: Double) -> MacroGoals {
+        let lbmFloor = self.leanBodyMass * self.proteinRatio
+        if let s = macroMode.split {
+            let protein = max(lbmFloor, cals * s.protein / 100 / 4)
+            let fat = cals * s.fat / 100 / 9
+            let netCarbs = max(0, cals - (protein * 4) - (fat * 9)) / 4
+            return MacroGoals(protein: protein, fat: fat, netCarbs: netCarbs)
         }
-        get {
-            (self.bodyMass / 2) * 0.029574
-        }
+        let protein = lbmFloor
+        let netCarbs = self.netCarbsMaximum
+        let fat = (cals - ((protein + netCarbs) * 4)) / 9
+        return MacroGoals(protein: protein, fat: fat, netCarbs: netCarbs)
+    }
+
+
+    // ---- Gross (no-deficit) macro goals ----
+
+    var fatGoalUnadjusted: Double {
+        macroGoals(forCalories: self.caloriesGoalUnadjusted).fat
+    }
+
+    var fiberMinimumUnadjusted: Double {
+        (self.caloriesGoalUnadjusted / 1000) * 14
+    }
+
+    var proteinGoalUnadjusted: Double {
+        macroGoals(forCalories: self.caloriesGoalUnadjusted).protein
+    }
+
+    // Effective carb target in grams. Keto: the stored ceiling. Ratio
+    // modes: whatever's left after protein and fat.
+    var effectiveNetCarbsMaximumUnadjusted: Double {
+        macroGoals(forCalories: self.caloriesGoalUnadjusted).netCarbs
+    }
+
+    var fatGoalPercentageUnadjusted: Double {
+        ((self.fatGoalUnadjusted * 9) / self.caloriesGoalUnadjusted) * 100
+    }
+
+    var netCarbsMaximumPercentageUnadjusted: Double {
+        ((self.effectiveNetCarbsMaximumUnadjusted * 4) / self.caloriesGoalUnadjusted) * 100
+    }
+
+    var proteinGoalPercentageUnadjusted: Double {
+        ((self.proteinGoalUnadjusted * 4) / self.caloriesGoalUnadjusted) * 100
+    }
+
+
+    // ---- Net (deficit-applied) macro goals ----
+
+    var fiberMinimum: Double {
+        (self.caloriesGoal / 1000) * 14
+    }
+
+    var proteinGoal: Double {
+        macroGoals(forCalories: self.caloriesGoal).protein
+    }
+
+    var fatGoal: Double {
+        macroGoals(forCalories: self.caloriesGoal).fat
+    }
+
+    // Net (deficit-applied) effective carb target — used by the dashboard
+    // and macrosMgr as the daily carb-goal scale.
+    var effectiveNetCarbsMaximum: Double {
+        macroGoals(forCalories: self.caloriesGoal).netCarbs
+    }
+
+    var fatGoalPercentage: Double {
+        ((self.fatGoal * 9) / self.caloriesGoal) * 100
+    }
+
+    var netCarbsMaximumPercentage: Double {
+        ((self.effectiveNetCarbsMaximum * 4) / self.caloriesGoal) * 100
+    }
+
+    var proteinGoalPercentage: Double {
+        ((self.proteinGoal * 4) / self.caloriesGoal) * 100
+    }
+
+
+    // ---- Hydration ----
+
+    var waterLiters: Double {
+        (self.bodyMass / 2) * 0.029574
     }
 }

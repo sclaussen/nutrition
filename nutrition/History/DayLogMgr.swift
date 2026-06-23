@@ -47,7 +47,6 @@ class DayLogMgr: ObservableObject {
             self.logs = logs.sorted { $0.date > $1.date }
             return
         }
-        print("...no day log history yet — starting empty")
         self.logs = []
     }
 
@@ -73,10 +72,6 @@ class DayLogMgr: ObservableObject {
         var updated = logs.filter { $0.id != key }
         updated.append(log)
         self.logs = updated.sorted { $0.date > $1.date }
-
-        print("Logged day \(key): \(entries.count) entries, " +
-              "\(totals.calories.formattedString(0)) cal, " +
-              "$\(totals.cost.formattedString(2))")
 
         serialize()
     }

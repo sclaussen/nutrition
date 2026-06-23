@@ -20,7 +20,7 @@ struct AdjustmentAdd: View {
             Section {
                 NameValue("Ingredient", $name, options: ingredientMgr.getNewMealIngredientNames(existingMealIngredientNames: adjustmentMgr.getNames()), control: .picker)
                 if name.count > 0 {
-                    NameValue("Amount", $amount, getConsumptionUnit(name), edit: true)
+                    NameValue("Amount", $amount, foodMgr.consumptionUnit(for: name, ingredientMgr: ingredientMgr), edit: true)
                 }
             }
             //            if name.count > 0 {
@@ -36,25 +36,7 @@ struct AdjustmentAdd: View {
             //            }
         }
           .padding([.leading, .trailing], -20)
-          .navigationBarBackButtonHidden(true)
-          .toolbar {
-              ToolbarItem(placement: .navigation) {
-                  Button("Cancel", action: cancel)
-                    .foregroundColor(Color.theme.blueYellow)
-              }
-              ToolbarItem(placement: .primaryAction) {
-                  Button("Save", action: save)
-                    .foregroundColor(Color.theme.blueYellow)
-              }
-              ToolbarItemGroup(placement: .keyboard) {
-                  HStack {
-                      DismissKeyboard()
-                      Spacer()
-                      Button("Save", action: save)
-                        .foregroundColor(Color.theme.blueYellow)
-                  }
-              }
-          }
+          .cancelSaveToolbar(onCancel: cancel, onSave: save)
     }
 
 
@@ -70,21 +52,6 @@ struct AdjustmentAdd: View {
             adjustmentMgr.create(name: name, amount: amount, group: group, active: true)
             presentationMode.wrappedValue.dismiss()
         }
-    }
-
-
-    // `name` is a Food name (an adjustment targets a Food). Resolve
-    // via FoodMgr to the Food's current member; never force-unwraps
-    // (the bare canonical ingredients are gone).
-    func getConsumptionUnit(_ name: String) -> Unit {
-        if let f = foodMgr.getByName(name: name),
-           let ing = ingredientMgr.getByName(name: f.currentIngredientName) {
-            return foodMgr.consumptionUnit(for: ing)
-        }
-        if let ing = ingredientMgr.getByName(name: name) {
-            return foodMgr.consumptionUnit(for: ing)
-        }
-        return .gram
     }
 }
 

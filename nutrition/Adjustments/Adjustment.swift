@@ -149,7 +149,6 @@ class AdjustmentMgr: ObservableObject {
             if !adjustments[index].active {
                 adjustments[index] = adjustments[index].toggleActive()
             }
-            print("  \(adjustments[index].name) active: \(adjustments[index].active) (adjustment)")
         }
     }
 
@@ -159,7 +158,6 @@ class AdjustmentMgr: ObservableObject {
             if adjustments[index].active {
                 adjustments[index] = adjustments[index].toggleActive()
             }
-            print("  \(adjustments[index].name) active: \(adjustments[index].active) (adjustment)")
         }
     }
 

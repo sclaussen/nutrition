@@ -35,6 +35,22 @@ struct IngredientList: View {
     }
     @State private var sortBy: SortBy = .name
 
+    // Memoized row list. getIngredientList() dedups + sorts the
+    // ingredient source on every call; calling it inline in ForEach
+    // re-ran that work on every SwiftUI render. Instead we cache the
+    // result here and recompute it only when an input that affects the
+    // list's membership or order actually changes — driven by the
+    // .onAppear / .onChange hooks on the List below.
+    //
+    // Recompute triggers:
+    //   * prepMode / sortBy        — @State, observed directly
+    //   * ingredientMgr.ingredients — observed via .count (add/delete)
+    //   * .onAppear                 — catches in-place edits made on the
+    //                                 pushed IngredientEdit screen, and
+    //                                 the foodMgr grouping data, which
+    //                                 aren't both observable from here.
+    @State private var rows: [Ingredient] = []
+
     // Non-nil while the new-composite builder sheet is shown.
     @State private var showCompositeBuilder = false
 
@@ -108,7 +124,7 @@ struct IngredientList: View {
             if prepMode == .composite {
                 compositeSection
             } else {
-            ForEach(getIngredientList()) { ingredient in
+            ForEach(rows) { ingredient in
                 // Row is split between two hit zones, each wrapped in
                 // a Button with .buttonStyle(.borderless) so the List
                 // row doesn't lump them into a single tappable unit:
@@ -187,7 +203,6 @@ struct IngredientList: View {
                   }
             }
               .listRowInsets(EdgeInsets(top: 8, leading: 10, bottom: 8, trailing: 10))
-              .border(Color.theme.red, width: 0)
             }
             }
               .listStyle(.plain)
@@ -198,6 +213,14 @@ struct IngredientList: View {
               .frame(maxHeight: prepMode == .composite
                                   ? UIScreen.main.bounds.height * 0.20
                                   : .infinity)
+              // Refresh the memoized row list only when an input that
+              // affects membership/order changes (see `rows`).
+              .onAppear { rows = getIngredientList() }
+              .onChange(of: prepMode) { _ in rows = getIngredientList() }
+              .onChange(of: sortBy) { _ in rows = getIngredientList() }
+              .onChange(of: ingredientMgr.ingredients.count) { _ in
+                  rows = getIngredientList()
+              }
             if prepMode == .composite { Spacer() }
         }
           .alert("The meal ingredient must be deleted first.  It may be necessary to lock the meal ingredients prior to deletion so the meal ingredient is not readded as an adjustment.", isPresented: $deleteMealIngredientAlert) {

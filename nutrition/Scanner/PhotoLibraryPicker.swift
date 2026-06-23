@@ -62,6 +62,10 @@ struct PhotoLibraryPicker: UIViewControllerRepresentable {
             }
 
             var slots = [UIImage?](repeating: nil, count: results.count)
+            // loadObject completions fire concurrently on arbitrary
+            // background queues; serialize writes into the shared
+            // `slots` array so two photos can't corrupt it.
+            let lock = NSLock()
             let group = DispatchGroup()
 
             for (index, result) in results.enumerated() {
@@ -70,7 +74,9 @@ struct PhotoLibraryPicker: UIViewControllerRepresentable {
                 group.enter()
                 provider.loadObject(ofClass: UIImage.self) { object, _ in
                     if let image = object as? UIImage {
+                        lock.lock()
                         slots[index] = image
+                        lock.unlock()
                     }
                     group.leave()
                 }

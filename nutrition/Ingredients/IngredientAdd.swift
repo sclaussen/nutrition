@@ -75,7 +75,7 @@ struct IngredientAdd: View {
     var body: some View {
         Form {
             if let prefill = prefill, !prefill.lowConfidenceFields.isEmpty {
-                lowConfidenceBanner(fields: prefill.lowConfidenceFields)
+                LowConfidenceBanner(fields: prefill.lowConfidenceFields)
             }
             mainSections
             groupSection
@@ -84,25 +84,7 @@ struct IngredientAdd: View {
         }
           .padding([.leading, .trailing], -20)
           .onAppear { applyPrefill() }
-          .navigationBarBackButtonHidden(true)
-          .toolbar {
-              ToolbarItem(placement: .navigation) {
-                  Button("Cancel", action: cancel)
-                    .foregroundColor(Color.theme.blueYellow)
-              }
-              ToolbarItem(placement: .primaryAction) {
-                  Button("Save", action: save)
-                    .foregroundColor(Color.theme.blueYellow)
-              }
-              ToolbarItemGroup(placement: .keyboard) {
-                  HStack {
-                      DismissKeyboard()
-                      Spacer()
-                      Button("Save", action: save)
-                        .foregroundColor(Color.theme.blueYellow)
-                  }
-              }
-          }
+          .cancelSaveToolbar(onCancel: cancel, onSave: save)
     }
 
     func cancel() {
@@ -230,26 +212,6 @@ extension IngredientAdd {
     }
 
 
-    // Yellow banner listing the field names the LLM was unsure
-    // about. We don't try to per-row tint individual NameValue
-    // controls — the prefill flow lets the user eyeball
-    // everything anyway, and this single banner is enough of a
-    // "double-check these" cue without restructuring NameValue.
-    fileprivate func lowConfidenceBanner(fields: [String]) -> some View {
-        Section {
-            VStack(alignment: .leading, spacing: 4) {
-                Label("Low-confidence fields", systemImage: "exclamationmark.triangle.fill")
-                  .font(.callout)
-                  .foregroundColor(.orange)
-                Text(fields.joined(separator: ", "))
-                  .font(.caption)
-                  .foregroundColor(Color.theme.blackWhiteSecondary)
-            }
-              .padding(.vertical, 4)
-        }
-    }
-
-
     private var mainSections: some View {
         Group {
             Section {
@@ -336,39 +298,34 @@ extension IngredientAdd {
         }
     }
 
+    // V&M fields are always visible (toggle gate removed) — see
+    // matching note in IngredientEdit.swift.  New ingredients can
+    // record V&M values directly without first enabling a toggle.
+    // Row layout/order lives in the shared VitaminMineralForm.
     private var vitaminAndMineralsSection: some View {
-        // V&M fields are always visible (toggle gate removed) — see
-        // matching note in IngredientEdit.swift.  New ingredients can
-        // record V&M values directly without first enabling a toggle.
-        Section(header: Text("Vitamins and Minerals")) {
-            Group {
-                NameValue("Omega-3", $omega3, edit: true)
-                NameValue("Vitamin D", $vitaminD, edit: true)
-                NameValue("Calcium", $calcium, edit: true)
-                NameValue("Iron", $iron, edit: true)
-                NameValue("Potassium", $potassium, edit: true)
-                NameValue("Vitamin A", $vitaminA, edit: true)
-                NameValue("Vitamin C", $vitaminC, edit: true)
-                NameValue("Vitamin E", $vitaminE, edit: true)
-                NameValue("Vitamin K", $vitaminK, edit: true)
-                NameValue("Thiamin", $thiamin, edit: true)
-            }
-            Group {
-                NameValue("Vitamin B6", $vitaminB6, edit: true)
-                NameValue("Folate", $folate, edit: true)
-                NameValue("Vitamin B12", $vitaminB12, edit: true)
-                NameValue("Pantothenic Acid", $pantothenicAcid, edit: true)
-                NameValue("Phosphorus", $phosphorus, edit: true)
-                NameValue("Magnesium", $magnesium, edit: true)
-                NameValue("Zinc", $zinc, edit: true)
-                NameValue("Selenium", $selenium, edit: true)
-                NameValue("Copper", $copper, edit: true)
-                NameValue("Manganese", $manganese, edit: true)
-            }
-            Group {
-                NameValue("Niacin", $niacin, edit: true)
-                NameValue("Riboflavin", $riboflavin, edit: true)
-            }
-        }
+        VitaminMineralForm(rows: [
+            ("Omega-3", $omega3),
+            ("Vitamin D", $vitaminD),
+            ("Calcium", $calcium),
+            ("Iron", $iron),
+            ("Potassium", $potassium),
+            ("Vitamin A", $vitaminA),
+            ("Vitamin C", $vitaminC),
+            ("Vitamin E", $vitaminE),
+            ("Vitamin K", $vitaminK),
+            ("Thiamin", $thiamin),
+            ("Vitamin B6", $vitaminB6),
+            ("Folate", $folate),
+            ("Vitamin B12", $vitaminB12),
+            ("Pantothenic Acid", $pantothenicAcid),
+            ("Phosphorus", $phosphorus),
+            ("Magnesium", $magnesium),
+            ("Zinc", $zinc),
+            ("Selenium", $selenium),
+            ("Copper", $copper),
+            ("Manganese", $manganese),
+            ("Niacin", $niacin),
+            ("Riboflavin", $riboflavin),
+        ])
     }
 }

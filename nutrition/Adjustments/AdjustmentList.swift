@@ -45,7 +45,6 @@ struct AdjustmentList: View {
               .onMove(perform: moveAction)
               .onDelete(perform: deleteAction)
               .listRowInsets(EdgeInsets(top: 10, leading: 10, bottom: 10, trailing: 10))
-              .border(Color.theme.red, width: 0)
         }
           .environment(\.defaultMinListRowHeight, 5)
           .padding([.leading, .trailing], -20)

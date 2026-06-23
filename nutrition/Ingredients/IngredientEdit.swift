@@ -1,5 +1,102 @@
 import SwiftUI
 
+
+// ============================================================
+// Shared Cancel/Save toolbar. Six add/edit screens pasted a
+// byte-identical ~18-line `.toolbar { ... }` Cancel/Save block
+// (+ keyboard group, Color.theme.blueYellow) alongside
+// `.navigationBarBackButtonHidden(true)`. They now all call
+// `.cancelSaveToolbar(onCancel:onSave:)`. The optional
+// `saveDisabled` covers screens that gate Save; the
+// `.padding([.leading,.trailing], -20)` stays at each call site
+// since its placement in the modifier chain varies.
+// ============================================================
+extension View {
+    func cancelSaveToolbar(saveDisabled: Bool = false,
+                           onCancel: @escaping () -> Void,
+                           onSave: @escaping () -> Void) -> some View {
+        self
+          .navigationBarBackButtonHidden(true)
+          .toolbar {
+              ToolbarItem(placement: .navigation) {
+                  Button("Cancel", action: onCancel)
+                    .foregroundColor(Color.theme.blueYellow)
+              }
+              ToolbarItem(placement: .primaryAction) {
+                  Button("Save", action: onSave)
+                    .foregroundColor(Color.theme.blueYellow)
+                    .disabled(saveDisabled)
+              }
+              ToolbarItemGroup(placement: .keyboard) {
+                  HStack {
+                      DismissKeyboard()
+                      Spacer()
+                      Button("Save", action: onSave)
+                        .foregroundColor(Color.theme.blueYellow)
+                  }
+              }
+          }
+    }
+}
+
+
+// ============================================================
+// Shared "Low-confidence fields" banner. Byte-identical copies
+// previously lived in both IngredientAdd and IngredientEdit.
+// ============================================================
+struct LowConfidenceBanner: View {
+    let fields: [String]
+    var body: some View {
+        Section {
+            VStack(alignment: .leading, spacing: 4) {
+                Label("Low-confidence fields", systemImage: "exclamationmark.triangle.fill")
+                  .font(.callout)
+                  .foregroundColor(.orange)
+                Text(fields.joined(separator: ", "))
+                  .font(.caption)
+                  .foregroundColor(Color.theme.blackWhiteSecondary)
+            }
+              .padding(.vertical, 4)
+        }
+    }
+}
+
+
+// ============================================================
+// Shared Vitamins & Minerals entry form. The ~22-row NameValue
+// list was duplicated in IngredientAdd (binding to @State vars)
+// and IngredientEdit (binding to `$ingredient.X`). Both now pass
+// an ordered list of (label, Binding<Double>) rows so the row
+// set, order, and grouping live in one place. The 3-group layout
+// (10 / 10 / 2) is preserved exactly.
+// ============================================================
+struct VitaminMineralForm: View {
+    // 22 rows in display order. Built by each screen from its own
+    // bindings; this view only lays them out.
+    let rows: [(String, Binding<Double>)]
+
+    var body: some View {
+        Section(header: Text("Vitamins and Minerals")) {
+            Group {
+                ForEach(0..<10, id: \.self) { i in
+                    NameValue(rows[i].0, rows[i].1, edit: true)
+                }
+            }
+            Group {
+                ForEach(10..<20, id: \.self) { i in
+                    NameValue(rows[i].0, rows[i].1, edit: true)
+                }
+            }
+            Group {
+                ForEach(20..<22, id: \.self) { i in
+                    NameValue(rows[i].0, rows[i].1, edit: true)
+                }
+            }
+        }
+    }
+}
+
+
 struct IngredientEdit: View {
 
     @Environment(\.presentationMode) var presentationMode
@@ -53,7 +150,7 @@ struct IngredientEdit: View {
                 diffBanner(diff)
             }
             if let prefill = prefill, !prefill.lowConfidenceFields.isEmpty {
-                lowConfidenceBanner(fields: prefill.lowConfidenceFields)
+                LowConfidenceBanner(fields: prefill.lowConfidenceFields)
             }
             avoidSection
             mainSections
@@ -74,25 +171,7 @@ struct IngredientEdit: View {
           }
           .padding([.leading, .trailing], -20)
           .onAppear { applyPrefill() }
-          .navigationBarBackButtonHidden(true)
-          .toolbar {
-              ToolbarItem(placement: .navigation) {
-                  Button("Cancel", action: cancel)
-                    .foregroundColor(Color.theme.blueYellow)
-              }
-              ToolbarItem(placement: .primaryAction) {
-                  Button("Save", action: save)
-                    .foregroundColor(Color.theme.blueYellow)
-              }
-              ToolbarItemGroup(placement: .keyboard) {
-                  HStack {
-                      DismissKeyboard()
-                      Spacer()
-                      Button("Save", action: save)
-                        .foregroundColor(Color.theme.blueYellow)
-                  }
-              }
-          }
+          .cancelSaveToolbar(onCancel: cancel, onSave: save)
     }
 
     func cancel() {
@@ -103,6 +182,14 @@ struct IngredientEdit: View {
 
     func save() {
         withAnimation {
+            // Apply the deferred FoodMgr link here (not in the Food
+            // picker's binding setter) so a cancelled edit never
+            // mutates FoodMgr. Mirrors IngredientAdd.save().
+            if !ingredient.foodName.isEmpty {
+                foodMgr.ensure(name: ingredient.foodName,
+                               defaultMember: ingredient.name,
+                               type: foodMgr.getByName(name: ingredient.foodName)?.type ?? newFoodType)
+            }
             ingredientMgr.update(ingredient)
             presentationMode.wrappedValue.dismiss()
         }
@@ -200,21 +287,6 @@ extension IngredientEdit {
     }
 
 
-    fileprivate func lowConfidenceBanner(fields: [String]) -> some View {
-        Section {
-            VStack(alignment: .leading, spacing: 4) {
-                Label("Low-confidence fields", systemImage: "exclamationmark.triangle.fill")
-                  .font(.callout)
-                  .foregroundColor(.orange)
-                Text(fields.joined(separator: ", "))
-                  .font(.caption)
-                  .foregroundColor(Color.theme.blackWhiteSecondary)
-            }
-              .padding(.vertical, 4)
-        }
-    }
-
-
     @ViewBuilder
     private var avoidSection: some View {
         let hits = AvoidList.allMatches(in: ingredient.ingredients)
@@ -274,15 +346,12 @@ extension IngredientEdit {
                     get: { ingredient.foodName },
                     set: { newFood in
                         // Recompose name with the variant carried over
-                        // from the previous Food prefix.
+                        // from the previous Food prefix. The FoodMgr
+                        // mutation (ensure) is deferred to save() so a
+                        // cancelled edit leaves FoodMgr untouched.
                         let v = Self.variant(of: ingredient.name,
                                              food: ingredient.foodName)
                         ingredient.foodName = newFood
-                        if !newFood.isEmpty {
-                            foodMgr.ensure(name: newFood,
-                                           defaultMember: ingredient.name,
-                                           type: foodMgr.getByName(name: newFood)?.type ?? newFoodType)
-                        }
                         let n = Self.compose(food: newFood, variant: v)
                         if !n.isEmpty { ingredient.name = n }
                     }
@@ -365,12 +434,9 @@ extension IngredientEdit {
             Picker("Food", selection: Binding(
                 get: { ingredient.foodName },
                 set: { newValue in
+                    // FoodMgr mutation (ensure) deferred to save() so a
+                    // cancelled edit leaves FoodMgr untouched.
                     ingredient.foodName = newValue
-                    if !newValue.isEmpty {
-                        foodMgr.ensure(name: newValue,
-                                       defaultMember: ingredient.name,
-                                       type: foodMgr.getByName(name: newValue)?.type ?? newFoodType)
-                    }
                 }
             )) {
                 Text("None").tag("")
@@ -440,14 +506,6 @@ extension IngredientEdit {
         }
     }
 
-    //     Spacer()
-    //     Button {
-    //         print("Delete Button")
-    //     } label: {
-    //         Label("Delete")
-    //     }
-    // }) {
-
     private var per100GramsSection: some View {
         Section {
             NameValue("Calories (per 100g)", $ingredient.calories100)
@@ -458,41 +516,36 @@ extension IngredientEdit {
         }
     }
 
+    // V&M fields are always visible — the previous "Add vitamins
+    // and minerals" toggle hid them by default, which made it
+    // hard to discover that V&M data could be entered at all.
+    // Now they show inline; leave a field blank to record nothing.
+    // Row layout/order lives in the shared VitaminMineralForm.
     private var vitaminAndMineralsSection: some View {
-        // V&M fields are always visible — the previous "Add vitamins
-        // and minerals" toggle hid them by default, which made it
-        // hard to discover that V&M data could be entered at all.
-        // Now they show inline; leave a field blank to record nothing.
-        Section(header: Text("Vitamins and Minerals")) {
-            Group {
-                NameValue("Omega-3", $ingredient.omega3, edit: true)
-                NameValue("Vitamin D", $ingredient.vitaminD, edit: true)
-                NameValue("Calcium", $ingredient.calcium, edit: true)
-                NameValue("Iron", $ingredient.iron, edit: true)
-                NameValue("Potassium", $ingredient.potassium, edit: true)
-                NameValue("Vitamin A", $ingredient.vitaminA, edit: true)
-                NameValue("Vitamin C", $ingredient.vitaminC, edit: true)
-                NameValue("Vitamin E", $ingredient.vitaminE, edit: true)
-                NameValue("Vitamin K", $ingredient.vitaminK, edit: true)
-                NameValue("Thiamin", $ingredient.thiamin, edit: true)
-            }
-            Group {
-                NameValue("Vitamin B6", $ingredient.vitaminB6, edit: true)
-                NameValue("Folate", $ingredient.folate, edit: true)
-                NameValue("Vitamin B12", $ingredient.vitaminB12, edit: true)
-                NameValue("Pantothenic Acid", $ingredient.pantothenicAcid, edit: true)
-                NameValue("Phosphorus", $ingredient.phosphorus, edit: true)
-                NameValue("Magnesium", $ingredient.magnesium, edit: true)
-                NameValue("Zinc", $ingredient.zinc, edit: true)
-                NameValue("Selenium", $ingredient.selenium, edit: true)
-                NameValue("Copper", $ingredient.copper, edit: true)
-                NameValue("Manganese", $ingredient.manganese, edit: true)
-            }
-            Group {
-                NameValue("Niacin", $ingredient.niacin, edit: true)
-                NameValue("Riboflavin", $ingredient.riboflavin, edit: true)
-            }
-        }
+        VitaminMineralForm(rows: [
+            ("Omega-3", $ingredient.omega3),
+            ("Vitamin D", $ingredient.vitaminD),
+            ("Calcium", $ingredient.calcium),
+            ("Iron", $ingredient.iron),
+            ("Potassium", $ingredient.potassium),
+            ("Vitamin A", $ingredient.vitaminA),
+            ("Vitamin C", $ingredient.vitaminC),
+            ("Vitamin E", $ingredient.vitaminE),
+            ("Vitamin K", $ingredient.vitaminK),
+            ("Thiamin", $ingredient.thiamin),
+            ("Vitamin B6", $ingredient.vitaminB6),
+            ("Folate", $ingredient.folate),
+            ("Vitamin B12", $ingredient.vitaminB12),
+            ("Pantothenic Acid", $ingredient.pantothenicAcid),
+            ("Phosphorus", $ingredient.phosphorus),
+            ("Magnesium", $ingredient.magnesium),
+            ("Zinc", $ingredient.zinc),
+            ("Selenium", $ingredient.selenium),
+            ("Copper", $ingredient.copper),
+            ("Manganese", $ingredient.manganese),
+            ("Niacin", $ingredient.niacin),
+            ("Riboflavin", $ingredient.riboflavin),
+        ])
     }
 }
 

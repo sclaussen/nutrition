@@ -20,13 +20,13 @@ struct AdjustmentEdit: View {
         Form {
             Section {
                 NameValue("Ingredient", $adjustment.name)
-                NameValue("Amount", description: "Amount added per adjustment", $adjustment.amount, getConsumptionUnit(adjustment.name), edit: true)
+                NameValue("Amount", description: "Amount added per adjustment", $adjustment.amount, foodMgr.consumptionUnit(for: adjustment.name, ingredientMgr: ingredientMgr), edit: true)
                   .focused($focusedField, equals: .amount)
             }
             Section {
                 NameValue("Constraints", $adjustment.constraints, control: .toggle)
                 if adjustment.constraints {
-                    NameValue("Maximum", description: "Maximum auto-added to meal", $adjustment.maximum, getConsumptionUnit(adjustment.name), edit: true)
+                    NameValue("Maximum", description: "Maximum auto-added to meal", $adjustment.maximum, foodMgr.consumptionUnit(for: adjustment.name, ingredientMgr: ingredientMgr), edit: true)
                 }
             }
             Section {
@@ -34,25 +34,7 @@ struct AdjustmentEdit: View {
             }
         }
           .padding([.leading, .trailing], -20)
-          .navigationBarBackButtonHidden(true)
-          .toolbar {
-              ToolbarItem(placement: .navigation) {
-                  Button("Cancel", action: cancel)
-                    .foregroundColor(Color.theme.blueYellow)
-              }
-              ToolbarItem(placement: .primaryAction) {
-                  Button("Save", action: save)
-                    .foregroundColor(Color.theme.blueYellow)
-              }
-              ToolbarItemGroup(placement: .keyboard) {
-                  HStack {
-                      DismissKeyboard()
-                      Spacer()
-                      Button("Save", action: save)
-                        .foregroundColor(Color.theme.blueYellow)
-                  }
-              }
-          }
+          .cancelSaveToolbar(onCancel: cancel, onSave: save)
           .onAppear {
               DispatchQueue.main.asyncAfter(deadline: .now() + 0.75) {
                   self.focusedField = .amount
@@ -73,21 +55,6 @@ struct AdjustmentEdit: View {
             adjustmentMgr.update(adjustment)
             presentationMode.wrappedValue.dismiss()
         }
-    }
-
-
-    // `name` is a Food name (an adjustment targets a Food). Resolve
-    // via FoodMgr to the Food's current member; never force-unwraps
-    // (the bare canonical ingredients are gone).
-    func getConsumptionUnit(_ name: String) -> Unit {
-        if let f = foodMgr.getByName(name: name),
-           let ing = ingredientMgr.getByName(name: f.currentIngredientName) {
-            return foodMgr.consumptionUnit(for: ing)
-        }
-        if let ing = ingredientMgr.getByName(name: name) {
-            return foodMgr.consumptionUnit(for: ing)
-        }
-        return .gram
     }
 }
 

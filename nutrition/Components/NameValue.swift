@@ -40,6 +40,9 @@ struct NameValue<T: ValueType>: View {
     var precision: Int
     var options: [T]
     var control: Control
+    // TODO: `validator` is currently unused — its only consumer is the
+    // commented-out checkmark/x overlay below (~lines 191-200). Kept for
+    // now because removing it would touch call sites in other files.
     var validator: Bool
     var edit: Bool
 
@@ -123,7 +126,13 @@ struct NameValue<T: ValueType>: View {
 
                     // TOGGLE control for boolean values (EDIT)
                     if control == .toggle {
-                        Toggle("", isOn: Binding(get: { $value.wrappedValue as! Bool }, set: { $value.wrappedValue = $0 as! T }))
+                        // Defensive casts: a .toggle control is only
+                        // meaningful for a Bool value. If the bound
+                        // value isn't a Bool (control/type mismatch),
+                        // degrade gracefully — read as `false` and
+                        // ignore writes — rather than trapping.
+                        Toggle("", isOn: Binding(get: { $value.wrappedValue as? Bool ?? false },
+                                                 set: { if let v = $0 as? T { $value.wrappedValue = v } }))
                           .value(geo, false, .none)
                           .foregroundColor(Color.theme.blueYellow)
                           .toggleStyle(CheckmarkToggleStyle())
@@ -146,7 +155,14 @@ struct NameValue<T: ValueType>: View {
 
                     // DATE control for date values (EDIT)
                     if control == .date {
-                        DatePicker("", selection: Binding(get: { $value.wrappedValue as! Date }, set: { $value.wrappedValue = $0 as! T }), in: ...Date(), displayedComponents: [.date])
+                        // Defensive casts: a .date control is only
+                        // meaningful for a Date value. If the bound
+                        // value isn't a Date (control/type mismatch),
+                        // degrade gracefully — read as `Date()` and
+                        // ignore writes — rather than trapping.
+                        DatePicker("", selection: Binding(get: { $value.wrappedValue as? Date ?? Date() },
+                                                          set: { if let v = $0 as? T { $value.wrappedValue = v } }),
+                                   in: ...Date(), displayedComponents: [.date])
                           .value(geo, false, .none)
                           .labelsHidden()
                           .foregroundColor(Color.theme.blueYellow)
@@ -281,16 +297,22 @@ struct NVTextField<T: ValueType>: View {
         },
                                       set: { string in
             editingString = string
+            // Defensive casts: the parsed scalar should match the
+            // bound value's type T (Double/Int/String per
+            // valueScalerType). On any mismatch, skip the write
+            // instead of trapping — the field keeps its prior value.
             if valueScalerType == .double {
-                if let string = Double(string) {
-                    $value.wrappedValue = string as! T
+                if let parsed = Double(string), let v = parsed as? T {
+                    $value.wrappedValue = v
                 }
             } else if valueScalerType == .int {
-                if let string = Int(string) {
-                    $value.wrappedValue = string as! T
+                if let parsed = Int(string), let v = parsed as? T {
+                    $value.wrappedValue = v
                 }
             } else {
-                $value.wrappedValue = string as! T
+                if let v = string as? T {
+                    $value.wrappedValue = v
+                }
             }
 
             // print("\nSet:")
@@ -314,8 +336,6 @@ struct NVTextField<T: ValueType>: View {
           .foregroundColor(Color.theme.blueYellow)
           .keyboardType(keyboard)
           .onSubmit {
-              // print("\nonSubmit:")
-              print($value.wrappedValue)
           }
     }
 }

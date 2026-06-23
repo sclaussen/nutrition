@@ -17,6 +17,11 @@ struct MatchChooserSheet: View {
     let candidates: [Ingredient]
     let onResolve: (ScanRoute) -> Void
 
+    // A fast double-tap on a candidate (or candidate + "Create new")
+    // before the sheet finishes dismissing could otherwise fire the
+    // escaping completion twice and route twice. Latch it to once.
+    @State private var didResolve = false
+
 
     var body: some View {
         NavigationView {
@@ -67,6 +72,8 @@ struct MatchChooserSheet: View {
 
 
     private func chooseNew() {
+        guard !didResolve else { return }
+        didResolve = true
         presentationMode.wrappedValue.dismiss()
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.25) {
             onResolve(.new(parsed))
@@ -75,6 +82,8 @@ struct MatchChooserSheet: View {
 
 
     private func chooseUpdate(_ existing: Ingredient) {
+        guard !didResolve else { return }
+        didResolve = true
         let diff = ScanDiff.compute(existing: existing, parsed: parsed)
         presentationMode.wrappedValue.dismiss()
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.25) {

@@ -164,8 +164,6 @@ class MealIngredientMgr: ObservableObject {
 
 
     func resetMealIngredients() {
-        print("RESETTING Meal Ingredients for \(profileName)")
-
         mealIngredients = []
 
         // Default meal seed branches on profileName so each profile
@@ -336,17 +334,14 @@ class MealIngredientMgr: ObservableObject {
             return
         }
 
-        print("  Creating " + name + " \(amount)")
         create(name: name, amount: amount, adjustment: Constants.Manual, priorState: Constants.Ingredient)
     }
 
 
     func undoManualAdjustment(id: String) {
-        print("Undo Manual Adjustment for \(id)")
         if let index = mealIngredients.firstIndex(where: { $0.id == id }) {
             if mealIngredients[index].adjustment == Constants.Manual {
                 if mealIngredients[index].priorState == Constants.Ingredient {
-                    print("  - deleting the auto-added/auto-adjusted meal ingredient: \(mealIngredients[index].name)")
                     delete(mealIngredients[index])
                     return
                 }
@@ -376,7 +371,6 @@ class MealIngredientMgr: ObservableObject {
     // resetAmount=false: caller has decided this is a manual-only
     //   ingredient; preserve the user's amount.
     func undoDoneAdjustment(id: String, resetAmount: Bool) {
-        print("Undo Done Adjustment for \(id) resetAmount=\(resetAmount)")
         if let index = mealIngredients.firstIndex(where: { $0.id == id }) {
             if mealIngredients[index].adjustment == Constants.Done {
                 mealIngredients[index] = mealIngredients[index].undoDoneAdjustment(resetAmount: resetAmount)
@@ -396,7 +390,6 @@ class MealIngredientMgr: ObservableObject {
             return
         }
 
-        print("  Creating " + name + " \(amount)")
         create(name: name, amount: amount, adjustment: Constants.Manual, priorState: Constants.Ingredient)
     }
 
@@ -404,7 +397,6 @@ class MealIngredientMgr: ObservableObject {
     func undoAutoAdjustments() {
 
         // Go through each meal ingredient that was auto adjusted
-        print("Removing Auto Adjustments")
         for mealIngredient in mealIngredients.filter({ $0.adjustment == Constants.Automatic }) {
 
             // A meal ingredient may be in the meal adjustments list
@@ -414,7 +406,6 @@ class MealIngredientMgr: ObservableObject {
             // from the ingredient and activated.  In that case,
             // delete the meal ingredient to reverse the adjustment.
             if mealIngredient.priorState == Constants.Ingredient {
-                print("  - deleting the auto-added/auto-adjusted meal ingredient: \(mealIngredient)")
                 delete(mealIngredient)
                 continue
             }
@@ -503,15 +494,7 @@ class MealIngredientMgr: ObservableObject {
 
     func delete(_ mealIngredient: MealIngredient) {
         if let index = mealIngredients.firstIndex(where: { $0.id == mealIngredient.id }) {
-            print("  Removed: " + mealIngredients[index].name + " \(mealIngredients[index].amount)")
             mealIngredients.remove(at: index)
-        }
-    }
-
-
-    func p() {
-        for mealIngredient in getAllMealIngredients() {
-            print(mealIngredient.name + " \(mealIngredient.amount) \(mealIngredient.adjustment)")
         }
     }
 
@@ -737,12 +720,10 @@ struct MealIngredient: Codable, Identifiable {
     func automaticAdjustment(amount: Double) -> MealIngredient {
 
         if adjustment == Constants.Manual || adjustment == Constants.Done {
-            print("  Attempted an automatic adjustment but the meal ingredient has been manually adjusted or marked Done: \(name)")
             return self
         }
 
         if adjustment == Constants.Default {
-            print("  Automatic adjustment of \(self.name) by \(amount) to \(self.amount + amount) (initial adjustment) (original amount \(originalAmount))")
             var c = self
             c.amount = self.amount + amount
             c.adjustment = Constants.Automatic
@@ -750,7 +731,6 @@ struct MealIngredient: Codable, Identifiable {
             return c
         }
 
-        print("  Automatic adjustment of \(self.name) by \(amount) to \(self.amount + amount) (delta adjustment) (original amount \(originalAmount))")
         var c = self
         c.amount = self.amount + amount
         return c
@@ -759,7 +739,6 @@ struct MealIngredient: Codable, Identifiable {
 
     // Remove the adjustment to a meal ingredient.
     func undoAdjustment() -> MealIngredient {
-        print("  Undoing \(name) current amount: \(amount) to original amount \(originalAmount)")
         var c = self
         c.amount = self.originalAmount
         c.adjustment = Constants.Default
@@ -769,7 +748,6 @@ struct MealIngredient: Codable, Identifiable {
 
 
     func update(mealIngredient: MealIngredient) -> MealIngredient {
-        print("  Update \(mealIngredient.name)")
         return mealIngredient
     }
 }

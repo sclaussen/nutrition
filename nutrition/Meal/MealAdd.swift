@@ -22,28 +22,12 @@ struct MealAdd: View {
                 // will have > 0 characters, in which case present the
                 // "Amount" name/value widget.
                 if name.count > 0 {
-                    NameValue("Amount", $defaultAmount, getConsumptionUnit(name), edit: true)
+                    NameValue("Amount", $defaultAmount, foodMgr.consumptionUnit(for: name, ingredientMgr: ingredientMgr), edit: true)
                 }
             }
         }
           .padding([.leading, .trailing], -20)
-          .navigationBarBackButtonHidden(true)
-          .toolbar {
-              ToolbarItem(placement: .navigation) {
-                  Button("Cancel", action: cancel)
-                    .foregroundColor(Color.theme.blueYellow)
-              }
-              ToolbarItem(placement: .primaryAction) {
-                  Button("Save", action: save)
-                    .foregroundColor(Color.theme.blueYellow)
-              }
-              ToolbarItemGroup(placement: .keyboard) {
-                  DismissKeyboard()
-                  Spacer()
-                  Button("Save", action: save)
-                    .foregroundColor(Color.theme.blueYellow)
-              }
-          }
+          .cancelSaveToolbar(onCancel: cancel, onSave: save)
     }
 
     func cancel() {
@@ -57,20 +41,6 @@ struct MealAdd: View {
             mealIngredientMgr.create(name: name, amount: defaultAmount)
             presentationMode.wrappedValue.dismiss()
         }
-    }
-
-    // `name` is a Food name (a meal row targets a Food). Resolve via
-    // FoodMgr to the Food's current member; never force-unwraps (the
-    // bare canonical ingredients are gone).
-    func getConsumptionUnit(_ name: String) -> Unit {
-        if let f = foodMgr.getByName(name: name),
-           let ing = ingredientMgr.getByName(name: f.currentIngredientName) {
-            return foodMgr.consumptionUnit(for: ing)
-        }
-        if let ing = ingredientMgr.getByName(name: name) {
-            return foodMgr.consumptionUnit(for: ing)
-        }
-        return .gram
     }
 }
 
