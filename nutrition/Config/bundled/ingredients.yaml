@@ -1,0 +1,2380 @@
+- name: Apigenin
+  food: Apigenin
+  brand: Double Wood
+  serving-size: 0.05
+  consumption-unit: pill
+  consumption-grams: 0.05
+  calories: 0
+  fat: 0
+  fiber: 0
+  net-carbs: 0
+  protein: 0
+  price:
+    total-cost: 19.95
+    total-grams: 4.5
+  verified: 5/10/2026
+- name: Arugula (365 by Whole Foods M 5 OZ)
+  food: Arugula
+  brand: 365 by Whole Foods Market
+  serving-size: 20
+  consumption-unit: gram
+  consumption-grams: 1
+  calories: 5
+  fat: 0.13
+  fiber: 0.3
+  net-carbs: 0.4
+  protein: 0.5
+  price:
+    total-cost: 3.69
+    total-grams: 141.8
+  url: https://www.wholefoodsmarket.com/grocery/product/b09zhx8y9v
+  verified: 5/16/2026
+  nutrients:
+    calcium: 32
+    carbohydrates: 0.7
+    potassium: 74
+    sodium: 5
+    sugar: 0.4
+    vitamin-a: 24
+    vitamin-c: 3
+    vitamin-k: 21
+- name: Arugula (Earthbound Farm 4 OZ)
+  food: Arugula
+  brand: Earthbound Farm
+  serving-size: 142
+  consumption-unit: gram
+  consumption-grams: 1
+  calories: 45
+  fat: 1
+  fiber: 2
+  net-carbs: 3
+  protein: 4
+  price:
+    total-cost: 3.49
+    total-grams: 113.4
+  url: https://www.wholefoodsmarket.com/grocery/product/b0d2ydtph6
+  verified: 5/16/2026
+  nutrients:
+    carbohydrates: 5
+    sodium: 40
+    sugar: 3
+- name: Arugula (organicgirl 5 Oz)
+  food: Arugula
+  brand: organicgirl
+  serving-size: 85
+  consumption-unit: gram
+  consumption-grams: 1
+  calories: 21
+  fat: 0.55
+  fiber: 1.4
+  net-carbs: 1.7
+  protein: 2.2
+  price:
+    total-cost: 4.49
+    total-grams: 141.8
+  url: https://www.wholefoodsmarket.com/grocery/product/b00jxr8ryw
+  verified: 5/16/2026
+  nutrients:
+    calcium: 136
+    carbohydrates: 3.1
+    iron: 1.2
+    potassium: 312
+    saturated-fat: 0.07
+    sodium: 23
+    sugar: 1.8
+    vitamin-a: 100
+    vitamin-c: 13
+    vitamin-k: 90
+- name: Avocado (365 by Whole Foods M 4 Count)
+  food: Avocado
+  brand: 365 by Whole Foods Market
+  serving-size: 50
+  consumption-unit: gram
+  consumption-grams: 1
+  calories: 80
+  fat: 7
+  fiber: 3.4
+  net-carbs: 0.9
+  protein: 1
+  price:
+    total-cost: 6.49
+    total-grams: 800
+  url: https://www.wholefoodsmarket.com/grocery/product/b07fycb4wx
+  verified: 5/16/2026
+  nutrients:
+    calcium: 12
+    carbohydrates: 4.3
+    iron: 0.55
+    potassium: 243
+    saturated-fat: 1.1
+    sodium: 3.5
+    sugar: 0.33
+    vitamin-a: 146
+    vitamin-c: 10
+- name: Avocado (Whole Foods Market 6 Count)
+  food: Avocado
+  brand: Whole Foods Market
+  serving-size: 50
+  consumption-unit: gram
+  consumption-grams: 1
+  calories: 80
+  fat: 7
+  fiber: 3.4
+  net-carbs: 0.9
+  protein: 1
+  price:
+    total-cost: 3.49
+    total-grams: 300
+  url: https://www.wholefoodsmarket.com/grocery/product/b09xxv8h97
+  verified: 5/16/2026
+  nutrients:
+    calcium: 6
+    carbohydrates: 4.3
+    iron: 0.28
+    potassium: 243
+    saturated-fat: 1.1
+    sodium: 3.5
+    sugar: 0.33
+    vitamin-a: 73
+    vitamin-c: 5
+- name: Avocado (Whole Foods Market)
+  food: Avocado
+  brand: Whole Foods Market
+  serving-size: 50
+  consumption-unit: gram
+  consumption-grams: 1
+  calories: 80
+  fat: 7
+  fiber: 3.4
+  net-carbs: 0.9
+  protein: 1
+  price:
+    total-cost: 2.49
+    total-grams: 50
+  url: https://www.wholefoodsmarket.com/grocery/product/b0014glse6
+  verified: 5/16/2026
+  nutrients:
+    calcium: 6
+    carbohydrates: 4.3
+    iron: 0.28
+    potassium: 243
+    saturated-fat: 1.1
+    sodium: 3.5
+    sugar: 0.33
+    vitamin-a: 73
+    vitamin-c: 5
+- name: Avocado, Large
+  food: Avocado
+  brand: 365 by Whole Foods Market
+  serving-size: 50
+  consumption-unit: gram
+  consumption-grams: 1
+  calories: 80
+  fat: 7
+  fiber: 3.4
+  net-carbs: 0.9
+  protein: 1
+  price:
+    total-cost: 1.79
+    total-grams: 50
+  url: https://www.wholefoodsmarket.com/grocery/product/b000p72uzg
+  verified: 5/16/2026
+  nutrients:
+    carbohydrates: 4.3
+    folate: 41
+    magnesium: 15
+    pantothenic-acid: 0.7
+    potassium: 243
+    saturated-fat: 1.1
+    sodium: 3.5
+    vitamin-a: 73
+    vitamin-c: 5
+    vitamin-e: 1.1
+    vitamin-k: 11
+- name: Avocado, Medium
+  food: Avocado
+  brand: 365 by Whole Foods Market
+  serving-size: 50
+  consumption-unit: gram
+  consumption-grams: 1
+  calories: 80
+  fat: 7
+  fiber: 3.4
+  net-carbs: 0.9
+  protein: 1
+  price:
+    total-cost: 0.99
+    total-grams: 560
+  url: https://www.wholefoodsmarket.com/grocery/product/b000nogkn4
+  verified: 5/16/2026
+  nutrients:
+    calcium: 12
+    carbohydrates: 4.3
+    folate: 41
+    iron: 0.55
+    magnesium: 15
+    pantothenic-acid: 0.7
+    potassium: 243
+    saturated-fat: 1.1
+    sodium: 3.5
+    sugar: 0.33
+    vitamin-a: 146
+    vitamin-c: 10
+    vitamin-e: 1.1
+    vitamin-k: 11
+- name: Avocado Oil
+  food: Avocado Oil
+  brand: 365 by Whole Foods Market
+  serving-size: 14
+  consumption-unit: tablespoon
+  consumption-grams: 14
+  calories: 130
+  fat: 14
+  fiber: 0
+  net-carbs: 0
+  protein: 0
+  price:
+    total-cost: 10.79
+    total-grams: 473
+  url: https://www.wholefoodsmarket.com/grocery/product/b07q4yng8w
+  verified: 9/1/22
+- name: Avocado Oil (Chosen Foods)
+  food: Avocado Oil
+  brand: Chosen Foods
+  serving-size: 14
+  consumption-unit: tablespoon
+  consumption-grams: 14
+  calories: 130
+  fat: 14
+  fiber: 0
+  net-carbs: 0
+  protein: 0
+  price:
+    total-cost: 15.99
+    total-grams: 460
+  url: https://www.wholefoodsmarket.com/grocery/product/b00cyml9fw
+  verified: 5/17/2026
+- name: Beef (365 by Whole Foods M 365 G)
+  food: Beef
+  brand: 365 by Whole Foods Market
+  serving-size: 113
+  consumption-unit: gram
+  consumption-grams: 1
+  calories: 290
+  fat: 23
+  fiber: 0
+  net-carbs: 0
+  protein: 19
+  price:
+    total-cost: 7.99
+    total-grams: 453.6
+  url: https://www.wholefoodsmarket.com/grocery/product/b0cbcx4thf
+  verified: 5/16/2026
+  nutrients:
+    iron: 2.2
+    saturated-fat: 9
+    sodium: 75
+- name: Beef (ButcherBox)
+  food: Beef
+  brand: ButcherBox
+  serving-size: 113
+  consumption-unit: gram
+  consumption-grams: 1
+  calories: 240
+  fat: 17
+  fiber: 0
+  net-carbs: 0
+  protein: 22
+  price:
+    total-cost: 9.5
+    total-grams: 453.6
+  verified: 5/17/2026
+  nutrients:
+    iron: 2.3
+    saturated-fat: 7
+    selenium: 18
+    sodium: 75
+    vitamin-b12: 2.4
+    zinc: 5.3
+- name: Bell Peppers (Whole Foods Market Orange)
+  food: Bell Peppers
+  brand: Whole Foods Market
+  serving-size: 75
+  consumption-unit: piece
+  consumption-grams: 150
+  calories: 21
+  fat: 0.16
+  fiber: 0.7
+  net-carbs: 4
+  protein: 0.75
+  price:
+    total-cost: 3.99
+    total-grams: 150
+  url: https://www.wholefoodsmarket.com/grocery/product/fresh-produce-orange-bell-pepper-b000p6j1a4
+  verified: USDA est 5/23/2026
+  nutrients:
+    calcium: 5
+    carbohydrates: 4.7
+    iron: 0.32
+    potassium: 158
+    sodium: 1
+    sugar: 3.75
+    vitamin-a: 8
+    vitamin-c: 138
+- name: Bell Peppers (Whole Foods Market Organic Green)
+  food: Bell Peppers
+  brand: Whole Foods Market
+  serving-size: 75
+  consumption-unit: piece
+  consumption-grams: 150
+  calories: 9
+  fat: 0.08
+  fiber: 0.78
+  net-carbs: 1.3
+  protein: 0.4
+  price:
+    total-cost: 2.99
+    total-grams: 150
+  url: https://www.wholefoodsmarket.com/grocery/product/fresh-produce-organic-green-bell-pepper-b000p6j14k
+  verified: label 5/23/2026
+  nutrients:
+    calcium: 4.6
+    carbohydrates: 2.1
+    iron: 0.16
+    potassium: 81
+    saturated-fat: 0.03
+    sodium: 1.4
+    sugar: 1.1
+    vitamin-a: 170
+    vitamin-c: 37
+- name: Bell Peppers (Whole Foods Market Red)
+  food: Bell Peppers
+  brand: Whole Foods Market
+  serving-size: 75
+  consumption-unit: piece
+  consumption-grams: 150
+  calories: 23
+  fat: 0.23
+  fiber: 1.6
+  net-carbs: 2.9
+  protein: 0.75
+  price:
+    total-cost: 3.99
+    total-grams: 150
+  url: https://www.wholefoodsmarket.com/grocery/product/fresh-produce-red-bell-peppers-b08ds45y8w
+  verified: USDA est 5/23/2026
+  nutrients:
+    calcium: 5
+    carbohydrates: 4.5
+    iron: 0.32
+    potassium: 158
+    sodium: 3
+    sugar: 3.15
+    vitamin-a: 118
+    vitamin-c: 95
+- name: Bison
+  food: Bison
+  brand: ButcherBox
+  serving-size: 112
+  consumption-unit: gram
+  consumption-grams: 1
+  calories: 160
+  fat: 8
+  fiber: 0
+  net-carbs: 0
+  protein: 23
+  price:
+    total-cost: 13.99
+    total-grams: 454
+- name: Blackberries (Whole Foods Market 6 oz)
+  food: Blackberries
+  brand: Whole Foods Market
+  serving-size: 72
+  consumption-unit: gram
+  consumption-grams: 1
+  calories: 31
+  fat: 0.35
+  fiber: 3.8
+  net-carbs: 3.2
+  protein: 1
+  price:
+    total-cost: 3.29
+    total-grams: 170.1
+  url: https://www.wholefoodsmarket.com/grocery/product/b000p717mi
+  verified: 5/16/2026
+  nutrients:
+    calcium: 21
+    carbohydrates: 7
+    iron: 0.45
+    potassium: 117
+    saturated-fat: 0.01
+    sodium: 0.7
+    sugar: 3.5
+    vitamin-a: 154
+    vitamin-c: 15
+- name: Blueberries (365 by Whole Foods M 32 Ounce)
+  food: Blueberries
+  brand: 365 by Whole Foods Market
+  serving-size: 140
+  consumption-unit: gram
+  consumption-grams: 1
+  calories: 70
+  fat: 1
+  fiber: 4
+  net-carbs: 13
+  protein: 0.99
+  price:
+    total-cost: 10.79
+    total-grams: 907.2
+  url: https://www.wholefoodsmarket.com/grocery/product/b074h5hflz
+  verified: 5/16/2026
+  nutrients:
+    carbohydrates: 17
+    sugar: 12
+- name: Blueberries (Driscoll's 11 Oz)
+  food: Blueberries
+  brand: Driscoll's
+  serving-size: 140
+  consumption-unit: gram
+  consumption-grams: 1
+  calories: 80
+  fat: 0.5
+  fiber: 4
+  net-carbs: 17
+  protein: 1
+  price:
+    total-cost: 7.99
+    total-grams: 311.9
+  url: https://www.wholefoodsmarket.com/grocery/product/b07yfdqxq9
+  verified: 5/16/2026
+  nutrients:
+    calcium: 9
+    carbohydrates: 21
+    iron: 0.4
+    potassium: 114
+    sugar: 15
+    vitamin-c: 14
+- name: Blueberries (Whole Foods Market 1 Pint)
+  food: Blueberries
+  brand: Whole Foods Market
+  serving-size: 148
+  consumption-unit: gram
+  consumption-grams: 1
+  calories: 84
+  fat: 0.49
+  fiber: 3.6
+  net-carbs: 17.4
+  protein: 1.1
+  price:
+    total-cost: 4.79
+    total-grams: 294.8
+  url: https://www.wholefoodsmarket.com/grocery/product/b003aykyig
+  verified: 5/16/2026
+  nutrients:
+    calcium: 8.88
+    carbohydrates: 21
+    iron: 0.41
+    potassium: 114
+    saturated-fat: 0.04
+    sodium: 1.5
+    sugar: 14.74
+    vitamin-a: 80
+    vitamin-c: 14
+- name: Blueberries (Whole Foods Market Organic 1 Pint)
+  food: Blueberries
+  brand: Whole Foods Market
+  serving-size: 148
+  consumption-unit: gram
+  consumption-grams: 1
+  calories: 84
+  fat: 0.49
+  fiber: 3.6
+  net-carbs: 17.4
+  protein: 1.1
+  price:
+    total-cost: 7.49
+    total-grams: 296
+  url: https://www.wholefoodsmarket.com/grocery/product/b077n7tr5g
+  verified: 5/16/2026
+  nutrients:
+    calcium: 8.88
+    carbohydrates: 21
+    iron: 0.41
+    potassium: 114
+    saturated-fat: 0.04
+    sodium: 1.5
+    sugar: 14.74
+    vitamin-a: 80
+    vitamin-c: 14
+- name: Bread (Food for Life 24 OZ)
+  food: Bread
+  brand: Food for Life
+  serving-size: 34
+  consumption-unit: gram
+  consumption-grams: 1
+  calories: 80
+  fat: 0.5
+  fiber: 3
+  net-carbs: 12
+  protein: 5
+  price:
+    total-cost: 7.69
+    total-grams: 680.4
+  url: https://www.wholefoodsmarket.com/grocery/product/b000rey4ni
+  verified: 5/16/2026
+  nutrients:
+    calcium: 9
+    carbohydrates: 15
+    iron: 1
+- name: Dave's Bread
+  food: Bread
+  brand: Dave's Killer Bread
+  serving-size: 45
+  consumption-unit: slice
+  consumption-grams: 45
+  calories: 110
+  fat: 1.5
+  fiber: 5
+  net-carbs: 17
+  protein: 5
+  price:
+    total-cost: 5.99
+    total-grams: 765
+  verified: 11/1/24
+  nutrients:
+    folate: 13
+    iron: 1.1
+    magnesium: 25
+    niacin: 1.6
+    thiamin: 0.16
+- name: Dave's Bread (Thin)
+  food: Bread
+  brand: Dave's Killer Bread
+  serving-size: 28
+  consumption-unit: slice
+  consumption-grams: 28
+  calories: 70
+  fat: 1
+  fiber: 2
+  net-carbs: 11
+  protein: 3
+  price:
+    total-cost: 5.99
+    total-grams: 624
+  verified: 11/1/24
+  nutrients:
+    folate: 8
+    iron: 0.7
+    magnesium: 15
+    niacin: 1
+    thiamin: 0.1
+- name: Dave's Bread W
+  food: Bread
+  brand: Dave's Killer Bread
+  serving-size: 45
+  consumption-unit: slice
+  consumption-grams: 45
+  calories: 110
+  fat: 1.5
+  fiber: 4
+  net-carbs: 18
+  protein: 6
+  price:
+    total-cost: 5.99
+    total-grams: 765
+  verified: 7/3/2025
+  nutrients:
+    folate: 13
+    iron: 1.1
+    magnesium: 25
+    niacin: 1.6
+    thiamin: 0.16
+- name: Dave's Killer Bread Powerseed Thin (20.5 oz)
+  food: Bread
+  brand: Dave's Killer Bread
+  serving-size: 28
+  consumption-unit: gram
+  consumption-grams: 1
+  calories: 60
+  fat: 1.5
+  fiber: 3
+  net-carbs: 9
+  protein: 3
+  price:
+    total-cost: 5.99
+    total-grams: 588
+  url: https://www.wholefoodsmarket.com/grocery/product/dave-s-killer-bread-dave-s-killer-bread-powerseed-thin-sliced-seeded-organic-bread-20-5-oz-loaf-b0714d2l3g
+  verified: WF 5/23/2026
+  nutrients:
+    carbohydrates: 12
+    sodium: 90
+    sugar: 2
+- name: Ezekiel 4:9
+  food: Bread
+  brand: Food For Life
+  serving-size: 34
+  consumption-unit: slice
+  consumption-grams: 34
+  calories: 80
+  fat: 0.5
+  fiber: 3
+  net-carbs: 12
+  protein: 5
+  price:
+    total-cost: 7.69
+    total-grams: 680
+  url: https://www.wholefoodsmarket.com/grocery/product/b000rey4ni
+  verified: 11/1/24
+  nutrients:
+    folate: 13
+    iron: 1
+    magnesium: 20
+    manganese: 0.4
+    niacin: 1.2
+    phosphorus: 60
+    thiamin: 0.1
+- name: Broccoli (365 by Whole Foods M 32 Ounce)
+  food: Broccoli
+  brand: 365 by Whole Foods Market
+  serving-size: 85
+  consumption-unit: gram
+  consumption-grams: 1
+  calories: 25
+  fat: 0
+  fiber: 3
+  net-carbs: 1
+  protein: 3
+  price:
+    total-cost: 6.79
+    total-grams: 935
+  url: https://www.wholefoodsmarket.com/grocery/product/b079jt8zzf
+  verified: 5/16/2026
+  nutrients:
+    calcium: 30
+    carbohydrates: 4
+    iron: 0.9
+    sodium: 15
+    sugar: 1
+    vitamin-c: 58
+- name: Brussels Sprouts (Whole Foods Market 1 lb)
+  food: Brussels Sprouts
+  brand: Whole Foods Market
+  serving-size: 88
+  consumption-unit: gram
+  consumption-grams: 1
+  calories: 38
+  fat: 0.26
+  fiber: 3.3
+  net-carbs: 4.7
+  protein: 2.97
+  price:
+    total-cost: 4.99
+    total-grams: 453.6
+  url: https://www.wholefoodsmarket.com/grocery/product/produce-brussels-organic-sprouts-16-ounce-b004daqpr0
+  verified: 5/17/2026
+  nutrients:
+    calcium: 37
+    carbohydrates: 8
+    iron: 1.2
+    potassium: 300
+    saturated-fat: 0.06
+    sodium: 22
+    sugar: 1.94
+    vitamin-c: 75
+- name: Cauliflower (365 by Whole Foods M 12 Ounce)
+  food: Cauliflower
+  brand: 365 by Whole Foods Market
+  serving-size: 100
+  consumption-unit: gram
+  consumption-grams: 1
+  calories: 27
+  fat: 0.3
+  fiber: 2.1
+  net-carbs: 3.2
+  protein: 2
+  price:
+    total-cost: 2.99
+    total-grams: 339.9
+  url: https://www.wholefoodsmarket.com/grocery/product/b077l7s52w
+  verified: 5/16/2026
+  nutrients:
+    calcium: 23.5
+    carbohydrates: 5.3
+    iron: 0.45
+    saturated-fat: 0.14
+    sodium: 32
+    sugar: 2
+    vitamin-c: 51.6
+- name: Cauliflower (365 by Whole Foods M 16 Ounce)
+  food: Cauliflower
+  brand: 365 by Whole Foods Market
+  serving-size: 85
+  consumption-unit: gram
+  consumption-grams: 1
+  calories: 20
+  fat: 0
+  fiber: 2
+  net-carbs: 2
+  protein: 2
+  price:
+    total-cost: 2.99
+    total-grams: 476.3
+  url: https://www.wholefoodsmarket.com/grocery/product/b0812kzpj4
+  verified: 5/16/2026
+  nutrients:
+    carbohydrates: 4
+    sodium: 20
+    sugar: 2
+- name: Babybel Cheese (Babybel 12 Count)
+  food: Cheese
+  brand: Babybel
+  serving-size: 20
+  consumption-unit: piece
+  consumption-grams: 21
+  calories: 70
+  fat: 5
+  fiber: 0
+  net-carbs: 0
+  protein: 4
+  price:
+    total-cost: 9.99
+    total-grams: 240
+  url: https://www.wholefoodsmarket.com/grocery/product/b0bvgj2vvp
+  verified: 5/16/2026
+  nutrients:
+    saturated-fat: 3.5
+    sodium: 150
+- name: Cheddar Cheese W
+  food: Cheese
+  brand: Tillamook
+  serving-size: 21
+  consumption-unit: slice
+  consumption-grams: 21
+  calories: 90
+  fat: 7
+  fiber: 0
+  net-carbs: 1
+  protein: 5
+  price:
+    total-cost: 7.99
+    total-grams: 227
+  verified: 7/3/2025
+  nutrients:
+    calcium: 150
+    phosphorus: 105
+    vitamin-a: 70
+    vitamin-b12: 0.2
+    zinc: 0.8
+- name: Dubliner Cheese
+  food: Cheese
+  brand: Kerrygold
+  serving-size: 28
+  consumption-unit: gram
+  consumption-grams: 1
+  calories: 110
+  fat: 9
+  fiber: 0
+  net-carbs: 0
+  protein: 7
+  price:
+    total-cost: 7.99
+    total-grams: 198
+  url: https://www.wholefoodsmarket.com/grocery/product/b001e96kuu
+  verified: 3/16/22
+  nutrients:
+    calcium: 200
+    phosphorus: 150
+    vitamin-a: 90
+    vitamin-b12: 0.3
+    zinc: 1
+- name: Emmi Roth
+  food: Cheese
+  brand: Emmi Roth
+  serving-size: 28
+  consumption-unit: gram
+  consumption-grams: 1
+  calories: 110
+  fat: 9
+  fiber: 0
+  net-carbs: 0
+  protein: 8
+  price:
+    total-cost: 7.99
+    total-grams: 170
+  verified: 9/1/22
+- name: Manchego (Corcuera)
+  food: Cheese
+  brand: Corcuera
+  serving-size: 28
+  consumption-unit: gram
+  consumption-grams: 1
+  calories: 110
+  fat: 9
+  fiber: 0
+  net-carbs: 0
+  protein: 7
+  price:
+    total-cost: 19.99
+    total-grams: 453.6
+  url: https://www.wholefoodsmarket.com/grocery/product/b0787tnqqx
+  verified: 5/16/2026
+  nutrients:
+    calcium: 283
+    cholesterol: 30
+    saturated-fat: 7
+    sodium: 160
+- name: Manchego Cheese
+  food: Cheese
+  brand: Mitica
+  serving-size: 28
+  consumption-unit: gram
+  consumption-grams: 1
+  calories: 110
+  fat: 9
+  fiber: 0
+  net-carbs: 0
+  protein: 7
+  price:
+    total-cost: 19.99
+    total-grams: 453.6
+  url: https://www.wholefoodsmarket.com/grocery/product/b0787tnqqx
+  verified: 5/12/26
+  nutrients:
+    calcium: 283
+    phosphorus: 150
+    vitamin-a: 80
+    vitamin-b12: 0.4
+    zinc: 1
+- name: Mitica
+  food: Cheese
+  brand: Mitica
+  serving-size: 28
+  consumption-unit: gram
+  consumption-grams: 1
+  calories: 100
+  fat: 8
+  fiber: 0
+  net-carbs: 0
+  protein: 7
+  price:
+    total-cost: 9.99
+    total-grams: 170
+  verified: 1/8/24
+- name: Tillamook Cheddar Cheese
+  food: Cheese
+  brand: Tillamook
+  serving-size: 21
+  consumption-unit: piece
+  consumption-grams: 21
+  calories: 90
+  fat: 7
+  fiber: 0
+  net-carbs: 1
+  protein: 5
+  price:
+    total-cost: 7.99
+    total-grams: 227
+  verified: 12/25/23
+  nutrients:
+    calcium: 150
+    phosphorus: 105
+    vitamin-a: 70
+    vitamin-b12: 0.2
+    zinc: 0.8
+- name: Cheese Slice (Trader Joe's Colby Jack, 12 oz)
+  food: Cheese Slice
+  brand: Trader Joe's
+  serving-size: 28
+  consumption-unit: slice
+  consumption-grams: 28
+  calories: 110
+  fat: 9
+  fiber: 0
+  net-carbs: 0
+  protein: 7
+  price:
+    total-cost: 3.99
+    total-grams: 340
+  verified: label 5/23/2026
+  nutrients:
+    calcium: 195
+    potassium: 30
+    saturated-fat: 6
+    sodium: 190
+- name: Chicken (Mary's Chicken)
+  food: Chicken
+  brand: Mary's Chicken
+  serving-size: 112
+  consumption-unit: gram
+  consumption-grams: 1
+  calories: 170
+  fat: 9
+  fiber: 0
+  net-carbs: 0
+  protein: 21
+  price:
+    total-cost: 4.99
+    total-grams: 454
+  url: https://www.wholefoodsmarket.com/grocery/product/b0787z9hfs
+  verified: 5/16/2026
+  nutrients:
+    iron: 1
+    potassium: 230
+    saturated-fat: 2.5
+    sodium: 95
+- name: Clementine (Whole Foods Market 3 lb Bag)
+  food: Clementine
+  brand: Whole Foods Market
+  serving-size: 74
+  consumption-unit: gram
+  consumption-grams: 1
+  calories: 40
+  fat: 0.24
+  fiber: 1.4
+  net-carbs: 8.6
+  protein: 0.62
+  price:
+    total-cost: 5.99
+    total-grams: 1360.8
+  url: https://www.wholefoodsmarket.com/grocery/product/fresh-produce-mandarin-clementine-3-lb-bag-b01m2vfycn
+  verified: WF 5/18/2026
+  nutrients:
+    calcium: 28
+    carbohydrates: 10
+    iron: 0.114
+    saturated-fat: 0.03
+    sodium: 1.5
+    sugar: 8.04
+    vitamin-a: 518
+    vitamin-c: 20
+- name: Coconut Oil (365 by Whole Foods M 14 Fl Oz)
+  food: Coconut Oil
+  brand: 365 by Whole Foods Market
+  serving-size: 14
+  consumption-unit: tablespoon
+  consumption-grams: 14
+  calories: 120
+  fat: 14
+  fiber: 0
+  net-carbs: 0
+  protein: 0
+  price:
+    total-cost: 6.49
+    total-grams: 383
+  url: https://www.wholefoodsmarket.com/grocery/product/b074h5bv9y
+  verified: 5/16/2026
+  nutrients:
+    saturated-fat: 13
+- name: Creatine HCl
+  food: Creatine
+  brand: CON-CRET
+  serving-size: 0.75
+  consumption-unit: pill
+  consumption-grams: 0.75
+  calories: 0
+  fat: 0
+  fiber: 0
+  net-carbs: 0
+  protein: 0
+  price:
+    total-cost: 25
+    total-grams: 67.5
+  url: https://www.wholefoodsmarket.com/grocery/product/b0bkcvlygx
+  verified: 5/10/2026
+- name: Cucumber (Wholesum Organic Mini, 1 lb)
+  food: Cucumber
+  brand: Wholesum
+  serving-size: 100
+  consumption-unit: gram
+  consumption-grams: 1
+  calories: 15
+  fat: 0.11
+  fiber: 0.5
+  net-carbs: 3.1
+  protein: 0.65
+  price:
+    total-cost: 4.43
+    total-grams: 453.6
+  url: https://www.wholefoodsmarket.com/grocery/product/wholesum-organic-mini-cucumbers-1-lb-b07ftywccd
+  verified: USDA est 5/23/2026
+  nutrients:
+    calcium: 16
+    carbohydrates: 3.6
+    iron: 0.28
+    potassium: 147
+    sodium: 2
+    sugar: 1.7
+    vitamin-a: 5
+    vitamin-c: 2.8
+- name: Eggs (365 by Whole Foods M 18 Count)
+  food: Eggs
+  brand: 365 by Whole Foods Market
+  serving-size: 50
+  consumption-unit: egg
+  consumption-grams: 50
+  calories: 70
+  fat: 5
+  fiber: 0
+  net-carbs: 0
+  protein: 6
+  price:
+    total-cost: 6.29
+    total-grams: 900
+  url: https://www.wholefoodsmarket.com/grocery/product/b074h6ypbj
+  verified: 5/16/2026
+  nutrients:
+    saturated-fat: 1.5
+    sodium: 70
+- name: Eggs (Vital Farms 12 Count)
+  food: Eggs
+  brand: Vital Farms
+  serving-size: 50
+  consumption-unit: egg
+  consumption-grams: 50
+  calories: 70
+  fat: 5
+  fiber: 0
+  net-carbs: 0
+  protein: 6
+  price:
+    total-cost: 9.99
+    total-grams: 600
+  url: https://www.wholefoodsmarket.com/grocery/product/b00m1qwodw
+  verified: 5/16/2026
+  nutrients:
+    saturated-fat: 1.5
+    sodium: 70
+- name: Eggs (Vital Farms 18 Count)
+  food: Eggs
+  brand: Vital Farms
+  serving-size: 50
+  consumption-unit: egg
+  consumption-grams: 50
+  calories: 70
+  fat: 5
+  fiber: 0
+  net-carbs: 0
+  protein: 6
+  price:
+    total-cost: 14.49
+    total-grams: 900
+  url: https://www.wholefoodsmarket.com/grocery/product/b089c8jt7b
+  verified: 5/16/2026
+  nutrients:
+    calcium: 30
+    iron: 0.9
+    saturated-fat: 1.5
+    sodium: 70
+    vitamin-a: 80
+    vitamin-d: 1
+- name: Eggs (Vital Farms 6 Ct)
+  food: Eggs
+  brand: Vital Farms
+  serving-size: 44
+  consumption-unit: egg
+  consumption-grams: 50
+  calories: 60
+  fat: 4
+  fiber: 0
+  net-carbs: 0
+  protein: 6
+  price:
+    total-cost: 7.99
+    total-grams: 264
+  url: https://www.wholefoodsmarket.com/grocery/product/b0c4g8b5kz
+  verified: 5/16/2026
+  nutrients:
+    calcium: 30
+    iron: 0.8
+    saturated-fat: 1.5
+    sodium: 60
+- name: Extra Virgin Olive Oil
+  food: Extra Virgin Olive Oil
+  brand: 365 by Whole Foods Market
+  serving-size: 14
+  consumption-unit: tablespoon
+  consumption-grams: 14
+  calories: 120
+  fat: 14
+  fiber: 0
+  net-carbs: 0
+  protein: 0
+  price:
+    total-cost: 34.99
+    total-grams: 2747
+  url: https://www.wholefoodsmarket.com/grocery/product/b074y6wz8x
+  verified: 3/16/22
+  nutrients:
+    vitamin-e: 1.9
+    vitamin-k: 8
+- name: Fish Oil
+  food: Fish Oil
+  brand: Carlson
+  serving-size: 4.667
+  consumption-unit: tablespoon
+  consumption-grams: 14
+  calories: 40
+  fat: 4.5
+  fiber: 0
+  net-carbs: 0
+  protein: 0
+  price:
+    total-cost: 61.99
+    total-grams: 560
+  url: https://www.wholefoodsmarket.com/grocery/product/b001lf39ro
+  verified: 3/16/22
+- name: Glycine
+  food: Glycine
+  brand: Thorne
+  serving-size: 3
+  consumption-unit: pill
+  consumption-grams: 3
+  calories: 0
+  fat: 0
+  fiber: 0
+  net-carbs: 0
+  protein: 0
+  price:
+    total-cost: 19
+    total-grams: 750
+  url: https://www.wholefoodsmarket.com/grocery/product/b000vyrroc
+  verified: 5/10/2026
+- name: Ham (365 Black Forest)
+  food: Ham
+  brand: 365 by Whole Foods Market
+  serving-size: 56
+  consumption-unit: slice
+  consumption-grams: 28
+  calories: 60
+  fat: 1.5
+  fiber: 0
+  net-carbs: 2
+  protein: 10
+  verified: needs-wf-refresh
+  nutrients:
+    sodium: 590
+    potassium: 240
+- name: Jelly
+  food: Jelly
+  brand: Crofter's
+  serving-size: 18
+  consumption-unit: tablespoon
+  consumption-grams: 18
+  calories: 30
+  fat: 0
+  fiber: 0
+  net-carbs: 8
+  protein: 0
+  price:
+    total-cost: 5.99
+    total-grams: 283
+  url: https://www.wholefoodsmarket.com/grocery/product/b000uxyzi0
+  verified: 10/10/24
+- name: L-Theanine
+  food: L-Theanine
+  brand: Thorne
+  serving-size: 0.2
+  consumption-unit: pill
+  consumption-grams: 0.2
+  calories: 0
+  fat: 0
+  fiber: 0
+  net-carbs: 0
+  protein: 0
+  price:
+    total-cost: 31
+    total-grams: 18
+  verified: 5/10/2026
+- name: Lamb
+  food: Lamb
+  brand: ButcherBox
+  serving-size: 85
+  consumption-unit: gram
+  consumption-grams: 1
+  calories: 253
+  fat: 22
+  fiber: 0
+  net-carbs: 0.19
+  protein: 13.09
+  price:
+    total-cost: 11.99
+    total-grams: 340
+- name: Latte (Grande Hot)
+  food: Latte (Grande Hot)
+  brand: Starbucks
+  serving-size: 1
+  consumption-unit: cup
+  consumption-grams: 1
+  calories: 190
+  fat: 7
+  fiber: 0
+  net-carbs: 19
+  protein: 13
+  price:
+    total-cost: 4.95
+    total-grams: 1
+  verified: 11/1/24
+  nutrients:
+    calcium: 300
+    phosphorus: 250
+    riboflavin: 0.4
+    vitamin-a: 75
+    vitamin-b12: 1.2
+    vitamin-d: 2.5
+- name: Latte (Venti Iced)
+  food: Latte (Venti Iced)
+  brand: Starbucks
+  serving-size: 1
+  consumption-unit: cup
+  consumption-grams: 1
+  calories: 180
+  fat: 6
+  fiber: 0
+  net-carbs: 18
+  protein: 12
+  price:
+    total-cost: 5.45
+    total-grams: 1
+  verified: 11/1/24
+  nutrients:
+    calcium: 300
+    phosphorus: 250
+    riboflavin: 0.4
+    vitamin-a: 75
+    vitamin-b12: 1.2
+    vitamin-d: 2.5
+- name: Mackerel (Skinless Boneless)
+  food: Mackerel
+  brand: Wild Planet
+  serving-size: 85
+  consumption-unit: can
+  consumption-grams: 85
+  calories: 180
+  fat: 11
+  fiber: 0
+  net-carbs: 0
+  protein: 21
+  verified: 3/10/24
+  nutrients:
+    niacin: 7
+    phosphorus: 230
+    potassium: 280
+    selenium: 38
+    vitamin-b12: 14
+    vitamin-d: 7
+- name: Mackerel (Smoked)
+  food: Mackerel
+  brand: Wild Planet
+  serving-size: 75
+  consumption-unit: can
+  consumption-grams: 75
+  calories: 140
+  fat: 6
+  fiber: 0
+  net-carbs: 0
+  protein: 22
+  verified: 3/10/24
+  nutrients:
+    niacin: 6
+    phosphorus: 200
+    selenium: 32
+    vitamin-b12: 12
+    vitamin-d: 8
+- name: Milk (Clover Sonoma Pasture Raised Organic Whole, 1 Gal)
+  food: Milk
+  brand: Clover Sonoma
+  serving-size: 240
+  consumption-unit: cup
+  consumption-grams: 240
+  calories: 160
+  fat: 9
+  fiber: 0
+  net-carbs: 12
+  protein: 9
+  price:
+    total-cost: 10.99
+    total-grams: 3840
+  verified: label 5/23/2026
+  nutrients:
+    calcium: 300
+    carbohydrates: 12
+    potassium: 410
+    saturated-fat: 5
+    sodium: 125
+    sugar: 12
+    vitamin-d: 2.5
+- name: Mushrooms (365 by Whole Foods M 8 Ounce)
+  food: Mushrooms
+  brand: 365 by Whole Foods Market
+  serving-size: 84
+  consumption-unit: gram
+  consumption-grams: 1
+  calories: 18
+  fat: 0.29
+  fiber: 1.1
+  net-carbs: 2.2
+  protein: 1.77
+  price:
+    total-cost: 2.59
+    total-grams: 226.8
+  url: https://www.wholefoodsmarket.com/grocery/product/b07d9q1vh3
+  verified: 5/16/2026
+  nutrients:
+    calcium: 2.52
+    carbohydrates: 3.3
+    iron: 0.26
+    potassium: 306
+    saturated-fat: 0.05
+    sodium: 8
+    sugar: 2.1
+- name: Mustard (Organicville 12 oz)
+  food: Mustard
+  brand: Organicville
+  serving-size: 5
+  consumption-unit: tablespoon
+  consumption-grams: 15
+  calories: 5
+  fat: 0
+  fiber: 0
+  net-carbs: 0
+  protein: 0
+  price:
+    total-cost: 4.99
+    total-grams: 340.2
+  url: https://www.wholefoodsmarket.com/grocery/product/b00mfnax52
+  verified: 5/16/2026
+  nutrients:
+    sodium: 55
+- name: Cashews
+  food: Nuts
+  brand: 365 by Whole Foods Market
+  serving-size: 28
+  consumption-unit: gram
+  consumption-grams: 1
+  calories: 160
+  fat: 13
+  fiber: 1
+  net-carbs: 8
+  protein: 5
+  price:
+    total-cost: 11.99
+    total-grams: 454
+  nutrients:
+    copper: 0.6
+    iron: 1.9
+    magnesium: 80
+    manganese: 0.5
+    phosphorus: 165
+    potassium: 187
+    selenium: 5.6
+    thiamin: 0.1
+    vitamin-k: 9.5
+    zinc: 1.6
+- name: Macadamia Nuts (Aurora 6 OZ)
+  food: Nuts
+  brand: Aurora
+  serving-size: 30
+  consumption-unit: gram
+  consumption-grams: 1
+  calories: 220
+  fat: 23
+  fiber: 3
+  net-carbs: 1
+  protein: 2
+  price:
+    total-cost: 13.79
+    total-grams: 170.1
+  url: https://www.wholefoodsmarket.com/grocery/product/b07xvyq5rh
+  verified: 5/16/2026
+  nutrients:
+    carbohydrates: 4
+    saturated-fat: 3.5
+    sugar: 1
+- name: Macadamia Nuts (Aurora 8 oz)
+  food: Nuts
+  brand: Aurora
+  serving-size: 30
+  consumption-unit: gram
+  consumption-grams: 1
+  calories: 220
+  fat: 23
+  fiber: 3
+  net-carbs: 1
+  protein: 2
+  price:
+    total-cost: 15.99
+    total-grams: 226.8
+  url: https://www.wholefoodsmarket.com/grocery/product/b002hqnkvq
+  verified: 5/16/2026
+  nutrients:
+    calcium: 26
+    carbohydrates: 4
+    iron: 1.08
+    saturated-fat: 3.5
+    sugar: 1
+- name: Peanuts
+  food: Nuts
+  brand: 365 by Whole Foods Market
+  serving-size: 28
+  consumption-unit: gram
+  consumption-grams: 1
+  calories: 160
+  fat: 14
+  fiber: 2
+  net-carbs: 4
+  protein: 7
+  price:
+    total-cost: 5.99
+    total-grams: 454
+  verified: 9/1/22
+  nutrients:
+    folate: 67
+    magnesium: 50
+    manganese: 0.5
+    niacin: 3.4
+    phosphorus: 107
+    vitamin-e: 2.4
+- name: Pecans (365 by Whole Foods M 12 Ounce)
+  food: Nuts
+  brand: 365 by Whole Foods Market
+  serving-size: 28
+  consumption-unit: gram
+  consumption-grams: 1
+  calories: 190
+  fat: 20
+  fiber: 3
+  net-carbs: 1
+  protein: 3
+  price:
+    total-cost: 8.19
+    total-grams: 340.2
+  url: https://www.wholefoodsmarket.com/grocery/product/b074vcsh7k
+  verified: 5/16/2026
+  nutrients:
+    carbohydrates: 4
+    saturated-fat: 2
+    sugar: 1
+- name: Pecans (Aurora 14 Ounce)
+  food: Nuts
+  brand: Aurora
+  serving-size: 28
+  consumption-unit: gram
+  consumption-grams: 1
+  calories: 210
+  fat: 22
+  fiber: 3
+  net-carbs: 1
+  protein: 3
+  price:
+    total-cost: 12.79
+    total-grams: 396.9
+  url: https://www.wholefoodsmarket.com/grocery/product/b079vrdfcw
+  verified: 5/16/2026
+  nutrients:
+    calcium: 26
+    carbohydrates: 4
+    iron: 0.72
+    saturated-fat: 2
+    sugar: 1
+- name: Pistachios (Wonderful In-Shell 16 oz)
+  food: Nuts
+  brand: Wonderful
+  serving-size: 28
+  consumption-unit: gram
+  consumption-grams: 1
+  calories: 160
+  fat: 13
+  fiber: 3
+  net-carbs: 5
+  protein: 6
+  price:
+    total-cost: 10.49
+    total-grams: 226
+  url: https://www.wholefoodsmarket.com/grocery/product/b07h693qjg
+  verified: 5/17/2026
+  nutrients:
+    calcium: 30
+    carbohydrates: 8
+    copper: 0.36
+    iron: 1.1
+    magnesium: 34
+    manganese: 0.34
+    phosphorus: 137
+    potassium: 290
+    saturated-fat: 1.5
+    sugar: 2
+    thiamin: 0.25
+    vitamin-a: 4
+    vitamin-b6: 0.5
+- name: Pistachios (Wonderful No-Shell 12 oz)
+  food: Nuts
+  brand: Wonderful
+  serving-size: 28
+  consumption-unit: gram
+  consumption-grams: 1
+  calories: 160
+  fat: 13
+  fiber: 3
+  net-carbs: 5
+  protein: 6
+  price:
+    total-cost: 12.99
+    total-grams: 340.2
+  url: https://www.wholefoodsmarket.com/grocery/product/b00biz2nlu
+  verified: 5/17/2026
+  nutrients:
+    calcium: 30
+    carbohydrates: 8
+    copper: 0.36
+    iron: 1.1
+    magnesium: 34
+    manganese: 0.34
+    phosphorus: 137
+    potassium: 290
+    saturated-fat: 1.5
+    sodium: 135
+    sugar: 2
+    thiamin: 0.25
+    vitamin-a: 4
+    vitamin-b6: 0.5
+- name: Walnuts (Aurora 7 oz)
+  food: Nuts
+  brand: Aurora
+  serving-size: 30
+  consumption-unit: gram
+  consumption-grams: 1
+  calories: 200
+  fat: 20
+  fiber: 2
+  net-carbs: 2
+  protein: 5
+  price:
+    total-cost: 9.89
+    total-grams: 198.5
+  url: https://www.wholefoodsmarket.com/grocery/product/b07812j5z2
+  verified: 5/16/2026
+  nutrients:
+    calcium: 26
+    carbohydrates: 4
+    iron: 1.08
+    saturated-fat: 2
+    sugar: 1
+- name: Navel Orange (Whole Foods Market)
+  food: Orange
+  brand: Whole Foods Market
+  serving-size: 140
+  consumption-unit: gram
+  consumption-grams: 1
+  calories: 69
+  fat: 0.21
+  fiber: 3.1
+  net-carbs: 14.9
+  protein: 1.27
+  price:
+    total-cost: 2.19
+    total-grams: 140
+  url: https://www.wholefoodsmarket.com/grocery/product/fresh-produce-navel-orange-b000se9nug
+  verified: WF 5/18/2026
+  nutrients:
+    calcium: 60
+    carbohydrates: 18
+    iron: 0.18
+    potassium: 232
+    saturated-fat: 0.02
+    sodium: 1.4
+    sugar: 11.9
+    vitamin-a: 346
+    vitamin-c: 83
+- name: Peanut Butter (Once Again)
+  food: Peanut Butter
+  brand: Once Again
+  serving-size: 30
+  consumption-unit: tablespoon
+  consumption-grams: 15
+  calories: 190
+  fat: 14
+  fiber: 2
+  net-carbs: 5
+  protein: 8
+  price:
+    total-cost: 8.49
+    total-grams: 454
+  url: https://www.wholefoodsmarket.com/grocery/product/b0085efmyw
+  verified: 5/16/2026
+  nutrients:
+    calcium: 26
+    carbohydrates: 7
+    saturated-fat: 2
+    sugar: 2
+- name: Pork Chop
+  food: Pork Chop
+  brand: ButcherBox
+  serving-size: 113
+  consumption-unit: gram
+  consumption-grams: 1
+  calories: 220
+  fat: 11
+  fiber: 0
+  net-carbs: 0
+  protein: 30
+  price:
+    total-cost: 9.99
+    total-grams: 454
+  nutrients:
+    niacin: 6
+    phosphorus: 220
+    potassium: 350
+    selenium: 35
+    thiamin: 0.8
+    vitamin-b12: 0.8
+- name: Pumpkin Seeds (365 by Whole Foods M 8 Ounce)
+  food: Pumpkin Seeds
+  brand: 365 by Whole Foods Market
+  serving-size: 28
+  consumption-unit: gram
+  consumption-grams: 1
+  calories: 160
+  fat: 14
+  fiber: 2
+  net-carbs: 1
+  protein: 8
+  price:
+    total-cost: 5.39
+    total-grams: 226.8
+  url: https://www.wholefoodsmarket.com/grocery/product/b07gl6jlzy
+  verified: 5/16/2026
+  nutrients:
+    carbohydrates: 3
+    iron: 2.5
+    saturated-fat: 2.5
+- name: Radish (Whole Foods Market 12 Oz)
+  food: Radish
+  brand: Whole Foods Market
+  serving-size: 85
+  consumption-unit: gram
+  consumption-grams: 1
+  calories: 14
+  fat: 0.1
+  fiber: 1.4
+  net-carbs: 1.6
+  protein: 0.6
+  price:
+    total-cost: 3.99
+    total-grams: 340.2
+  url: https://www.wholefoodsmarket.com/grocery/product/b079vlpq2l
+  verified: 5/16/2026
+  nutrients:
+    calcium: 21
+    carbohydrates: 3
+    potassium: 200
+    sodium: 33
+    sugar: 1.6
+    vitamin-c: 12
+- name: Radish (Whole Foods Market)
+  food: Radish
+  brand: Whole Foods Market
+  serving-size: 85
+  consumption-unit: gram
+  consumption-grams: 1
+  calories: 14
+  fat: 0.1
+  fiber: 1.4
+  net-carbs: 1.6
+  protein: 0.6
+  price:
+    total-cost: 2.79
+    total-grams: 85
+  url: https://www.wholefoodsmarket.com/grocery/product/b000rh1nf2
+  verified: 5/16/2026
+  nutrients:
+    calcium: 21
+    carbohydrates: 3
+    potassium: 200
+    sodium: 33
+    sugar: 1.6
+    vitamin-c: 12
+- name: Raspberries (Whole Foods Market 6 oz)
+  food: Raspberries
+  brand: Whole Foods Market
+  serving-size: 72
+  consumption-unit: gram
+  consumption-grams: 1
+  calories: 37
+  fat: 0.47
+  fiber: 4.7
+  net-carbs: 3.9
+  protein: 0.86
+  price:
+    total-cost: 4.49
+    total-grams: 170.1
+  url: https://www.wholefoodsmarket.com/grocery/product/fresh-produce-red-raspberries-6-oz-b000p6g12u
+  verified: USDA est 5/17/26
+  nutrients:
+    calcium: 18
+    carbohydrates: 8.6
+    iron: 0.5
+    potassium: 109
+    saturated-fat: 0.01
+    sodium: 0.7
+    sugar: 3.2
+    vitamin-c: 19
+- name: Romaine
+  food: Romaine
+  brand: 365 by Whole Foods Market
+  serving-size: 47
+  consumption-unit: gram
+  consumption-grams: 1
+  calories: 8
+  fat: 0.14
+  fiber: 0.99
+  net-carbs: 0.51
+  protein: 0.58
+  price:
+    total-cost: 2.49
+    total-grams: 453.6
+  url: https://www.wholefoodsmarket.com/grocery/product/b07814bsw2
+  verified: 3/16/22
+  nutrients:
+    calcium: 16
+    folate: 64
+    iron: 0.5
+    potassium: 116
+    vitamin-a: 205
+    vitamin-c: 2
+    vitamin-k: 48
+- name: Salmon (Whole Foods Market)
+  food: Salmon
+  brand: Whole Foods Market
+  serving-size: 113
+  consumption-unit: gram
+  consumption-grams: 1
+  calories: 230
+  fat: 14
+  fiber: 0
+  net-carbs: 0
+  protein: 25
+  price:
+    total-cost: 18.99
+    total-grams: 454
+  url: https://www.wholefoodsmarket.com/grocery/product/b09y5w11j1
+  verified: 5/16/2026
+  nutrients:
+    potassium: 430
+    saturated-fat: 3
+    sodium: 60
+    vitamin-d: 13
+- name: Sardines (H2O)
+  food: Sardines
+  brand: Wild Planet
+  serving-size: 85
+  consumption-unit: can
+  consumption-grams: 85
+  calories: 140
+  fat: 8
+  fiber: 0
+  net-carbs: 0
+  protein: 18
+  url: https://www.wholefoodsmarket.com/grocery/product/b013ork8p2
+  verified: 3/10/24
+  nutrients:
+    calcium: 325
+    niacin: 4.4
+    phosphorus: 417
+    potassium: 340
+    selenium: 45
+    vitamin-b12: 7.5
+    vitamin-d: 4
+- name: Sardines (LS L)
+  food: Sardines
+  brand: Wild Planet
+  serving-size: 85
+  consumption-unit: can
+  consumption-grams: 85
+  calories: 170
+  fat: 11
+  fiber: 0
+  net-carbs: 0
+  protein: 18
+  verified: 3/10/24
+  nutrients:
+    calcium: 325
+    niacin: 4.4
+    phosphorus: 417
+    potassium: 340
+    selenium: 45
+    vitamin-b12: 7.5
+    vitamin-d: 4
+- name: Sardines (LS)
+  food: Sardines
+  brand: Wild Planet
+  serving-size: 85
+  consumption-unit: can
+  consumption-grams: 85
+  calories: 170
+  fat: 11
+  fiber: 0
+  net-carbs: 0
+  protein: 18
+  verified: 3/10/24
+  nutrients:
+    calcium: 325
+    niacin: 4.4
+    phosphorus: 417
+    potassium: 340
+    selenium: 45
+    vitamin-b12: 7.5
+    vitamin-d: 4
+- name: Sardines (SB)
+  food: Sardines
+  brand: Wild Planet
+  serving-size: 85
+  consumption-unit: can
+  consumption-grams: 85
+  calories: 190
+  fat: 12
+  fiber: 0
+  net-carbs: 0
+  protein: 21
+  verified: 3/10/24
+  nutrients:
+    calcium: 325
+    niacin: 4.4
+    phosphorus: 417
+    potassium: 340
+    selenium: 45
+    vitamin-b12: 7.5
+    vitamin-d: 4
+- name: SlowMag
+  food: SlowMag
+  brand: SlowMag
+  serving-size: 1
+  consumption-unit: pill
+  consumption-grams: 1
+  calories: 0
+  fat: 0
+  fiber: 0
+  net-carbs: 0
+  protein: 0
+  price:
+    total-cost: 18.99
+    total-grams: 120
+  verified: 5/10/2026
+  nutrients:
+    calcium: 119
+    magnesium: 71.5
+- name: Spinach (365 by Whole Foods M 5 oz)
+  food: Spinach
+  brand: 365 by Whole Foods Market
+  serving-size: 85
+  consumption-unit: gram
+  consumption-grams: 1
+  calories: 20
+  fat: 0.3
+  fiber: 2
+  net-carbs: 1
+  protein: 2.4
+  price:
+    total-cost: 3.69
+    total-grams: 141.8
+  url: https://www.wholefoodsmarket.com/grocery/product/b0bfg3bhnh
+  verified: 5/16/2026
+  nutrients:
+    calcium: 85
+    carbohydrates: 3
+    iron: 2.3
+    potassium: 470
+    sodium: 65
+    sugar: 0.3
+    vitamin-a: 400
+    vitamin-c: 24
+    vitamin-k: 400
+- name: Spinach (365 by Whole Foods M 5 OZ)
+  food: Spinach
+  brand: 365 by Whole Foods Market
+  serving-size: 85
+  consumption-unit: gram
+  consumption-grams: 1
+  calories: 20
+  fat: 0.3
+  fiber: 2
+  net-carbs: 1
+  protein: 2.4
+  price:
+    total-cost: 3.99
+    total-grams: 141.8
+  verified: 5/16/2026
+  nutrients:
+    calcium: 85
+    carbohydrates: 3
+    iron: 2.3
+    potassium: 470
+    sodium: 65
+    sugar: 0.3
+    vitamin-a: 394
+    vitamin-c: 24
+    vitamin-k: 400
+- name: Bacon, Gouda & Egg Sandwich
+  food: Starbucks Breakfast Sandwich
+  brand: Starbucks
+  serving-size: 120
+  consumption-unit: piece
+  consumption-grams: 120
+  calories: 360
+  fat: 18
+  fiber: 1
+  net-carbs: 34
+  protein: 18
+  verified: 5/17/2026
+  nutrients:
+    carbohydrates: 35
+    cholesterol: 155
+    saturated-fat: 6
+    sodium: 710
+    sugar: 2
+- name: Bacon, Sausage & Egg Wrap
+  food: Starbucks Breakfast Sandwich
+  brand: Starbucks
+  serving-size: 214
+  consumption-unit: piece
+  consumption-grams: 214
+  calories: 640
+  fat: 33
+  fiber: 2
+  net-carbs: 55
+  protein: 27
+  verified: 5/17/2026
+  nutrients:
+    carbohydrates: 57
+    cholesterol: 340
+    saturated-fat: 13
+    sodium: 1050
+    sugar: 2
+- name: Double-Smoked Bacon, Cheddar & Egg Sandwich
+  food: Starbucks Breakfast Sandwich
+  brand: Starbucks
+  serving-size: 148
+  consumption-unit: piece
+  consumption-grams: 148
+  calories: 500
+  fat: 27
+  fiber: 2
+  net-carbs: 41
+  protein: 21
+  verified: 5/17/2026
+  nutrients:
+    carbohydrates: 43
+    cholesterol: 225
+    saturated-fat: 13
+    sodium: 960
+    sugar: 8
+- name: Sausage, Cheddar & Egg Sandwich
+  food: Starbucks Breakfast Sandwich
+  brand: Starbucks
+  serving-size: 157
+  consumption-unit: piece
+  consumption-grams: 157
+  calories: 480
+  fat: 29
+  fiber: 1
+  net-carbs: 33
+  protein: 18
+  verified: 5/17/2026
+  nutrients:
+    carbohydrates: 34
+    cholesterol: 165
+    saturated-fat: 10
+    sodium: 890
+    sugar: 2
+- name: Spinach, Feta & Egg White Wrap
+  food: Starbucks Breakfast Sandwich
+  brand: Starbucks
+  serving-size: 159
+  consumption-unit: piece
+  consumption-grams: 159
+  calories: 290
+  fat: 8
+  fiber: 3
+  net-carbs: 31
+  protein: 20
+  verified: 5/17/2026
+  nutrients:
+    carbohydrates: 34
+    cholesterol: 20
+    saturated-fat: 3.5
+    sodium: 840
+    sugar: 5
+- name: Turkey Bacon, Cheddar & Egg White Sandwich
+  food: Starbucks Breakfast Sandwich
+  brand: Starbucks
+  serving-size: 142
+  consumption-unit: piece
+  consumption-grams: 142
+  calories: 260
+  fat: 9
+  fiber: 2
+  net-carbs: 28
+  protein: 17
+  verified: 5/17/2026
+  nutrients:
+    carbohydrates: 30
+    cholesterol: 25
+    saturated-fat: 3.5
+    sodium: 600
+    sugar: 2
+- name: Cheese & Fruit Protein Box
+  food: Starbucks Protein Box
+  brand: Starbucks
+  serving-size: 192
+  consumption-unit: piece
+  consumption-grams: 192
+  calories: 470
+  fat: 28
+  fiber: 3
+  net-carbs: 34
+  protein: 20
+  verified: 5/17/2026
+  nutrients:
+    carbohydrates: 37
+    cholesterol: 75
+    saturated-fat: 16
+    sodium: 770
+    sugar: 17
+    trans-fat: 1
+- name: Cheese Trio Protein Box
+  food: Starbucks Protein Box
+  brand: Starbucks
+  serving-size: 135
+  consumption-unit: piece
+  consumption-grams: 135
+  calories: 520
+  fat: 24
+  fiber: 5
+  net-carbs: 54
+  protein: 20
+  verified: 5/17/2026
+  nutrients:
+    carbohydrates: 59
+    cholesterol: 70
+    saturated-fat: 14
+    sodium: 710
+    sugar: 40
+    trans-fat: 1
+- name: Eggs & Cheddar Protein Box
+  food: Starbucks Protein Box
+  brand: Starbucks
+  serving-size: 247
+  consumption-unit: piece
+  consumption-grams: 247
+  calories: 460
+  fat: 24
+  fiber: 5
+  net-carbs: 35
+  protein: 22
+  verified: 5/17/2026
+  nutrients:
+    carbohydrates: 40
+    cholesterol: 350
+    saturated-fat: 7
+    sodium: 450
+    sugar: 21
+- name: Ham & Swiss on Baguette
+  food: Starbucks Sandwich
+  brand: Starbucks
+  serving-size: 176
+  consumption-unit: piece
+  consumption-grams: 176
+  calories: 510
+  fat: 25
+  fiber: 2
+  net-carbs: 41
+  protein: 25
+  verified: 5/17/2026
+  nutrients:
+    carbohydrates: 43
+    cholesterol: 80
+    saturated-fat: 10
+    sodium: 1230
+    sugar: 1
+- name: Tomato & Mozzarella on Focaccia
+  food: Starbucks Sandwich
+  brand: Starbucks
+  serving-size: 153
+  consumption-unit: piece
+  consumption-grams: 153
+  calories: 360
+  fat: 12
+  fiber: 1
+  net-carbs: 46
+  protein: 15
+  verified: 5/17/2026
+  nutrients:
+    carbohydrates: 47
+    cholesterol: 20
+    saturated-fat: 4.5
+    sodium: 590
+    sugar: 2
+- name: Strawberries (Whole Foods Market 1 lb)
+  food: Strawberries
+  brand: Whole Foods Market
+  serving-size: 72
+  consumption-unit: gram
+  consumption-grams: 1
+  calories: 23
+  fat: 0.22
+  fiber: 1.4
+  net-carbs: 4.6
+  protein: 0.48
+  price:
+    total-cost: 6.99
+    total-grams: 453.6
+  url: https://www.wholefoodsmarket.com/grocery/product/fresh-produce-organic-strawberries-1-lb-b002b8z98w
+  verified: 5/17/2026
+  nutrients:
+    calcium: 12
+    carbohydrates: 6
+    potassium: 110
+    saturated-fat: 0.01
+    sodium: 0.72
+    sugar: 3.52
+    vitamin-c: 42
+- name: String Cheese (365 by Whole Foods M 12 OZ)
+  food: String Cheese
+  brand: 365 by Whole Foods Market
+  serving-size: 28
+  consumption-unit: piece
+  consumption-grams: 28
+  calories: 80
+  fat: 6
+  fiber: 0
+  net-carbs: 0
+  protein: 7
+  price:
+    total-cost: 4.49
+    total-grams: 340.2
+  url: https://www.wholefoodsmarket.com/grocery/product/b07fwc98xk
+  verified: 5/16/2026
+  nutrients:
+    saturated-fat: 3.5
+    sodium: 200
+- name: String Cheese (365 by Whole Foods M 8 Ounce)
+  food: String Cheese
+  brand: 365 by Whole Foods Market
+  serving-size: 28
+  consumption-unit: piece
+  consumption-grams: 28
+  calories: 80
+  fat: 6
+  fiber: 0
+  net-carbs: 0
+  protein: 7
+  price:
+    total-cost: 6.19
+    total-grams: 226.8
+  url: https://www.wholefoodsmarket.com/grocery/product/b09vq5dk7v
+  verified: 5/16/2026
+  nutrients:
+    calcium: 15
+    saturated-fat: 3.5
+    sodium: 210
+- name: String Cheese W
+  food: String Cheese
+  brand: 365 by Whole Foods Market
+  serving-size: 28
+  consumption-unit: piece
+  consumption-grams: 28
+  calories: 80
+  fat: 6
+  fiber: 0
+  net-carbs: 1
+  protein: 6
+  price:
+    total-cost: 4.49
+    total-grams: 340
+  url: https://www.wholefoodsmarket.com/grocery/product/b07fwc98xk
+  verified: 7/3/2025
+  nutrients:
+    calcium: 200
+    phosphorus: 140
+    vitamin-a: 80
+    vitamin-b12: 0.3
+    zinc: 0.9
+- name: Sunflower Butter (Once Again)
+  food: Sunflower Butter
+  brand: Once Again
+  serving-size: 30
+  consumption-unit: tablespoon
+  consumption-grams: 15
+  calories: 210
+  fat: 19
+  fiber: 3
+  net-carbs: 1
+  protein: 5
+  price:
+    total-cost: 10.99
+    total-grams: 454
+  url: https://www.wholefoodsmarket.com/grocery/product/b008k4htn4
+  verified: 5/16/2026
+  nutrients:
+    carbohydrates: 4
+    saturated-fat: 2
+    sugar: 1
+- name: Taurine
+  food: Taurine
+  brand: Pure Encapsulations
+  serving-size: 1
+  consumption-unit: pill
+  consumption-grams: 1
+  calories: 0
+  fat: 0
+  fiber: 0
+  net-carbs: 0
+  protein: 0
+  price:
+    total-cost: 22
+    total-grams: 120
+  verified: 5/10/2026
+- name: Thorne Basic Nutrients 2/Day
+  food: Thorne Basic Nutrients 2/Day
+  brand: Thorne
+  serving-size: 1
+  consumption-unit: pill
+  consumption-grams: 1
+  calories: 0
+  fat: 0
+  fiber: 0
+  net-carbs: 0
+  protein: 0
+  price:
+    total-cost: 45
+    total-grams: 120
+  url: https://www.wholefoodsmarket.com/grocery/product/b0fr5qmd5y
+  verified: 5/13/2026
+  nutrients:
+    calcium: 50
+    copper: 0.5
+    folate: 500
+    magnesium: 100
+    manganese: 1.5
+    niacin: 40
+    pantothenic-acid: 22.5
+    riboflavin: 4.5
+    selenium: 50
+    thiamin: 12.5
+    vitamin-a: 750
+    vitamin-b12: 300
+    vitamin-b6: 5
+    vitamin-c: 125
+    vitamin-d: 12.5
+    vitamin-e: 33.5
+    vitamin-k: 500
+    zinc: 7.5
+- name: Top Sirloin Cap
+  food: Top Sirloin Cap
+  brand: ButcherBox
+  serving-size: 238
+  consumption-unit: gram
+  consumption-grams: 1
+  calories: 125
+  fat: 14
+  fiber: 0
+  net-carbs: 0
+  protein: 51
+  price:
+    total-cost: 18.99
+    total-grams: 454
+- name: Tuna (Wild Planet 5 Ounce)
+  food: Tuna
+  brand: Wild Planet
+  serving-size: 85
+  consumption-unit: can
+  consumption-grams: 85
+  calories: 100
+  fat: 2.5
+  fiber: 0
+  net-carbs: 0
+  protein: 21
+  price:
+    total-cost: 5.29
+    total-grams: 141.8
+  url: https://www.wholefoodsmarket.com/grocery/product/b013orjqwi
+  verified: 5/16/2026
+  nutrients:
+    saturated-fat: 1
+    sodium: 85
+- name: Tuna (Wild Planet 5 Oz)
+  food: Tuna
+  brand: Wild Planet
+  serving-size: 85
+  consumption-unit: can
+  consumption-grams: 85
+  calories: 100
+  fat: 2.5
+  fiber: 0
+  net-carbs: 0
+  protein: 21
+  price:
+    total-cost: 5.29
+    total-grams: 141.8
+  url: https://www.wholefoodsmarket.com/grocery/product/b00cq7puim
+  verified: 5/16/2026
+  nutrients:
+    saturated-fat: 1
+    sodium: 200
+- name: Turkey (Trader Joe's Organic Hickory Smoked, 6 oz)
+  food: Turkey
+  brand: Trader Joe's
+  serving-size: 56
+  consumption-unit: slice
+  consumption-grams: 28
+  calories: 60
+  fat: 1
+  fiber: 0
+  net-carbs: 0
+  protein: 12
+  price:
+    total-cost: 5.99
+    total-grams: 170
+  verified: label 5/23/2026
+  nutrients:
+    potassium: 188
+    sodium: 400
+- name: Turkey W
+  food: Turkey
+  brand: Applegate
+  serving-size: 56
+  consumption-unit: slice
+  consumption-grams: 28
+  calories: 60
+  fat: 1
+  fiber: 0
+  net-carbs: 1
+  protein: 10
+  price:
+    total-cost: 6.99
+    total-grams: 198
+  verified: 7/3/2025
+  nutrients:
+    niacin: 3.6
+    phosphorus: 110
+    selenium: 14
+    vitamin-b12: 0.5
+    vitamin-b6: 0.3
+    zinc: 1.2
+- name: Vitamin D3 (1000 IU)
+  food: Vitamin D3 (1000 IU)
+  brand: Thorne
+  serving-size: 1
+  consumption-unit: pill
+  consumption-grams: 1
+  calories: 0
+  fat: 0
+  fiber: 0
+  net-carbs: 0
+  protein: 0
+  price:
+    total-cost: 11
+    total-grams: 90
+  url: https://www.wholefoodsmarket.com/grocery/product/b0797h3vqs
+  verified: 5/10/2026
+  nutrients:
+    vitamin-d: 25

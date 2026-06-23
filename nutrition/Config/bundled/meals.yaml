@@ -1,0 +1,71 @@
+caden:
+  - food: Avocado Oil
+    amount: 1
+  - food: Eggs
+    amount: 3
+  - food: Bread
+    amount: 2
+    member: Dave's Killer Bread Powerseed Thin (20.5 oz)
+  - food: Ham
+    amount: 2
+  - food: Bell Peppers
+    amount: 2
+  - food: Mushrooms
+    amount: 2
+  - food: Jelly
+    amount: 2
+  - category: Fruit
+    food-type: fruit
+  - food: Milk
+    amount: 1
+  - food: Bread
+    amount: 4
+    member: Dave's Killer Bread Powerseed Thin (20.5 oz)
+  - food: Turkey
+    amount: 4
+    member: Turkey (Trader Joe's Organic Hickory Smoked, 6 oz)
+  - food: Cheese Slice
+    amount: 4
+  - food: Romaine
+    amount: 30
+  - food: Mustard
+    amount: 4
+  - food: Cucumber
+    amount: 150
+  - food: String Cheese
+    amount: 2
+  - category: Meat
+    food-type: meat
+shane:
+  - food: Coconut Oil
+    amount: 0.5
+  - food: Eggs
+    amount: 5
+  - food: Broccoli
+    amount: 150
+  - food: Cauliflower
+    amount: 100
+  - food: Romaine
+    amount: 175
+  - food: Spinach
+    amount: 50
+  - food: Arugula
+    amount: 50
+  - food: Mushrooms
+    amount: 125
+  - food: Radish
+    amount: 70
+  - food: Avocado
+    amount: 225
+  - food: Mustard
+    amount: 3
+  - food: Fish Oil
+    amount: 1
+  - food: Extra Virgin Olive Oil
+    amount: 2
+  - food: Pumpkin Seeds
+    amount: 30
+  - food: String Cheese
+    amount: 4
+  - category: Meat
+    food-type: meat

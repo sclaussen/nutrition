@@ -1,0 +1,406 @@
+- name: Apigenin
+  type: supplement
+  default-amount: 0
+  step-amount: 0
+  consumption-unit: pill
+  consumption-grams: 0.05
+  current-variant: Apigenin
+- name: Arugula
+  type: produce
+  default-amount: 50
+  step-amount: 5
+  consumption-unit: gram
+  consumption-grams: 1
+  current-variant: Arugula (365 by Whole Foods M 5 OZ)
+- name: Avocado
+  type: produce
+  default-amount: 140
+  step-amount: 5
+  consumption-unit: gram
+  consumption-grams: 1
+  current-variant: Avocado (365 by Whole Foods M 4 Count)
+- name: Avocado Oil
+  type: oils
+  default-amount: 0.5
+  step-amount: 0.5
+  consumption-unit: tablespoon
+  consumption-grams: 14
+  current-variant: Avocado Oil
+- name: Beef
+  type: meat
+  default-amount: 200
+  step-amount: 5
+  consumption-unit: gram
+  consumption-grams: 1
+  current-variant: Beef (ButcherBox)
+- name: Bell Peppers
+  type: produce
+  default-amount: 2
+  step-amount: 1
+  consumption-unit: piece
+  consumption-grams: 150
+  current-variant: Bell Peppers (Whole Foods Market Red)
+- name: Bison
+  type: meat
+  default-amount: 400
+  step-amount: 5
+  consumption-unit: gram
+  consumption-grams: 1
+  current-variant: Bison
+- name: Blackberries
+  type: fruit
+  default-amount: 50
+  step-amount: 5
+  consumption-unit: gram
+  consumption-grams: 1
+  current-variant: Blackberries (Whole Foods Market 6 oz)
+- name: Blueberries
+  type: fruit
+  default-amount: 50
+  step-amount: 5
+  consumption-unit: gram
+  consumption-grams: 1
+  current-variant: Blueberries (365 by Whole Foods M 32 Ounce)
+- name: Bread
+  type: carbs
+  default-amount: 0
+  step-amount: 0
+  consumption-unit: gram
+  consumption-grams: 1
+  current-variant: Bread (Food for Life 24 OZ)
+- name: Broccoli
+  type: produce
+  default-amount: 150
+  step-amount: 5
+  consumption-unit: gram
+  consumption-grams: 1
+  current-variant: Broccoli (365 by Whole Foods M 32 Ounce)
+- name: Brussels Sprouts
+  type: produce
+  default-amount: 100
+  step-amount: 5
+  consumption-unit: gram
+  consumption-grams: 1
+  current-variant: Brussels Sprouts (Whole Foods Market 1 lb)
+- name: Cauliflower
+  type: produce
+  default-amount: 100
+  step-amount: 5
+  consumption-unit: gram
+  consumption-grams: 1
+  current-variant: Cauliflower (365 by Whole Foods M 12 Ounce)
+- name: Cheese
+  type: cheese
+  default-amount: 25
+  step-amount: 5
+  consumption-unit: gram
+  consumption-grams: 1
+  current-variant: Manchego (Corcuera)
+- name: Cheese Slice
+  type: cheese
+  default-amount: 4
+  step-amount: 1
+  consumption-unit: slice
+  consumption-grams: 28
+  current-variant: Cheese Slice (Trader Joe's Colby Jack, 12 oz)
+- name: Chicken
+  type: meat
+  default-amount: 450
+  step-amount: 5
+  consumption-unit: gram
+  consumption-grams: 1
+  current-variant: Chicken (Mary's Chicken)
+- name: Clementine
+  type: fruit
+  default-amount: 74
+  step-amount: 5
+  consumption-unit: gram
+  consumption-grams: 1
+  current-variant: Clementine (Whole Foods Market 3 lb Bag)
+- name: Coconut Oil
+  type: oils
+  default-amount: 0.5
+  step-amount: 0.5
+  consumption-unit: tablespoon
+  consumption-grams: 14
+  current-variant: Coconut Oil (365 by Whole Foods M 14 Fl Oz)
+- name: Creatine
+  type: supplement
+  default-amount: 0
+  step-amount: 0
+  consumption-unit: pill
+  consumption-grams: 0.75
+  current-variant: Creatine HCl
+- name: Cucumber
+  type: produce
+  default-amount: 150
+  step-amount: 25
+  consumption-unit: gram
+  consumption-grams: 1
+  current-variant: Cucumber (Wholesum Organic Mini, 1 lb)
+- name: Eggs
+  type: proteins
+  default-amount: 5
+  step-amount: 1
+  consumption-unit: egg
+  consumption-grams: 50
+  current-variant: Eggs (365 by Whole Foods M 18 Count)
+- name: Extra Virgin Olive Oil
+  type: oils
+  default-amount: 2
+  step-amount: 0.5
+  consumption-unit: tablespoon
+  consumption-grams: 14
+  current-variant: Extra Virgin Olive Oil
+- name: Fish Oil
+  type: supplement
+  default-amount: 1
+  step-amount: 0.5
+  consumption-unit: tablespoon
+  consumption-grams: 14
+  current-variant: Fish Oil
+- name: Glycine
+  type: supplement
+  default-amount: 0
+  step-amount: 0
+  consumption-unit: pill
+  consumption-grams: 3
+  current-variant: Glycine
+- name: Ham
+  type: proteins
+  default-amount: 1
+  step-amount: 1
+  consumption-unit: slice
+  consumption-grams: 28
+  current-variant: Ham (365 Black Forest)
+- name: Jelly
+  type: carbs
+  default-amount: 0
+  step-amount: 0
+  consumption-unit: tablespoon
+  consumption-grams: 18
+  current-variant: Jelly
+- name: L-Theanine
+  type: supplement
+  default-amount: 0
+  step-amount: 0
+  consumption-unit: pill
+  consumption-grams: 0.2
+  current-variant: L-Theanine
+- name: Lamb
+  type: meat
+  default-amount: 400
+  step-amount: 5
+  consumption-unit: gram
+  consumption-grams: 1
+  current-variant: Lamb
+- name: Latte (Grande Hot)
+  type: carbs
+  default-amount: 0
+  step-amount: 0
+  consumption-unit: cup
+  consumption-grams: 1
+  current-variant: Latte (Grande Hot)
+- name: Latte (Venti Iced)
+  type: carbs
+  default-amount: 0
+  step-amount: 0
+  consumption-unit: cup
+  consumption-grams: 1
+  current-variant: Latte (Venti Iced)
+- name: Mackerel
+  type: proteins
+  default-amount: 1
+  step-amount: 1
+  consumption-unit: can
+  consumption-grams: 85
+  current-variant: Mackerel (Skinless Boneless)
+- name: Milk
+  type: proteins
+  default-amount: 1
+  step-amount: 1
+  consumption-unit: cup
+  consumption-grams: 240
+  current-variant: Milk (Clover Sonoma Pasture Raised Organic Whole, 1 Gal)
+- name: Mushrooms
+  type: produce
+  default-amount: 100
+  step-amount: 5
+  consumption-unit: gram
+  consumption-grams: 1
+  current-variant: Mushrooms (365 by Whole Foods M 8 Ounce)
+- name: Mustard
+  type: carbs
+  default-amount: 1
+  step-amount: 1
+  consumption-unit: tablespoon
+  consumption-grams: 15
+  current-variant: Mustard (Organicville 12 oz)
+- name: Nuts
+  type: nuts
+  default-amount: 20
+  step-amount: 5
+  consumption-unit: gram
+  consumption-grams: 1
+  current-variant: Macadamia Nuts (Aurora 6 OZ)
+- name: Orange
+  type: fruit
+  default-amount: 140
+  step-amount: 5
+  consumption-unit: gram
+  consumption-grams: 1
+  current-variant: Navel Orange (Whole Foods Market)
+- name: Peanut Butter
+  type: carbs
+  default-amount: 2
+  step-amount: 1
+  consumption-unit: tablespoon
+  consumption-grams: 15
+  current-variant: Peanut Butter (Once Again)
+- name: Pork Chop
+  type: meat
+  default-amount: 450
+  step-amount: 5
+  consumption-unit: gram
+  consumption-grams: 1
+  current-variant: Pork Chop
+- name: Pumpkin Seeds
+  type: nuts
+  default-amount: 30
+  step-amount: 5
+  consumption-unit: gram
+  consumption-grams: 1
+  current-variant: Pumpkin Seeds (365 by Whole Foods M 8 Ounce)
+- name: Radish
+  type: produce
+  default-amount: 50
+  step-amount: 5
+  consumption-unit: gram
+  consumption-grams: 1
+  current-variant: Radish (Whole Foods Market 12 Oz)
+- name: Raspberries
+  type: fruit
+  default-amount: 50
+  step-amount: 5
+  consumption-unit: gram
+  consumption-grams: 1
+  current-variant: Raspberries (Whole Foods Market 6 oz)
+- name: Romaine
+  type: produce
+  default-amount: 175
+  step-amount: 5
+  consumption-unit: gram
+  consumption-grams: 1
+  current-variant: Romaine
+- name: Salmon
+  type: meat
+  default-amount: 425
+  step-amount: 5
+  consumption-unit: gram
+  consumption-grams: 1
+  current-variant: Salmon (Whole Foods Market)
+- name: Sardines
+  type: proteins
+  default-amount: 1
+  step-amount: 1
+  consumption-unit: can
+  consumption-grams: 85
+  current-variant: Sardines (H2O)
+- name: SlowMag
+  type: supplement
+  default-amount: 0
+  step-amount: 0
+  consumption-unit: pill
+  consumption-grams: 1
+  current-variant: SlowMag
+- name: Spinach
+  type: produce
+  default-amount: 50
+  step-amount: 5
+  consumption-unit: gram
+  consumption-grams: 1
+  current-variant: Spinach (365 by Whole Foods M 5 oz)
+- name: Starbucks Breakfast Sandwich
+  type: carbs
+  default-amount: 0
+  step-amount: 0
+  consumption-unit: piece
+  consumption-grams: 120
+  current-variant: Bacon, Gouda & Egg Sandwich
+- name: Starbucks Protein Box
+  type: proteins
+  default-amount: 1
+  step-amount: 1
+  consumption-unit: piece
+  consumption-grams: 247
+  current-variant: Eggs & Cheddar Protein Box
+- name: Starbucks Sandwich
+  type: carbs
+  default-amount: 0
+  step-amount: 0
+  consumption-unit: piece
+  consumption-grams: 176
+  current-variant: Ham & Swiss on Baguette
+- name: Strawberries
+  type: fruit
+  default-amount: 50
+  step-amount: 5
+  consumption-unit: gram
+  consumption-grams: 1
+  current-variant: Strawberries (Whole Foods Market 1 lb)
+- name: String Cheese
+  type: cheese
+  default-amount: 5
+  step-amount: 1
+  consumption-unit: piece
+  consumption-grams: 28
+  current-variant: String Cheese (365 by Whole Foods M 12 OZ)
+- name: Sunflower Butter
+  type: carbs
+  default-amount: 2
+  step-amount: 1
+  consumption-unit: tablespoon
+  consumption-grams: 15
+  current-variant: Sunflower Butter (Once Again)
+- name: Taurine
+  type: supplement
+  default-amount: 0
+  step-amount: 0
+  consumption-unit: pill
+  consumption-grams: 1
+  current-variant: Taurine
+- name: Thorne Basic Nutrients 2/Day
+  type: supplement
+  default-amount: 0
+  step-amount: 0
+  consumption-unit: pill
+  consumption-grams: 1
+  current-variant: Thorne Basic Nutrients 2/Day
+- name: Top Sirloin Cap
+  type: meat
+  default-amount: 425
+  step-amount: 5
+  consumption-unit: gram
+  consumption-grams: 1
+  current-variant: Top Sirloin Cap
+- name: Tuna
+  type: proteins
+  default-amount: 1
+  step-amount: 1
+  consumption-unit: can
+  consumption-grams: 85
+  current-variant: Tuna (Wild Planet 5 Ounce)
+- name: Turkey
+  type: proteins
+  default-amount: 1
+  step-amount: 1
+  consumption-unit: slice
+  consumption-grams: 28
+  current-variant: Turkey W
+- name: Vitamin D3 (1000 IU)
+  type: supplement
+  default-amount: 0
+  step-amount: 0
+  consumption-unit: pill
+  consumption-grams: 1
+  current-variant: Vitamin D3 (1000 IU)

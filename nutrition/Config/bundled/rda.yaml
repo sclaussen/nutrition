@@ -1,0 +1,351 @@
+# RDA min (floor) and max (ceiling / Tolerable Upper Intake Level) by
+# nutrient, age, and gender.
+#
+# Source: nutrition/VitaminMinerals/VitaminMineral.swift (minTable / maxTable),
+# originally from https://ods.od.nih.gov/factsheets/<Nutrient>-HealthProfessional
+#
+# Lookup: walk a nutrient's rows in order and return the first row whose
+#   age <= max-age; pick the male or female column for the caller's gender.
+#   The final row of every list uses max-age: .inf so it acts as the
+#   trailing default. If no row matches (or the nutrient is absent), the
+#   code returns 0.
+#
+# Units: copper, folate, folic-acid, selenium, vitamin-a, vitamin-b12, and
+#   vitamin-k are in mcg; vitamin-d is in IU; everything else is in mg.
+#
+# Conventions:
+#   - max-age is an inclusive ceiling (age <= max-age).
+#   - Age-only nutrients (no M/F difference) repeat the same value in both
+#     male and female columns, kept uniform for losslessness.
+#   - Nutrients with no published threshold / UL emit a single .inf row of 0,
+#     exactly matching what the source code returns.
+#   - max-age: .inf represents infinity.
+#
+# Nutrients are listed in the app's fixed display order (vitaminMineralOrder).
+
+calcium:
+  unit: mg
+  min:
+    - { max-age: 0.5,  male: 200,  female: 200 }
+    - { max-age: 1,    male: 260,  female: 260 }
+    - { max-age: 3,    male: 700,  female: 700 }
+    - { max-age: 8,    male: 1000, female: 1000 }
+    - { max-age: 13,   male: 1300, female: 1300 }
+    - { max-age: 18,   male: 1300, female: 1300 }
+    - { max-age: 50,   male: 1000, female: 1000 }
+    - { max-age: 70,   male: 1000, female: 1200 }
+    - { max-age: .inf, male: 1200, female: 1200 }
+  max:
+    - { max-age: 0.5,  male: 1000, female: 1000 }
+    - { max-age: 1,    male: 1500, female: 1500 }
+    - { max-age: 8,    male: 2500, female: 2500 }
+    - { max-age: 18,   male: 3000, female: 3000 }
+    - { max-age: 50,   male: 2500, female: 2500 }
+    - { max-age: .inf, male: 2000, female: 2000 }
+
+copper:
+  unit: mcg
+  min:
+    - { max-age: 1,    male: 200, female: 200 }
+    - { max-age: 3,    male: 340, female: 340 }
+    - { max-age: 8,    male: 440, female: 440 }
+    - { max-age: 13,   male: 700, female: 700 }
+    - { max-age: 18,   male: 890, female: 890 }
+    - { max-age: .inf, male: 900, female: 900 }
+  max:
+    - { max-age: 1,    male: 0,     female: 0 }
+    - { max-age: 3,    male: 1000,  female: 1000 }
+    - { max-age: 8,    male: 3000,  female: 3000 }
+    - { max-age: 13,   male: 5000,  female: 5000 }
+    - { max-age: 18,   male: 8000,  female: 8000 }
+    - { max-age: .inf, male: 10000, female: 10000 }
+
+folate:
+  unit: mcg
+  min:
+    - { max-age: 0.5,  male: 65,  female: 65 }
+    - { max-age: 1,    male: 80,  female: 80 }
+    - { max-age: 3,    male: 150, female: 150 }
+    - { max-age: 8,    male: 200, female: 200 }
+    - { max-age: 13,   male: 300, female: 300 }
+    - { max-age: .inf, male: 400, female: 400 }
+  max:
+    - { max-age: 3,    male: 300,  female: 300 }
+    - { max-age: 8,    male: 400,  female: 400 }
+    - { max-age: 13,   male: 600,  female: 600 }
+    - { max-age: 18,   male: 800,  female: 800 }
+    - { max-age: .inf, male: 1000, female: 1000 }
+
+folic-acid:
+  unit: mcg
+  min:
+    - { max-age: .inf, male: 0, female: 0 }
+  max:
+    - { max-age: .inf, male: 0, female: 0 }
+
+iron:
+  unit: mg
+  min:
+    - { max-age: 0.5,  male: 0.27, female: 0.27 }
+    - { max-age: 1,    male: 11,   female: 11 }
+    - { max-age: 3,    male: 7,    female: 7 }
+    - { max-age: 8,    male: 10,   female: 10 }
+    - { max-age: 13,   male: 8,    female: 8 }
+    - { max-age: 18,   male: 11,   female: 15 }
+    - { max-age: 50,   male: 8,    female: 18 }
+    - { max-age: .inf, male: 8,    female: 8 }
+  max:
+    - { max-age: 13,   male: 40, female: 40 }
+    - { max-age: .inf, male: 45, female: 45 }
+
+magnesium:
+  unit: mg
+  min:
+    - { max-age: 0.5,  male: 30,  female: 30 }
+    - { max-age: 1,    male: 75,  female: 75 }
+    - { max-age: 3,    male: 80,  female: 80 }
+    - { max-age: 8,    male: 130, female: 130 }
+    - { max-age: 13,   male: 240, female: 240 }
+    - { max-age: 18,   male: 410, female: 360 }
+    - { max-age: 30,   male: 400, female: 310 }
+    - { max-age: 50,   male: 420, female: 320 }
+    - { max-age: .inf, male: 420, female: 320 }
+  max:
+    - { max-age: 1,    male: 0,   female: 0 }
+    - { max-age: 3,    male: 65,  female: 65 }
+    - { max-age: 8,    male: 110, female: 110 }
+    - { max-age: .inf, male: 350, female: 350 }
+
+manganese:
+  unit: mg
+  min:
+    - { max-age: 0.5,  male: 0.003, female: 0.003 }
+    - { max-age: 1,    male: 0.6,   female: 0.6 }
+    - { max-age: 3,    male: 1.2,   female: 1.2 }
+    - { max-age: 8,    male: 1.5,   female: 1.5 }
+    - { max-age: 13,   male: 1.9,   female: 1.6 }
+    - { max-age: 18,   male: 2.2,   female: 1.6 }
+    - { max-age: .inf, male: 2.3,   female: 1.8 }
+  max:
+    - { max-age: 1,    male: 0,  female: 0 }
+    - { max-age: 3,    male: 2,  female: 2 }
+    - { max-age: 8,    male: 3,  female: 3 }
+    - { max-age: 13,   male: 6,  female: 6 }
+    - { max-age: 18,   male: 9,  female: 9 }
+    - { max-age: .inf, male: 11, female: 11 }
+
+niacin:
+  unit: mg
+  min:
+    - { max-age: 0.5,  male: 2,  female: 2 }
+    - { max-age: 1,    male: 4,  female: 4 }
+    - { max-age: 3,    male: 6,  female: 6 }
+    - { max-age: 8,    male: 8,  female: 8 }
+    - { max-age: 13,   male: 12, female: 12 }
+    - { max-age: .inf, male: 16, female: 14 }
+  max:
+    - { max-age: 1,    male: 0,  female: 0 }
+    - { max-age: 3,    male: 10, female: 10 }
+    - { max-age: 8,    male: 15, female: 15 }
+    - { max-age: 13,   male: 20, female: 20 }
+    - { max-age: 18,   male: 30, female: 30 }
+    - { max-age: .inf, male: 35, female: 35 }
+
+pantothenic-acid:
+  unit: mg
+  min:
+    - { max-age: 0.5,  male: 1.7, female: 1.7 }
+    - { max-age: 1,    male: 1.8, female: 1.8 }
+    - { max-age: 3,    male: 2,   female: 2 }
+    - { max-age: 8,    male: 3,   female: 3 }
+    - { max-age: 13,   male: 4,   female: 4 }
+    - { max-age: .inf, male: 5,   female: 5 }
+  max:
+    - { max-age: .inf, male: 0, female: 0 }
+
+phosphorus:
+  unit: mg
+  min:
+    - { max-age: 0.5,  male: 100,  female: 100 }
+    - { max-age: 1,    male: 275,  female: 275 }
+    - { max-age: 3,    male: 460,  female: 460 }
+    - { max-age: 8,    male: 500,  female: 500 }
+    - { max-age: 18,   male: 1250, female: 1250 }
+    - { max-age: .inf, male: 700,  female: 700 }
+  max:
+    - { max-age: 8,    male: 3000, female: 3000 }
+    - { max-age: 70,   male: 4000, female: 4000 }
+    - { max-age: .inf, male: 3000, female: 3000 }
+
+potassium:
+  unit: mg
+  min:
+    - { max-age: 0.5,  male: 400,  female: 400 }
+    - { max-age: 1,    male: 860,  female: 860 }
+    - { max-age: 3,    male: 2000, female: 2000 }
+    - { max-age: 8,    male: 2300, female: 2300 }
+    - { max-age: 13,   male: 2500, female: 2300 }
+    - { max-age: 18,   male: 3000, female: 2300 }
+    - { max-age: .inf, male: 3400, female: 2600 }
+  max:
+    - { max-age: .inf, male: 0, female: 0 }
+
+riboflavin:
+  unit: mg
+  min:
+    - { max-age: 0.5,  male: 0.3, female: 0.3 }
+    - { max-age: 1,    male: 0.4, female: 0.4 }
+    - { max-age: 3,    male: 0.5, female: 0.5 }
+    - { max-age: 8,    male: 0.6, female: 0.6 }
+    - { max-age: 13,   male: 0.9, female: 0.9 }
+    - { max-age: 18,   male: 1.3, female: 1.0 }
+    - { max-age: .inf, male: 1.3, female: 1.1 }
+  max:
+    - { max-age: .inf, male: 0, female: 0 }
+
+selenium:
+  unit: mcg
+  min:
+    - { max-age: 0.5,  male: 15, female: 15 }
+    - { max-age: 3,    male: 20, female: 20 }
+    - { max-age: 8,    male: 30, female: 30 }
+    - { max-age: 13,   male: 40, female: 40 }
+    - { max-age: .inf, male: 55, female: 55 }
+  max:
+    - { max-age: 0.5,  male: 45,  female: 45 }
+    - { max-age: 1,    male: 60,  female: 60 }
+    - { max-age: 3,    male: 90,  female: 90 }
+    - { max-age: 8,    male: 150, female: 150 }
+    - { max-age: 13,   male: 280, female: 280 }
+    - { max-age: .inf, male: 400, female: 400 }
+
+thiamin:
+  unit: mg
+  min:
+    - { max-age: 0.5,  male: 0.2, female: 0.2 }
+    - { max-age: 1,    male: 0.3, female: 0.3 }
+    - { max-age: 3,    male: 0.5, female: 0.5 }
+    - { max-age: 8,    male: 0.6, female: 0.6 }
+    - { max-age: 13,   male: 0.9, female: 0.9 }
+    - { max-age: 18,   male: 1.2, female: 1.0 }
+    - { max-age: .inf, male: 1.2, female: 1.1 }
+  max:
+    - { max-age: .inf, male: 0, female: 0 }
+
+vitamin-a:
+  unit: mcg
+  min:
+    - { max-age: 0.5,  male: 400, female: 400 }
+    - { max-age: 1,    male: 500, female: 500 }
+    - { max-age: 3,    male: 300, female: 300 }
+    - { max-age: 8,    male: 400, female: 400 }
+    - { max-age: 13,   male: 600, female: 600 }
+    - { max-age: .inf, male: 900, female: 700 }
+  max:
+    - { max-age: 1,    male: 600,  female: 600 }
+    - { max-age: 3,    male: 600,  female: 600 }
+    - { max-age: 8,    male: 900,  female: 900 }
+    - { max-age: 13,   male: 1700, female: 1700 }
+    - { max-age: 18,   male: 2800, female: 2800 }
+    - { max-age: .inf, male: 3000, female: 3000 }
+
+vitamin-b12:
+  unit: mcg
+  min:
+    - { max-age: 0.5,  male: 0.4, female: 0.4 }
+    - { max-age: 1,    male: 0.5, female: 0.5 }
+    - { max-age: 3,    male: 0.9, female: 0.9 }
+    - { max-age: 8,    male: 1.2, female: 1.2 }
+    - { max-age: 13,   male: 1.8, female: 1.8 }
+    - { max-age: .inf, male: 2.4, female: 2.4 }
+  max:
+    - { max-age: .inf, male: 0, female: 0 }
+
+vitamin-b6:
+  unit: mg
+  min:
+    - { max-age: 0.5,  male: 0.1, female: 0.1 }
+    - { max-age: 1,    male: 0.3, female: 0.3 }
+    - { max-age: 3,    male: 0.5, female: 0.5 }
+    - { max-age: 8,    male: 0.6, female: 0.6 }
+    - { max-age: 13,   male: 1.0, female: 1.0 }
+    - { max-age: 18,   male: 1.3, female: 1.2 }
+    - { max-age: 50,   male: 1.3, female: 1.3 }
+    - { max-age: .inf, male: 1.7, female: 1.5 }
+  max:
+    - { max-age: 1,    male: 0,   female: 0 }
+    - { max-age: 3,    male: 30,  female: 30 }
+    - { max-age: 8,    male: 40,  female: 40 }
+    - { max-age: 13,   male: 60,  female: 60 }
+    - { max-age: 18,   male: 80,  female: 80 }
+    - { max-age: .inf, male: 100, female: 100 }
+
+vitamin-c:
+  unit: mg
+  min:
+    - { max-age: 0.5,  male: 40, female: 40 }
+    - { max-age: 1,    male: 50, female: 50 }
+    - { max-age: 3,    male: 15, female: 15 }
+    - { max-age: 8,    male: 25, female: 25 }
+    - { max-age: 13,   male: 45, female: 45 }
+    - { max-age: 18,   male: 75, female: 65 }
+    - { max-age: .inf, male: 90, female: 75 }
+  max:
+    - { max-age: 1,    male: 0,    female: 0 }
+    - { max-age: 3,    male: 400,  female: 400 }
+    - { max-age: 8,    male: 650,  female: 650 }
+    - { max-age: 13,   male: 1200, female: 1200 }
+    - { max-age: 18,   male: 1800, female: 1800 }
+    - { max-age: .inf, male: 2000, female: 2000 }
+
+vitamin-d:
+  unit: IU
+  min:
+    - { max-age: 1,    male: 400, female: 400 }
+    - { max-age: 70,   male: 600, female: 600 }
+    - { max-age: .inf, male: 800, female: 800 }
+  max:
+    - { max-age: .inf, male: 0, female: 0 }
+
+vitamin-e:
+  unit: mg
+  min:
+    - { max-age: 0.5,  male: 4,  female: 4 }
+    - { max-age: 1,    male: 5,  female: 5 }
+    - { max-age: 3,    male: 6,  female: 6 }
+    - { max-age: 8,    male: 7,  female: 7 }
+    - { max-age: 13,   male: 11, female: 11 }
+    - { max-age: .inf, male: 15, female: 15 }
+  max:
+    - { max-age: .inf, male: 0, female: 0 }
+
+vitamin-k:
+  unit: mcg
+  min:
+    - { max-age: 0.5,  male: 2.0, female: 2.0 }
+    - { max-age: 1,    male: 2.5, female: 2.5 }
+    - { max-age: 3,    male: 30,  female: 30 }
+    - { max-age: 8,    male: 55,  female: 55 }
+    - { max-age: 13,   male: 60,  female: 60 }
+    - { max-age: 18,   male: 75,  female: 75 }
+    - { max-age: .inf, male: 120, female: 90 }
+  max:
+    - { max-age: .inf, male: 0, female: 0 }
+
+zinc:
+  unit: mg
+  min:
+    - { max-age: 0.5,  male: 2,  female: 2 }
+    - { max-age: 3,    male: 3,  female: 3 }
+    - { max-age: 8,    male: 5,  female: 5 }
+    - { max-age: 13,   male: 8,  female: 8 }
+    - { max-age: 18,   male: 11, female: 9 }
+    - { max-age: .inf, male: 11, female: 8 }
+  max:
+    - { max-age: 0.5,  male: 4,  female: 4 }
+    - { max-age: 1,    male: 5,  female: 5 }
+    - { max-age: 3,    male: 7,  female: 7 }
+    - { max-age: 8,    male: 12, female: 12 }
+    - { max-age: 13,   male: 23, female: 23 }
+    - { max-age: 18,   male: 34, female: 34 }
+    - { max-age: .inf, male: 40, female: 40 }

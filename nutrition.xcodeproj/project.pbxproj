@@ -7,7 +7,11 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		09867BEF6CCB838BC6D58892 /* ConfigStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41FB9BCE1C42244BA65C34F9 /* ConfigStore.swift */; };
+		12180E7ABD217234FF041002 /* ingredients.yaml in Resources */ = {isa = PBXBuildFile; fileRef = 2BBEED94C282DB9646A0DADE /* ingredients.yaml */; };
+		162483F0AAB29088B36DF313 /* supplements.yaml in Resources */ = {isa = PBXBuildFile; fileRef = 595A4B22A7AC471FE88851B6 /* supplements.yaml */; };
 		1BF393D5C1991B2485D95BF7 /* DailySummary.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06217FE9A79EDCB3171D83C4 /* DailySummary.swift */; };
+		22531464ACC70A46F22AFB32 /* ConfigModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA990BF49C664080AEB1F391 /* ConfigModels.swift */; };
 		3402286C27D7C7C800741FBB /* HealthKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3402286B27D7C7C800741FBB /* HealthKit.framework */; };
 		3402286E27D8298E00741FBB /* Dashboard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3402286D27D8298E00741FBB /* Dashboard.swift */; };
 		3405D4AA28EA4AD10031BEE2 /* VitaminMineralRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3405D4A928EA4AD10031BEE2 /* VitaminMineralRow.swift */; };
@@ -44,11 +48,26 @@
 		34E3237B28F2542900832D9C /* VitaminMineralType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34E3237828F2542900832D9C /* VitaminMineralType.swift */; };
 		34E3237C28F2542900832D9C /* VitaminMineral.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34E3237928F2542900832D9C /* VitaminMineral.swift */; };
 		34F8003B27DBFAD1002F1380 /* Macros.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34F8003A27DBFAD1002F1380 /* Macros.swift */; };
+		3EB6F1325B383C8552AE5B7C /* rda.yaml in Resources */ = {isa = PBXBuildFile; fileRef = E04333D018239E0C09473BCA /* rda.yaml */; };
+		3EB821676E3216D2725C87A0 /* ConfigSync.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEC4638CECE8810CE04E6255 /* ConfigSync.swift */; };
+		6AE298997BDEAFAEE0CEDC14 /* food.yaml in Resources */ = {isa = PBXBuildFile; fileRef = CEAEFF4BFDB6A9600807B7D1 /* food.yaml */; };
+		7136F611E79107FDFCCDA73C /* meals.yaml in Resources */ = {isa = PBXBuildFile; fileRef = CF06E6F220810B8EF076EB6F /* meals.yaml */; };
+		73A5B2F19F3E082F24C5240D /* HamburgerMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B03775DCB1777F66EAFF49E /* HamburgerMenu.swift */; };
 		86BF27A2B218BF91A4B81D65 /* NumberEntrySheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 066AB832392898DA1FF9F840 /* NumberEntrySheet.swift */; };
 		8956804D98C6E4DDC53DF0C7 /* MealIngredientDetail.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F73DCC1042045FC0D1D224E /* MealIngredientDetail.swift */; };
 		9EFED2D8597BBE4683EDBFBE /* VitaminMineralActuals.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07EB3DC95824990DAAB347D4 /* VitaminMineralActuals.swift */; };
 		C575CA58D52D8B6140F52ACE /* VitaminMineralContributors.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7C951C6CE4D00BFD5B8844A /* VitaminMineralContributors.swift */; };
 		CDF59C31B84DD2F4B6AB91C5 /* AmountStepper.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2933EC65AD069B7C9E529AC /* AmountStepper.swift */; };
+		EBA6C673BD73295C298BE576 /* TokenConfigSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00C9F20852F9174B4F2F0A2B /* TokenConfigSheet.swift */; };
+		F0E32724D41C5596C4F42528 /* Yams in Frameworks */ = {isa = PBXBuildFile; productRef = CBDA5A394A5094D43AAABF7D /* Yams */; };
+		FE0200000000000000000001 /* IngredientNutrientDetail.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE0100000000000000000001 /* IngredientNutrientDetail.swift */; };
+		FE0200000000000000000002 /* IngredientCostDetail.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE0100000000000000000002 /* IngredientCostDetail.swift */; };
+		FE0200000000000000000003 /* Food.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE0100000000000000000003 /* Food.swift */; };
+		FE0200000000000000000004 /* GroupMemberPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE0100000000000000000004 /* GroupMemberPicker.swift */; };
+		FE0200000000000000000005 /* DayLog.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE0100000000000000000005 /* DayLog.swift */; };
+		FE0200000000000000000006 /* DayLogMgr.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE0100000000000000000006 /* DayLogMgr.swift */; };
+		FE0200000000000000000007 /* HistoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE0100000000000000000007 /* HistoryView.swift */; };
+		FE0200000000000000000008 /* DayLogDetail.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE0100000000000000000008 /* DayLogDetail.swift */; };
 		FF020000000000000000001A /* ParsedIngredient.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF010000000000000000000A /* ParsedIngredient.swift */; };
 		FF020000000000000000001B /* ScanDiff.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF010000000000000000000B /* ScanDiff.swift */; };
 		FF020000000000000000001C /* ScanReviewRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF010000000000000000000C /* ScanReviewRouter.swift */; };
@@ -60,20 +79,14 @@
 		FF0200000000000000000022 /* KeychainStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF0100000000000000000012 /* KeychainStore.swift */; };
 		FF0200000000000000000023 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF0100000000000000000013 /* SettingsView.swift */; };
 		FF0200000000000000000024 /* VerifyAllWalkthrough.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF0100000000000000000014 /* VerifyAllWalkthrough.swift */; };
-		FE0200000000000000000001 /* IngredientNutrientDetail.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE0100000000000000000001 /* IngredientNutrientDetail.swift */; };
-		FE0200000000000000000002 /* IngredientCostDetail.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE0100000000000000000002 /* IngredientCostDetail.swift */; };
-		FE0200000000000000000003 /* Food.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE0100000000000000000003 /* Food.swift */; };
-		FE0200000000000000000004 /* GroupMemberPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE0100000000000000000004 /* GroupMemberPicker.swift */; };
-		FE0200000000000000000005 /* DayLog.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE0100000000000000000005 /* DayLog.swift */; };
-		FE0200000000000000000006 /* DayLogMgr.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE0100000000000000000006 /* DayLogMgr.swift */; };
-		FE0200000000000000000007 /* HistoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE0100000000000000000007 /* HistoryView.swift */; };
-		FE0200000000000000000008 /* DayLogDetail.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE0100000000000000000008 /* DayLogDetail.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		00C9F20852F9174B4F2F0A2B /* TokenConfigSheet.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = TokenConfigSheet.swift; path = ../../Config/TokenConfigSheet.swift; sourceTree = "<group>"; };
 		06217FE9A79EDCB3171D83C4 /* DailySummary.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = DailySummary.swift; sourceTree = "<group>"; };
 		066AB832392898DA1FF9F840 /* NumberEntrySheet.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = NumberEntrySheet.swift; sourceTree = "<group>"; };
 		07EB3DC95824990DAAB347D4 /* VitaminMineralActuals.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = VitaminMineralActuals.swift; sourceTree = "<group>"; };
+		2BBEED94C282DB9646A0DADE /* ingredients.yaml */ = {isa = PBXFileReference; includeInIndex = 1; name = ingredients.yaml; path = ../../../../../Config/bundled/ingredients.yaml; sourceTree = "<group>"; };
 		3402286927D7C7C800741FBB /* nutrition.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = nutrition.entitlements; sourceTree = "<group>"; };
 		3402286B27D7C7C800741FBB /* HealthKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = HealthKit.framework; path = System/Library/Frameworks/HealthKit.framework; sourceTree = SDKROOT; };
 		3402286D27D8298E00741FBB /* Dashboard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Dashboard.swift; sourceTree = "<group>"; };
@@ -112,9 +125,25 @@
 		34E3237828F2542900832D9C /* VitaminMineralType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VitaminMineralType.swift; sourceTree = "<group>"; };
 		34E3237928F2542900832D9C /* VitaminMineral.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VitaminMineral.swift; sourceTree = "<group>"; };
 		34F8003A27DBFAD1002F1380 /* Macros.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Macros.swift; sourceTree = "<group>"; };
+		41FB9BCE1C42244BA65C34F9 /* ConfigStore.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ConfigStore.swift; path = ../../Config/ConfigStore.swift; sourceTree = "<group>"; };
+		595A4B22A7AC471FE88851B6 /* supplements.yaml */ = {isa = PBXFileReference; includeInIndex = 1; name = supplements.yaml; path = ../../../../../Config/bundled/supplements.yaml; sourceTree = "<group>"; };
+		5B03775DCB1777F66EAFF49E /* HamburgerMenu.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = HamburgerMenu.swift; path = ../../Config/HamburgerMenu.swift; sourceTree = "<group>"; };
 		5F73DCC1042045FC0D1D224E /* MealIngredientDetail.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = MealIngredientDetail.swift; sourceTree = "<group>"; };
+		BEC4638CECE8810CE04E6255 /* ConfigSync.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ConfigSync.swift; path = ../../Config/ConfigSync.swift; sourceTree = "<group>"; };
+		CA990BF49C664080AEB1F391 /* ConfigModels.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ConfigModels.swift; path = ../../Config/ConfigModels.swift; sourceTree = "<group>"; };
+		CEAEFF4BFDB6A9600807B7D1 /* food.yaml */ = {isa = PBXFileReference; includeInIndex = 1; name = food.yaml; path = ../../../../../Config/bundled/food.yaml; sourceTree = "<group>"; };
+		CF06E6F220810B8EF076EB6F /* meals.yaml */ = {isa = PBXFileReference; includeInIndex = 1; name = meals.yaml; path = ../../../../../Config/bundled/meals.yaml; sourceTree = "<group>"; };
+		E04333D018239E0C09473BCA /* rda.yaml */ = {isa = PBXFileReference; includeInIndex = 1; name = rda.yaml; path = ../../../../../Config/bundled/rda.yaml; sourceTree = "<group>"; };
 		F2933EC65AD069B7C9E529AC /* AmountStepper.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = AmountStepper.swift; sourceTree = "<group>"; };
 		F7C951C6CE4D00BFD5B8844A /* VitaminMineralContributors.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = VitaminMineralContributors.swift; sourceTree = "<group>"; };
+		FE0100000000000000000001 /* IngredientNutrientDetail.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IngredientNutrientDetail.swift; sourceTree = "<group>"; };
+		FE0100000000000000000002 /* IngredientCostDetail.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IngredientCostDetail.swift; sourceTree = "<group>"; };
+		FE0100000000000000000003 /* Food.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Food.swift; sourceTree = "<group>"; };
+		FE0100000000000000000004 /* GroupMemberPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupMemberPicker.swift; sourceTree = "<group>"; };
+		FE0100000000000000000005 /* DayLog.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DayLog.swift; sourceTree = "<group>"; };
+		FE0100000000000000000006 /* DayLogMgr.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DayLogMgr.swift; sourceTree = "<group>"; };
+		FE0100000000000000000007 /* HistoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryView.swift; sourceTree = "<group>"; };
+		FE0100000000000000000008 /* DayLogDetail.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DayLogDetail.swift; sourceTree = "<group>"; };
 		FF010000000000000000000A /* ParsedIngredient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ParsedIngredient.swift; sourceTree = "<group>"; };
 		FF010000000000000000000B /* ScanDiff.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScanDiff.swift; sourceTree = "<group>"; };
 		FF010000000000000000000C /* ScanReviewRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScanReviewRouter.swift; sourceTree = "<group>"; };
@@ -126,14 +155,6 @@
 		FF0100000000000000000012 /* KeychainStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeychainStore.swift; sourceTree = "<group>"; };
 		FF0100000000000000000013 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		FF0100000000000000000014 /* VerifyAllWalkthrough.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VerifyAllWalkthrough.swift; sourceTree = "<group>"; };
-		FE0100000000000000000001 /* IngredientNutrientDetail.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IngredientNutrientDetail.swift; sourceTree = "<group>"; };
-		FE0100000000000000000002 /* IngredientCostDetail.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IngredientCostDetail.swift; sourceTree = "<group>"; };
-		FE0100000000000000000003 /* Food.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Food.swift; sourceTree = "<group>"; };
-		FE0100000000000000000004 /* GroupMemberPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupMemberPicker.swift; sourceTree = "<group>"; };
-		FE0100000000000000000005 /* DayLog.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DayLog.swift; sourceTree = "<group>"; };
-		FE0100000000000000000006 /* DayLogMgr.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DayLogMgr.swift; sourceTree = "<group>"; };
-		FE0100000000000000000007 /* HistoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryView.swift; sourceTree = "<group>"; };
-		FE0100000000000000000008 /* DayLogDetail.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DayLogDetail.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -142,12 +163,26 @@
 			buildActionMask = 2147483647;
 			files = (
 				3402286C27D7C7C800741FBB /* HealthKit.framework in Frameworks */,
+				F0E32724D41C5596C4F42528 /* Yams in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		2F0ECD2495DC2450BF581D8D /* bundled */ = {
+			isa = PBXGroup;
+			children = (
+				CEAEFF4BFDB6A9600807B7D1 /* food.yaml */,
+				2BBEED94C282DB9646A0DADE /* ingredients.yaml */,
+				CF06E6F220810B8EF076EB6F /* meals.yaml */,
+				E04333D018239E0C09473BCA /* rda.yaml */,
+				595A4B22A7AC471FE88851B6 /* supplements.yaml */,
+			);
+			name = bundled;
+			path = nutrition/Config/bundled;
+			sourceTree = "<group>";
+		};
 		3402286A27D7C7C800741FBB /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
@@ -201,6 +236,7 @@
 				34DC9A3827E8D8E40082D62E /* Components */,
 				342CD48D27E25389008703C2 /* Extensions */,
 				349EE53627C99AC40072255A /* Preview Content */,
+				EFFD99E6A933881EABA08C11 /* Config */,
 			);
 			path = nutrition;
 			sourceTree = "<group>";
@@ -228,25 +264,6 @@
 				F2933EC65AD069B7C9E529AC /* AmountStepper.swift */,
 			);
 			path = Components;
-			sourceTree = "<group>";
-		};
-		FE0100000000000000000010 /* Food */ = {
-			isa = PBXGroup;
-			children = (
-				FE0100000000000000000003 /* Food.swift */,
-			);
-			path = Food;
-			sourceTree = "<group>";
-		};
-		FE0100000000000000000011 /* History */ = {
-			isa = PBXGroup;
-			children = (
-				FE0100000000000000000005 /* DayLog.swift */,
-				FE0100000000000000000006 /* DayLogMgr.swift */,
-				FE0100000000000000000007 /* HistoryView.swift */,
-				FE0100000000000000000008 /* DayLogDetail.swift */,
-			);
-			path = History;
 			sourceTree = "<group>";
 		};
 		34DE420627FA6DF40078448F /* Meal */ = {
@@ -312,6 +329,39 @@
 			path = VitaminMinerals;
 			sourceTree = "<group>";
 		};
+		EFFD99E6A933881EABA08C11 /* Config */ = {
+			isa = PBXGroup;
+			children = (
+				CA990BF49C664080AEB1F391 /* ConfigModels.swift */,
+				41FB9BCE1C42244BA65C34F9 /* ConfigStore.swift */,
+				BEC4638CECE8810CE04E6255 /* ConfigSync.swift */,
+				5B03775DCB1777F66EAFF49E /* HamburgerMenu.swift */,
+				00C9F20852F9174B4F2F0A2B /* TokenConfigSheet.swift */,
+				2F0ECD2495DC2450BF581D8D /* bundled */,
+			);
+			name = Config;
+			path = nutrition/Config;
+			sourceTree = "<group>";
+		};
+		FE0100000000000000000010 /* Food */ = {
+			isa = PBXGroup;
+			children = (
+				FE0100000000000000000003 /* Food.swift */,
+			);
+			path = Food;
+			sourceTree = "<group>";
+		};
+		FE0100000000000000000011 /* History */ = {
+			isa = PBXGroup;
+			children = (
+				FE0100000000000000000005 /* DayLog.swift */,
+				FE0100000000000000000006 /* DayLogMgr.swift */,
+				FE0100000000000000000007 /* HistoryView.swift */,
+				FE0100000000000000000008 /* DayLogDetail.swift */,
+			);
+			path = History;
+			sourceTree = "<group>";
+		};
 		FF0300000000000000000030 /* Scanner */ = {
 			isa = PBXGroup;
 			children = (
@@ -353,6 +403,9 @@
 			dependencies = (
 			);
 			name = nutrition;
+			packageProductDependencies = (
+				CBDA5A394A5094D43AAABF7D /* Yams */,
+			);
 			productName = nutrition;
 			productReference = 349EE52D27C99AC30072255A /* Nutrition.app */;
 			productType = "com.apple.product-type.application";
@@ -381,6 +434,9 @@
 				Base,
 			);
 			mainGroup = 349EE52427C99AC30072255A;
+			packageReferences = (
+				A5AAFBF4425C839733F353DA /* XCRemoteSwiftPackageReference "Yams" */,
+			);
 			productRefGroup = 349EE52E27C99AC30072255A /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -397,6 +453,11 @@
 			files = (
 				349EE53827C99AC40072255A /* Preview Assets.xcassets in Resources */,
 				349EE53527C99AC40072255A /* Assets.xcassets in Resources */,
+				6AE298997BDEAFAEE0CEDC14 /* food.yaml in Resources */,
+				12180E7ABD217234FF041002 /* ingredients.yaml in Resources */,
+				7136F611E79107FDFCCDA73C /* meals.yaml in Resources */,
+				3EB6F1325B383C8552AE5B7C /* rda.yaml in Resources */,
+				162483F0AAB29088B36DF313 /* supplements.yaml in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -465,6 +526,11 @@
 				FE0200000000000000000006 /* DayLogMgr.swift in Sources */,
 				FE0200000000000000000007 /* HistoryView.swift in Sources */,
 				FE0200000000000000000008 /* DayLogDetail.swift in Sources */,
+				22531464ACC70A46F22AFB32 /* ConfigModels.swift in Sources */,
+				09867BEF6CCB838BC6D58892 /* ConfigStore.swift in Sources */,
+				3EB821676E3216D2725C87A0 /* ConfigSync.swift in Sources */,
+				73A5B2F19F3E082F24C5240D /* HamburgerMenu.swift in Sources */,
+				EBA6C673BD73295C298BE576 /* TokenConfigSheet.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -679,6 +745,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		A5AAFBF4425C839733F353DA /* XCRemoteSwiftPackageReference "Yams" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/jpsim/Yams.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 5.0.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		CBDA5A394A5094D43AAABF7D /* Yams */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = A5AAFBF4425C839733F353DA /* XCRemoteSwiftPackageReference "Yams" */;
+			productName = Yams;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 349EE52527C99AC30072255A /* Project object */;
 }
