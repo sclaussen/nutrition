@@ -381,21 +381,7 @@ struct MealList: View {
             // ----- Custom compact toolbar -----
             HStack(spacing: 0) {
 
-                // App-level actions (configure GitHub token, refresh data from
-                // the nutrition-config repo). More header items move under here later.
-                HamburgerMenu()
-                  .frame(width: 44)
-
-                // Reset (was the navigation-slot Edit button).
-                Button {
-                    resetMealIngredientsAlert = true
-                } label: {
-                    Image(systemName: "arrow.uturn.backward")
-                }
-                  .frame(width: 44)
-                  .foregroundColor(Color.theme.blueYellow)
-
-                Spacer()
+                // ----- Quick-action icons (kept in the bar) -----
 
                 // Add a Food to the meal. Opens a picker of every
                 // active Food (≥1 member with foodActive == true)
@@ -409,11 +395,8 @@ struct MealList: View {
                   .frame(width: 44)
                   .foregroundColor(Color.theme.blackWhiteSecondary)
 
-                // Fixed 18pt spacers between the middle three
-                // icons — roughly doubles the visible glyph-to-
-                // glyph gap (was ~18.5pt of empty room inside the
-                // 44pt frames; +18 makes it ~37pt).
                 Spacer().frame(width: 18)
+                // Show / hide supplements.
                 Button {
                     showSupplements.toggle()
                 } label: {
@@ -423,20 +406,8 @@ struct MealList: View {
                   .foregroundColor(showSupplements ? Color.theme.blueYellow : Color.theme.blackWhiteSecondary)
 
                 Spacer().frame(width: 18)
-                Button {
-                    vmListActive = true
-                } label: {
-                    Image(systemName: "pills")
-                }
-                  .frame(width: 44)
-                  .foregroundColor(Color.theme.blueYellow)
-
-                Spacer().frame(width: 18)
-                // LLM scanner — rendered 50% larger than the
-                // other cluster glyphs (the inherited toolbar
-                // size is 25.5; 25.5 × 1.5 ≈ 38) since it's the
-                // primary action. Same scanner reachable from
-                // the Prep page's centered toolbar.
+                // LLM scanner — rendered 50% larger than the other
+                // glyphs since it's the primary action.
                 Button {
                     showCaptureSheet = true
                 } label: {
@@ -446,28 +417,34 @@ struct MealList: View {
                   .frame(width: 56)
                   .foregroundColor(Color.theme.blueYellow)
 
-                Spacer().frame(width: 18)
-                // Meal cost breakdown — every meal ingredient
-                // sorted by its cost contribution (cost/gram ×
-                // grams consumed), most expensive first.
-                Button {
-                    costDetailActive = true
-                } label: {
-                    Image(systemName: "dollarsign.circle")
-                }
-                  .frame(width: 44)
-                  .foregroundColor(Color.theme.blueYellow)
-
                 Spacer()
 
-                // Settings (was the primaryAction Add link).
-                Button {
-                    mealConfigureActive.toggle()
-                } label: {
-                    Image(systemName: "gear")
+                // ----- Hamburger menu (right) -----
+                // Secondary actions relocated off the bar as labeled
+                // items, plus the config actions (token / refresh).
+                HamburgerMenu {
+                    Button {
+                        resetMealIngredientsAlert = true
+                    } label: {
+                        Label("Reset meal", systemImage: "arrow.uturn.backward")
+                    }
+                    Button {
+                        vmListActive = true
+                    } label: {
+                        Label("Vitamins & minerals", systemImage: "pills")
+                    }
+                    Button {
+                        costDetailActive = true
+                    } label: {
+                        Label("Cost breakdown", systemImage: "dollarsign.circle")
+                    }
+                    Button {
+                        mealConfigureActive.toggle()
+                    } label: {
+                        Label("Meal settings", systemImage: "gear")
+                    }
                 }
                   .frame(width: 44)
-                  .foregroundColor(Color.theme.blueYellow)
             }
               .font(.system(size: 22.95))
               .padding(.horizontal, 8)

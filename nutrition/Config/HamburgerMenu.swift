@@ -15,15 +15,31 @@ import SwiftUI
 // changes required. All presentation state (sheet, refreshing
 // flag, result alert) is kept self-contained here.
 // ============================================================
-struct HamburgerMenu: View {
+struct HamburgerMenu<Extra: View>: View {
+
+    // Caller-supplied menu items (the header's relocated actions —
+    // Reset / Vitamins & minerals / Cost / Settings). Rendered as the
+    // first section so they read as the primary menu content.
+    @ViewBuilder private let extra: Extra
+
+    init(@ViewBuilder extra: () -> Extra = { EmptyView() }) {
+        self.extra = extra()
+    }
 
     @State private var showTokenSheet = false
     @State private var isRefreshing = false
     @State private var refreshAlert: RefreshAlert? = nil
 
+    // A GitHub token must be configured before Refresh can run. Read
+    // live each time the menu opens (body re-evaluates), and again
+    // after the token sheet dismisses.
+    private var hasToken: Bool { !(ConfigKeychain.githubToken() ?? "").isEmpty }
+
 
     var body: some View {
         Menu {
+            Section { extra }
+
             Section {
                 Button {
                     showTokenSheet = true
@@ -40,11 +56,9 @@ struct HamburgerMenu: View {
                         Label("Refresh data", systemImage: "arrow.triangle.2.circlepath")
                     }
                 }
-                  .disabled(isRefreshing)
+                  // Greyed out until a GitHub token is configured.
+                  .disabled(isRefreshing || !hasToken)
             }
-
-            // Future section: the orchestrator will relocate the
-            // gear / scanner / cost header buttons here.
         } label: {
             Image(systemName: "line.3.horizontal")
               .foregroundColor(Color.theme.blueYellow)
