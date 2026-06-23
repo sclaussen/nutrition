@@ -396,26 +396,14 @@ struct MealList: View {
                   .foregroundColor(Color.theme.blackWhiteSecondary)
 
                 Spacer().frame(width: 18)
-                // Show / hide supplements.
+                // Reset the meal back to its seeded ingredients.
                 Button {
-                    showSupplements.toggle()
+                    resetMealIngredientsAlert = true
                 } label: {
-                    Image(systemName: showSupplements ? "leaf.fill" : "leaf")
+                    Image(systemName: "arrow.uturn.backward")
                 }
                   .frame(width: 44)
-                  .foregroundColor(showSupplements ? Color.theme.blueYellow : Color.theme.blackWhiteSecondary)
-
-                Spacer().frame(width: 18)
-                // LLM scanner — rendered 50% larger than the other
-                // glyphs since it's the primary action.
-                Button {
-                    showCaptureSheet = true
-                } label: {
-                    Image(systemName: "camera.viewfinder")
-                      .font(.system(size: 34.2))
-                }
-                  .frame(width: 56)
-                  .foregroundColor(Color.theme.blueYellow)
+                  .foregroundColor(Color.theme.blackWhiteSecondary)
 
                 Spacer()
 
@@ -424,9 +412,15 @@ struct MealList: View {
                 // items, plus the config actions (token / refresh).
                 HamburgerMenu {
                     Button {
-                        resetMealIngredientsAlert = true
+                        showCaptureSheet = true
                     } label: {
-                        Label("Reset meal", systemImage: "arrow.uturn.backward")
+                        Label("Scan label", systemImage: "camera.viewfinder")
+                    }
+                    Button {
+                        showSupplements.toggle()
+                    } label: {
+                        Label(showSupplements ? "Hide supplements" : "Show supplements",
+                              systemImage: showSupplements ? "leaf.fill" : "leaf")
                     }
                     Button {
                         vmListActive = true
